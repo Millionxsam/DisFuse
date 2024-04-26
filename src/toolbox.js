@@ -1,17 +1,3 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/*
-This toolbox contains nearly every single built-in block that Blockly offers,
-in addition to the custom block 'add_text' this sample app adds.
-You probably don't need every single block, and should consider either rewriting
-your toolbox from scratch, or carefully choosing whether you need each block
-listed here.
-*/
-
 export const toolbox = {
   kind: "categoryToolbox",
   contents: [
@@ -696,7 +682,74 @@ export const toolbox = {
     {
       kind: "category",
       name: "Main",
-      categorystyle: "",
+      colour: "#FF6E33",
+      contents: [
+        {
+          kind: "block",
+          type: "main_token",
+        },
+        {
+          kind: "block",
+          type: "main_ready",
+        },
+        {
+          kind: "block",
+          type: "main_presence",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Messages",
+      colour: "#336EFF",
+      contents: [
+        {
+          kind: "block",
+          type: "msg_received",
+        },
+        {
+          kind: "block",
+          type: "msg_reply",
+        },
+        {
+          kind: "block",
+          type: "msg_content",
+        },
+        {
+          kind: "block",
+          type: "msg_member",
+        },
+        {
+          kind: "block",
+          type: "msg_user",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Slash",
+      colour: "#00A859",
+      contents: [
+        {
+          kind: "block",
+          type: "slash_received",
+        },
+        {
+          kind: "block",
+          type: "slash_create",
+          inputs: {
+            nsfw: {
+              shadow: {
+                type: "logic_boolean",
+              },
+            },
+          },
+        },
+        {
+          kind: "block",
+          type: "slash_name",
+        },
+      ],
     },
   ],
 };

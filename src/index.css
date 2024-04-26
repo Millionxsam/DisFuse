@@ -1,40 +1,150 @@
-body {
+* {
   margin: 0;
-  max-width: 100vw;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  color: white;
+  --main-color: #014f98;
 }
 
-pre,
-code {
-  overflow: auto;
-}
-
-#pageContainer {
-  display: flex;
-  width: 100%;
-  max-width: 100vw;
-  height: 100vh;
-}
-
-#blocklyDiv {
-  flex-basis: 100%;
-  height: 100%;
-  min-width: 600px;
-}
-
-#outputPane {
+.unerline-effect {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  flex: 0 0 400px;
-  overflow: auto;
-  margin: 1rem;
 }
 
-#generatedCode {
-  height: 50%;
-  background-color: rgb(247, 240, 228);
+.underline-effect::after {
+  content: "";
+  margin-top: 0.1vh;
+  display: block;
+  width: 0%;
+  height: 0.2vh;
+  border-radius: 10px;
+  background-color: red;
+  transition: all 0.2s ease;
 }
 
-#output {
-  height: 50%;
+.underline-effect:hover::after {
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--main-color);
+  height: 7.5vh;
+  padding: 2vh;
+}
+
+.navbar .left {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  cursor: default;
+}
+
+.navbar .logo img {
+  height: 7.5vh;
+}
+
+.navbar .left ul {
+  display: flex;
+  gap: 1vw;
+  align-items: center;
+  list-style: none;
+}
+
+.navbar .left ul li {
+  cursor: pointer;
+  background-color: slategray;
+  padding: 1vh;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.navbar .left ul li:hover {
+  background-color: rgb(152, 174, 196);
+}
+
+.navbar .right ul {
+  list-style: none;
+}
+
+.navbar .right #projectName {
+  background-color: rgba(0, 0, 0, 0.425);
+  border: 2px solid black;
+  padding: 1.25vh;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.navbar .right #projectName::placeholder {
+  color: rgba(255, 255, 255, 0.61);
+}
+
+#workspace {
+  height: 92.5vh;
+}
+
+.code-view {
+  background-color: rgba(31, 31, 31, 0.897);
+  padding: 2vh;
+  height: 100vh;
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  gap: 2vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+#code {
+  background-color: rgba(128, 128, 128, 0.897);
+  padding: 2vh;
+  border-radius: 10px;
+}
+
+.code-view .top {
+  display: flex;
+  gap: 1vw;
+  align-items: center;
+}
+
+.code-view .top button {
+  height: min-content;
+  border: none;
+  padding: 1vh;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.code-view .top button#close {
+  background-color: rgb(163, 0, 0);
+}
+
+.code-view .top button#copy {
+  background-color: var(--main-color);
+}
+
+.code-view .top button#close:hover {
+  background-color: rgb(190, 0, 0);
+}
+
+.code-view .top button#copy:hover {
+  background-color: #0062be;
+}
+
+.code-view .top .check {
+  color: rgb(0, 202, 0);
+  font-size: 25px;
 }
