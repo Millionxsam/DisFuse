@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
-  color: white;
   --main-color: #014f98;
 }
 
@@ -34,6 +33,7 @@
   background-color: var(--main-color);
   height: 7.5vh;
   padding: 2vh;
+  color: white;
 }
 
 .navbar .left {
@@ -104,6 +104,10 @@
   left: 0;
   top: 0;
   z-index: 100;
+}
+
+.code-view * {
+  color: white;
 }
 
 #code {

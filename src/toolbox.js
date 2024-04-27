@@ -494,10 +494,6 @@ export const toolbox = {
         },
         {
           kind: "block",
-          type: "lists_create_with",
-        },
-        {
-          kind: "block",
           type: "lists_repeat",
           inputs: {
             NUM: {
@@ -690,11 +686,19 @@ export const toolbox = {
         },
         {
           kind: "block",
+          type: "main_bot",
+        },
+        {
+          kind: "block",
           type: "main_ready",
         },
         {
           kind: "block",
           type: "main_presence",
+        },
+        {
+          kind: "block",
+          type: "main_env",
         },
       ],
     },
@@ -723,6 +727,14 @@ export const toolbox = {
           kind: "block",
           type: "msg_user",
         },
+        {
+          kind: "block",
+          type: "msg_channel",
+        },
+        {
+          kind: "block",
+          type: "msg_server",
+        },
       ],
     },
     {
@@ -743,11 +755,72 @@ export const toolbox = {
                 type: "logic_boolean",
               },
             },
+            name: {
+              shadow: {
+                type: "text",
+              },
+            },
+            dsc: {
+              shadow: {
+                type: "text",
+              },
+            },
+            dm: {
+              shadow: {
+                type: "logic_boolean",
+              },
+            },
           },
         },
         {
           kind: "block",
+          type: "slash_addoption",
+        },
+        {
+          kind: "block",
+          type: "slash_addchoice",
+        },
+        {
+          kind: "block",
+          type: "slash_addsubcommand",
+        },
+        {
+          kind: "block",
+          type: "slash_addsubcommandgroup",
+        },
+        {
+          kind: "block",
           type: "slash_name",
+        },
+        {
+          kind: "block",
+          type: "slash_member",
+        },
+        {
+          kind: "block",
+          type: "slash_user",
+        },
+        {
+          kind: "block",
+          type: "slash_channel",
+        },
+        {
+          kind: "block",
+          type: "slash_server",
+        },
+      ],
+    },
+    {
+      kind: "sep",
+    },
+    {
+      kind: "category",
+      name: "Servers",
+      colour: "A33DAC",
+      contents: [
+        {
+          kind: "block",
+          type: "server_getone",
         },
       ],
     },

@@ -8,6 +8,7 @@ import { DarkTheme } from "./DarkTheme";
 import "./blocks/main";
 import "./blocks/messages";
 import "./blocks/slash";
+import "./blocks/servers";
 import { javascriptGenerator } from "blockly/javascript";
 
 export default function Workspace() {

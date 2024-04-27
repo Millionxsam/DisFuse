@@ -28,7 +28,7 @@ Blockly.Blocks["msg_reply"] = {
 Blockly.Blocks["msg_content"] = {
   init: function () {
     this.appendDummyInput().appendField("content of the message");
-    this.setOutput(true, null);
+    this.setOutput(true, "String");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -38,7 +38,7 @@ Blockly.Blocks["msg_content"] = {
 Blockly.Blocks["msg_member"] = {
   init: function () {
     this.appendDummyInput().appendField("member who sent the message");
-    this.setOutput(true, null);
+    this.setOutput(true, "member");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -48,7 +48,27 @@ Blockly.Blocks["msg_member"] = {
 Blockly.Blocks["msg_user"] = {
   init: function () {
     this.appendDummyInput().appendField("user who sent the message");
-    this.setOutput(true, null);
+    this.setOutput(true, "user");
+    this.setColour("#336EFF");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["msg_channel"] = {
+  init: function () {
+    this.appendDummyInput().appendField("channel of the message");
+    this.setOutput(true, "channel");
+    this.setColour("#336EFF");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["msg_server"] = {
+  init: function () {
+    this.appendDummyInput().appendField("server of the message");
+    this.setOutput(true, "server");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -85,5 +105,15 @@ javascriptGenerator.forBlock["msg_member"] = function (block, generator) {
 
 javascriptGenerator.forBlock["msg_user"] = function (block, generator) {
   var code = "message.member.user";
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["msg_channel"] = function (block, generator) {
+  var code = "message.channel";
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
+  var code = "message.guild";
   return [code, Order.NONE];
 };

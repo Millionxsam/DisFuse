@@ -62,6 +62,28 @@ Blockly.Blocks["main_presence"] = {
   },
 };
 
+Blockly.Blocks["main_env"] = {
+  init: function () {
+    this.appendValueInput("value")
+      .setCheck("String")
+      .appendField("get ENV with the name:");
+    this.setOutput(true, null);
+    this.setColour("#FF6E33");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["main_bot"] = {
+  init: function () {
+    this.appendDummyInput().appendField("bot user");
+    this.setOutput(true, "user");
+    this.setColour("#FF6E33");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
 javascriptGenerator.forBlock["main_token"] = function (block, generator) {
   const token = generator.valueToCode(block, "token", Order.ATOMIC);
 
@@ -97,4 +119,16 @@ javascriptGenerator.forBlock["main_presence"] = function (block, generator) {
     }]
   });`;
   return code;
+};
+
+javascriptGenerator.forBlock["main_env"] = function (block, generator) {
+  var value_env = generator.valueToCode(block, "value", Order.ATOMIC);
+
+  var code = `process.env[${value_env}]`;
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["main_bot"] = function (block, generator) {
+  var code = "client.user";
+  return [code, Order.NONE];
 };
