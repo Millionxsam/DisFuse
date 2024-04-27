@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as Blockly from "blockly";
 import { useBlocklyWorkspace } from "react-blockly";
+import { javascriptGenerator } from "blockly/javascript";
+import Swal from "sweetalert2";
 
 import { toolbox } from "./toolbox";
 import { DarkTheme } from "./DarkTheme";
@@ -9,7 +11,6 @@ import "./blocks/main";
 import "./blocks/messages";
 import "./blocks/slash";
 import "./blocks/servers";
-import { javascriptGenerator } from "blockly/javascript";
 
 export default function Workspace() {
   const blocklyRef = useRef();
@@ -51,7 +52,13 @@ export default function Workspace() {
   });
 
   function updateCode(workspace) {
-    // Save file
+    // Autosave
+    let save = Blockly.serialization.workspaces.save(workspace);
+    if (Object.keys(save).length > 0) {
+      localStorage.setItem("dfWorkspaceAutosave", JSON.stringify(save));
+    }
+
+    // Save file event
     document.querySelector(".navbar .left #save").onclick = async () => {
       const data = JSON.stringify(
         Blockly.serialization.workspaces.save(workspace)
@@ -73,9 +80,19 @@ export default function Workspace() {
 
       await fileStream.write(blob);
       await fileStream.close();
+
+      Swal.fire({
+        toast: true,
+        position: "bottom-end",
+        timer: 5000,
+        timerProgressBar: true,
+        icon: "success",
+        title: "Successfully saved",
+        showConfirmButton: false,
+      });
     };
 
-    // Load file
+    // Load file event
     document.querySelector(".navbar .left #load").onclick = async () => {
       const fileInput = document.createElement("input");
       fileInput.type = "file";
@@ -92,6 +109,16 @@ export default function Workspace() {
 
           workspace.clear();
           Blockly.serialization.workspaces.load(JSON.parse(data), workspace);
+
+          Swal.fire({
+            toast: true,
+            position: "bottom-end",
+            timer: 5000,
+            timerProgressBar: true,
+            icon: "success",
+            title: "Successfully loaded",
+            showConfirmButton: false,
+          });
         };
 
         reader.readAsText(file);
@@ -101,11 +128,47 @@ export default function Workspace() {
       fileInput.remove();
     };
 
+    // Recover file event
+    document.querySelector(".navbar .left #recover").onclick = async () => {
+      Swal.fire({
+        title: "Recover Project",
+        html: '<p class="modal-text">DisFuse autosaves your workspace to your device\'s local storage, in case you forget to save your project. We can try to recover your last used workspace if one exists.</p>',
+        icon: "warning",
+        confirmButtonText: "Recover",
+        showCancelButton: true,
+      }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        let data = localStorage.getItem("dfWorkspaceAutosave");
+        if (!data)
+          return Swal.fire({
+            icon: "error",
+            title: "Save not found",
+            text: "We couldn't find an autosave in your local storage. Remember to save your file next time!",
+            confirmButtonText: "Ok",
+          });
+
+        workspace.clear();
+        Blockly.serialization.workspaces.load(JSON.parse(data), workspace);
+
+        Swal.fire({
+          toast: true,
+          position: "bottom-end",
+          timer: 5000,
+          timerProgressBar: true,
+          icon: "success",
+          title: "Successfully recovered",
+          showConfirmButton: false,
+        });
+      });
+    };
+
     workspace.addChangeListener(Blockly.Events.disableOrphans);
 
     const codeEle = document.getElementById("code");
 
     let js = `const Discord = require("discord.js");
+      const moment = require("moment");
       const client = new Discord.Client({ intents: 3276799 });
 
       client.on("ready", () => {

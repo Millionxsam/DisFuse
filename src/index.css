@@ -26,6 +26,10 @@
   width: 100%;
 }
 
+p.modal-text {
+  line-height: 3vh;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -65,6 +69,7 @@
   background-color: slategray;
   padding: 1vh;
   border-radius: 10px;
+  border: 2px solid rgb(152, 174, 196);
   transition: all 0.2s ease;
 }
 

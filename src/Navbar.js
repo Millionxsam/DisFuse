@@ -14,6 +14,7 @@ export default function Navbar() {
           <ul>
             <li id="save">Save</li>
             <li id="load">Load</li>
+            <li id="recover">Recover</li>
             <li onClick={showCode}>Show JavaScript Code</li>
           </ul>
         </div>

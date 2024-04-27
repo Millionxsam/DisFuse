@@ -681,20 +681,40 @@ export const toolbox = {
       colour: "#FF6E33",
       contents: [
         {
+          kind: "label",
+          text: "Required ↓",
+        },
+        {
           kind: "block",
           type: "main_token",
+        },
+        {
+          kind: "label",
+          text: "The user of the bot ↓",
         },
         {
           kind: "block",
           type: "main_bot",
         },
         {
+          kind: "label",
+          text: "Events ↓",
+        },
+        {
           kind: "block",
           type: "main_ready",
         },
         {
+          kind: "label",
+          text: "Actions ↓",
+        },
+        {
           kind: "block",
           type: "main_presence",
+        },
+        {
+          kind: "label",
+          text: "Advanced ↓",
         },
         {
           kind: "block",
@@ -708,12 +728,24 @@ export const toolbox = {
       colour: "#336EFF",
       contents: [
         {
+          kind: "label",
+          text: "Events ↓",
+        },
+        {
           kind: "block",
           type: "msg_received",
         },
         {
+          kind: "label",
+          text: "Actions ↓",
+        },
+        {
           kind: "block",
           type: "msg_reply",
+        },
+        {
+          kind: "label",
+          text: "Information about the message ↓",
         },
         {
           kind: "block",
@@ -743,8 +775,8 @@ export const toolbox = {
       colour: "#00A859",
       contents: [
         {
-          kind: "block",
-          type: "slash_received",
+          kind: "label",
+          text: "Create a slash command first ↓",
         },
         {
           kind: "block",
@@ -789,6 +821,18 @@ export const toolbox = {
           type: "slash_addsubcommandgroup",
         },
         {
+          kind: "label",
+          text: "Events ↓",
+        },
+        {
+          kind: "block",
+          type: "slash_received",
+        },
+        {
+          kind: "label",
+          text: "Information about the command ran ↓",
+        },
+        {
           kind: "block",
           type: "slash_name",
         },
@@ -819,8 +863,80 @@ export const toolbox = {
       colour: "A33DAC",
       contents: [
         {
+          kind: "label",
+          text: "Get a server ↓",
+        },
+        {
           kind: "block",
           type: "server_getone",
+        },
+        {
+          kind: "label",
+          text: "Get all servers ↓",
+        },
+        {
+          kind: "block",
+          type: "server_getall",
+        },
+        {
+          kind: "block",
+          type: "server_guild",
+        },
+        {
+          kind: "label",
+          text: "Information about a server ↓",
+        },
+        {
+          kind: "block",
+          type: "server_name",
+        },
+        {
+          kind: "block",
+          type: "server_membercount",
+        },
+        {
+          kind: "block",
+          type: "server_id",
+        },
+        {
+          kind: "block",
+          type: "server_banner",
+        },
+        {
+          kind: "block",
+          type: "server_icon",
+        },
+        {
+          kind: "block",
+          type: "server_ownerid",
+        },
+        {
+          kind: "block",
+          type: "server_dsc",
+        },
+        {
+          kind: "block",
+          type: "server_afkchannel",
+        },
+        {
+          kind: "block",
+          type: "server_creationdate",
+        },
+        {
+          kind: "block",
+          type: "server_vanityurl",
+        },
+        {
+          kind: "block",
+          type: "server_systemchannel",
+        },
+        {
+          kind: "block",
+          type: "server_ruleschannel",
+        },
+        {
+          kind: "block",
+          type: "server_verified",
         },
       ],
     },
