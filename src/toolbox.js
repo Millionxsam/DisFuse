@@ -2,6 +2,27 @@ export const toolbox = {
   kind: "categoryToolbox",
   contents: [
     {
+      kind: "search",
+      name: "Search",
+    },
+    {
+      kind: "category",
+      name: "Frequently Used",
+      custom: "MOST_USED",
+      categorystyle: "frequently_used_category",
+      colour: "#F7FF00",
+    },
+    {
+      kind: "category",
+      name: "Recently Used",
+      custom: "RECENTLY_USED",
+      categorystyle: "recently_used_category",
+      colour: "#F7FF00",
+    },
+    {
+      kind: "sep",
+    },
+    {
       kind: "category",
       name: "Logic",
       categorystyle: "logic_category",
@@ -779,6 +800,14 @@ export const toolbox = {
           text: "Create a slash command first ↓",
         },
         {
+          kind: "label",
+          text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+        },
+        {
+          kind: "block",
+          type: "slash_createcontainer",
+        },
+        {
           kind: "block",
           type: "slash_create",
           inputs: {
@@ -813,6 +842,10 @@ export const toolbox = {
           type: "slash_addchoice",
         },
         {
+          kind: "label",
+          text: "Subcommands (advanced) ↓",
+        },
+        {
           kind: "block",
           type: "slash_addsubcommand",
         },
@@ -830,7 +863,23 @@ export const toolbox = {
         },
         {
           kind: "label",
+          text: "Actions ↓",
+        },
+        {
+          kind: "block",
+          type: "slash_reply",
+        },
+        {
+          kind: "block",
+          type: "slash_editreply",
+        },
+        {
+          kind: "label",
           text: "Information about the command ran ↓",
+        },
+        {
+          kind: "block",
+          type: "slash_getoption",
         },
         {
           kind: "block",
@@ -851,6 +900,32 @@ export const toolbox = {
         {
           kind: "block",
           type: "slash_server",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Events",
+      colour: "FF4F4F",
+      contents: [
+        {
+          kind: "category",
+          name: "Joins",
+          colour: "FF4F4F",
+          contents: [
+            {
+              kind: "block",
+              type: "events_joins_guildmemberadd",
+            },
+            {
+              kind: "block",
+              type: "events_joins_member",
+            },
+            {
+              kind: "block",
+              type: "events_joins_server",
+            },
+          ],
         },
       ],
     },
@@ -940,5 +1015,71 @@ export const toolbox = {
         },
       ],
     },
+    {
+      kind: "sep",
+    },
+    // {
+    //   kind: "category",
+    //   name: "Games",
+    //   colour: "00B9A0",
+    //   contents: [
+    //     {
+    //       kind: "block",
+    //       type: "game_2048",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_connect4",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_fasttype",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_findemoji",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_flood",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_hangman",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_matchpairs",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_minesweeper",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_rps",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_slots",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_snake",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_tictactoe",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_wordle",
+    //     },
+    //     {
+    //       kind: "block",
+    //       type: "game_trivia",
+    //     },
+    //   ],
+    // },
   ],
 };

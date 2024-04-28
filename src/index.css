@@ -6,6 +6,15 @@
   --main-color: #014f98;
 }
 
+body {
+  background-color: rgb(34, 34, 34);
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
 .unerline-effect {
   display: flex;
   flex-direction: column;
@@ -24,6 +33,21 @@
 
 .underline-effect:hover::after {
   width: 100%;
+}
+
+.button {
+  cursor: pointer;
+  background-color: slategray;
+  padding: 1vh;
+  border-radius: 10px;
+  border: 2px solid rgb(152, 174, 196);
+  transition: all 0.2s ease;
+  align-items: center;
+  display: flex;
+}
+
+.button:hover {
+  background-color: rgb(152, 174, 196);
 }
 
 p.modal-text {
@@ -64,21 +88,19 @@ p.modal-text {
   list-style: none;
 }
 
-.navbar .left ul li {
-  cursor: pointer;
-  background-color: slategray;
-  padding: 1vh;
-  border-radius: 10px;
-  border: 2px solid rgb(152, 174, 196);
-  transition: all 0.2s ease;
-}
-
-.navbar .left ul li:hover {
-  background-color: rgb(152, 174, 196);
-}
-
 .navbar .right ul {
   list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.navbar .right ul i {
+  font-size: 20px;
+}
+
+.navbar .right ul a i {
+  color: rgb(0, 46, 197);
 }
 
 .navbar .right #projectName {
@@ -119,6 +141,8 @@ p.modal-text {
   background-color: rgba(128, 128, 128, 0.897);
   padding: 2vh;
   border-radius: 10px;
+  max-height: 90vh;
+  overflow-y: scroll;
 }
 
 .code-view .top {
@@ -156,4 +180,26 @@ p.modal-text {
 .code-view .top .check {
   color: rgb(0, 202, 0);
   font-size: 25px;
+}
+
+.blockly-ws-search {
+  box-shadow: 0 10px 20px black;
+  padding: 1vh;
+  border: none;
+  border-radius: 10px;
+}
+
+#workspace input {
+  border: none;
+  padding: 0.25vh;
+  background-color: var(--main-color);
+  color: white;
+  width: 6vw;
+  font-size: 16px;
+  margin-left: 1vw;
+  border-radius: 5px;
+}
+
+#workspace input::placeholder {
+  color: white;
 }

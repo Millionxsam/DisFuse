@@ -1,6 +1,22 @@
 import { useEffect } from "react";
 
 export default function CodeView() {
+  useEffect(() => {
+    document.getElementById(
+      "code"
+    ).innerText = `const Discord = require("discord.js");
+    const moment = require("moment");
+    const gamecord = require("discord-gamecord");
+    const client = new Discord.Client({ intents: 3276799 });
+    
+    client.setMaxListeners(0);
+    
+    client.on("ready", () => {
+      console.log(client.user.username + " is logged in");
+    });
+    `;
+  }, []);
+
   return (
     <div className="code-view">
       <div className="top">

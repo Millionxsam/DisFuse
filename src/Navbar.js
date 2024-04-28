@@ -12,14 +12,33 @@ export default function Navbar() {
             <h1>DisFuse</h1>
           </div>
           <ul>
-            <li id="save">Save</li>
-            <li id="load">Load</li>
-            <li id="recover">Recover</li>
-            <li onClick={showCode}>Show JavaScript Code</li>
+            <li className="button" id="save">
+              Save
+            </li>
+            <li className="button" id="load">
+              Load
+            </li>
+            <li className="button" id="recover">
+              Recover
+            </li>
+            <li className="button" onClick={showCode}>
+              Show JavaScript Code
+            </li>
           </ul>
         </div>
         <div className="right">
           <ul>
+            <a
+              className="button"
+              rel="noopener"
+              target="_blank"
+              href="https://dsc.gg/disfuse"
+            >
+              <i class="fa-brands fa-discord"></i>
+            </a>
+            <li className="button run">
+              <i class="fa-solid fa-play"></i>
+            </li>
             <li>
               <input placeholder="Project Name" id="projectName" type="text" />
             </li>

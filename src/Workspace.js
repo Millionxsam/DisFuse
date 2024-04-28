@@ -1,25 +1,33 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
-import { useBlocklyWorkspace } from "react-blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
+import { Backpack } from "@blockly/workspace-backpack";
+import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
+import { ZoomToFitControl } from "@blockly/zoom-to-fit";
+import "@blockly/toolbox-search";
+import * as SuggestedBlocks from "@blockly/suggested-blocks";
 
+import "./functions/registerContextMenus";
 import { toolbox } from "./toolbox";
-import { DarkTheme } from "./DarkTheme";
+import { DFTheme } from "./DFTheme";
 
 import "./blocks/main";
 import "./blocks/messages";
 import "./blocks/slash";
 import "./blocks/servers";
+import "./blocks/games";
+import "./blocks/events/joins";
 
 export default function Workspace() {
-  const blocklyRef = useRef();
-  const { ws, xml } = useBlocklyWorkspace({
-    onWorkspaceChange: updateCode,
-    ref: blocklyRef,
-    toolboxConfiguration: toolbox,
-    workspaceConfiguration: {
-      theme: DarkTheme,
+  useEffect(() => {
+    // Inject workspace
+    const workspace = Blockly.inject(document.getElementById("workspace"), {
+      toolbox,
+      theme: DFTheme,
+      move: {
+        wheel: true,
+      },
       renderer: "zelos",
       collapse: true,
       comments: true,
@@ -48,15 +56,54 @@ export default function Workspace() {
         minScale: 0.3,
         scaleSpeed: 1.2,
       },
-    },
-  });
+    });
 
-  function updateCode(workspace) {
-    // Autosave
-    let save = Blockly.serialization.workspaces.save(workspace);
-    if (Object.keys(save).length > 0) {
-      localStorage.setItem("dfWorkspaceAutosave", JSON.stringify(save));
-    }
+    // Initiating plugins
+    const backpack = new Backpack(workspace, {
+      allowEmptyBackpackOpen: false,
+      contextMenu: {
+        copyAllToBackpack: true,
+        pasteAllToBackpack: true,
+      },
+    });
+    backpack.init();
+
+    const workspaceSearch = new WorkspaceSearch(workspace);
+    workspaceSearch.init();
+
+    const zoomToFit = new ZoomToFitControl(workspace);
+    zoomToFit.init();
+
+    SuggestedBlocks.init(workspace);
+
+    // Disable orphans
+    workspace.addChangeListener(Blockly.Events.disableOrphans);
+
+    workspace.addChangeListener((event) => {
+      // Autosave
+      let save = Blockly.serialization.workspaces.save(workspace);
+      if (save.blocks) {
+        localStorage.setItem("dfWorkspaceAutosave", JSON.stringify(save));
+      }
+
+      const codeEle = document.getElementById("code");
+
+      let js = `const Discord = require("discord.js");
+      const moment = require("moment");
+      const gamecord = require("discord-gamecord");
+      const client = new Discord.Client({ intents: 3276799 });
+
+      client.setMaxListeners(0);
+
+      client.on("ready", () => {
+      console.log(client.user.username + " is logged in");
+      });
+
+      ${javascriptGenerator.workspaceToCode(workspace)}
+      `;
+
+      codeEle.innerText = js;
+    });
 
     // Save file event
     document.querySelector(".navbar .left #save").onclick = async () => {
@@ -162,24 +209,6 @@ export default function Workspace() {
         });
       });
     };
-
-    workspace.addChangeListener(Blockly.Events.disableOrphans);
-
-    const codeEle = document.getElementById("code");
-
-    let js = `const Discord = require("discord.js");
-      const moment = require("moment");
-      const client = new Discord.Client({ intents: 3276799 });
-
-      client.on("ready", () => {
-      console.log(client.user.username + " is logged in");
-      });
-
-      ${javascriptGenerator.workspaceToCode(workspace)}
-      `;
-
-    codeEle.innerText = js;
-  }
-
-  return <div id="workspace" ref={blocklyRef}></div>;
+  }, []);
+  return <div id="workspace"></div>;
 }

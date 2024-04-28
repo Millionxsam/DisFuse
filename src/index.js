@@ -8,9 +8,11 @@ import Workspace from "./Workspace";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <>
+    {/* <React.StrictMode> */}
     <Navbar />
     <CodeView />
     <Workspace />
-  </React.StrictMode>
+    {/* </React.StrictMode> */}
+  </>
 );
