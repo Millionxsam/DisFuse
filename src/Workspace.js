@@ -18,6 +18,9 @@ import "./blocks/slash";
 import "./blocks/servers";
 import "./blocks/games";
 import "./blocks/events/joins";
+import "./blocks/text";
+import "./blocks/channels";
+import "./blocks/embeds";
 
 export default function Workspace() {
   useEffect(() => {

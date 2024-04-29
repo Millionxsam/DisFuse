@@ -16,6 +16,9 @@ Blockly.Blocks["msg_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -86,9 +89,11 @@ javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
 
 javascriptGenerator.forBlock["msg_reply"] = function (block, generator) {
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
 
   var code = `message.reply({
-      content: ${content}
+      content: ${content},
+      embeds: [${embeds.replaceAll("'", "")}]
       });\n`;
   return code;
 };

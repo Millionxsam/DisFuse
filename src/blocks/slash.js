@@ -198,6 +198,9 @@ Blockly.Blocks["slash_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the command");
     this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -274,10 +277,12 @@ javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
 
 javascriptGenerator.forBlock["slash_reply"] = function (block, generator) {
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   var code = `interaction.reply({
     content: ${value_content},
+    embeds: [${value_embeds.replaceAll("'", "")}],
     ephemeral: ${value_ephemeral}
   });`;
   return code;

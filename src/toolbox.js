@@ -345,6 +345,10 @@ export const toolbox = {
         },
         {
           kind: "block",
+          type: "text_newline",
+        },
+        {
+          kind: "block",
           type: "text_append",
           inputs: {
             TEXT: {
@@ -745,6 +749,65 @@ export const toolbox = {
     },
     {
       kind: "category",
+      name: "Embeds",
+      colour: "00A58E",
+      contents: [
+        {
+          kind: "label",
+          text: "Create the embed first ↓",
+        },
+        {
+          kind: "block",
+          type: "embed_create",
+        },
+        {
+          kind: "label",
+          text: "Put all of these blocks INSIDE of the 'create embed' block above ↓",
+        },
+        {
+          kind: "block",
+          type: "embed_settitle",
+        },
+        {
+          kind: "block",
+          type: "embed_setdsc",
+        },
+        {
+          kind: "block",
+          type: "embed_setcolor",
+        },
+        {
+          kind: "block",
+          type: "embed_seturl",
+        },
+        {
+          kind: "block",
+          type: "embed_setauthor",
+        },
+        {
+          kind: "block",
+          type: "embed_setfooter",
+        },
+        {
+          kind: "block",
+          type: "embed_setimage",
+        },
+        {
+          kind: "block",
+          type: "embed_setthumb",
+        },
+        {
+          kind: "block",
+          type: "embed_addfield",
+        },
+        {
+          kind: "block",
+          type: "embed_settimestamp",
+        },
+      ],
+    },
+    {
+      kind: "category",
       name: "Messages",
       colour: "#336EFF",
       contents: [
@@ -1012,6 +1075,17 @@ export const toolbox = {
         {
           kind: "block",
           type: "server_verified",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Channels",
+      colour: "D39600",
+      contents: [
+        {
+          kind: "block",
+          type: "channel_send",
         },
       ],
     },
