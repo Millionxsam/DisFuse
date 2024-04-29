@@ -262,7 +262,7 @@ javascriptGenerator.forBlock["slash_getoption"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
 
-  var code = `interaction.options.get${dropdown_type}(${value_name});`;
+  var code = `interaction.options.get${dropdown_type}(${value_name})`;
   return [code, Order.NONE];
 };
 
