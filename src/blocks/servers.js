@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["server_getone"] = {
   init: function () {
@@ -256,7 +257,10 @@ javascriptGenerator.forBlock["server_creationdate"] = function (
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["server_dsc"] = function (block, generator) {
+javascriptGenerator.forBlock["server_afkchannel"] = function (
+  block,
+  generator
+) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
   var code = `${value_server}.afkChannel`;
@@ -343,3 +347,50 @@ javascriptGenerator.forBlock["server_getall"] = function (block, generator) {
   });`;
   return code;
 };
+
+createRestrictions(
+  ["server_getone"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["value"],
+      message: "You must specify a value to search for",
+    },
+  ]
+);
+
+createRestrictions(
+  ["server_guild"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["server_getall"],
+      message: 'This block must be under the "for each server" block',
+    },
+  ]
+);
+
+createRestrictions(
+  [
+    "server_name",
+    "server_membercount",
+    "server_id",
+    "server_banner",
+    "server_icon",
+    "server_ownerid",
+    "server_dsc",
+    "server_afkchannel",
+    "server_creationdate",
+    "server_verified",
+    "server_vanityurl",
+    "server_systemchannel",
+    "server_ruleschannel",
+  ],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["server"],
+      message: "You must specify a server",
+    },
+  ]
+);

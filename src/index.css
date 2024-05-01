@@ -44,10 +44,48 @@ a {
   transition: all 0.2s ease;
   align-items: center;
   display: flex;
+  gap: 0.4vw;
+  justify-content: center;
 }
 
 .button:hover {
   background-color: rgb(152, 174, 196);
+}
+
+.button.disabled {
+  background-color: rgba(112, 128, 144, 0.479);
+  border: 2px solid rgba(152, 174, 196, 0.466);
+  color: rgba(255, 255, 255, 0.432);
+  cursor: not-allowed;
+}
+
+.button.disabled:hover {
+  background-color: rgba(112, 128, 144, 0.479);
+}
+
+.tooltipEle {
+  position: relative;
+}
+
+.tooltipText {
+  display: none;
+}
+
+.tooltipEle:hover .tooltipText {
+  display: block;
+  opacity: 1;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  width: 10vw;
+  top: 125%;
+  left: 50%;
+  margin-left: -5vw;
+  padding: 1vh;
+  border: 2px solid gray;
 }
 
 p.modal-text {
@@ -104,6 +142,7 @@ p.modal-text {
 }
 
 .navbar .right #projectName {
+  color: white;
   background-color: rgba(0, 0, 0, 0.425);
   border: 2px solid black;
   padding: 1.25vh;

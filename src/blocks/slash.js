@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["slash_received"] = {
   init: function () {
@@ -128,7 +129,7 @@ Blockly.Blocks["slash_addsubcommandgroup"] = {
 Blockly.Blocks["slash_name"] = {
   init: function () {
     this.appendDummyInput().appendField("name of the command");
-    this.setOutput(true, null);
+    this.setOutput(true, "String");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -154,7 +155,7 @@ Blockly.Blocks["slash_member"] = {
   init: function () {
     this.appendDummyInput().appendField("member who ran the command");
     this.setInputsInline(false);
-    this.setOutput(true, null);
+    this.setOutput(true, "member");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -165,7 +166,7 @@ Blockly.Blocks["slash_user"] = {
   init: function () {
     this.appendDummyInput().appendField("user who ran the command");
     this.setInputsInline(false);
-    this.setOutput(true, null);
+    this.setOutput(true, "user");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -176,7 +177,7 @@ Blockly.Blocks["slash_channel"] = {
   init: function () {
     this.appendDummyInput().appendField("channel the command was run in");
     this.setInputsInline(false);
-    this.setOutput(true, null);
+    this.setOutput(true, "channel");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -187,7 +188,7 @@ Blockly.Blocks["slash_server"] = {
   init: function () {
     this.appendDummyInput().appendField("server the command was run in");
     this.setInputsInline(false);
-    this.setOutput(true, null);
+    this.setOutput(true, "server");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -422,3 +423,101 @@ javascriptGenerator.forBlock["slash_name"] = function (block, generator) {
   var code = "interaction.commandName";
   return [code, Order.NONE];
 };
+
+createRestrictions(
+  ["slash_create"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_createcontainer"],
+      message: 'This block must be under "set slash commands" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_addoption"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_create", "slash_addsubcommand"],
+      message:
+        'This block must be under "add slash command" OR "add subcommand" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_addchoice"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_addoption"],
+      message: 'This block must be under "add option" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_addsubcommand"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_create", "slash_addsubcommandgroup"],
+      message:
+        'This block must be under "add slash command" OR "add subcommand group" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_addsubcommandgroup"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_create"],
+      message: 'This block must be under "add slash command" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_addchoice"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["slash_addoption"],
+      message: 'This block must be under "add option" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_reply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received"],
+      message: 'This block must be under "when slash command received" event',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_editreply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received"],
+      message: 'This block must be under "when slash command received" event',
+    },
+    {
+      type: "hasParent",
+      blockTypes: ["slash_reply"],
+      message: 'This block must be used AFTER "reply to the command" block',
+    },
+  ]
+);
+createRestrictions(
+  ["slash_name", "slash_member", "slash_user", "slash_channel", "slash_server"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received"],
+      message: 'This block must be under "when slash command received" event',
+    },
+  ]
+);

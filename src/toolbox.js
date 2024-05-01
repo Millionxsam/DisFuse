@@ -1,23 +1,13 @@
+// try making a block and ill tell you what to do
+// it can just be a test block, doesnt have to be a real block
+// blockly-demo.appspot.com/static/demos/blockfactory/index.html
+// t
 export const toolbox = {
   kind: "categoryToolbox",
   contents: [
     {
       kind: "search",
       name: "Search",
-    },
-    {
-      kind: "category",
-      name: "Frequently Used",
-      custom: "MOST_USED",
-      categorystyle: "frequently_used_category",
-      colour: "#F7FF00",
-    },
-    {
-      kind: "category",
-      name: "Recently Used",
-      custom: "RECENTLY_USED",
-      categorystyle: "recently_used_category",
-      colour: "#F7FF00",
     },
     {
       kind: "sep",
@@ -877,6 +867,9 @@ export const toolbox = {
             nsfw: {
               shadow: {
                 type: "logic_boolean",
+                fields: {
+                  BOOL: "FALSE",
+                },
               },
             },
             name: {
@@ -994,6 +987,29 @@ export const toolbox = {
     },
     {
       kind: "sep",
+    },
+    {
+      kind: "category",
+      name: "Webhooks",
+      colour: "#0000FF",
+      contents: [
+        {
+          kind: "label",
+          text: "Create a webhook first ↓",
+        },
+        {
+          kind: "block",
+          type: "webhooks_create",
+        },
+        {
+          kind: "label",
+          text: "Actions ↓",
+        },
+        {
+          kind: "block",
+          type: "webhooks_send",
+        },
+      ],
     },
     {
       kind: "category",

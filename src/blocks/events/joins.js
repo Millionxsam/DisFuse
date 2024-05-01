@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../../functions/restrictions";
 
 Blockly.Blocks["events_joins_guildmemberadd"] = {
   init: function () {
@@ -61,3 +62,14 @@ javascriptGenerator.forBlock["events_joins_guildmemberadd"] = function (
     });`;
   return code;
 };
+
+createRestrictions(
+  ["events_joins_member", "events_joins_server"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["events_joins_guildmemberadd"],
+      message: "This block must be in the 'when a member joins a server' event",
+    },
+  ]
+);

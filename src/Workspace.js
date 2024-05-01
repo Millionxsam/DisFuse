@@ -6,11 +6,14 @@ import { Backpack } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
 import "@blockly/toolbox-search";
-import * as SuggestedBlocks from "@blockly/suggested-blocks";
+import JSZip from "jszip";
+import beautify from "beautify";
 
 import "./functions/registerContextMenus";
 import { toolbox } from "./toolbox";
 import { DFTheme } from "./DFTheme";
+import exportFiles from "./exportFiles";
+import { executeRestrictions } from "./functions/restrictions";
 
 import "./blocks/main";
 import "./blocks/messages";
@@ -21,9 +24,14 @@ import "./blocks/events/joins";
 import "./blocks/text";
 import "./blocks/channels";
 import "./blocks/embeds";
+import "./blocks/webhooks";
 
 export default function Workspace() {
+  const hasTokenBlock = useRef(false);
+
   useEffect(() => {
+    toggleExport();
+
     // Inject workspace
     const workspace = Blockly.inject(document.getElementById("workspace"), {
       toolbox,
@@ -46,9 +54,9 @@ export default function Workspace() {
       sounds: true,
       oneBasedIndex: true,
       grid: {
-        spacing: 20,
-        length: 1,
-        colour: "#888",
+        spacing: 35,
+        length: 5,
+        colour: "#8888886e",
         snap: false,
       },
       zoom: {
@@ -77,17 +85,23 @@ export default function Workspace() {
     const zoomToFit = new ZoomToFitControl(workspace);
     zoomToFit.init();
 
-    SuggestedBlocks.init(workspace);
-
     // Disable orphans
     workspace.addChangeListener(Blockly.Events.disableOrphans);
 
+    // When workspace changes
     workspace.addChangeListener((event) => {
       // Autosave
       let save = Blockly.serialization.workspaces.save(workspace);
       if (save.blocks) {
         localStorage.setItem("dfWorkspaceAutosave", JSON.stringify(save));
       }
+
+      if (workspace.getAllBlocks(false).find((b) => b.type == "main_token"))
+        hasTokenBlock.current = true;
+      else hasTokenBlock.current = false;
+      toggleExport();
+
+      executeRestrictions(workspace);
 
       const codeEle = document.getElementById("code");
 
@@ -105,7 +119,60 @@ export default function Workspace() {
       ${javascriptGenerator.workspaceToCode(workspace)}
       `;
 
-      codeEle.innerText = js;
+      codeEle.innerText = `${beautify(js, { format: "js" })}`;
+    });
+
+    // Export event
+    document.querySelector(".button.export").addEventListener("click", () => {
+      if (!hasTokenBlock.current) return;
+
+      Swal.fire({
+        title: "Export Project",
+        icon: "info",
+        confirmButtonText: "Download",
+        showCancelButton: false,
+        html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+      }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        const zip = new JSZip();
+        const projectName =
+          document.getElementById("projectName").value || "DisFuse Project";
+
+        const codeEle = document.getElementById("code");
+        const indexjs = `${codeEle.innerText}`;
+
+        exportFiles.forEach((file) => {
+          zip.file(file.name, file.content);
+        });
+
+        zip.file("index.js", `${beautify(indexjs, { format: "js" })}`);
+        zip.file(
+          `${projectName}.df`,
+          JSON.stringify(Blockly.serialization.workspaces.save(workspace))
+        );
+
+        zip.generateAsync({ type: "blob" }).then((content) => {
+          let url = window.URL.createObjectURL(content);
+          let anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.download = `${projectName}.zip`;
+
+          anchor.click();
+
+          window.URL.revokeObjectURL(url);
+
+          Swal.fire({
+            toast: true,
+            position: "bottom-end",
+            timer: 5000,
+            timerProgressBar: true,
+            icon: "success",
+            title: "Successfully exported",
+            showConfirmButton: false,
+          });
+        });
+      });
     });
 
     // Save file event
@@ -113,23 +180,18 @@ export default function Workspace() {
       const data = JSON.stringify(
         Blockly.serialization.workspaces.save(workspace)
       );
-      const blob = new Blob([data], { type: "application/json" });
+      const blob = new Blob([data], { type: "text/plain" });
 
-      const fileHandle = await window.showSaveFilePicker({
-        suggestedName:
-          document.querySelector(".navbar #projectName").value ||
-          "DisFuse Project",
-        types: [
-          {
-            description: "DisFuse Save File",
-            accept: { "application/json": [".df"] },
-          },
-        ],
-      });
-      const fileStream = await fileHandle.createWritable();
+      let url = window.URL.createObjectURL(blob);
+      let anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `${
+        document.getElementById("projectName").value || "DisFuse Project"
+      }.df`;
 
-      await fileStream.write(blob);
-      await fileStream.close();
+      anchor.click();
+
+      window.URL.revokeObjectURL(url);
 
       Swal.fire({
         toast: true,
@@ -159,6 +221,8 @@ export default function Workspace() {
 
           workspace.clear();
           Blockly.serialization.workspaces.load(JSON.parse(data), workspace);
+          document.querySelector(".navbar #projectName").value =
+            file.name.replace(".df", "");
 
           Swal.fire({
             toast: true,
@@ -213,5 +277,26 @@ export default function Workspace() {
       });
     };
   }, []);
+
+  function toggleExport() {
+    const exportBtn = document.querySelector(".navbar .button.export");
+    const tooltipEle = document.createElement("span");
+
+    if (!hasTokenBlock.current) {
+      exportBtn.classList.add("disabled");
+      exportBtn.classList.add("tooltipEle");
+      tooltipEle.classList.add("tooltipText");
+      tooltipEle.innerHTML =
+        'The "login with token" block in "main" category is required';
+
+      exportBtn.appendChild(tooltipEle);
+    } else {
+      exportBtn.classList.remove("disabled");
+      exportBtn.classList.remove("tooltipEle");
+
+      tooltipEle.remove();
+    }
+  }
+
   return <div id="workspace"></div>;
 }

@@ -1,11 +1,12 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["embed_create"] = {
   init: function () {
-    this.appendValueInput("name")
-      .setCheck("String")
-      .appendField("Create an embed with name:");
+    this.appendDummyInput()
+      .appendField("Create an embed with name:")
+      .appendField(new Blockly.FieldTextInput("name"), "name");
     this.appendStatementInput("config").setCheck(null).appendField("then");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -224,12 +225,31 @@ javascriptGenerator.forBlock["embed_settitle"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["embed_create"] = function (block, generator) {
-  var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
+  var value_name = block.getFieldValue("name");
   var statements_config = generator.statementToCode(block, "config");
 
-  var code = `let ${value_name.replaceAll(
-    "'",
-    ""
-  )} = new Discord.EmbedBuilder()${statements_config};\n`;
+  var code = `let ${value_name} = new Discord.EmbedBuilder()${statements_config};\n`;
   return code;
 };
+
+createRestrictions(
+  [
+    "embed_settitle",
+    "embed_setdsc",
+    "embed_setcolor",
+    "embed_seturl",
+    "embed_setauthor",
+    "embed_setfooter",
+    "embed_setimage",
+    "embed_setthumb",
+    "embed_addfield",
+    "embed_settimestamp",
+  ],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["embed_create"],
+      message: "This block must be under a 'create embed' block",
+    },
+  ]
+);

@@ -1,5 +1,6 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["main_token"] = {
   init: function () {

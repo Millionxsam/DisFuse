@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["msg_received"] = {
   init: function () {
@@ -122,3 +123,30 @@ javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
   var code = "message.guild";
   return [code, Order.NONE];
 };
+
+createRestrictions(
+  ["msg_content", "msg_member", "msg_user", "msg_channel", "msg_server"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["msg_received"],
+      message: 'This block must be in a "When a message is received" event',
+    },
+  ]
+);
+
+createRestrictions(
+  ["msg_reply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["msg_received"],
+      message: 'This block must be in a "When a message is received" event',
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["content", "embeds"],
+      message: "You must specify the content and/or embed(s) to send",
+    },
+  ]
+);

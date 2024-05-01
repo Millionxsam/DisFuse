@@ -36,8 +36,9 @@ export default function Navbar() {
             >
               <i class="fa-brands fa-discord"></i>
             </a>
-            <li className="button run">
-              <i class="fa-solid fa-play"></i>
+            <li className="button export">
+              <div>Export</div>
+              <i class="fa-solid fa-download"></i>
             </li>
             <li>
               <input placeholder="Project Name" id="projectName" type="text" />

@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["channel_send"] = {
   init: function () {
@@ -30,3 +31,19 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
     });`;
   return code;
 };
+
+createRestrictions(
+  ["channel_send"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to send the message in",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["content", "embeds"],
+      message: "You must specify the content or embeds to send",
+    },
+  ]
+);

@@ -3,7 +3,7 @@ import * as Blockly from "blockly";
 export const DFTheme = Blockly.Theme.defineTheme("DFTheme", {
   base: Blockly.Themes.Zelos,
   componentStyles: {
-    workspaceBackgroundColour: "#0F0F0F",
+    workspaceBackgroundColour: "#020A0D",
     toolboxBackgroundColour: "blackBackground",
     toolboxForegroundColour: "#fff",
     flyoutBackgroundColour: "#171717",
