@@ -108,8 +108,16 @@ export default function Workspace() {
 
       const topBlocks = ["db_create"];
 
-      let js = beautify(
-        `
+      let code = javascriptGenerator.workspaceToCode(workspace);
+
+      topBlocks.forEach((topBlock) => {
+        let c = workspace.getAllBlocks().find((b) => b.type == topBlock);
+        if (!c) return;
+
+        code = code.replace(javascriptGenerator.blockToCode(c), "");
+      });
+
+      let js = `
       const Discord = require("discord.js");
       const moment = require("moment");
       const gamecord = require("discord-gamecord");
@@ -129,14 +137,8 @@ export default function Workspace() {
       console.log(client.user.username + " is logged in");
       });
 
-      ${workspace
-        .getAllBlocks()
-        .filter((b) => !topBlocks.includes(b.type))
-        .map((b) => javascriptGenerator.blockToCode(b))
-        .join("\n")}
-      `,
-        { format: "js" }
-      );
+      ${code}
+      `;
 
       codeEle.innerText = `${beautify(js, { format: "js" })}`;
     });
