@@ -25,6 +25,7 @@ import "./blocks/text";
 import "./blocks/channels";
 import "./blocks/embeds";
 import "./blocks/webhooks";
+import "./blocks/database";
 
 export default function Workspace() {
   const hasTokenBlock = useRef(false);
@@ -105,9 +106,21 @@ export default function Workspace() {
 
       const codeEle = document.getElementById("code");
 
-      let js = `const Discord = require("discord.js");
+      const topBlocks = ["db_create"];
+
+      let js = beautify(
+        `
+      const Discord = require("discord.js");
       const moment = require("moment");
       const gamecord = require("discord-gamecord");
+      const Database = require("easy-json-database");
+
+      ${workspace
+        .getAllBlocks()
+        .filter((b) => topBlocks.includes(b.type))
+        .map((b) => javascriptGenerator.blockToCode(b))
+        .join("\n")}
+
       const client = new Discord.Client({ intents: 3276799 });
 
       client.setMaxListeners(0);
@@ -116,8 +129,14 @@ export default function Workspace() {
       console.log(client.user.username + " is logged in");
       });
 
-      ${javascriptGenerator.workspaceToCode(workspace)}
-      `;
+      ${workspace
+        .getAllBlocks()
+        .filter((b) => !topBlocks.includes(b.type))
+        .map((b) => javascriptGenerator.blockToCode(b))
+        .join("\n")}
+      `,
+        { format: "js" }
+      );
 
       codeEle.innerText = `${beautify(js, { format: "js" })}`;
     });

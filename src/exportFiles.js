@@ -172,6 +172,7 @@ module.exports = [
           "discord.js": "^13.7.0",
           "easy-json-database": "^1.5.0",
           "moment": "latest",
+          "easy-json-database": "latest",
           "process": "^0.11.10"
       },
       "devDependencies": {

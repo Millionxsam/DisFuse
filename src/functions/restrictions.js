@@ -28,15 +28,21 @@ export function executeRestrictions(workspace) {
           if (empty) errors.push(restriction.message);
           break;
         case "surroundParent":
-          let pass = false;
+          let passSP = false;
           restriction.blockTypes.forEach((type) => {
-            if (block.getSurroundParent()?.type == type) pass = true;
+            if (block.getSurroundParent()?.type == type) passSP = true;
           });
-          if (!pass) errors.push(restriction.message);
+          if (!passSP) errors.push(restriction.message);
           break;
         case "hasHat":
           if (!restriction.blockTypes.includes(block.getRootBlock().type))
             errors.push(restriction.message);
+        case "blockExists":
+          let passBE = false;
+          blocks.forEach((b) => {
+            if (restriction.blockTypes.includes(b.type)) passBE = true;
+          });
+          if (!passBE) errors.push(restriction.message);
       }
     });
 

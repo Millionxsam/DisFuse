@@ -1108,6 +1108,65 @@ export const toolbox = {
     {
       kind: "sep",
     },
+    {
+      kind: "category",
+      name: "Database",
+      colour: "C66953",
+      contents: [
+        {
+          kind: "label",
+          text: "Create a database first ↓",
+        },
+        {
+          kind: "block",
+          type: "db_create",
+        },
+        {
+          kind: "label",
+          text: "Get information from the database ↓",
+        },
+        {
+          kind: "block",
+          type: "db_get",
+        },
+        {
+          kind: "block",
+          type: "db_has",
+        },
+        {
+          kind: "block",
+          type: "db_all",
+        },
+        {
+          kind: "label",
+          text: "Actions in the database ↓",
+        },
+        {
+          kind: "block",
+          type: "db_set",
+        },
+        {
+          kind: "block",
+          type: "db_del",
+        },
+        {
+          kind: "block",
+          type: "db_add",
+        },
+        {
+          kind: "block",
+          type: "db_sub",
+        },
+        {
+          kind: "block",
+          type: "db_push",
+        },
+        {
+          kind: "block",
+          type: "db_clear",
+        },
+      ],
+    },
     // {
     //   kind: "category",
     //   name: "Games",
