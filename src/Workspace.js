@@ -26,6 +26,9 @@ import "./blocks/channels";
 import "./blocks/embeds";
 import "./blocks/webhooks";
 import "./blocks/database";
+import "./blocks/misc";
+import "./blocks/buttons";
+import "./blocks/menus";
 
 export default function Workspace() {
   const hasTokenBlock = useRef(false);

@@ -1,0 +1,321 @@
+import * as Blockly from "blockly";
+import javascript from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
+
+Blockly.Blocks["buttons_add"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add a button");
+    this.appendValueInput("label").setCheck("String").appendField("label:");
+    this.appendValueInput("emoji").setCheck("String").appendField("emoji:");
+    this.appendDummyInput()
+      .appendField("style:")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Blurple", "1"],
+          ["Gray", "2"],
+          ["Green", "3"],
+          ["Red", "4"],
+          ["Link", "5"],
+        ]),
+        "style"
+      );
+    this.appendValueInput("id").setCheck("String").appendField("ID:");
+    this.appendValueInput("disabled")
+      .setCheck("Boolean")
+      .appendField("disabled?");
+    this.appendValueInput("url")
+      .setCheck("String")
+      .appendField("URL (only with link style):");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("AC41E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setInputsInline(false);
+  },
+};
+
+Blockly.Blocks["buttons_event"] = {
+  init: function () {
+    this.appendDummyInput().appendField("When a button is clicked");
+    this.appendStatementInput("event").setCheck(null);
+    this.setInputsInline(false);
+    this.setColour("#AC41E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_id"] = {
+  init: function () {
+    this.appendDummyInput().appendField("ID of the clicked button");
+    this.setColour("#AC41E9");
+    this.setOutput(true, "String");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_member"] = {
+  init: function () {
+    this.appendDummyInput().appendField("member who clicked the button");
+    this.setColour("#AC41E9");
+    this.setOutput(true, "String");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_user"] = {
+  init: function () {
+    this.appendDummyInput().appendField("user who clicked the button");
+    this.setColour("#AC41E9");
+    this.setOutput(true, "String");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_channel"] = {
+  init: function () {
+    this.appendDummyInput().appendField("channel of the button");
+    this.setColour("#AC41E9");
+    this.setOutput(true, "String");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_server"] = {
+  init: function () {
+    this.appendDummyInput().appendField("server of the button");
+    this.setColour("#AC41E9");
+    this.setOutput(true, "String");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["buttons_reply"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the click");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendDummyInput()
+      .appendField("embed(s):")
+      .appendField(new Blockly.FieldTextInput("name"), "embeds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("AC41E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setInputsInline(false);
+  },
+};
+
+Blockly.Blocks["buttons_edit"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Edit the reply");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendDummyInput()
+      .appendField("embed(s):")
+      .appendField(new Blockly.FieldTextInput("name"), "embeds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("AC41E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setInputsInline(false);
+  },
+};
+
+Blockly.Blocks["buttons_del"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Delete the reply by the bot");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("AC41E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setInputsInline(false);
+  },
+};
+
+javascript.javascriptGenerator.forBlock["buttons_del"] = function (
+  block,
+  generator
+) {
+  var code = `int.deleteReply();`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["buttons_edit"] = function (
+  block,
+  generator
+) {
+  var content = generator.valueToCode(
+    block,
+    "content",
+    javascript.Order.ATOMIC
+  );
+  var embeds = block.getFieldValue("embeds");
+
+  var code = `int.editReply({
+        content: ${content || "''"},
+        embeds: [${embeds}]
+    });`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["buttons_reply"] = function (
+  block,
+  generator
+) {
+  var content = generator.valueToCode(
+    block,
+    "content",
+    javascript.Order.ATOMIC
+  );
+  var embeds = block.getFieldValue("embeds");
+
+  var code = `int.reply({
+        content: ${content || "''"},
+        embeds: [${embeds}]
+    });`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["buttons_server"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `int.guild`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["buttons_channel"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `int.channel`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["buttons_user"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `int.member.user`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["buttons_member"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `int.member`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["buttons_id"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `int.customId`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["buttons_event"] = function (
+  block,
+  generator
+) {
+  var code = generator.statementToCode(block, "event");
+
+  var code = `  client.on("interactionCreate", async (int) => {
+        if(!int.isButton()) return;
+            ${code}
+        });\n`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["buttons_add"] = function (
+  block,
+  generator
+) {
+  var label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
+  var emoji = generator.valueToCode(block, "emoji", javascript.Order.ATOMIC);
+  var style = generator.valueToCode(block, "style", javascript.Order.ATOMIC);
+  var id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var disabled = generator.valueToCode(
+    block,
+    "disabled",
+    javascript.Order.ATOMIC
+  );
+  var url = block.getFieldValue("style");
+
+  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${
+    emoji || "''"
+  }).setStyle(${style || "1"}).setCustomId(${id || "''"}).setDisabled(${
+    disabled || "false"
+  }).setURL(${url || "''"}),`;
+  return code;
+};
+
+createRestrictions(
+  [
+    "buttons_id",
+    "buttons_member",
+    "buttons_user",
+    "buttons_channel",
+    "buttons_server",
+    "buttons_del",
+  ],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["buttons_event"],
+      message: 'This block must be in a "When a button is clicked" event',
+    },
+  ]
+);
+
+createRestrictions(
+  ["buttons_reply", "buttons_edit"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["buttons_event"],
+      message: 'This block must be in a "When a button is clicked" event',
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["content", "embeds"],
+      message: "You must specify the content and/or embed(s)",
+    },
+  ]
+);
+
+createRestrictions(
+  ["buttons_add"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["misc_addrow"],
+      message: 'This block must be under a "add row" block',
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["label"],
+      message: "You must specify a label to show to the user",
+    },
+  ]
+);

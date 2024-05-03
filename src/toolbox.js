@@ -818,6 +818,14 @@ export const toolbox = {
           type: "msg_reply",
         },
         {
+          kind: "block",
+          type: "msg_reply_rows",
+        },
+        {
+          kind: "block",
+          type: "msg_delete",
+        },
+        {
           kind: "label",
           text: "Information about the message ↓",
         },
@@ -956,6 +964,148 @@ export const toolbox = {
         {
           kind: "block",
           type: "slash_server",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Buttons",
+      colour: "#AC41E9",
+      contents: [
+        {
+          kind: "label",
+          text: "Put this inside a block to send a row ↓",
+        },
+        {
+          kind: "block",
+          type: "misc_addrow",
+        },
+        {
+          kind: "block",
+          type: "buttons_add",
+        },
+        {
+          kind: "label",
+          text: "Button events ↓",
+        },
+        {
+          kind: "block",
+          type: "buttons_event",
+        },
+        {
+          kind: "label",
+          text: "Info about the clicked button ↓",
+        },
+        {
+          kind: "block",
+          type: "buttons_id",
+        },
+        {
+          kind: "block",
+          type: "buttons_member",
+        },
+        {
+          kind: "block",
+          type: "buttons_user",
+        },
+        {
+          kind: "block",
+          type: "buttons_channel",
+        },
+        {
+          kind: "block",
+          type: "buttons_server",
+        },
+        {
+          kind: "label",
+          text: "Button actions ↓",
+        },
+        {
+          kind: "block",
+          type: "buttons_reply",
+        },
+        {
+          kind: "block",
+          type: "buttons_edit",
+        },
+        {
+          kind: "block",
+          type: "buttons_del",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Menus",
+      colour: "#51B800",
+      contents: [
+        {
+          kind: "label",
+          text: "Put this inside a block to send a row ↓",
+        },
+        {
+          kind: "block",
+          type: "misc_addrow",
+        },
+        {
+          kind: "block",
+          type: "menus_add",
+        },
+        {
+          kind: "block",
+          type: "menus_addoption",
+        },
+        {
+          kind: "label",
+          text: "Menu events ↓",
+        },
+        {
+          kind: "block",
+          type: "menus_event",
+        },
+        {
+          kind: "label",
+          text: "Info about the clicked menu ↓",
+        },
+        {
+          kind: "block",
+          type: "menus_id",
+        },
+        {
+          kind: "block",
+          type: "menus_value",
+        },
+        {
+          kind: "block",
+          type: "menus_member",
+        },
+        {
+          kind: "block",
+          type: "menus_user",
+        },
+        {
+          kind: "block",
+          type: "menus_channel",
+        },
+        {
+          kind: "block",
+          type: "menus_server",
+        },
+        {
+          kind: "label",
+          text: "Menu actions ↓",
+        },
+        {
+          kind: "block",
+          type: "menus_reply",
+        },
+        {
+          kind: "block",
+          type: "menus_edit",
+        },
+        {
+          kind: "block",
+          type: "menus_del",
         },
       ],
     },

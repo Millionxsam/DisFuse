@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import javascript from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["msg_received"] = {
@@ -20,6 +21,23 @@ Blockly.Blocks["msg_reply"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#336EFF");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["msg_reply_rows"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the message");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -88,12 +106,25 @@ javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   return code;
 };
 
+javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
+  var content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `message.reply({
+      content: ${content || "''"},
+      embeds: [${embeds.replaceAll("'", "")}],
+      components: [${rows}]
+      });\n`;
+  return code;
+};
+
 javascriptGenerator.forBlock["msg_reply"] = function (block, generator) {
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
 
   var code = `message.reply({
-      content: ${content},
+      content: ${content || "''"},
       embeds: [${embeds.replaceAll("'", "")}]
       });\n`;
   return code;
@@ -124,6 +155,57 @@ javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
+javascript.javascriptGenerator.forBlock["msg_delete"] = function (
+  block,
+  generator
+) {
+  var code = "message.delete()";
+  return code;
+};
+
+Blockly.Blocks["msg_delete"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Delete the user's message");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("336EFF");
+    this.setTooltip("Delete a message");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["msg_dm"] = {
+  init: function () {
+    this.appendValueInput("USER").setCheck("user").appendField("Send a dm to");
+    this.appendValueInput("MESSAGE")
+      .setCheck("String")
+      .appendField("With the message");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("336EFF");
+    this.setTooltip("Send a dm");
+    this.setHelpUrl("");
+  },
+};
+// where do you put the content of the dm great question lol
+javascript.javascriptGenerator.forBlock["msg_dm"] = function (
+  block,
+  generator
+) {
+  var value_user = generator.valueToCode(
+    block,
+    "USER",
+    javascript.Order.ATOMIC
+  );
+  var value_message = generator.valueToCode(
+    block,
+    "MESSAGE",
+    javascript.Order.ATOMIC
+  );
+  var code = "user.send";
+  return code;
+};
+
 createRestrictions(
   ["msg_content", "msg_member", "msg_user", "msg_channel", "msg_server"],
   [
@@ -136,7 +218,7 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["msg_reply"],
+  ["msg_reply", "msg_reply_rows"],
   [
     {
       type: "hasHat",
