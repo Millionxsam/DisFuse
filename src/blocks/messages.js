@@ -174,38 +174,6 @@ Blockly.Blocks["msg_delete"] = {
   },
 };
 
-Blockly.Blocks["msg_dm"] = {
-  init: function () {
-    this.appendValueInput("USER").setCheck("user").appendField("Send a dm to");
-    this.appendValueInput("MESSAGE")
-      .setCheck("String")
-      .appendField("With the message");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour("336EFF");
-    this.setTooltip("Send a dm");
-    this.setHelpUrl("");
-  },
-};
-// where do you put the content of the dm great question lol
-javascript.javascriptGenerator.forBlock["msg_dm"] = function (
-  block,
-  generator
-) {
-  var value_user = generator.valueToCode(
-    block,
-    "USER",
-    javascript.Order.ATOMIC
-  );
-  var value_message = generator.valueToCode(
-    block,
-    "MESSAGE",
-    javascript.Order.ATOMIC
-  );
-  var code = "user.send";
-  return code;
-};
-
 createRestrictions(
   [
     "msg_content",

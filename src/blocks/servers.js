@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import javascript from "blockly/javascript";
 
 Blockly.Blocks["server_getone"] = {
   init: function () {
@@ -211,6 +212,69 @@ Blockly.Blocks["server_ruleschannel"] = {
     this.setTooltip("");
     this.setHelpUrl("");
   },
+};
+
+Blockly.Blocks["server_disableinvites"] = {
+  init: function () {
+    this.appendValueInput("server")
+      .setCheck("server")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Disable", "true"],
+          ["Enable", "false"],
+        ]),
+        "disabled"
+      )
+      .appendField("invites on server:")
+      .setAlign(Blockly.inputs.Align.LEFT);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("A33DAC");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["server_leave"] = {
+  init: function () {
+    this.appendValueInput("server")
+      .setCheck("server")
+      .appendField("Leave server:");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("A33DAC");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["server_leave"] = function (
+  block,
+  generator
+) {
+  var value_server = generator.valueToCode(
+    block,
+    "server",
+    javascript.Order.ATOMIC
+  );
+
+  var code = `${value_server}.leave();`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["server_disableinvites"] = function (
+  block,
+  generator
+) {
+  var value_server = generator.valueToCode(
+    block,
+    "server",
+    javascript.Order.ATOMIC
+  );
+  var disabled = block.getFieldValue("disabled");
+
+  var code = `${value_server}.disableInvites(${disabled});`;
+  return code;
 };
 
 javascriptGenerator.forBlock["server_ruleschannel"] = function (

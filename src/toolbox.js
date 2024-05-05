@@ -1246,6 +1246,22 @@ export const toolbox = {
           kind: "block",
           type: "server_verified",
         },
+        {
+          kind: "label",
+          text: "Actions on a server ↓",
+        },
+        {
+          kind: "block",
+          type: "server_disableinvites",
+        },
+        {
+          kind: "block",
+          type: "server_leave",
+        },
+        {
+          kind: "label",
+          text: "More coming soon!",
+        },
       ],
     },
     {
@@ -1260,6 +1276,129 @@ export const toolbox = {
         {
           kind: "block",
           type: "channel_send_rows",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Members",
+      colour: "00A018",
+      contents: [
+        {
+          kind: "label",
+          text: "A member is a member of a server, while a user is the whole user info",
+        },
+        {
+          kind: "label",
+          text: "For example, to get the nickname of someone,",
+        },
+        {
+          kind: "label",
+          text: "you would need a MEMBER instead of a USER,",
+        },
+        {
+          kind: "label",
+          text: "because their nickname is only on one server, instead of on their whole user info.",
+        },
+        {
+          kind: "label",
+          text: "Certain blocks can only accept users or members (it won't let you drag in the wrong one)",
+        },
+        {
+          kind: "label",
+          text: "-----------------------------------------------------------------------",
+        },
+        {
+          kind: "label",
+          text: "Get a member or user ↓",
+        },
+        {
+          kind: "block",
+          type: "member_getone",
+        },
+        {
+          kind: "block",
+          type: "member_getuser",
+        },
+        {
+          kind: "label",
+          text: "Do something for every member in a server ↓",
+        },
+        {
+          kind: "block",
+          type: "member_foreach",
+        },
+        {
+          kind: "block",
+          type: "member_member",
+        },
+        {
+          kind: "label",
+          text: "Information about members/users ↓",
+        },
+        {
+          kind: "block",
+          type: "member_bannable",
+        },
+        {
+          kind: "block",
+          type: "member_kickable",
+        },
+        {
+          kind: "block",
+          type: "member_timedout",
+        },
+        {
+          kind: "block",
+          type: "member_color",
+        },
+        {
+          kind: "block",
+          type: "member_id",
+        },
+        {
+          kind: "block",
+          type: "member_joined",
+        },
+        {
+          kind: "block",
+          type: "member_nickname",
+        },
+        {
+          kind: "block",
+          type: "member_user",
+        },
+        {
+          kind: "label",
+          text: "Actions on users/members ↓",
+        },
+        {
+          kind: "block",
+          type: "member_ban",
+        },
+        {
+          kind: "block",
+          type: "member_timeout",
+        },
+        {
+          kind: "block",
+          type: "member_kick",
+        },
+        {
+          kind: "block",
+          type: "member_dm",
+        },
+        {
+          kind: "block",
+          type: "member_dm_rows",
+        },
+        {
+          kind: "block",
+          type: "member_setnick",
+        },
+        {
+          kind: "block",
+          type: "member_removetimeout",
         },
       ],
     },

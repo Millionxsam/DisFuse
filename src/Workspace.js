@@ -29,6 +29,7 @@ import "./blocks/database";
 import "./blocks/misc";
 import "./blocks/buttons";
 import "./blocks/menus";
+import "./blocks/members";
 
 export default function Workspace() {
   const hasTokenBlock = useRef(false);
