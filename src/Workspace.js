@@ -73,6 +73,13 @@ export default function Workspace() {
       },
     });
 
+    javascriptGenerator.addReservedWords("Discord");
+    javascriptGenerator.addReservedWords("moment");
+    javascriptGenerator.addReservedWords("gamecord");
+    javascriptGenerator.addReservedWords("Database");
+    javascriptGenerator.addReservedWords("client");
+    javascriptGenerator.addReservedWords("databases");
+
     // Initiating plugins
     const backpack = new Backpack(workspace, {
       allowEmptyBackpackOpen: false,
@@ -125,6 +132,8 @@ export default function Workspace() {
       const moment = require("moment");
       const gamecord = require("discord-gamecord");
       const Database = require("easy-json-database");
+
+      const databases = {};
 
       ${workspace
         .getAllBlocks()

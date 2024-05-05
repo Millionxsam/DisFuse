@@ -157,7 +157,7 @@ javascript.javascriptGenerator.forBlock["db_clear"] = function (
 ) {
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.clear();`;
+  var code = `databases["${text_db}"].clear();`;
   return code;
 };
 
@@ -169,7 +169,7 @@ javascript.javascriptGenerator.forBlock["db_push"] = function (
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.push(${value_id}, ${value_val});`;
+  var code = `databases["${text_db}"].push(${value_id}, ${value_val});`;
   return code;
 };
 
@@ -181,7 +181,7 @@ javascript.javascriptGenerator.forBlock["db_sub"] = function (
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.subtract(${value_id}, ${value_val});`;
+  var code = `databases["${text_db}"].subtract(${value_id}, ${value_val});`;
   return code;
 };
 
@@ -193,7 +193,7 @@ javascript.javascriptGenerator.forBlock["db_add"] = function (
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.add(${value_id}, ${value_val});`;
+  var code = `databases["${text_db}"].add(${value_id}, ${value_val});`;
   return code;
 };
 
@@ -204,7 +204,7 @@ javascript.javascriptGenerator.forBlock["db_del"] = function (
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.delete(${value_id});`;
+  var code = `databases["${text_db}"].delete(${value_id});`;
   return code;
 };
 
@@ -216,7 +216,7 @@ javascript.javascriptGenerator.forBlock["db_set"] = function (
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.set(${value_id}, ${value_val});`;
+  var code = `databases["${text_db}"].set(${value_id}, ${value_val});`;
   return code;
 };
 
@@ -226,7 +226,7 @@ javascript.javascriptGenerator.forBlock["db_all"] = function (
 ) {
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.all()`;
+  var code = `databases["${text_db}"].all()`;
   return [code, javascript.Order.NONE];
 };
 
@@ -237,7 +237,7 @@ javascript.javascriptGenerator.forBlock["db_has"] = function (
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.has(${value_id})`;
+  var code = `databases["${text_db}"].has(${value_id})`;
   return [code, javascript.Order.NONE];
 };
 
@@ -248,7 +248,7 @@ javascript.javascriptGenerator.forBlock["db_get"] = function (
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
 
-  var code = `${text_db}.get(${value_id})`;
+  var code = `databases["${text_db}"].get(${value_id})`;
   return [code, javascript.Order.NONE];
 };
 
@@ -259,7 +259,7 @@ javascript.javascriptGenerator.forBlock["db_create"] = function (
   var text_name = block.getFieldValue("name");
   var text_path = block.getFieldValue("path");
 
-  var code = `const ${text_name} = new Database("./${text_path}.json");`;
+  var code = `databases["${text_name}"] = new Database("./${text_path}.json");`;
   return code;
 };
 
