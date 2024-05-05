@@ -214,6 +214,26 @@ Blockly.Blocks["slash_reply"] = {
   },
 };
 
+Blockly.Blocks["slash_reply_rows"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the command");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendValueInput("ephemeral")
+      .setCheck("Boolean")
+      .appendField("visible only to the user?");
+    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#00A859");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
 Blockly.Blocks["slash_editreply"] = {
   init: function () {
     this.appendDummyInput().appendField("Edit the reply");
@@ -282,9 +302,24 @@ javascriptGenerator.forBlock["slash_reply"] = function (block, generator) {
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   var code = `interaction.reply({
-    content: ${value_content},
+    content: ${value_content || "''"},
     embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral}
+    ephemeral: ${value_ephemeral || "false"}
+  });`;
+  return code;
+};
+
+javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `interaction.reply({
+    content: ${value_content || "''"},
+    embeds: [${value_embeds.replaceAll("'", "")}],
+    ephemeral: ${value_ephemeral || "false"},
+    components: [${rows}]
   });`;
   return code;
 };

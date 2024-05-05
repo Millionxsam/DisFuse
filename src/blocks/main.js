@@ -113,10 +113,10 @@ javascriptGenerator.forBlock["main_presence"] = function (block, generator) {
 
   var code = `client.user.setPresence({
     status: "${dropdown_status}",
-    afk: ${value_afk},
+    afk: ${value_afk || "false"},
     activities: [{
       name: ${value_activity_name || ""},
-      type: ${dropdown_activity_type || 0}
+      type: ${dropdown_activity_type || "0"}
     }]
   });`;
   return code;
@@ -133,3 +133,25 @@ javascriptGenerator.forBlock["main_bot"] = function (block, generator) {
   var code = "client.user";
   return [code, Order.NONE];
 };
+
+createRestrictions(
+  ["main_token"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["token"],
+      message: "You must specify the token of your bot",
+    },
+  ]
+);
+
+createRestrictions(
+  ["main_env"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["value"],
+      message: "You must specify the name of the ENV to get",
+    },
+  ]
+);

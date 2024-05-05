@@ -37,12 +37,14 @@ export function executeRestrictions(workspace) {
         case "hasHat":
           if (!restriction.blockTypes.includes(block.getRootBlock().type))
             errors.push(restriction.message);
+          break;
         case "blockExists":
           let passBE = false;
           blocks.forEach((b) => {
             if (restriction.blockTypes.includes(b.type)) passBE = true;
           });
           if (!passBE) errors.push(restriction.message);
+          break;
       }
     });
 

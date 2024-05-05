@@ -336,7 +336,7 @@ createRestrictions(
   ],
   [
     {
-      type: "hasParent",
+      type: "hasHat",
       blockTypes: ["menus_event"],
       message: 'This block must be in a "When a menu is clicked" event',
     },

@@ -29,9 +29,8 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["msg_reply_rows"],
-      message:
-        "This block must be under 'reply to the message with rows' block",
+      blockTypes: ["msg_reply_rows", "slash_reply_rows", "channel_send_rows"],
+      message: "This block must be under a block that has a 'rows' section",
     },
   ]
 );

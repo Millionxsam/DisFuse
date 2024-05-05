@@ -207,10 +207,17 @@ javascript.javascriptGenerator.forBlock["msg_dm"] = function (
 };
 
 createRestrictions(
-  ["msg_content", "msg_member", "msg_user", "msg_channel", "msg_server"],
+  [
+    "msg_content",
+    "msg_member",
+    "msg_user",
+    "msg_channel",
+    "msg_server",
+    "msg_delete",
+  ],
   [
     {
-      type: "hasParent",
+      type: "hasHat",
       blockTypes: ["msg_received"],
       message: 'This block must be in a "When a message is received" event',
     },

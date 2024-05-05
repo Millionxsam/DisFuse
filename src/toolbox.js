@@ -935,6 +935,10 @@ export const toolbox = {
         },
         {
           kind: "block",
+          type: "slash_reply_rows",
+        },
+        {
+          kind: "block",
           type: "slash_editreply",
         },
         {
@@ -1252,6 +1256,10 @@ export const toolbox = {
         {
           kind: "block",
           type: "channel_send",
+        },
+        {
+          kind: "block",
+          type: "channel_send_rows",
         },
       ],
     },
