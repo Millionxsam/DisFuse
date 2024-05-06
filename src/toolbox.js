@@ -1286,27 +1286,31 @@ export const toolbox = {
       contents: [
         {
           kind: "label",
-          text: "A member is a member of a server, while a user is the whole user info",
+          text: "Member = one member of a server",
         },
         {
           kind: "label",
-          text: "For example, to get the nickname of someone,",
+          text: "User = the total Discord user",
         },
         {
           kind: "label",
-          text: "you would need a MEMBER instead of a USER,",
+          text: "Some blocks only accept users",
         },
         {
           kind: "label",
-          text: "because their nickname is only on one server, instead of on their whole user info.",
+          text: "Other blocks only accept members",
         },
         {
           kind: "label",
-          text: "Certain blocks can only accept users or members (it won't let you drag in the wrong one)",
+          text: "Some blocks can accept either one",
         },
         {
           kind: "label",
-          text: "-----------------------------------------------------------------------",
+          text: "(It won't let you drag in the wrong one)",
+        },
+        {
+          kind: "label",
+          text: "-------------------------------------",
         },
         {
           kind: "label",
