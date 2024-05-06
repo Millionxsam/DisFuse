@@ -1370,6 +1370,26 @@ export const toolbox = {
         },
         {
           kind: "block",
+          type: "member_username",
+        },
+        {
+          kind: "block",
+          type: "member_bot",
+        },
+        {
+          kind: "block",
+          type: "member_system",
+        },
+        {
+          kind: "block",
+          type: "member_accent",
+        },
+        {
+          kind: "block",
+          type: "member_created",
+        },
+        {
+          kind: "block",
           type: "member_user",
         },
         {

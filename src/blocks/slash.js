@@ -402,22 +402,22 @@ javascriptGenerator.forBlock["slash_addchoice"] = function (block, generator) {
 
 javascriptGenerator.forBlock["slash_server"] = function (block, generator) {
   var code = "interaction.guild";
-  return code;
+  return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["slash_channel"] = function (block, generator) {
   var code = "interaction.channel";
-  return code;
+  return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["slash_member"] = function (block, generator) {
   var code = "interaction.member";
-  return code;
+  return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["slash_user"] = function (block, generator) {
   var code = "interaction.member.user";
-  return code;
+  return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["slash_addsubcommand"] = function (

@@ -6,7 +6,7 @@ import javascript from "blockly/javascript";
 Blockly.Blocks["server_getone"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("server with the")
+      .appendField("get the server with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["name", "name"],
@@ -14,7 +14,7 @@ Blockly.Blocks["server_getone"] = {
         ]),
         "type"
       )
-      .appendField("of");
+      .appendField("equal to");
     this.appendValueInput("value").setCheck(null);
     this.setInputsInline(true);
     this.setOutput(true, "server");

@@ -6,7 +6,7 @@ Blockly.Blocks["member_getone"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Get member with the")
+      .appendField("Get the member with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["username", "username"],
@@ -14,7 +14,7 @@ Blockly.Blocks["member_getone"] = {
         ]),
         "type"
       )
-      .appendField("of");
+      .appendField("equal to");
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("on the server");
@@ -29,7 +29,7 @@ Blockly.Blocks["member_getuser"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Get user with the")
+      .appendField("Get the user with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["username", "username"],
@@ -37,7 +37,7 @@ Blockly.Blocks["member_getuser"] = {
         ]),
         "type"
       )
-      .appendField("of");
+      .appendField("equal to");
     this.setOutput(true, null);
     this.setColour("#00A018");
     this.setTooltip("");
@@ -287,6 +287,128 @@ Blockly.Blocks["member_user"] = {
     this.setTooltip("");
     this.setHelpUrl("");
   },
+};
+
+Blockly.Blocks["member_username"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("username of user:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["member_bot"] = {
+  init: function () {
+    this.appendValueInput("member").setCheck("user").appendField("user");
+    this.appendDummyInput().appendField("is a bot?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["member_system"] = {
+  init: function () {
+    this.appendValueInput("member").setCheck("user").appendField("user");
+    this.appendDummyInput().appendField("is official Discord?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["member_accent"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("accent color of user:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["member_created"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("creation")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["date", "createdAt"],
+          ["timestamp", "createdTimestamp"],
+        ]),
+        "type"
+      )
+      .appendField("of user:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["member_created"] = function (
+  block,
+  generator
+) {
+  var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+  var type = block.getFieldValue("type");
+
+  var code = `${member}.${type}`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["member_accent"] = function (
+  block,
+  generator
+) {
+  var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+
+  var code = `${member}.hexAccentColor`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["member_system"] = function (
+  block,
+  generator
+) {
+  var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+
+  var code = `${member}.system`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["member_bot"] = function (
+  block,
+  generator
+) {
+  var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+
+  var code = `${member}.bot`;
+  return [code, javascript.Order.NONE];
+};
+
+javascript.javascriptGenerator.forBlock["member_username"] = function (
+  block,
+  generator
+) {
+  var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+
+  var code = `${member}.username`;
+  return [code, javascript.Order.NONE];
 };
 
 javascript.javascriptGenerator.forBlock["member_user"] = function (
