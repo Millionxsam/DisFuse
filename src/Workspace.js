@@ -124,7 +124,7 @@ export default function Workspace() {
 
         if (outputs?.length) {
           let beforeOutputTooltip =
-            block?.tooltip?.split("Output(s):")[0] || "";
+            block?.getTooltip().split("Output(s):")[0] || "";
           block.setTooltip(
             beforeOutputTooltip + "\nOutput(s): " + outputs.join(", ")
           );
