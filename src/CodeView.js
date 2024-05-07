@@ -4,17 +4,7 @@ export default function CodeView() {
   useEffect(() => {
     document.getElementById(
       "code"
-    ).innerText = `const Discord = require("discord.js");
-    const moment = require("moment");
-    const gamecord = require("discord-gamecord");
-    const client = new Discord.Client({ intents: 3276799 });
-    
-    client.setMaxListeners(0);
-    
-    client.on("ready", () => {
-      console.log(client.user.username + " is logged in");
-    });
-    `;
+    ).innerText = `No blocks are in the workspace`;
   }, []);
 
   return (
@@ -29,7 +19,7 @@ export default function CodeView() {
         </button>
         <i style={{ display: "none" }} className="fa-solid fa-check check"></i>
       </div>
-      <p id="code"></p>
+      <pre id="code"></pre>
     </div>
   );
 }

@@ -620,7 +620,7 @@ javascript.javascriptGenerator.forBlock["member_getuser"] = function (
   );
 
   var code = `client.users.cache${
-    dropdown_type == "id"
+    dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(u => u.username == ${value_value})`
   }`;
@@ -644,7 +644,7 @@ javascript.javascriptGenerator.forBlock["member_getone"] = function (
   );
 
   var code = `${value_server}.members.cache${
-    dropdown_type == "id"
+    dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(m => m.username == ${value_value})`
   }`;

@@ -101,7 +101,36 @@ export default function Workspace() {
     workspace.addChangeListener(Blockly.Events.disableOrphans);
 
     // When workspace changes
-    workspace.addChangeListener((event) => {
+    workspace.addChangeListener(() => {
+      workspace.getAllBlocks(false).forEach((block) => {
+        let outputs = block?.outputConnection?.getCheck();
+        let inputs = block?.inputList?.filter((i) => i.type === 1);
+
+        if (inputs?.length) {
+          let beforeInputTooltip = block?.getTooltip()?.split("Input")[0] || "";
+          block.setTooltip(
+            beforeInputTooltip +
+              "\n" +
+              inputs
+                ?.map(
+                  (input, i) =>
+                    `Input ${i + 1}: ${
+                      input?.connection?.check?.join(", ") || "any"
+                    }`
+                )
+                .join("\n")
+          );
+        }
+
+        if (outputs?.length) {
+          let beforeOutputTooltip =
+            block?.tooltip?.split("Output(s):")[0] || "";
+          block.setTooltip(
+            beforeOutputTooltip + "\nOutput(s): " + outputs.join(", ")
+          );
+        }
+      });
+
       // Autosave
       let save = Blockly.serialization.workspaces.save(workspace);
       if (save.blocks) {
@@ -135,7 +164,6 @@ export default function Workspace() {
       const Database = require("easy-json-database");
 
       const databases = {};
-
       ${workspace
         .getAllBlocks()
         .filter((b) => topBlocks.includes(b.type))
