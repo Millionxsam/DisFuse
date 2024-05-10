@@ -164,6 +164,7 @@ export default function Workspace() {
       const Database = require("easy-json-database");
 
       const databases = {};
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       ${workspace
         .getAllBlocks()
         .filter((b) => topBlocks.includes(b.type))

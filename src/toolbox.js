@@ -1258,10 +1258,6 @@ export const toolbox = {
           kind: "block",
           type: "server_leave",
         },
-        {
-          kind: "label",
-          text: "More coming soon!",
-        },
       ],
     },
     {
@@ -1270,12 +1266,117 @@ export const toolbox = {
       colour: "D39600",
       contents: [
         {
+          kind: "label",
+          text: "Get a channel ↓",
+        },
+        {
+          kind: "block",
+          type: "channel_getone",
+        },
+        {
+          kind: "label",
+          text: "Get all channels ↓",
+        },
+        {
+          kind: "block",
+          type: "channel_foreach",
+        },
+        {
+          kind: "block",
+          type: "channel_channel",
+        },
+        {
+          kind: "label",
+          text: "Information about channel ↓",
+        },
+        {
+          kind: "block",
+          type: "channel_getslowmode",
+        },
+        {
+          kind: "block",
+          type: "channel_getnsfw",
+        },
+        {
+          kind: "block",
+          type: "channel_gettopic",
+        },
+        {
+          kind: "block",
+          type: "channel_gettype",
+        },
+        {
+          kind: "block",
+          type: "channel_deletable",
+        },
+        {
+          kind: "block",
+          type: "channel_manageable",
+        },
+        {
+          kind: "block",
+          type: "channel_name",
+        },
+        {
+          kind: "block",
+          type: "channel_id",
+        },
+        {
+          kind: "block",
+          type: "channel_url",
+        },
+        {
+          kind: "block",
+          type: "channel_created",
+        },
+
+        {
+          kind: "label",
+          text: "Channel actions ↓",
+        },
+        {
           kind: "block",
           type: "channel_send",
         },
         {
           kind: "block",
           type: "channel_send_rows",
+        },
+        {
+          kind: "block",
+          type: "channel_setnsfw",
+        },
+        {
+          kind: "block",
+          type: "channel_setslowmode",
+        },
+        {
+          kind: "block",
+          type: "channel_settopic",
+        },
+        {
+          kind: "block",
+          type: "channel_starttyping",
+        },
+        {
+          kind: "block",
+          type: "channel_bulkdelete",
+        },
+        {
+          kind: "block",
+          type: "channel_setautoarchive",
+        },
+        {
+          kind: "block",
+          type: "channel_clone",
+        },
+        {
+          kind: "block",
+          type: "channel_del",
+        },
+        {
+          kind: "block",
+          type: "channel_setname",
         },
       ],
     },
