@@ -3,8 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const { discordUrl, apiUrl } = require("./config/config.json");
 
-const authUrl =
-  "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=email+identify";
+const { authUrl } = require("./config/config.json");
 
 export default function Auth() {
   const [params, setParams] = useSearchParams(window.location.hash.slice(1));
