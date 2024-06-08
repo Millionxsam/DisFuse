@@ -6,6 +6,7 @@ const { apiUrl } = require("../../config/config.json");
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);
+  const [shown, setShown] = useState([]);
 
   useEffect(() => {
     axios
@@ -14,8 +15,23 @@ export default function Explore() {
           Authorization: localStorage.getItem("disfuse-token"),
         },
       })
-      .then(({ data }) => setProjects(data));
+      .then(({ data }) => {
+        setProjects(data);
+        setShown(data);
+      });
   }, []);
+
+  function search() {
+    const query = document.querySelector("input.search").value;
+
+    setShown(
+      projects.filter(
+        (p) =>
+          p?.name?.toLowerCase().includes(query.toLowerCase()) ||
+          p?.description?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }
 
   return (
     <div className="explore-container">
@@ -23,10 +39,15 @@ export default function Explore() {
         <i class="fa-solid fa-earth-americas"></i> Explore
       </div>
       <div className="exploration">
-        <input type="search" placeholder="Search Projects" className="search" />
+        <input
+          onChange={search}
+          type="search"
+          placeholder="Search Projects"
+          className="search"
+        />
         <h1>Featured</h1>
         <div className="content">
-          {projects.map((project) => (
+          {shown.map((project) => (
             <PubProject project={project} />
           ))}
         </div>

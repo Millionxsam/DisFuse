@@ -88,10 +88,22 @@ button.disabled:hover {
   border-radius: 2rem;
   padding: 5px;
   width: min-content;
+  display: flex;
+  align-items: center;
+  gap: 0.25vw;
 }
 
 .userTag:hover {
   background-color: var(--border-color);
+}
+
+.userTag img {
+  border-radius: 50%;
+  height: 2rem;
+}
+
+.userTag p {
+  padding-right: 0.25rem;
 }
 
 .unerline-effect {
@@ -643,6 +655,12 @@ input.search {
   padding: 1rem;
   font-size: 15px;
   width: min-content;
+  transition: all 0.2s ease;
+}
+
+input.search:focus {
+  outline: none;
+  padding-right: 5rem;
 }
 
 input.search::placeholder {
@@ -864,6 +882,7 @@ input.search::placeholder {
 @media (max-width: 1750px) {
   .projects-container .projects,
   .explore-container .exploration .content,
+  .fav-container .favorites .content,
   .user-profile-container .body {
     grid-template-columns: repeat(3, 20rem);
   }
@@ -872,6 +891,7 @@ input.search::placeholder {
 @media (max-width: 1400px) {
   .projects-container .projects,
   .explore-container .exploration .content,
+  .fav-container .favorites .content,
   .user-profile-container .body {
     grid-template-columns: repeat(2, 20rem);
   }
@@ -892,6 +912,7 @@ input.search::placeholder {
 @media (max-width: 1030px) {
   .projects-container .projects,
   .explore-container .exploration .content,
+  .fav-container .favorites .content,
   .user-profile-container .body {
     grid-template-columns: repeat(1, 20rem);
   }
@@ -957,6 +978,7 @@ input.search::placeholder {
   .projects-container,
   .explore-container,
   .user-profile-container,
+  .fav-container,
   .project-page-container {
     margin-top: 2rem;
   }
@@ -1008,19 +1030,20 @@ input.search::placeholder {
 @media (max-width: 395px) {
   .projects-container .projects,
   .explore-container .exploration .content,
+  .fav-container .favorites .content,
   .user-profile-container .body {
     grid-template-columns: repeat(1, auto);
   }
 
-  .projects-container .projects div .buttons,
-  .explore-container .exploration .content div .buttons,
-  .user-profile-container .body div .buttons {
+  .pubProject > .buttons,
+  .priProject > .buttons {
     flex-direction: column;
     gap: 0.5rem;
   }
 
   .projects-container .head,
-  .explore-container .head {
+  .explore-container .head,
+  .fav-container .head {
     font-size: 40px;
   }
 
@@ -1035,7 +1058,8 @@ input.search::placeholder {
 
 @media (max-width: 330px) {
   .projects-container .head,
-  .explore-container .head {
+  .explore-container .head,
+  .fav-container .head {
     font-size: 30px;
   }
 

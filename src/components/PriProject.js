@@ -8,7 +8,7 @@ export default function PriProject({ project }) {
 
   return (
     <>
-      <div>
+      <div className="priProject">
         <h1>{project.name}</h1>
         <p>{project.description || "No description"}</p>
         <div className="buttons">

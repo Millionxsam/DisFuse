@@ -6,6 +6,7 @@ const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function Favorites() {
   const [projects, setProjects] = useState([]);
+  const [shown, setShown] = useState([]);
 
   useEffect(() => {
     axios
@@ -17,15 +18,27 @@ export default function Favorites() {
       .then(({ data }) => {
         axios.get(apiUrl + "/users").then(({ data: users }) => {
           axios.get(apiUrl + "/projects").then(({ data: projects }) => {
-            setProjects(
-              users
-                .find((u) => u.id === data.id)
-                .favorites.map((f) => projects.find((p) => p._id === f))
-            );
+            let p = users
+              .find((u) => u.id === data.id)
+              .favorites.map((f) => projects.find((p) => p._id === f));
+            setProjects(p);
+            setShown(p);
           });
         });
       });
   }, []);
+
+  function search() {
+    const query = document.querySelector("input.search").value;
+
+    setShown(
+      projects.filter(
+        (p) =>
+          p?.name?.toLowerCase().includes(query.toLowerCase()) ||
+          p?.description?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }
 
   return (
     <div className="fav-container">
@@ -33,9 +46,14 @@ export default function Favorites() {
         <i class="fa-solid fa-star"></i> Favorites
       </div>
       <div className="favorites">
-        <input type="search" placeholder="Search Projects" className="search" />
+        <input
+          onChange={search}
+          type="search"
+          placeholder="Search Favorites"
+          className="search"
+        />
         <div className="content">
-          {projects.map((project) => (
+          {shown.map((project) => (
             <PubProject project={project} />
           ))}
         </div>
