@@ -1,7 +1,7 @@
 // try making a block and ill tell you what to do
 // it can just be a test block, doesnt have to be a real block
 // blockly-demo.appspot.com/static/demos/blockfactory/index.html
-// t
+
 export const toolbox = {
   kind: "categoryToolbox",
   contents: [
@@ -705,7 +705,7 @@ export const toolbox = {
         },
         {
           kind: "label",
-          text: "The user of the bot ↓",
+          text: "The bot itself, represented as a Discord user ↓",
         },
         {
           kind: "block",
@@ -1115,6 +1115,85 @@ export const toolbox = {
     },
     {
       kind: "category",
+      name: "Modals",
+      colour: "#e38d40",
+      contents: [
+        {
+          kind: "label",
+          text: "Keep in mind that you can only show modals in slash commands!",
+        },
+        {
+          kind: "label",
+          text: "Show a modal to the user ↓",
+        },
+        {
+          kind: "block",
+          type: "modal_show",
+        },
+        {
+          kind: "label",
+          text: "Create a modal (put this in the block above) ↓",
+        },
+        {
+          kind: "block",
+          type: "modal_create",
+        },
+        {
+          kind: "label",
+          text: "Put text input(s) inside the 'create modal' block ↓",
+        },
+        {
+          kind: "block",
+          type: "modal_add_text_input",
+        },
+        {
+          kind: "block",
+          type: "modal_add_text_input_advanced",
+        },
+        {
+          kind: "label",
+          text: "Events ↓",
+        },
+        {
+          kind: "block",
+          type: "modal_handle_interaction",
+        },
+        {
+          kind: "label",
+          text: "Information about the submitted modal ↓",
+        },
+        {
+          kind: "block",
+          type: "modal_get_input_value",
+        },
+        {
+          kind: "block",
+          type: "modal_get_author",
+        },
+        {
+          kind: "block",
+          type: "modal_get_customId",
+        },
+        {
+          kind: "label",
+          text: "Reply to the modal after submitted ↓",
+        },
+        {
+          kind: "block",
+          type: "slash_reply",
+        },
+        {
+          kind: "block",
+          type: "slash_reply_rows",
+        },
+        {
+          kind: "block",
+          type: "slash_editreply",
+        },
+      ],
+    },
+    {
+      kind: "category",
       name: "Events",
       colour: "FF4F4F",
       contents: [
@@ -1377,6 +1456,77 @@ export const toolbox = {
         {
           kind: "block",
           type: "channel_setname",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Emojis",
+      colour: "DEB144",
+      contents: [
+        {
+          kind: "label",
+          text: "Get all emojis in a server ↓",
+        },
+        {
+          kind: "block",
+          type: "emoji_getallinserver",
+        },
+        {
+          kind: "block",
+          type: "emoji_getallinserver_value",
+        },
+        {
+          kind: "label",
+          text: "Information about an emoji ↓",
+        },
+        {
+          kind: "block",
+          type: "emoji_getname",
+        },
+        {
+          kind: "block",
+          type: "emoji_getid",
+        },
+        {
+          kind: "block",
+          type: "emoji_getimageurl",
+        },
+        {
+          kind: "block",
+          type: "emoji_isanimated",
+        },
+        {
+          kind: "block",
+          type: "emoji_created",
+        },
+        {
+          kind: "block",
+          type: "emoji_author",
+        },
+        {
+          kind: "label",
+          text: "Get an emoji with id/name in a server ↓",
+        },
+        {
+          kind: "block",
+          type: "emoji_getemojiwith",
+        },
+        {
+          kind: "label",
+          text: "Actions with emojis in a server ↓",
+        },
+        {
+          kind: "block",
+          type: "emoji_create",
+        },
+        {
+          kind: "block",
+          type: "emoji_delete",
+        },
+        {
+          kind: "block",
+          type: "emoji_setname",
         },
       ],
     },

@@ -77,7 +77,7 @@ Blockly.Blocks["main_env"] = {
 
 Blockly.Blocks["main_bot"] = {
   init: function () {
-    this.appendDummyInput().appendField("bot user");
+    this.appendDummyInput().appendField("bot");
     this.setOutput(true, "user");
     this.setColour("#FF6E33");
     this.setTooltip("");
@@ -93,10 +93,10 @@ javascriptGenerator.forBlock["main_token"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["main_ready"] = function (block, generator) {
-  var code = generator.statementToCode(block, "event");
+  var code_statement = generator.statementToCode(block, "event");
 
   var code = `client.on("ready", async () => {
-    ${code}
+    ${code_statement}
   });\n`;
   return code;
 };

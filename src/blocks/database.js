@@ -18,7 +18,7 @@ Blockly.Blocks["db_create"] = {
 
 Blockly.Blocks["db_get"] = {
   init: function () {
-    this.appendValueInput("id").setCheck("String").appendField("Get");
+    this.appendValueInput("id").setCheck("String").appendField("get");
     this.appendDummyInput()
       .appendField("from the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
@@ -48,7 +48,7 @@ Blockly.Blocks["db_has"] = {
 Blockly.Blocks["db_all"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("All data from the database with the name:")
+      .appendField("all data from the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
     this.setOutput(true, "Array");

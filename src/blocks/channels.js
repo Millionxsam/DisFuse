@@ -60,7 +60,7 @@ Blockly.Blocks["channel_foreach"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("For each channel on server:");
-    this.appendStatementInput("code").setCheck(null).appendField("do:");
+    this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("D39600");
@@ -236,7 +236,7 @@ Blockly.Blocks["channel_getone"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Get the channel with the")
+      .appendField("get the channel with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["name", "name"],

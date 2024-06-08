@@ -250,7 +250,7 @@ Blockly.Blocks["slash_editreply"] = {
 Blockly.Blocks["slash_getoption"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Get")
+      .appendField("get")
       .appendField(
         new Blockly.FieldDropdown([
           ["text", "String"],
@@ -325,10 +325,10 @@ javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["slash_received"] = function (block, generator) {
-  var code = generator.statementToCode(block, "event");
+  var code_statement = generator.statementToCode(block, "event");
 
   var code = `client.on("interactionCreate", async (interaction) => {
-          ${code}
+          ${code_statement}
       });`;
   return code;
 };

@@ -66,7 +66,7 @@ Blockly.Blocks["menus_id"] = {
 
 Blockly.Blocks["menus_value"] = {
   init: function () {
-    this.appendDummyInput().appendField("The value of the selected option");
+    this.appendDummyInput().appendField("the value of the selected option");
     this.setColour("#51B800");
     this.setOutput(true, "String");
     this.setTooltip("");
@@ -206,8 +206,6 @@ javascript.javascriptGenerator.forBlock["menus_server"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.guild`;
   return [code, javascript.Order.NONE];
 };
@@ -216,8 +214,6 @@ javascript.javascriptGenerator.forBlock["menus_channel"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.channel`;
   return [code, javascript.Order.NONE];
 };
@@ -226,8 +222,6 @@ javascript.javascriptGenerator.forBlock["menus_user"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.member.user`;
   return [code, javascript.Order.NONE];
 };
@@ -236,8 +230,6 @@ javascript.javascriptGenerator.forBlock["menus_member"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.member`;
   return [code, javascript.Order.NONE];
 };
@@ -246,8 +238,6 @@ javascript.javascriptGenerator.forBlock["menus_id"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.customId`;
   return [code, javascript.Order.NONE];
 };
@@ -256,8 +246,6 @@ javascript.javascriptGenerator.forBlock["menus_value"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
-
   var code = `int.values[0]`;
   return [code, javascript.Order.NONE];
 };
@@ -266,11 +254,11 @@ javascript.javascriptGenerator.forBlock["menus_event"] = function (
   block,
   generator
 ) {
-  var code = generator.statementToCode(block, "event");
+  var code_statement = generator.statementToCode(block, "event");
 
   var code = `  client.on("interactionCreate", async (int) => {
         if(!int.isStringSelectMenu()) return;
-            ${code}
+            ${code_statement}
         });\n`;
   return code;
 };

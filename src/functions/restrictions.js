@@ -2,7 +2,11 @@ export const restrictions = {};
 
 export function createRestrictions(blockNames, newRestrictions) {
   blockNames.forEach((blockName) => {
-    restrictions[blockName] = newRestrictions;
+    if (!restrictions[blockName]) {
+      restrictions[blockName] = newRestrictions;
+    } else {
+      restrictions[blockName] = restrictions[blockName].concat(newRestrictions);
+    }
   });
 }
 
@@ -30,7 +34,7 @@ export function executeRestrictions(workspace) {
         case "surroundParent":
           let passSP = false;
           restriction.blockTypes.forEach((type) => {
-            if (block.getSurroundParent()?.type == type) passSP = true;
+            if (block.getSurroundParent()?.type === type) passSP = true;
           });
           if (!passSP) errors.push(restriction.message);
           break;

@@ -6,7 +6,7 @@ Blockly.Blocks["member_getone"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Get the member with the")
+      .appendField("get the member with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["username", "username"],
@@ -29,7 +29,7 @@ Blockly.Blocks["member_getuser"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Get the user with the")
+      .appendField("get the user with the")
       .appendField(
         new Blockly.FieldDropdown([
           ["username", "username"],
@@ -38,7 +38,7 @@ Blockly.Blocks["member_getuser"] = {
         "type"
       )
       .appendField("equal to");
-    this.setOutput(true, null);
+    this.setOutput(true, "user");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -49,7 +49,7 @@ Blockly.Blocks["member_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each member in server");
+      .appendField("For each member in server:");
     this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -61,7 +61,7 @@ Blockly.Blocks["member_foreach"] = {
 
 Blockly.Blocks["member_member"] = {
   init: function () {
-    this.appendDummyInput().appendField("member");
+    this.appendDummyInput().appendField("current member in loop");
     this.setOutput(true, "member");
     this.setColour("#00A018");
     this.setTooltip("");
