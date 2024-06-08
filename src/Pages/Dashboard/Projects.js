@@ -101,7 +101,10 @@ export default function Projects() {
             },
           }
         )
-        .then(({ data }) => (window.location = `/workspace/${data._id}`));
+        .then(
+          ({ data }) =>
+            (window.location = `/@${user.username}/${data._id}/workspace`)
+        );
     })();
   }
 
@@ -194,7 +197,10 @@ export default function Projects() {
               },
             }
           )
-          .then(({ data }) => (window.location = `/workspace/${data._id}`));
+          .then(
+            ({ data }) =>
+              (window.location = `/@${user.username}/${data._id}/workspace`)
+          );
       };
 
       reader.readAsText(file);

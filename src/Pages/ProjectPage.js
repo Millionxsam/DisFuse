@@ -38,6 +38,8 @@ export default function ProjectPage() {
       );
   }, []);
 
+  if (!project) return;
+
   function toggleLike() {
     axios
       .patch(apiUrl + `/projects/${project._id}/likes`, null, {
@@ -151,7 +153,10 @@ export default function ProjectPage() {
             },
           }
         )
-        .then(({ data }) => (window.location = `/workspace/${data._id}`));
+        .then(
+          ({ data }) =>
+            (window.location = `/@${user.username}/${data._id}/workspace`)
+        );
     })();
   }
 
