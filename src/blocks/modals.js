@@ -74,7 +74,7 @@ javascriptGenerator.forBlock["modal_add_text_input"] = function (
     .setCustomId(${customId})
     .setLabel(${label})
     .setRequired(${required})
-    .setStyle(${style}),\n`;
+    .setStyle('${style}'),\n`;
   return code;
 };
 
@@ -135,7 +135,7 @@ javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
     .setPlaceholder(${placeholder})
     .setMaxLength(${max})
     .setMinLength(${min})
-    .setStyle(${style}),\n`;
+    .setStyle('${style}'),\n`;
   return code;
 };
 
