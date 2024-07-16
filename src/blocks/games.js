@@ -1,6 +1,8 @@
 import * as Blockly from "blockly";
 import { javascriptGenerator, Order } from "blockly/javascript";
 
+// so bad
+
 Blockly.Blocks["game_2048"] = {
   init: function () {
     this.appendDummyInput()
