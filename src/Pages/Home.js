@@ -11,7 +11,7 @@ export default function Home() {
           <h1>DisFuse</h1>
           <p>
             Create your own <strong>advanced</strong> Discord bot by using
-            <strong> simple</strong>, easy-to-use block coding!
+            <strong> simple</strong>, easy-to-use block coding
           </p>
           <div className="buttons">
             <Link to="/projects">
