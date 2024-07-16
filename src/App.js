@@ -11,6 +11,7 @@ import Explore from "./Pages/Dashboard/Explore";
 import UserProfile from "./Pages/UserProfile";
 import ProjectPage from "./Pages/ProjectPage";
 import Favorites from "./Pages/Dashboard/Favorites";
+import Settings from "./Pages/Dashboard/Settings";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="projects" element={<Projects />} />
           <Route path="explore" element={<Explore />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         <Route path="/" element={[<Sidebar />, <Auth />]}>

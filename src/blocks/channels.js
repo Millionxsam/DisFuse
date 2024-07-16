@@ -71,7 +71,7 @@ Blockly.Blocks["channel_foreach"] = {
 
 Blockly.Blocks["channel_channel"] = {
   init: function () {
-    this.appendDummyInput().appendField("channel");
+    this.appendDummyInput().appendField("current channel on the loop");
     this.setOutput(true, "channel");
     this.setColour("D39600");
     this.setTooltip("");

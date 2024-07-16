@@ -29,7 +29,9 @@ export default function addTooltips(workspace) {
       let beforeOutputTooltip =
         block?.getTooltip().split("Output(s):")[0] || "";
       block.setTooltip(
-        beforeOutputTooltip + "\nOutput(s): " + outputs.join(", ")
+        beforeOutputTooltip +
+          "\nOutput(s): " +
+          outputs.map((output) => output ?? "Any").join(", ")
       );
     }
   });

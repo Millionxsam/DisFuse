@@ -74,6 +74,15 @@ export default function Sidebar() {
                   <i class="fa-solid fa-star"></i> <div>Favorites</div>
                 </li>
               </Link>
+              <Link
+                onClick={() => setActive(false)}
+                className="underline-effect"
+                to="/settings"
+              >
+                <li>
+                  <i class="fa-solid fa-gear"></i> <div>Settings</div>
+                </li>
+              </Link>
             </ul>
           </div>
           <div className="bottom">

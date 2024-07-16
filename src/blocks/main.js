@@ -25,6 +25,22 @@ Blockly.Blocks["main_ready"] = {
   },
 };
 
+Blockly.Blocks["main_readyAt"] = {
+  init: function () {
+    this.appendDummyInput().appendField("time since the bot logged in");
+    this.setInputsInline(false);
+    this.setColour("#FF6E33");
+    this.setOutput(true, "date");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["main_readyAt"] = function (block, generator) {
+  var code = "client.readyAt";
+  return [code, Order.NONE];
+};
+
 Blockly.Blocks["main_presence"] = {
   init: function () {
     this.appendDummyInput().appendField("Set the presence of the bot");
@@ -67,7 +83,7 @@ Blockly.Blocks["main_env"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("get ENV with the name:");
+      .appendField("get secret with name:");
     this.setOutput(true, null);
     this.setColour("#FF6E33");
     this.setTooltip("");
@@ -79,6 +95,16 @@ Blockly.Blocks["main_bot"] = {
   init: function () {
     this.appendDummyInput().appendField("bot");
     this.setOutput(true, "user");
+    this.setColour("#FF6E33");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["main_ping"] = {
+  init: function () {
+    this.appendDummyInput().appendField("current bot latency ping");
+    this.setOutput(true, "Number");
     this.setColour("#FF6E33");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -131,6 +157,11 @@ javascriptGenerator.forBlock["main_env"] = function (block, generator) {
 
 javascriptGenerator.forBlock["main_bot"] = function (block, generator) {
   var code = "client.user";
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["main_ping"] = function (block, generator) {
+  var code = "client.ws.ping";
   return [code, Order.NONE];
 };
 

@@ -38,9 +38,29 @@ body {
   background-color: #00040f;
 }
 
+.loadingAnim {
+  display: flex;
+  gap: 1rem;
+  font-size: 40px;
+  align-items: center;
+}
+
+.loadingAnim .spinner {
+  border: 4px solid var(--foreground-color);
+  border-radius: 50%;
+  border-top: 5px solid var(--main-color);
+  height: 3rem;
+  width: 3rem;
+  animation: spin 0.5s infinite ease;
+}
+
 a {
   color: white;
   text-decoration: none;
+}
+
+p.errors {
+  color: rgb(255, 134, 134);
 }
 
 button {
@@ -58,9 +78,19 @@ button {
   transition: all 0.2s ease;
 }
 
+button#rdbt {
+  background-color: #ff3b3b;
+}
+
 button:hover {
-  background-color: rgba(219, 219, 219, 0.486);
-  border-radius: 1.5rem;
+  background-color: rgba(219, 219, 219, 0.548);
+  border-radius: 1.3rem !important;
+  color: white;
+}
+
+button:hover#rdbt {
+  background-color: #ff3b3b8a;
+  border-radius: 1.3rem;
 }
 
 button:active {
@@ -83,6 +113,18 @@ button.disabled:hover {
   background-color: rgba(219, 219, 219, 0.349);
 }
 
+input[type="number"] {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.5rem;
+  color: white;
+}
+
+input[type="number"]:hover {
+  background-color: var(--border-color);
+}
+
 .userTag {
   background-color: var(--main-color);
   border-radius: 2rem;
@@ -91,6 +133,8 @@ button.disabled:hover {
   display: flex;
   align-items: center;
   gap: 0.25vw;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .userTag:hover {
@@ -125,6 +169,68 @@ button.disabled:hover {
 .underline-effect:hover::after {
   transform: translateY(100%);
   opacity: 1;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch:active .slider:before {
+  width: 35px;
+}
+
+.switch:active input:checked + .slider:before {
+  left: -5px;
+}
+
+.slider:active {
+  background-color: #6697c5 !important;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.2s;
+  border-radius: 2rem;
+}
+
+.slider:before {
+  position: absolute;
+  border-radius: 2rem;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.2s;
+  box-shadow: 0 0 10px 1px gray;
+}
+
+input:checked + .slider {
+  background-color: var(--main-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--main-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 .button {
@@ -218,6 +324,11 @@ p.modal-text {
   list-style: none;
 }
 
+.workspace-navbar .left ul button {
+  display: flex;
+  align-items: center;
+}
+
 .workspace-navbar .right ul {
   list-style: none;
   display: flex;
@@ -257,6 +368,19 @@ p.modal-text {
   height: 92.5vh;
 }
 
+.workspace-load-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  scale: 2;
+  transform: translate(-25%, -50%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .code-view {
   background-color: rgba(31, 31, 31, 0.897);
   padding: 2vh;
@@ -271,7 +395,8 @@ p.modal-text {
   z-index: 100;
 }
 
-.code-view * {
+.code-view *,
+.secrets-view * {
   color: white;
 }
 
@@ -288,11 +413,12 @@ p.modal-text {
 
 .code-view .top {
   display: flex;
-  gap: 1vw;
+  gap: 1rem;
   align-items: center;
 }
 
-.code-view .top button {
+.code-view .top button,
+.secrets-view .top button {
   height: min-content;
   border: none;
   padding: 1vh;
@@ -302,7 +428,8 @@ p.modal-text {
   transition: all 0.2s ease;
 }
 
-.code-view .top button#close {
+.code-view .top button#close,
+.secrets-view .top button#close {
   background-color: rgb(163, 0, 0);
 }
 
@@ -310,7 +437,8 @@ p.modal-text {
   background-color: var(--main-color);
 }
 
-.code-view .top button#close:hover {
+.code-view .top button#close:hover,
+.secrets-view .top button#close:hover {
   background-color: rgb(190, 0, 0);
 }
 
@@ -321,6 +449,85 @@ p.modal-text {
 .code-view .top .check {
   color: rgb(0, 202, 0);
   font-size: 25px;
+}
+
+.secrets-view .top {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.secrets-view::backdrop {
+  background-color: rgba(0, 0, 0, 0.733);
+}
+
+.secrets-view {
+  border-radius: 2rem;
+  background-color: rgba(31, 31, 31, 0.897);
+  padding: 2vh;
+  height: 50vh;
+  width: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.secrets-container {
+  flex-direction: column;
+  gap: 2rem;
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.secrets-view button#secret-add {
+  background-color: var(--main-color);
+}
+
+.secrets-view input {
+  padding: 0.75rem;
+  border-radius: 2rem;
+  border: 2px solid var(--border-color);
+  font-size: 20px;
+  background-color: rgb(88, 88, 88);
+}
+
+.secrets-view input::placeholder {
+  color: white;
+}
+
+.secrets-view .secrets {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.secrets-view .secrets div {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.secrets-view .secrets ul {
+  align-items: center;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.secrets-view .secrets ul li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.secrets-view .secrets ul li div {
+  background-color: var(--main-color);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .blockly-ws-search {
@@ -436,6 +643,7 @@ p.modal-text {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  transition: all 1s ease;
 }
 
 .home-container .head .buttons {
@@ -533,6 +741,8 @@ p.modal-text {
   padding: 0.75rem;
   border-radius: 2rem;
   gap: 0.5rem;
+  max-width: 225.92px;
+  font-size: 75%;
 }
 
 .sidebar-container .nametag img {
@@ -549,7 +759,8 @@ p.modal-text {
   background-color: var(--foreground-color);
 }
 
-.projects-container {
+.projects-container,
+.settings-container {
   padding: 2rem;
   width: 100%;
   display: flex;
@@ -557,7 +768,8 @@ p.modal-text {
   gap: 1.7rem;
 }
 
-.projects-container .head {
+.projects-container .head,
+.settings-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
@@ -567,10 +779,10 @@ p.modal-text {
   display: grid;
   padding: 1rem;
   grid-template-columns: repeat(4, 20rem);
-  gap: 3rem;
+  gap: 2rem;
 }
 
-.projects-container .projects > div {
+.priProject {
   background-color: var(--foreground-color);
   border: 2px solid var(--border-color);
   padding: 1.5rem;
@@ -580,20 +792,29 @@ p.modal-text {
   gap: 1rem;
 }
 
-.projects-container .projects div .buttons {
+.priProject .buttons {
   display: flex;
   gap: 0.5rem;
+  width: 100%;
 }
 
-.projects-container .projects div h1 {
+.priProject h1 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
   width: 100%;
   height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.projects-container .projects div .buttons button {
-  width: 100%;
+.priProject h1 i {
+  font-size: 20px;
+}
+
+.priProject .buttons button {
+  width: 50%;
+  border-radius: 1.6rem;
 }
 
 .projects-container .nametag {
@@ -661,10 +882,23 @@ input.search {
 input.search:focus {
   outline: none;
   padding-right: 5rem;
+  border-radius: 1.2rem;
 }
 
 input.search::placeholder {
+  transition: all 0.2s ease;
   color: rgb(190, 190, 190);
+}
+
+input.search:focus::placeholder {
+  color: rgb(190, 190, 190, 0.5);
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
 }
 
 .exploration,
@@ -863,11 +1097,13 @@ input.search::placeholder {
   background-color: var(--main-color);
 }
 
-.project-page-container .head .buttons .like.active i {
+.project-page-container .head .buttons .like.active i,
+.comment .bottom .like.active i {
   color: red;
 }
 
-.project-page-container .head .buttons .like.active.newLike i {
+.project-page-container .head .buttons .like.active.newLike i,
+.comment .bottom .like.active.newLike i {
   animation: spin 0.5s ease 1, scale 0.5s ease 1;
 }
 
@@ -877,6 +1113,145 @@ input.search::placeholder {
 
 .project-page-container .head .buttons .fav.active.newFav i {
   animation: spin 0.5s ease 1, scale 0.5s ease 1;
+}
+
+.project-page-container .body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.comment {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 2rem;
+}
+
+.comment .top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comment .top a {
+  display: flex;
+  align-items: center;
+  gap: 0.25vw;
+}
+
+.comment .top img {
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.comment .bottom {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.comment .bottom div {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.comment .replies {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment .replies {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment .replies .reply {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 2rem;
+}
+
+.addComment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.postBtn,
+.replyBtn {
+  width: min-content;
+  height: 3rem;
+  border-radius: 20px;
+}
+
+textarea.commentInput,
+textarea.replyInput {
+  background-color: var(--foreground-color);
+  width: 25%;
+  font-size: 20px;
+  resize: both;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  outline: none;
+  color: white;
+}
+
+textarea.commentInput::placeholder,
+textarea.replyInput::placeholder {
+  color: rgb(194, 194, 194);
+}
+
+.settings-container .settings {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.settings-container .settings > .category {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-container .settings > .category > .option {
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 20px;
+}
+
+.settings-container .settings > .category > .option:first-of-type {
+  margin-top: 1rem;
+}
+
+select {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+select:hover {
+  background-color: var(--border-color);
+}
+
+select option {
+  font-size: 15px;
+  background-color: var(--foreground-color);
 }
 
 @media (max-width: 1750px) {
@@ -979,6 +1354,7 @@ input.search::placeholder {
   .explore-container,
   .user-profile-container,
   .fav-container,
+  .settings-container,
   .project-page-container {
     margin-top: 2rem;
   }
@@ -1043,7 +1419,8 @@ input.search::placeholder {
 
   .projects-container .head,
   .explore-container .head,
-  .fav-container .head {
+  .fav-container .head,
+  .settings-container .head {
     font-size: 40px;
   }
 
@@ -1059,7 +1436,8 @@ input.search::placeholder {
 @media (max-width: 330px) {
   .projects-container .head,
   .explore-container .head,
-  .fav-container .head {
+  .fav-container .head,
+  .settings-container .head {
     font-size: 30px;
   }
 

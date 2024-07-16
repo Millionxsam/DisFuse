@@ -1,6 +1,6 @@
-// try making a block and ill tell you what to do
-// it can just be a test block, doesnt have to be a real block
-// blockly-demo.appspot.com/static/demos/blockfactory/index.html
+let block = "block";
+let category = "category";
+let sep = "sep";
 
 export const toolbox = {
   kind: "categoryToolbox",
@@ -10,15 +10,15 @@ export const toolbox = {
       name: "Search",
     },
     {
-      kind: "sep",
+      kind: sep,
     },
     {
-      kind: "category",
+      kind: category,
       name: "Logic",
       categorystyle: "logic_category",
       contents: [
         {
-          kind: "block",
+          kind: block,
           type: "controls_if",
         },
         {
@@ -673,6 +673,29 @@ export const toolbox = {
       ],
     },
     {
+      kind: "category",
+      name: "Time",
+      colour: "#db4b9c",
+      contents: [
+        {
+          kind: "block",
+          type: "time_date_now",
+        },
+        {
+          kind: "block",
+          type: "time_date",
+        },
+        {
+          kind: "block",
+          type: "time_between",
+        },
+        {
+          kind: "block",
+          type: "time_createdate",
+        },
+      ],
+    },
+    {
       kind: "sep",
     },
     {
@@ -686,6 +709,53 @@ export const toolbox = {
       name: "Functions",
       categorystyle: "procedure_category",
       custom: "PROCEDURE",
+    },
+    {
+      kind: "category",
+      name: "JavaScript",
+      colour: "#c93a5e",
+      contents: [
+        {
+          kind: "label",
+          text: "Run raw javascript ↓",
+        },
+        {
+          kind: "block",
+          type: "javascript_raw",
+        },
+        {
+          kind: "block",
+          type: "javascript_raw_value",
+        },
+        {
+          kind: "label",
+          text: "Wait before running code ↓",
+        },
+        {
+          kind: "block",
+          type: "javascript_wait",
+        },
+        {
+          kind: "label",
+          text: "Log to the console ↓",
+        },
+        {
+          kind: "block",
+          type: "javascript_consolelog",
+        },
+        {
+          kind: "label",
+          text: "Try catch ↓",
+        },
+        {
+          kind: "block",
+          type: "javascript_trycatch",
+        },
+        {
+          kind: "block",
+          type: "javascript_trycatch_error",
+        },
+      ],
     },
     {
       kind: "sep",
@@ -710,6 +780,18 @@ export const toolbox = {
         {
           kind: "block",
           type: "main_bot",
+        },
+        {
+          kind: "label",
+          text: "Properties of the bot ↓",
+        },
+        {
+          kind: "block",
+          type: "main_ping",
+        },
+        {
+          kind: "block",
+          type: "main_readyAt",
         },
         {
           kind: "label",
@@ -802,393 +884,984 @@ export const toolbox = {
       colour: "#336EFF",
       contents: [
         {
-          kind: "label",
-          text: "Events ↓",
+          kind: "category",
+          name: "Message",
+          colour: "#336EFF",
+          contents: [
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: "block",
+              type: "msg_received",
+            },
+            {
+              kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: "block",
+              type: "msg_reply",
+            },
+            {
+              kind: "block",
+              type: "msg_reply_rows",
+            },
+            {
+              kind: "block",
+              type: "msg_delete",
+            },
+            {
+              kind: "label",
+              text: "Information about the message ↓",
+            },
+            {
+              kind: "block",
+              type: "msg_content",
+            },
+            {
+              kind: "block",
+              type: "msg_member",
+            },
+            {
+              kind: "block",
+              type: "msg_user",
+            },
+            {
+              kind: "block",
+              type: "msg_channel",
+            },
+            {
+              kind: "block",
+              type: "msg_server",
+            },
+          ],
         },
         {
-          kind: "block",
-          type: "msg_received",
-        },
-        {
-          kind: "label",
-          text: "Actions ↓",
-        },
-        {
-          kind: "block",
-          type: "msg_reply",
-        },
-        {
-          kind: "block",
-          type: "msg_reply_rows",
-        },
-        {
-          kind: "block",
-          type: "msg_delete",
-        },
-        {
-          kind: "label",
-          text: "Information about the message ↓",
-        },
-        {
-          kind: "block",
-          type: "msg_content",
-        },
-        {
-          kind: "block",
-          type: "msg_member",
-        },
-        {
-          kind: "block",
-          type: "msg_user",
-        },
-        {
-          kind: "block",
-          type: "msg_channel",
-        },
-        {
-          kind: "block",
-          type: "msg_server",
+          kind: category,
+          name: "Polls",
+          colour: "#656b75",
+          contents: [
+            {
+              kind: block,
+              type: "poll_create",
+            },
+            {
+              kind: block,
+              type: "poll_choice",
+            },
+            {
+              kind: block,
+              type: "poll_sendchannel",
+            },
+            {
+              kind: sep,
+              gap: "40",
+            },
+            {
+              kind: block,
+              type: "poll_whenvoteadded",
+            },
+            {
+              kind: block,
+              type: "poll_whenvoteaddedvotetext",
+            },
+            {
+              kind: block,
+              type: "poll_whenvoteaddedvoteemoji",
+            },
+            {
+              kind: block,
+              type: "poll_whenvoteaddedvoteuser",
+            },
+          ],
         },
       ],
     },
     {
       kind: "category",
-      name: "Slash",
-      colour: "#00A859",
+      name: "Servers",
+      colour: "#521FD6",
       contents: [
         {
-          kind: "label",
-          text: "Create a slash command first ↓",
+          kind: "category",
+          name: "Server",
+          colour: "A33DAC",
+          contents: [
+            {
+              kind: "label",
+              text: "Get a server ↓",
+            },
+            {
+              kind: "block",
+              type: "server_getone",
+            },
+            {
+              kind: "label",
+              text: "Get all servers ↓",
+            },
+            {
+              kind: "block",
+              type: "server_getall",
+            },
+            {
+              kind: "block",
+              type: "server_guild",
+            },
+            {
+              kind: "label",
+              text: "Information about a server ↓",
+            },
+            {
+              kind: "block",
+              type: "server_name",
+            },
+            {
+              kind: "block",
+              type: "server_membercount",
+            },
+            {
+              kind: "block",
+              type: "server_id",
+            },
+            {
+              kind: "block",
+              type: "server_banner",
+            },
+            {
+              kind: "block",
+              type: "server_icon",
+            },
+            {
+              kind: "block",
+              type: "server_ownerid",
+            },
+            {
+              kind: "block",
+              type: "server_dsc",
+            },
+            {
+              kind: "block",
+              type: "server_afkchannel",
+            },
+            {
+              kind: "block",
+              type: "server_creationdate",
+            },
+            {
+              kind: "block",
+              type: "server_vanityurl",
+            },
+            {
+              kind: "block",
+              type: "server_systemchannel",
+            },
+            {
+              kind: "block",
+              type: "server_ruleschannel",
+            },
+            {
+              kind: "block",
+              type: "server_verified",
+            },
+            {
+              kind: "label",
+              text: "Actions on a server ↓",
+            },
+            {
+              kind: "block",
+              type: "server_disableinvites",
+            },
+            {
+              kind: "block",
+              type: "server_leave",
+            },
+          ],
         },
         {
-          kind: "label",
-          text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+          kind: "category",
+          name: "Webhooks",
+          colour: "#0000FF",
+          contents: [
+            {
+              kind: "label",
+              text: "Create a webhook first ↓",
+            },
+            {
+              kind: "block",
+              type: "webhooks_create",
+            },
+            {
+              kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: "block",
+              type: "webhooks_send",
+            },
+          ],
         },
         {
-          kind: "block",
-          type: "slash_createcontainer",
+          kind: "category",
+          name: "Channels",
+          colour: "D39600",
+          contents: [
+            {
+              kind: "label",
+              text: "Get a channel ↓",
+            },
+            {
+              kind: "block",
+              type: "channel_getone",
+            },
+            {
+              kind: "label",
+              text: "Get all channels ↓",
+            },
+            {
+              kind: "block",
+              type: "channel_foreach",
+            },
+            {
+              kind: "block",
+              type: "channel_channel",
+            },
+            {
+              kind: "label",
+              text: "Information about channel ↓",
+            },
+            {
+              kind: "block",
+              type: "channel_getslowmode",
+            },
+            {
+              kind: "block",
+              type: "channel_getnsfw",
+            },
+            {
+              kind: "block",
+              type: "channel_gettopic",
+            },
+            {
+              kind: "block",
+              type: "channel_gettype",
+            },
+            {
+              kind: "block",
+              type: "channel_deletable",
+            },
+            {
+              kind: "block",
+              type: "channel_manageable",
+            },
+            {
+              kind: "block",
+              type: "channel_name",
+            },
+            {
+              kind: "block",
+              type: "channel_id",
+            },
+            {
+              kind: "block",
+              type: "channel_url",
+            },
+            {
+              kind: "block",
+              type: "channel_created",
+            },
+
+            {
+              kind: "label",
+              text: "Channel actions ↓",
+            },
+            {
+              kind: "block",
+              type: "channel_send",
+            },
+            {
+              kind: "block",
+              type: "channel_send_rows",
+            },
+            {
+              kind: "block",
+              type: "channel_setnsfw",
+            },
+            {
+              kind: "block",
+              type: "channel_setslowmode",
+            },
+            {
+              kind: "block",
+              type: "channel_settopic",
+            },
+            {
+              kind: "block",
+              type: "channel_starttyping",
+            },
+            {
+              kind: "block",
+              type: "channel_bulkdelete",
+            },
+            {
+              kind: "block",
+              type: "channel_setautoarchive",
+            },
+            {
+              kind: "block",
+              type: "channel_clone",
+            },
+            {
+              kind: "block",
+              type: "channel_del",
+            },
+            {
+              kind: "block",
+              type: "channel_setname",
+            },
+          ],
         },
         {
-          kind: "block",
-          type: "slash_create",
-          inputs: {
-            nsfw: {
-              shadow: {
-                type: "logic_boolean",
-                fields: {
-                  BOOL: "FALSE",
+          kind: "category",
+          name: "Emojis",
+          colour: "DEB144",
+          contents: [
+            {
+              kind: "label",
+              text: "Get all emojis in a server ↓",
+            },
+            {
+              kind: "block",
+              type: "emoji_getallinserver",
+            },
+            {
+              kind: "block",
+              type: "emoji_getallinserver_value",
+            },
+            {
+              kind: "label",
+              text: "Information about an emoji ↓",
+            },
+            {
+              kind: "block",
+              type: "emoji_getname",
+            },
+            {
+              kind: "block",
+              type: "emoji_getid",
+            },
+            {
+              kind: "block",
+              type: "emoji_getimageurl",
+            },
+            {
+              kind: "block",
+              type: "emoji_isanimated",
+            },
+            {
+              kind: "block",
+              type: "emoji_created",
+            },
+            {
+              kind: "block",
+              type: "emoji_author",
+            },
+            {
+              kind: "label",
+              text: "Get an emoji with id/name in a server ↓",
+            },
+            {
+              kind: "block",
+              type: "emoji_getemojiwith",
+            },
+            {
+              kind: "label",
+              text: "Actions with emojis in a server ↓",
+            },
+            {
+              kind: "block",
+              type: "emoji_create",
+            },
+            {
+              kind: "block",
+              type: "emoji_delete",
+            },
+            {
+              kind: "block",
+              type: "emoji_setname",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Members",
+          colour: "00A018",
+          contents: [
+            {
+              kind: "label",
+              text: "Member = one member of a server",
+            },
+            {
+              kind: "label",
+              text: "User = the total Discord user",
+            },
+            {
+              kind: "label",
+              text: "Some blocks only accept users",
+            },
+            {
+              kind: "label",
+              text: "Other blocks only accept members",
+            },
+            {
+              kind: "label",
+              text: "Some blocks can accept either one",
+            },
+            {
+              kind: "label",
+              text: "(It won't let you drag in the wrong one)",
+            },
+            {
+              kind: "label",
+              text: "-------------------------------------",
+            },
+            {
+              kind: "label",
+              text: "Get a member or user ↓",
+            },
+            {
+              kind: "block",
+              type: "member_getone",
+            },
+            {
+              kind: "block",
+              type: "member_getuser",
+            },
+            {
+              kind: "label",
+              text: "Do something for every member in a server ↓",
+            },
+            {
+              kind: "block",
+              type: "member_foreach",
+            },
+            {
+              kind: "block",
+              type: "member_member",
+            },
+            {
+              kind: "label",
+              text: "Information about members/users ↓",
+            },
+            {
+              kind: "block",
+              type: "member_bannable",
+            },
+            {
+              kind: "block",
+              type: "member_kickable",
+            },
+            {
+              kind: "block",
+              type: "member_timedout",
+            },
+            {
+              kind: "block",
+              type: "member_color",
+            },
+            {
+              kind: "block",
+              type: "member_id",
+            },
+            {
+              kind: "block",
+              type: "member_joined",
+            },
+            {
+              kind: "block",
+              type: "member_nickname",
+            },
+            {
+              kind: "block",
+              type: "member_username",
+            },
+            {
+              kind: "block",
+              type: "member_bot",
+            },
+            {
+              kind: "block",
+              type: "member_system",
+            },
+            {
+              kind: "block",
+              type: "member_accent",
+            },
+            {
+              kind: "block",
+              type: "member_created",
+            },
+            {
+              kind: "block",
+              type: "member_user",
+            },
+            {
+              kind: "label",
+              text: "Actions on users/members ↓",
+            },
+            {
+              kind: "block",
+              type: "member_ban",
+            },
+            {
+              kind: "block",
+              type: "member_timeout",
+            },
+            {
+              kind: "block",
+              type: "member_kick",
+            },
+            {
+              kind: "block",
+              type: "member_dm",
+            },
+            {
+              kind: "block",
+              type: "member_dm_rows",
+            },
+            {
+              kind: "block",
+              type: "member_setnick",
+            },
+            {
+              kind: "block",
+              type: "member_removetimeout",
+            },
+          ],
+        },
+        {
+          kind: "Category",
+          name: "Invites",
+          colour: "#9d51b0",
+          contents: [
+            {
+              kind: "label",
+              text: "Create/delete invites ↓",
+            },
+            {
+              kind: "block",
+              type: "invite_create",
+            },
+            {
+              kind: "block",
+              type: "invite_delete",
+            },
+            {
+              kind: "label",
+              text: "Get an invite ↓",
+            },
+            {
+              kind: "block",
+              type: "invite_get",
+            },
+            {
+              kind: "label",
+              text: "Information about an invite ↓",
+            },
+            {
+              kind: "block",
+              type: "invite_url",
+            },
+            {
+              kind: "block",
+              type: "invite_channel",
+            },
+            {
+              kind: "block",
+              type: "invite_author",
+            },
+            {
+              kind: "label",
+              text: "Loops ↓",
+            },
+            {
+              kind: "block",
+              type: "invite_foreach",
+            },
+            {
+              kind: "block",
+              type: "invite_channel_foreach",
+            },
+            {
+              kind: "block",
+              type: "invite_foreach_var",
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: "block",
+              type: "invite_invitecreated",
+            },
+            {
+              kind: "block",
+              type: "invite_invitedeleted",
+            },
+            {
+              kind: "block",
+              type: "invite_event_var",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Interactions",
+      colour: "#d941e9",
+      contents: [
+        {
+          kind: "category",
+          name: "Slash",
+          colour: "#00A859",
+          contents: [
+            {
+              kind: "label",
+              text: "Create a slash command first ↓",
+            },
+            {
+              kind: "label",
+              text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_createcontainer",
+            },
+            {
+              kind: "block",
+              type: "slash_create",
+              inputs: {
+                nsfw: {
+                  shadow: {
+                    type: "logic_boolean",
+                    fields: {
+                      BOOL: "FALSE",
+                    },
+                  },
+                },
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                dsc: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                dm: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
                 },
               },
             },
-            name: {
-              shadow: {
-                type: "text",
-              },
+            {
+              kind: "block",
+              type: "slash_addoption",
             },
-            dsc: {
-              shadow: {
-                type: "text",
-              },
+            {
+              kind: "block",
+              type: "slash_addchoice",
             },
-            dm: {
-              shadow: {
-                type: "logic_boolean",
-              },
+            {
+              kind: "label",
+              text: "Subcommands (advanced) ↓",
             },
-          },
-        },
-        {
-          kind: "block",
-          type: "slash_addoption",
-        },
-        {
-          kind: "block",
-          type: "slash_addchoice",
-        },
-        {
-          kind: "label",
-          text: "Subcommands (advanced) ↓",
-        },
-        {
-          kind: "block",
-          type: "slash_addsubcommand",
-        },
-        {
-          kind: "block",
-          type: "slash_addsubcommandgroup",
-        },
-        {
-          kind: "label",
-          text: "Events ↓",
-        },
-        {
-          kind: "block",
-          type: "slash_received",
-        },
-        {
-          kind: "label",
-          text: "Actions ↓",
-        },
-        {
-          kind: "block",
-          type: "slash_reply",
-        },
-        {
-          kind: "block",
-          type: "slash_reply_rows",
-        },
-        {
-          kind: "block",
-          type: "slash_editreply",
-        },
-        {
-          kind: "label",
-          text: "Information about the command ran ↓",
-        },
-        {
-          kind: "block",
-          type: "slash_getoption",
-        },
-        {
-          kind: "block",
-          type: "slash_name",
-        },
-        {
-          kind: "block",
-          type: "slash_member",
-        },
-        {
-          kind: "block",
-          type: "slash_user",
-        },
-        {
-          kind: "block",
-          type: "slash_channel",
-        },
-        {
-          kind: "block",
-          type: "slash_server",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Buttons",
-      colour: "#AC41E9",
-      contents: [
-        {
-          kind: "label",
-          text: "Put this inside a block to send a row ↓",
-        },
-        {
-          kind: "block",
-          type: "misc_addrow",
-        },
-        {
-          kind: "block",
-          type: "buttons_add",
-        },
-        {
-          kind: "label",
-          text: "Button events ↓",
-        },
-        {
-          kind: "block",
-          type: "buttons_event",
-        },
-        {
-          kind: "label",
-          text: "Info about the clicked button ↓",
-        },
-        {
-          kind: "block",
-          type: "buttons_id",
-        },
-        {
-          kind: "block",
-          type: "buttons_member",
-        },
-        {
-          kind: "block",
-          type: "buttons_user",
-        },
-        {
-          kind: "block",
-          type: "buttons_channel",
-        },
-        {
-          kind: "block",
-          type: "buttons_server",
-        },
-        {
-          kind: "label",
-          text: "Button actions ↓",
-        },
-        {
-          kind: "block",
-          type: "buttons_reply",
-        },
-        {
-          kind: "block",
-          type: "buttons_edit",
-        },
-        {
-          kind: "block",
-          type: "buttons_del",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Menus",
-      colour: "#51B800",
-      contents: [
-        {
-          kind: "label",
-          text: "Put this inside a block to send a row ↓",
-        },
-        {
-          kind: "block",
-          type: "misc_addrow",
-        },
-        {
-          kind: "block",
-          type: "menus_add",
-        },
-        {
-          kind: "block",
-          type: "menus_addoption",
-        },
-        {
-          kind: "label",
-          text: "Menu events ↓",
-        },
-        {
-          kind: "block",
-          type: "menus_event",
-        },
-        {
-          kind: "label",
-          text: "Info about the clicked menu ↓",
-        },
-        {
-          kind: "block",
-          type: "menus_id",
-        },
-        {
-          kind: "block",
-          type: "menus_value",
-        },
-        {
-          kind: "block",
-          type: "menus_member",
-        },
-        {
-          kind: "block",
-          type: "menus_user",
-        },
-        {
-          kind: "block",
-          type: "menus_channel",
-        },
-        {
-          kind: "block",
-          type: "menus_server",
-        },
-        {
-          kind: "label",
-          text: "Menu actions ↓",
-        },
-        {
-          kind: "block",
-          type: "menus_reply",
-        },
-        {
-          kind: "block",
-          type: "menus_edit",
-        },
-        {
-          kind: "block",
-          type: "menus_del",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Modals",
-      colour: "#e38d40",
-      contents: [
-        {
-          kind: "label",
-          text: "Keep in mind that you can only show modals in slash commands!",
-        },
-        {
-          kind: "label",
-          text: "Show a modal to the user ↓",
-        },
-        {
-          kind: "block",
-          type: "modal_show",
-        },
-        {
-          kind: "label",
-          text: "Create a modal (put this in the block above) ↓",
-        },
-        {
-          kind: "block",
-          type: "modal_create",
-        },
-        {
-          kind: "label",
-          text: "Put text input(s) inside the 'create modal' block ↓",
-        },
-        {
-          kind: "block",
-          type: "modal_add_text_input",
-        },
-        {
-          kind: "block",
-          type: "modal_add_text_input_advanced",
-        },
-        {
-          kind: "label",
-          text: "Events ↓",
-        },
-        {
-          kind: "block",
-          type: "modal_handle_interaction",
-        },
-        {
-          kind: "label",
-          text: "Information about the submitted modal ↓",
-        },
-        {
-          kind: "block",
-          type: "modal_get_input_value",
-        },
-        {
-          kind: "block",
-          type: "modal_get_author",
-        },
-        {
-          kind: "block",
-          type: "modal_get_customId",
-        },
-        {
-          kind: "label",
-          text: "Reply to the modal after submitted ↓",
-        },
-        {
-          kind: "block",
-          type: "slash_reply",
-        },
-        {
-          kind: "block",
-          type: "slash_reply_rows",
-        },
-        {
-          kind: "block",
-          type: "slash_editreply",
+            {
+              kind: "block",
+              type: "slash_addsubcommand",
+            },
+            {
+              kind: "block",
+              type: "slash_addsubcommandgroup",
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_received",
+            },
+            {
+              kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_reply",
+            },
+            {
+              kind: "block",
+              type: "slash_reply_rows",
+            },
+            {
+              kind: "block",
+              type: "slash_editreply",
+            },
+            {
+              kind: "label",
+              text: "Information about the command ran ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_getoption",
+            },
+            {
+              kind: "block",
+              type: "slash_name",
+            },
+            {
+              kind: "block",
+              type: "slash_member",
+            },
+            {
+              kind: "block",
+              type: "slash_user",
+            },
+            {
+              kind: "block",
+              type: "slash_channel",
+            },
+            {
+              kind: "block",
+              type: "slash_server",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Buttons",
+          colour: "#AC41E9",
+          contents: [
+            {
+              kind: "label",
+              text: "Put this inside a block to send a row ↓",
+            },
+            {
+              kind: "block",
+              type: "misc_addrow",
+            },
+            {
+              kind: "block",
+              type: "buttons_add",
+            },
+            {
+              kind: "label",
+              text: "Button events ↓",
+            },
+            {
+              kind: "block",
+              type: "buttons_event",
+            },
+            {
+              kind: "label",
+              text: "Info about the clicked button ↓",
+            },
+            {
+              kind: "block",
+              type: "buttons_id",
+            },
+            {
+              kind: "block",
+              type: "buttons_member",
+            },
+            {
+              kind: "block",
+              type: "buttons_user",
+            },
+            {
+              kind: "block",
+              type: "buttons_channel",
+            },
+            {
+              kind: "block",
+              type: "buttons_server",
+            },
+            {
+              kind: "label",
+              text: "Button actions ↓",
+            },
+            {
+              kind: "block",
+              type: "buttons_reply",
+            },
+            {
+              kind: "block",
+              type: "buttons_edit",
+            },
+            {
+              kind: "block",
+              type: "buttons_del",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Menus",
+          colour: "#51B800",
+          contents: [
+            {
+              kind: "label",
+              text: "Put this inside a block to send a row ↓",
+            },
+            {
+              kind: "block",
+              type: "misc_addrow",
+            },
+            {
+              kind: "block",
+              type: "menus_add",
+            },
+            {
+              kind: "block",
+              type: "menus_addoption",
+            },
+            {
+              kind: "label",
+              text: "Menu events ↓",
+            },
+            {
+              kind: "block",
+              type: "menus_event",
+            },
+            {
+              kind: "label",
+              text: "Info about the clicked menu ↓",
+            },
+            {
+              kind: "block",
+              type: "menus_id",
+            },
+            {
+              kind: "block",
+              type: "menus_value",
+            },
+            {
+              kind: "block",
+              type: "menus_member",
+            },
+            {
+              kind: "block",
+              type: "menus_user",
+            },
+            {
+              kind: "block",
+              type: "menus_channel",
+            },
+            {
+              kind: "block",
+              type: "menus_server",
+            },
+            {
+              kind: "label",
+              text: "Menu actions ↓",
+            },
+            {
+              kind: "block",
+              type: "menus_reply",
+            },
+            {
+              kind: "block",
+              type: "menus_edit",
+            },
+            {
+              kind: "block",
+              type: "menus_del",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Modals",
+          colour: "#e38d40",
+          contents: [
+            {
+              kind: "label",
+              text: "Keep in mind that you can only show modals in slash commands!",
+            },
+            {
+              kind: "label",
+              text: "Show a modal to the user ↓",
+            },
+            {
+              kind: "block",
+              type: "modal_show",
+            },
+            {
+              kind: "label",
+              text: "Create a modal (put this in the block above) ↓",
+            },
+            {
+              kind: "block",
+              type: "modal_create",
+            },
+            {
+              kind: "label",
+              text: "Put text input(s) inside the 'create modal' block ↓",
+            },
+            {
+              kind: "block",
+              type: "modal_add_text_input",
+            },
+            {
+              kind: "block",
+              type: "modal_add_text_input_advanced",
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: "block",
+              type: "modal_handle_interaction",
+            },
+            {
+              kind: "label",
+              text: "Information about the submitted modal ↓",
+            },
+            {
+              kind: "block",
+              type: "modal_get_input_value",
+            },
+            {
+              kind: "block",
+              type: "modal_get_author",
+            },
+            {
+              kind: "block",
+              type: "modal_get_customId",
+            },
+            {
+              kind: "label",
+              text: "Reply to the modal after submitted ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_reply",
+            },
+            {
+              kind: "block",
+              type: "slash_reply_rows",
+            },
+            {
+              kind: "block",
+              type: "slash_editreply",
+            },
+          ],
         },
       ],
     },
@@ -1199,7 +1872,7 @@ export const toolbox = {
       contents: [
         {
           kind: "category",
-          name: "Joins",
+          name: "Member Joins",
           colour: "FF4F4F",
           contents: [
             {
@@ -1208,472 +1881,59 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "events_joins_member",
+              type: "events_joins_guildmemberadd_member",
             },
             {
               kind: "block",
-              type: "events_joins_server",
+              type: "events_joins_guildmemberadd_server",
             },
           ],
         },
-      ],
-    },
-    {
-      kind: "sep",
-    },
-    {
-      kind: "category",
-      name: "Webhooks",
-      colour: "#0000FF",
-      contents: [
         {
-          kind: "label",
-          text: "Create a webhook first ↓",
-        },
-        {
-          kind: "block",
-          type: "webhooks_create",
-        },
-        {
-          kind: "label",
-          text: "Actions ↓",
-        },
-        {
-          kind: "block",
-          type: "webhooks_send",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Servers",
-      colour: "A33DAC",
-      contents: [
-        {
-          kind: "label",
-          text: "Get a server ↓",
-        },
-        {
-          kind: "block",
-          type: "server_getone",
-        },
-        {
-          kind: "label",
-          text: "Get all servers ↓",
-        },
-        {
-          kind: "block",
-          type: "server_getall",
-        },
-        {
-          kind: "block",
-          type: "server_guild",
-        },
-        {
-          kind: "label",
-          text: "Information about a server ↓",
-        },
-        {
-          kind: "block",
-          type: "server_name",
-        },
-        {
-          kind: "block",
-          type: "server_membercount",
-        },
-        {
-          kind: "block",
-          type: "server_id",
-        },
-        {
-          kind: "block",
-          type: "server_banner",
-        },
-        {
-          kind: "block",
-          type: "server_icon",
-        },
-        {
-          kind: "block",
-          type: "server_ownerid",
-        },
-        {
-          kind: "block",
-          type: "server_dsc",
-        },
-        {
-          kind: "block",
-          type: "server_afkchannel",
-        },
-        {
-          kind: "block",
-          type: "server_creationdate",
-        },
-        {
-          kind: "block",
-          type: "server_vanityurl",
-        },
-        {
-          kind: "block",
-          type: "server_systemchannel",
-        },
-        {
-          kind: "block",
-          type: "server_ruleschannel",
-        },
-        {
-          kind: "block",
-          type: "server_verified",
-        },
-        {
-          kind: "label",
-          text: "Actions on a server ↓",
-        },
-        {
-          kind: "block",
-          type: "server_disableinvites",
-        },
-        {
-          kind: "block",
-          type: "server_leave",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Channels",
-      colour: "D39600",
-      contents: [
-        {
-          kind: "label",
-          text: "Get a channel ↓",
-        },
-        {
-          kind: "block",
-          type: "channel_getone",
-        },
-        {
-          kind: "label",
-          text: "Get all channels ↓",
-        },
-        {
-          kind: "block",
-          type: "channel_foreach",
-        },
-        {
-          kind: "block",
-          type: "channel_channel",
-        },
-        {
-          kind: "label",
-          text: "Information about channel ↓",
-        },
-        {
-          kind: "block",
-          type: "channel_getslowmode",
-        },
-        {
-          kind: "block",
-          type: "channel_getnsfw",
-        },
-        {
-          kind: "block",
-          type: "channel_gettopic",
-        },
-        {
-          kind: "block",
-          type: "channel_gettype",
-        },
-        {
-          kind: "block",
-          type: "channel_deletable",
-        },
-        {
-          kind: "block",
-          type: "channel_manageable",
-        },
-        {
-          kind: "block",
-          type: "channel_name",
-        },
-        {
-          kind: "block",
-          type: "channel_id",
-        },
-        {
-          kind: "block",
-          type: "channel_url",
-        },
-        {
-          kind: "block",
-          type: "channel_created",
-        },
-
-        {
-          kind: "label",
-          text: "Channel actions ↓",
-        },
-        {
-          kind: "block",
-          type: "channel_send",
-        },
-        {
-          kind: "block",
-          type: "channel_send_rows",
-        },
-        {
-          kind: "block",
-          type: "channel_setnsfw",
-        },
-        {
-          kind: "block",
-          type: "channel_setslowmode",
-        },
-        {
-          kind: "block",
-          type: "channel_settopic",
-        },
-        {
-          kind: "block",
-          type: "channel_starttyping",
-        },
-        {
-          kind: "block",
-          type: "channel_bulkdelete",
-        },
-        {
-          kind: "block",
-          type: "channel_setautoarchive",
-        },
-        {
-          kind: "block",
-          type: "channel_clone",
-        },
-        {
-          kind: "block",
-          type: "channel_del",
-        },
-        {
-          kind: "block",
-          type: "channel_setname",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Emojis",
-      colour: "DEB144",
-      contents: [
-        {
-          kind: "label",
-          text: "Get all emojis in a server ↓",
-        },
-        {
-          kind: "block",
-          type: "emoji_getallinserver",
-        },
-        {
-          kind: "block",
-          type: "emoji_getallinserver_value",
-        },
-        {
-          kind: "label",
-          text: "Information about an emoji ↓",
-        },
-        {
-          kind: "block",
-          type: "emoji_getname",
-        },
-        {
-          kind: "block",
-          type: "emoji_getid",
-        },
-        {
-          kind: "block",
-          type: "emoji_getimageurl",
-        },
-        {
-          kind: "block",
-          type: "emoji_isanimated",
-        },
-        {
-          kind: "block",
-          type: "emoji_created",
-        },
-        {
-          kind: "block",
-          type: "emoji_author",
-        },
-        {
-          kind: "label",
-          text: "Get an emoji with id/name in a server ↓",
-        },
-        {
-          kind: "block",
-          type: "emoji_getemojiwith",
-        },
-        {
-          kind: "label",
-          text: "Actions with emojis in a server ↓",
-        },
-        {
-          kind: "block",
-          type: "emoji_create",
-        },
-        {
-          kind: "block",
-          type: "emoji_delete",
-        },
-        {
-          kind: "block",
-          type: "emoji_setname",
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Members",
-      colour: "00A018",
-      contents: [
-        {
-          kind: "label",
-          text: "Member = one member of a server",
-        },
-        {
-          kind: "label",
-          text: "User = the total Discord user",
-        },
-        {
-          kind: "label",
-          text: "Some blocks only accept users",
-        },
-        {
-          kind: "label",
-          text: "Other blocks only accept members",
-        },
-        {
-          kind: "label",
-          text: "Some blocks can accept either one",
-        },
-        {
-          kind: "label",
-          text: "(It won't let you drag in the wrong one)",
-        },
-        {
-          kind: "label",
-          text: "-------------------------------------",
-        },
-        {
-          kind: "label",
-          text: "Get a member or user ↓",
-        },
-        {
-          kind: "block",
-          type: "member_getone",
-        },
-        {
-          kind: "block",
-          type: "member_getuser",
-        },
-        {
-          kind: "label",
-          text: "Do something for every member in a server ↓",
-        },
-        {
-          kind: "block",
-          type: "member_foreach",
-        },
-        {
-          kind: "block",
-          type: "member_member",
-        },
-        {
-          kind: "label",
-          text: "Information about members/users ↓",
-        },
-        {
-          kind: "block",
-          type: "member_bannable",
-        },
-        {
-          kind: "block",
-          type: "member_kickable",
-        },
-        {
-          kind: "block",
-          type: "member_timedout",
-        },
-        {
-          kind: "block",
-          type: "member_color",
-        },
-        {
-          kind: "block",
-          type: "member_id",
-        },
-        {
-          kind: "block",
-          type: "member_joined",
-        },
-        {
-          kind: "block",
-          type: "member_nickname",
-        },
-        {
-          kind: "block",
-          type: "member_username",
-        },
-        {
-          kind: "block",
-          type: "member_bot",
-        },
-        {
-          kind: "block",
-          type: "member_system",
-        },
-        {
-          kind: "block",
-          type: "member_accent",
-        },
-        {
-          kind: "block",
-          type: "member_created",
-        },
-        {
-          kind: "block",
-          type: "member_user",
-        },
-        {
-          kind: "label",
-          text: "Actions on users/members ↓",
-        },
-        {
-          kind: "block",
-          type: "member_ban",
-        },
-        {
-          kind: "block",
-          type: "member_timeout",
-        },
-        {
-          kind: "block",
-          type: "member_kick",
-        },
-        {
-          kind: "block",
-          type: "member_dm",
-        },
-        {
-          kind: "block",
-          type: "member_dm_rows",
-        },
-        {
-          kind: "block",
-          type: "member_setnick",
-        },
-        {
-          kind: "block",
-          type: "member_removetimeout",
+          kind: "category",
+          name: "Member Leaves / Kicked",
+          colour: "FF4F4F",
+          contents: [
+            {
+              kind: "block",
+              type: "events_remove_guildmemberremove",
+            },
+            {
+              kind: "block",
+              type: "events_remove_guildmemberremove_member",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Message Actions",
+          colour: "FF4F4F",
+          contents: [
+            {
+              kind: block,
+              type: "events_message_deleted",
+            },
+            {
+              kind: block,
+              type: "events_message_deleted_message",
+            },
+            {
+              kind: sep,
+              gap: "40",
+            },
+            {
+              kind: block,
+              type: "events_message_ReactionAdd",
+            },
+            {
+              kind: block,
+              type: "events_message_ReactionAdd_emoji",
+            },
+            {
+              kind: block,
+              type: "events_message_ReactionAdd_count",
+            },
+          ],
         },
       ],
     },
@@ -1736,6 +1996,59 @@ export const toolbox = {
         {
           kind: "block",
           type: "db_clear",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Comments",
+      colour: "#364759",
+      contents: [
+        {
+          kind: "label",
+          text: "These blocks will also be visible on your code!",
+        },
+        {
+          kind: "block",
+          type: "comment_stack",
+        },
+        {
+          kind: "block",
+          type: "comment_statement",
+        },
+        {
+          kind: "block",
+          type: "comment_float",
+        },
+        {
+          kind: "block",
+          type: "comment_stackImage",
+        },
+      ],
+    },
+    {
+      kind: "category",
+      name: "Apps",
+      colour: "#0fbd8c",
+      contents: [
+        {
+          kind: "category",
+          name: "Scratch",
+          colour: "#0fbd8c",
+          contents: [
+            {
+              kind: "block",
+              type: "scratch_getprofile",
+            },
+            {
+              kind: "block",
+              type: "scratch_getprofileinfo",
+            },
+            {
+              kind: "block",
+              type: "scratch_getmessages",
+            },
+          ],
         },
       ],
     },

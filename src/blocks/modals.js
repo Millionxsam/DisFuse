@@ -70,7 +70,7 @@ javascriptGenerator.forBlock["modal_add_text_input"] = function (
   var customId = generator.valueToCode(block, "customId", Order.ATOMIC);
   var style = block.getFieldValue("style");
 
-  const code = `new Discord.TextInputComponent()
+  const code = `new Discord.TextInputBuilder()
     .setCustomId(${customId})
     .setLabel(${label})
     .setRequired(${required})
@@ -128,7 +128,7 @@ javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
   var min = generator.valueToCode(block, "min", Order.ATOMIC);
   var style = block.getFieldValue("style");
 
-  const code = `new Discord.TextInputComponent()
+  const code = `new Discord.TextInputBuilder()
     .setCustomId(${customId})
     .setLabel(${label})
     .setRequired(${required})
@@ -307,8 +307,9 @@ createRestrictions(
     },
     {
       type: "hasHat",
-      blockTypes: ["slash_received"],
-      message: 'This block must be under a "when slash command received" event',
+      blockTypes: ["slash_received", "buttons_event"],
+      message:
+        'This block must be under a "when slash command received" or "when a button is clicked" event',
     },
   ]
 );

@@ -9,7 +9,10 @@ export default function PriProject({ project }) {
   return (
     <>
       <div className="priProject">
-        <h1>{project.name}</h1>
+        <h1>
+          {project.name}
+          {project.private ? <i class="fa-solid fa-lock"></i> : ""}
+        </h1>
         <p>{project.description || "No description"}</p>
         <div className="buttons">
           <button
@@ -19,10 +22,7 @@ export default function PriProject({ project }) {
           >
             Open
           </button>
-          <button
-            onClick={() => deleteProject(project._id)}
-            style={{ backgroundColor: "#FF3B3B" }}
-          >
+          <button onClick={() => deleteProject(project._id)} id="rdbt">
             Delete
           </button>
         </div>

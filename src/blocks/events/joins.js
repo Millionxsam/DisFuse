@@ -1,7 +1,52 @@
-import * as Blockly from "blockly";
-import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../../functions/restrictions";
+import {
+  createEventBlock,
+  createEventVariable,
+} from "../../functions/createEvent";
 
+createEventBlock(
+  "events_joins_guildmemberadd",
+  "When a member joins a server",
+  "#FF4F4F",
+  "guildMemberAdd",
+  ["AddMember", "addServer"]
+);
+
+createEventVariable(
+  "events_joins_guildmemberadd_member",
+  "joining member",
+  "#FF4F4F",
+  "member",
+  "AddMember"
+);
+
+// i hate bug
+createEventVariable(
+  "events_joins_guildmemberadd_joining_member",
+  "joining member",
+  "#FF4F4F",
+  "member",
+  "AddMember"
+);
+
+// i hate bug
+createEventVariable(
+  "events_joins_guildmemberadd_joining_server",
+  "joining server",
+  "#FF4F4F",
+  "server",
+  "AddServer"
+);
+
+createEventVariable(
+  "events_joins_guildmemberadd_server",
+  "joining server",
+  "#FF4F4F",
+  "server",
+  "AddServer"
+);
+
+/*
 Blockly.Blocks["events_joins_guildmemberadd"] = {
   init: function () {
     this.appendDummyInput().appendField("When a member joins a server");
@@ -62,9 +107,10 @@ javascriptGenerator.forBlock["events_joins_guildmemberadd"] = function (
     });`;
   return code;
 };
+*/
 
 createRestrictions(
-  ["events_joins_member", "events_joins_server"],
+  ["events_joins_guildmemberadd_member", "events_joins_guildmemberadd_server"],
   [
     {
       type: "hasHat",

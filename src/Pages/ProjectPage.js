@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserTag from "../components/UserTag";
 import Swal from "sweetalert2";
+import Comment from "../components/Comment";
 
 const { apiUrl, discordUrl } = require("../config/config.json");
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});
   const [user, setUser] = useState({});
+  const [comments, setComments] = useState([]);
   const [newLike, setNewLike] = useState(false);
   const [newFav, setNewFav] = useState(false);
 
-  const { projectId, username } = useParams();
+  const { projectId } = useParams();
 
   useEffect(() => {
     axios
@@ -30,13 +32,17 @@ export default function ProjectPage() {
       });
 
     axios
-      .get(apiUrl + `/projects/${projectId}`)
-      .then(({ data }) =>
-        setProject(
-          data.owner.username === username.replace("@", "") ? data : null
-        )
-      );
-  }, []);
+      .get(apiUrl + `/projects/${projectId}`, {
+        headers: { Authorization: localStorage.getItem("disfuse-token") },
+      })
+      .then(async ({ data: project }) => {
+        setProject(project);
+
+        axios
+          .get(apiUrl + `/comments/${projectId}`)
+          .then(({ data }) => setComments(data));
+      });
+  }, [projectId]);
 
   if (!project) return;
 
@@ -160,6 +166,22 @@ export default function ProjectPage() {
     })();
   }
 
+  function postComment() {
+    const content = document.querySelector("textarea.commentInput").value;
+
+    axios.post(
+      apiUrl + `/comments/${project._id}`,
+      {
+        content,
+      },
+      {
+        headers: { Authorization: localStorage.getItem("disfuse-token") },
+      }
+    );
+
+    window.location.reload();
+  }
+
   return (
     <div className="project-page-container">
       <div className="head">
@@ -196,7 +218,26 @@ export default function ProjectPage() {
         </div>
       </div>
       <h1>Comments</h1>
-      <div className="body">Coming soon</div>
+      <div className="addComment">
+        <textarea
+          placeholder="Add a comment..."
+          className="commentInput"
+        ></textarea>
+        <button onClick={postComment} className="postBtn">
+          Post
+        </button>
+      </div>
+      <div className="body">
+        {comments.map((comment, i) => (
+          <Comment
+            comment={comment}
+            project={project}
+            user={user}
+            repliable={true}
+            index={i}
+          />
+        ))}
+      </div>
     </div>
   );
 }

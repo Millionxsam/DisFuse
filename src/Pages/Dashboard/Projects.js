@@ -2,13 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import PriProject from "../../components/PriProject";
+import LoadingAnim from "../../components/LoadingAnim";
 
 const { discordUrl, apiUrl } = require("../../config/config.json");
 
 export default function Projects() {
   const token = localStorage.getItem("disfuse-token");
   const [projects, setProjects] = useState([]);
+  const [shown, setShown] = useState([]);
   const [user, setUser] = useState({});
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -20,9 +23,11 @@ export default function Projects() {
       .then(({ data }) => {
         setUser(data);
 
-        axios
-          .get(apiUrl + `/users/${data.id}/projects`)
-          .then(({ data: p }) => setProjects(p));
+        axios.get(apiUrl + `/users/${data.id}/projects`).then(({ data: p }) => {
+          setProjects(p);
+          setShown(p);
+          setLoading(false);
+        });
       });
   }, [token]);
 
@@ -210,6 +215,92 @@ export default function Projects() {
     fileInput.remove();
   }
 
+  function sort() {
+    Swal.fire({
+      title: "Sort Projects",
+      input: "select",
+      inputOptions: {
+        "a-z": "Alphabetically (A to Z)",
+        "z-a": "Reverse Alphabetically (Z to A)",
+        oldest: "Oldest First",
+        newest: "Newest First",
+      },
+      inputPlaceholder: "Select sorting order",
+      showCancelButton: true,
+      confirmButtonText: "Sort",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to choose a sorting order!";
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let sortedProjects = [...projects];
+
+        if (result.value === "a-z") {
+          sortedProjects.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (result.value === "z-a") {
+          sortedProjects.sort((a, b) => b.name.localeCompare(a.name));
+        } else if (result.value === "oldest") {
+          sortedProjects.sort(
+            (a, b) => new Date(a.created) - new Date(b.created)
+          );
+        } else if (result.value === "newest") {
+          sortedProjects.sort(
+            (a, b) => new Date(b.created) - new Date(a.created)
+          );
+        }
+
+        setShown(sortedProjects);
+        setProjects(sortedProjects);
+      }
+    });
+  }
+
+  function filter() {
+    Swal.fire({
+      title: "Filter Projects",
+      input: "select",
+      inputOptions: {
+        none: "Show All",
+        public: "Only Public",
+        private: "Only Private",
+      },
+      inputPlaceholder: "Select filter for projects",
+      showCancelButton: true,
+      confirmButtonText: "Filter",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to choose a filter for the projects!";
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let filterProjects = [...projects];
+
+        if (result.value === "public") {
+          filterProjects = filterProjects.filter((p) => !p.private);
+        } else if (result.value === "private") {
+          filterProjects = filterProjects.filter((p) => p.private);
+        }
+
+        setShown(filterProjects);
+      }
+    });
+  }
+
+  function search() {
+    const query = document.querySelector("input.search").value;
+
+    setShown(
+      projects.filter(
+        (p) =>
+          p?.name?.toLowerCase().includes(query.toLowerCase()) ||
+          p?.description?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }
+
   return (
     <>
       <div className="projects-container">
@@ -231,11 +322,26 @@ export default function Projects() {
           <button onClick={loadFile}>
             <i class="fa-solid fa-upload"></i> Load from file
           </button>
+          <button onClick={sort}>
+            <i class="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
+          </button>
+          <button onClick={filter}>
+            <i class="fa-solid fa-filter"></i> Filter Projects
+          </button>
         </div>
+        <input
+          onChange={search}
+          type="search"
+          placeholder="Search Projects"
+          className="search"
+        />
+        {isLoading ? <LoadingAnim /> : ""}
         <div className="projects">
-          {projects.length > 0
-            ? projects.map((project) => <PriProject project={project} />)
-            : "No projects"}
+          {shown.length > 0
+            ? shown.map((project) => <PriProject project={project} />)
+            : !isLoading
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </>

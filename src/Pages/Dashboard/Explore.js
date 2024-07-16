@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import PubProject from "../../components/PubProject";
+import LoadingAnim from "../../components/LoadingAnim";
 
 const { apiUrl } = require("../../config/config.json");
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);
   const [shown, setShown] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -18,6 +20,7 @@ export default function Explore() {
       .then(({ data }) => {
         setProjects(data);
         setShown(data);
+        setLoading(false);
       });
   }, []);
 
@@ -46,10 +49,13 @@ export default function Explore() {
           className="search"
         />
         <h1>Featured</h1>
+        {isLoading ? <LoadingAnim /> : ""}
         <div className="content">
-          {shown.map((project) => (
-            <PubProject project={project} />
-          ))}
+          {shown.length > 0
+            ? shown.map((project) => <PubProject project={project} />)
+            : !isLoading
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </div>

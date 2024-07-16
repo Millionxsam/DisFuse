@@ -144,7 +144,7 @@ javascript.javascriptGenerator.forBlock["buttons_del"] = function (
   block,
   generator
 ) {
-  var code = `int.deleteReply();`;
+  var code = `interaction.deleteReply();`;
   return code;
 };
 
@@ -159,7 +159,7 @@ javascript.javascriptGenerator.forBlock["buttons_edit"] = function (
   );
   var embeds = block.getFieldValue("embeds");
 
-  var code = `int.editReply({
+  var code = `interaction.editReply({
         content: ${content || "''"},
         embeds: [${embeds}]
     });`;
@@ -177,7 +177,7 @@ javascript.javascriptGenerator.forBlock["buttons_reply"] = function (
   );
   var embeds = block.getFieldValue("embeds");
 
-  var code = `int.reply({
+  var code = `interaction.reply({
         content: ${content || "''"},
         embeds: [${embeds}]
     });`;
@@ -190,7 +190,7 @@ javascript.javascriptGenerator.forBlock["buttons_server"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `int.guild`;
+  var code = `interaction.guild`;
   return [code, javascript.Order.NONE];
 };
 
@@ -200,7 +200,7 @@ javascript.javascriptGenerator.forBlock["buttons_channel"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `int.channel`;
+  var code = `interaction.channel`;
   return [code, javascript.Order.NONE];
 };
 
@@ -210,7 +210,7 @@ javascript.javascriptGenerator.forBlock["buttons_user"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `int.member.user`;
+  var code = `interaction.member.user`;
   return [code, javascript.Order.NONE];
 };
 
@@ -220,7 +220,7 @@ javascript.javascriptGenerator.forBlock["buttons_member"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `int.member`;
+  var code = `interaction.member`;
   return [code, javascript.Order.NONE];
 };
 
@@ -230,7 +230,7 @@ javascript.javascriptGenerator.forBlock["buttons_id"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `int.customId`;
+  var code = `interaction.customId`;
   return [code, javascript.Order.NONE];
 };
 
@@ -240,8 +240,8 @@ javascript.javascriptGenerator.forBlock["buttons_event"] = function (
 ) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `  client.on("interactionCreate", async (int) => {
-        if(!int.isButton()) return;
+  var code = `  client.on("interactionCreate", async (interaction) => {
+        if(!interaction.isButton()) return;
             ${code}
         });\n`;
   return code;
