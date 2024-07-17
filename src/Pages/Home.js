@@ -25,6 +25,18 @@ export default function Home() {
               </button>
             </Link>
           </div>
+          <br></br>
+          <h2>With DisFuse, you can enjoy:</h2>
+          <div className="cardsMainPage">
+            <div>Private/public projects</div>
+            <div>View and comment on other people's public projects</div>
+            <div>Like, clone, and add projects to your favorites</div>
+            <div>Build-in secrets (environment variables)</div>
+            <div>Advanced Discord features</div>
+            <div>Easy-to-use and organized environment</div>
+            <div>Workspace settings</div>
+            <div>Custom blocks (coming soon)</div>
+          </div>
         </div>
       </div>
     </>
