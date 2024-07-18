@@ -99,7 +99,7 @@ export default function SecretsView() {
                   <div className="button copy" onClick={() => copySecret(i)}>
                     <i class="fa-solid fa-copy"></i>
                   </div>
-                  <div className="button" onClick={() => delSecret(i)}>
+                  <div className="button delete" onClick={() => delSecret(i)}>
                     <i class="fa-solid fa-trash"></i>
                   </div>
                 </li>

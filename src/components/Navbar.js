@@ -12,13 +12,13 @@ export default function Navbar() {
             <Link to="/">Home</Link>
           </li>
           <li className="underline-effect">
-            <Link to="/">Home</Link>
+            <Link to="/projects">Dashboard</Link>
           </li>
           <li className="underline-effect">
-            <Link to="/">Home</Link>
+            <Link to="/explore">Explore</Link>
           </li>
           <li className="underline-effect">
-            <Link to="/">Home</Link>
+            <Link to="/staff">Staff</Link>
           </li>
         </ul>
         <ul className="buttons">

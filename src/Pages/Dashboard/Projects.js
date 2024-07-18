@@ -305,11 +305,11 @@ export default function Projects() {
     <>
       <div className="projects-container">
         <div className="nametag">
-          Hello,
           <img
             src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
             alt=""
           />
+          Hello,
           <div>{user?.username}</div>
         </div>
         <div className="head">

@@ -12,12 +12,24 @@ import UserProfile from "./Pages/UserProfile";
 import ProjectPage from "./Pages/ProjectPage";
 import Favorites from "./Pages/Dashboard/Favorites";
 import Settings from "./Pages/Dashboard/Settings";
+import Staff from "./Pages/Staff";
 
 export default function App() {
+  setInterval(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("shown", entry.isIntersecting);
+      });
+    });
+
+    document.querySelectorAll(".hidden").forEach((e) => observer.observe(e));
+  }, 250);
+
   return (
     <>
       <Routes>
         <Route path="/" element={[<Navbar />, <Home />]} />
+        <Route path="/staff" element={[<Navbar />, <Staff />]} />
 
         <Route path="/" element={[<Auth />, <Sidebar />]}>
           <Route path="projects" element={<Projects />} />

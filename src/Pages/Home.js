@@ -13,7 +13,7 @@ export default function Home() {
             Create your own <strong>advanced</strong> Discord bot by using
             <strong> simple</strong>, easy-to-use block coding
           </p>
-          <div className="buttons">
+          <div className="buttons hidden">
             <Link to="/projects">
               <button>
                 <i class="fa-solid fa-table-list"></i> Dashboard
@@ -25,17 +25,25 @@ export default function Home() {
               </button>
             </Link>
           </div>
-          <br></br>
-          <h2>With DisFuse, you can enjoy:</h2>
-          <div className="cardsMainPage">
-            <div>Private/public projects</div>
-            <div>View and comment on other people's public projects</div>
-            <div>Like, clone, and add projects to your favorites</div>
-            <div>Build-in secrets (environment variables)</div>
-            <div>Advanced Discord features</div>
-            <div>Easy-to-use and organized environment</div>
-            <div>Workspace settings</div>
-            <div>Custom blocks (coming soon)</div>
+        </div>
+        <div className="body">
+          <h2 className="hidden">Why DisFuse?</h2>
+          <div className="features">
+            <div className="hidden">Private/public projects</div>
+            <div className="hidden">
+              View and comment on others' public projects
+            </div>
+            <div className="hidden">
+              Like, clone, and add projects to your favorites
+            </div>
+            <div className="hidden">
+              Built-in secrets (environment variables)
+            </div>
+            <div className="hidden">Built-in and user-made templates</div>
+            <div className="hidden">Advanced Discord features</div>
+            <div className="hidden">Easy-to-use and organized environment</div>
+            <div className="hidden">Workspace settings</div>
+            <div className="hidden">Custom blocks (coming soon)</div>
           </div>
         </div>
       </div>

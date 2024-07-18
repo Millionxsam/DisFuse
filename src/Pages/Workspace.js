@@ -327,7 +327,7 @@ export default function Workspace() {
             exportBtn.classList.add("tooltipEle");
             tooltipEle.classList.add("tooltipText");
             tooltipEle.innerHTML =
-              'The "login with token" block in "main" category is required';
+              'Cannot export: the "login with token" block in "main" category is required';
 
             exportBtn.appendChild(tooltipEle);
           } else {
