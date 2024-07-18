@@ -1672,3 +1672,7 @@ select option {
 .blocklyTreeIcon {
   background-image: url('../public/media/sprite.png');
 }
+
+.blocklyTreeRow {
+  transition: all 0.1s ease;
+}
