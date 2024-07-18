@@ -63,8 +63,7 @@ body {
   animation: spin 0.5s infinite ease;
 }
 
-.blocklyTreeIcon {
-}
+.blocklyTreeIcon {}
 
 a {
   color: white;
@@ -222,7 +221,7 @@ input[type="number"]:hover {
   width: 35px;
 }
 
-.switch:active input:checked + .slider:before {
+.switch:active input:checked+.slider:before {
   left: -5px;
 }
 
@@ -254,15 +253,15 @@ input[type="number"]:hover {
   box-shadow: 0 0 10px 1px gray;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--main-color);
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px var(--main-color);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(26px);
 }
 
@@ -875,7 +874,7 @@ p.modal-text {
   border: 2px solid var(--border-color);
 }
 
-.projects-container > .buttons {
+.projects-container>.buttons {
   display: flex;
   gap: 1rem;
   margin-left: 1rem;
@@ -1054,7 +1053,7 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 3rem;
 }
 
-.user-profile-container .body > div {
+.user-profile-container .body>div {
   background-color: var(--foreground-color);
   border: 2px solid var(--border-color);
   padding: 1.5rem;
@@ -1064,34 +1063,34 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 1rem;
 }
 
-.user-profile-container .body > div .buttons {
+.user-profile-container .body>div .buttons {
   display: flex;
   gap: 0.5vw;
 }
 
-.user-profile-container .body > div .buttons a {
+.user-profile-container .body>div .buttons a {
   width: 100%;
 }
 
-.user-profile-container .body > div .buttons button {
+.user-profile-container .body>div .buttons button {
   width: 100%;
 }
 
-.user-profile-container .body > div .info {
+.user-profile-container .body>div .info {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.user-profile-container .body > div .stats {
+.user-profile-container .body>div .stats {
   display: flex;
 }
 
-.user-profile-container .body > div .stats p:first-child {
+.user-profile-container .body>div .stats p:first-child {
   border: none;
 }
 
-.user-profile-container .body > div .stats p {
+.user-profile-container .body>div .stats p {
   border-left: 2px solid var(--border-color);
   padding: 0 0.5rem 0 0.5rem;
 }
@@ -1265,13 +1264,13 @@ textarea.replyInput::placeholder {
   gap: 2rem;
 }
 
-.settings-container .settings > .category {
+.settings-container .settings>.category {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.settings-container .settings > .category > .option {
+.settings-container .settings>.category>.option {
   margin-left: 2rem;
   display: flex;
   align-items: center;
@@ -1279,7 +1278,7 @@ textarea.replyInput::placeholder {
   font-size: 20px;
 }
 
-.settings-container .settings > .category > .option:first-of-type {
+.settings-container .settings>.category>.option:first-of-type {
   margin-top: 1rem;
 }
 
@@ -1302,6 +1301,7 @@ select option {
 }
 
 @media (max-width: 1750px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1311,6 +1311,7 @@ select option {
 }
 
 @media (max-width: 1400px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1336,6 +1337,7 @@ select option {
 }
 
 @media (max-width: 1030px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1437,17 +1439,17 @@ select option {
     max-width: 90%;
   }
 
-  .project-page-container .head > .buttons {
+  .project-page-container .head>.buttons {
     flex-direction: column;
   }
 
-  .project-page-container .head > .buttons div {
+  .project-page-container .head>.buttons div {
     gap: 2vw;
   }
 }
 
 @media (max-width: 450px) {
-  .projects-container > .buttons {
+  .projects-container>.buttons {
     flex-direction: column;
     gap: 1rem;
   }
@@ -1469,6 +1471,7 @@ select option {
 }
 
 @media (max-width: 395px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1480,8 +1483,8 @@ select option {
     grid-template-columns: 15rem !important;
   }
 
-  .pubProject > .buttons,
-  .priProject > .buttons {
+  .pubProject>.buttons,
+  .priProject>.buttons {
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -1503,6 +1506,7 @@ select option {
 }
 
 @media (max-width: 330px) {
+
   .projects-container .head,
   .explore-container .head,
   .fav-container .head,
@@ -1590,18 +1594,23 @@ select option {
 .features div:nth-child(2) {
   transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
+
 .features div:nth-child(3) {
   transition: all 0.5s 1s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
+
 .features div:nth-child(5) {
   transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
+
 .features div:nth-child(6) {
   transition: all 0.5s 1s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
+
 .features div:nth-child(8) {
   transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
+
 .features div:nth-child(9) {
   transition: all 0.5s 1s ease, scale 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1658,4 +1667,8 @@ select option {
   border-radius: 50%;
   border: 2px solid black;
   width: 5rem;
+}
+
+.blocklyTreeIcon {
+  background-image: url('../public/media/sprite.png');
 }
