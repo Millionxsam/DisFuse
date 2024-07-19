@@ -152,6 +152,7 @@ input[type="number"]:hover {
 }
 
 .hidden.shown {
+  transition: all 0.5s 0.25s ease;
   opacity: 1;
   transform: none;
   filter: none;
@@ -1652,7 +1653,8 @@ select option {
 
 .staff-container .staff div:hover {
   box-shadow: 0 0 2rem var(--main-color);
-  scale: 1.05;
+  scale: 1.04;
+  cursor: pointer;
 }
 
 .staff-container .staff div h3 {

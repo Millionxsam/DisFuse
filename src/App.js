@@ -23,7 +23,7 @@ export default function App() {
     });
 
     document.querySelectorAll(".hidden").forEach((e) => observer.observe(e));
-  }, 250);
+  }, 200);
 
   return (
     <>
