@@ -1570,6 +1570,10 @@ export const toolbox = {
             },
             {
               kind: "block",
+              type: "misc_permission",
+            },
+            {
+              kind: "block",
               type: "slash_addoption",
             },
             {

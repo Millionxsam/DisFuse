@@ -39,10 +39,8 @@ Blockly.Blocks["slash_create"] = {
       .setCheck("Boolean")
       .appendField("usable in DMs:");
     this.appendValueInput("perms")
-      .setCheck("permission")
-      .appendField(
-        "member permission (dont use yet, im not finished this part yet):"
-      );
+      .setCheck(["Array", "permission"])
+      .appendField("required member permission(s):");
     this.appendStatementInput("options")
       .setCheck(null)
       .appendField("option(s):");
@@ -365,7 +363,9 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       name: ${name},
       description: ${dsc},
       nsfw: ${nsfw},
-      defaultMemberPermissions: ${perm || "[]"},
+      defaultMemberPermissions: ${
+        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+      },
       options: [${options}]
     },`;
 
