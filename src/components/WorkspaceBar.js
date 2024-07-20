@@ -15,9 +15,10 @@ export default function WorkspaceBar() {
         <div className="left">
           <div className="logo">
             <Link to="/projects">
-              <img src="/media/disfuse.png" alt="" />
+              <img src="/media/disfuse-clear.png" alt="" />
             </Link>
           </div>
+          <div className="projectName"></div>
           <ul>
             <button id="save" style={{ height: "3rem" }}>
               <i class="fa-solid fa-floppy-disk"></i>
@@ -31,7 +32,7 @@ export default function WorkspaceBar() {
               <i class="fa-solid fa-key"></i>
               <div>Secrets</div>
             </button>
-            <button style={{ height: "3rem" }}>
+            <button id="templates" style={{ height: "3rem" }}>
               <i class="fa-solid fa-shapes"></i>
               <div>Templates</div>
             </button>

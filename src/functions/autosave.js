@@ -37,6 +37,7 @@ export default function autosave(workspace, projectId, e) {
       }
     })
     .catch((e) => {
+      console.error(e);
       if (autosaveIndicator) {
         autosaveIndicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error while saving</div>`;
       }

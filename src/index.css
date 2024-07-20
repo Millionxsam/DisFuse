@@ -333,6 +333,15 @@ p.modal-text {
   color: white;
 }
 
+.workspace-navbar .projectName {
+  font-size: 30px;
+  cursor: default;
+  background-color: var(--border-color);
+  font-family: "Poetsen One";
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
 .workspace-navbar .left {
   display: flex;
   align-items: center;
@@ -343,11 +352,15 @@ p.modal-text {
   display: flex;
   align-items: center;
   gap: 1vw;
-  cursor: default;
+  transition: all 0.2s ease;
+}
+
+.workspace-navbar .logo:hover {
+  scale: 1.2;
 }
 
 .workspace-navbar .logo img {
-  height: 7.5vh;
+  width: 3.5rem;
 }
 
 .workspace-navbar .left ul {
