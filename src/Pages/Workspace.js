@@ -93,14 +93,16 @@ export default function Workspace() {
 
             let userrender = localStorage.getItem("blocklyRenderer") ?? "zelos";
             let usersounds =
-              localStorage.getItem("workspaceSounds") == null
+              localStorage.getItem("workspaceSounds") === null
                 ? true
-                : localStorage.getItem("workspaceSounds") == "true";
+                : localStorage.getItem("workspaceSounds") === "true";
 
             let snapToGrid =
-              localStorage.getItem("workspace-gridSnap") == null
+              localStorage.getItem("workspace-gridSnap") === null
                 ? false
-                : localStorage.getItem("workspaceSounds") == "true";
+                : localStorage.getItem("workspace-gridSnap") === "true";
+
+            console.log(snapToGrid);
 
             let gridSpacing =
               localStorage.getItem("workspace-gridSpacing") || 35;
@@ -144,6 +146,9 @@ export default function Workspace() {
                 },
               }
             );
+
+            document.querySelector(".workspace-navbar .projectName").innerHTML =
+              project.name;
 
             setLoading(false);
 
@@ -224,6 +229,27 @@ export default function Workspace() {
 
               toggleExport();
             });
+
+            document
+              .querySelector("button#templates")
+              .addEventListener("click", () => {
+                Swal.fire({
+                  title: "Load Template",
+                  text: "Which template would you like to load?",
+                  showCancelButton: true,
+                  cancelButtonText: "Cancel",
+                  confirmButtonText: "Load",
+                  input: "select",
+                  inputOptions: {
+                    pingCommand: "Ping Command (slash)",
+                  },
+                }).then((result) => {
+                  if (!result.isConfirmed) return;
+
+                  const data = require(`../templates/${result.value}`);
+                  Blockly.serialization.workspaces.load(data, workspace);
+                });
+              });
 
             // Export event
             document
