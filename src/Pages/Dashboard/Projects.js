@@ -340,8 +340,8 @@ export default function Projects() {
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-            ? "No projects"
-            : ""}
+              ? "No projects"
+              : ""}
         </div>
       </div>
     </>

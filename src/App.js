@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Workspace from "./Pages/Workspace";
 import Home from "./Pages/Home";
 import WorkspaceBar from "./components/WorkspaceBar";
@@ -30,6 +30,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={[<Navbar />, <Home />]} />
         <Route path="/staff" element={[<Navbar />, <Staff />]} />
+
+        <Route path="/dashboard/projects" element={<Navigate to="/projects" />} />
+        <Route path="/dashboard/explore" element={<Navigate to="/explore" />} />
+        <Route path="/dashboard/favorites" element={<Navigate to="/favorites" />} />
+        <Route path="/dashboard/settings" element={<Navigate to="/settings" />} />
 
         <Route path="/" element={[<Auth />, <Sidebar />]}>
           <Route path="projects" element={<Projects />} />

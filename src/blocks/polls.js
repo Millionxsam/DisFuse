@@ -88,7 +88,7 @@ Blockly.Blocks["poll_sendchannel"] = {
       .appendField("to channel");
     this.appendValueInput("MESSAGE")
       .setCheck("String")
-      .appendField("(?) with text");
+      .appendField("(optional) with text");
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -101,7 +101,7 @@ Blockly.Blocks["poll_sendchannel"] = {
 javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
   var text_name = block.getFieldValue("NAME");
   var value_channel = generator.valueToCode(block, "CHANNEL", Order.ATOMIC);
-  var value_message = generator.valueToCode(block, "MESSAGE", Order.ATOMIC);
+  var value_message = generator.valueToCode(block, "MESSAGE", Order.ATOMIC) || '';
 
   return `${value_channel}.send({
   content: ${value_message},

@@ -1152,7 +1152,18 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .darkBtn:hover {
-  background-color: var(--main-color);
+  background-color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+}
+
+.darkBtn.like.active {
+  background-color: rgba(150, 79, 79, 0.233);
+  border-color: #aa0000;
+}
+
+.darkBtn.fav.active {
+  background-color: rgba(150, 125, 79, 0.233);
+  border-color: #aa7400;
 }
 
 .project-page-container .head .buttons .like.active i,
