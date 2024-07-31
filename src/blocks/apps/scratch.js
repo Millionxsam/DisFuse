@@ -6,9 +6,9 @@ Blockly.Blocks["scratch_getprofile"] = {
     this.appendValueInput("username")
       .setCheck("String")
       .appendField("Get Scratch profile of user:");
-    this.appendStatementInput("code").appendField("Then").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").appendField("Then").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#0fbd8c");
     this.setTooltip("");
     this.setHelpUrl("");

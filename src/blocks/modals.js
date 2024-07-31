@@ -142,8 +142,8 @@ javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
 Blockly.Blocks["modal_show"] = {
   init: function () {
     this.appendValueInput("modal").setCheck("modal").appendField("Show modal:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#e38d40");
     this.setTooltip("Shows the modal on the interaction.");
     this.setHelpUrl("");
@@ -160,7 +160,7 @@ javascriptGenerator.forBlock["modal_show"] = function (block, generator) {
 Blockly.Blocks["modal_handle_interaction"] = {
   init: function () {
     this.appendDummyInput().appendField("When a modal is submitted");
-    this.appendStatementInput("code").setCheck(null);
+    this.appendStatementInput("code").setCheck("default");
     this.setColour("#e38d40");
     this.setTooltip("Runs the code when a modal is sub");
     this.setHelpUrl("");

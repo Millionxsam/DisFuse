@@ -12,10 +12,10 @@ Blockly.Blocks["menus_add"] = {
     this.appendValueInput("disabled")
       .setCheck("Boolean")
       .appendField("disabled?");
-    this.appendStatementInput("options").setCheck(null).appendField("options:");
+    this.appendStatementInput("options").setCheck("default").appendField("options:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("51B800");
     this.setTooltip("This represents the whole menu");
     this.setHelpUrl("");
@@ -35,8 +35,8 @@ Blockly.Blocks["menus_addoption"] = {
       .setCheck("String")
       .appendField("value (not shown to user):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("51B800");
     this.setTooltip("This represents one clickable option inside the menu");
     this.setHelpUrl("");
@@ -46,7 +46,7 @@ Blockly.Blocks["menus_addoption"] = {
 Blockly.Blocks["menus_event"] = {
   init: function () {
     this.appendDummyInput().appendField("When a menu is clicked");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#51B800");
     this.setTooltip("");
@@ -121,8 +121,8 @@ Blockly.Blocks["menus_reply"] = {
     this.appendDummyInput()
       .appendField("embed(s):")
       .appendField(new Blockly.FieldTextInput("name"), "embeds");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("51B800");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -137,8 +137,8 @@ Blockly.Blocks["menus_edit"] = {
     this.appendDummyInput()
       .appendField("embed(s):")
       .appendField(new Blockly.FieldTextInput("name"), "embeds");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("51B800");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -149,8 +149,8 @@ Blockly.Blocks["menus_edit"] = {
 Blockly.Blocks["menus_del"] = {
   init: function () {
     this.appendDummyInput().appendField("Delete the reply by the bot");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("51B800");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -280,11 +280,9 @@ javascript.javascriptGenerator.forBlock["menus_add"] = function (
   );
   var statements_options = generator.statementToCode(block, "options");
 
-  var code = `new Discord.StringSelectMenuBuilder().setPlaceholder(${
-    value_placeholder || "''"
-  }).setCustomId(${value_id || "''"}).setDisabled(${
-    value_disabled || "false"
-  }).addOptions([${statements_options}]),`;
+  var code = `new Discord.StringSelectMenuBuilder().setPlaceholder(${value_placeholder || "''"
+    }).setCustomId(${value_id || "''"}).setDisabled(${value_disabled || "false"
+    }).addOptions([${statements_options}]),`;
   return code;
 };
 

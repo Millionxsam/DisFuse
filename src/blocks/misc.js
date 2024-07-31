@@ -5,9 +5,9 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
     this.appendDummyInput().appendField("Add a row");
-    this.appendStatementInput("components").setCheck(null).appendField("with:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("components").setCheck("default").appendField("with:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("4192E9");
     this.setTooltip("");
     this.setHelpUrl("");

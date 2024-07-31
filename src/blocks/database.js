@@ -66,8 +66,8 @@ Blockly.Blocks["db_set"] = {
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -81,8 +81,8 @@ Blockly.Blocks["db_del"] = {
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -97,8 +97,8 @@ Blockly.Blocks["db_add"] = {
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -113,8 +113,8 @@ Blockly.Blocks["db_sub"] = {
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -129,8 +129,8 @@ Blockly.Blocks["db_push"] = {
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -143,8 +143,8 @@ Blockly.Blocks["db_clear"] = {
       .appendField("Clear all data in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("C66953");
     this.setTooltip("");
     this.setHelpUrl("");

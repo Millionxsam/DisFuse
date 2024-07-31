@@ -50,9 +50,9 @@ Blockly.Blocks["member_foreach"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("For each member in server:");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -75,8 +75,8 @@ Blockly.Blocks["member_ban"] = {
       .appendField("Ban member:")
       .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -90,8 +90,8 @@ Blockly.Blocks["member_timeout"] = {
       .setCheck("member");
     this.appendValueInput("seconds").appendField("seconds:").setCheck("Number");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -104,8 +104,8 @@ Blockly.Blocks["member_kick"] = {
       .appendField("Kick member:")
       .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -122,8 +122,8 @@ Blockly.Blocks["member_dm"] = {
       .setCheck("String")
       .appendField("embed name(s):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -139,10 +139,10 @@ Blockly.Blocks["member_dm_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
+    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -157,8 +157,8 @@ Blockly.Blocks["member_setnick"] = {
     this.appendValueInput("nickname").setCheck("String").appendField("to:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -172,8 +172,8 @@ Blockly.Blocks["member_removetimeout"] = {
       .setCheck("member");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A018");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -619,11 +619,10 @@ javascript.javascriptGenerator.forBlock["member_getuser"] = function (
     javascript.Order.ATOMIC
   );
 
-  var code = `client.users.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(u => u.username == ${value_value})`
-  }`;
+  var code = `client.users.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(u => u.username == ${value_value})`
+    }`;
   return [code, javascript.Order.NONE];
 };
 
@@ -643,11 +642,10 @@ javascript.javascriptGenerator.forBlock["member_getone"] = function (
     javascript.Order.ATOMIC
   );
 
-  var code = `${value_server}.members.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(m => m.username == ${value_value})`
-  }`;
+  var code = `${value_server}.members.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(m => m.username == ${value_value})`
+    }`;
   return [code, javascript.Order.NONE];
 };
 

@@ -6,9 +6,9 @@ Blockly.Blocks["emoji_getallinserver"] = {
   init: function () {
     this.appendDummyInput().appendField("For each emoji in the server:");
     this.appendValueInput("server").setCheck("server");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Runs a code for each emoji in a server.");
     this.setHelpUrl("");
@@ -171,8 +171,8 @@ Blockly.Blocks["emoji_create"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("in the server:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Creates an emoji in the specified server.");
     this.setHelpUrl("");
@@ -193,8 +193,8 @@ Blockly.Blocks["emoji_delete"] = {
     this.appendValueInput("emoji")
       .setCheck("emoji")
       .appendField("Delete emoji:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Deletes an emoji.");
     this.setHelpUrl("");
@@ -242,8 +242,8 @@ Blockly.Blocks["emoji_setname"] = {
       .setCheck("emoji")
       .appendField("Rename the emoji:");
     this.appendValueInput("name").setCheck("String").appendField("to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Renames an emoji.");
     this.setHelpUrl("");

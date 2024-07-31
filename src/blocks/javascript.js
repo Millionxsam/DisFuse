@@ -10,8 +10,8 @@ Blockly.Blocks["javascript_raw"] = {
         new Blockly.FieldMultilineInput("console.log('hi');"),
         "CODE"
       );
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Inserts raw javascript code.");
     this.setHelpUrl("");
@@ -48,8 +48,8 @@ Blockly.Blocks["javascript_wait"] = {
     this.appendValueInput("number")
       .setCheck("Number")
       .appendField("wait (in milliseconds):");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip(
       "Waits for an specific amount of time before continuing the code."
@@ -66,8 +66,8 @@ javascriptGenerator.forBlock["javascript_wait"] = function (block, generator) {
 Blockly.Blocks["javascript_consolelog"] = {
   init: function () {
     this.appendValueInput("LOG").setCheck(null).appendField("console log:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Logs something to the console.");
     this.setHelpUrl("");
@@ -86,12 +86,12 @@ javascriptGenerator.forBlock["javascript_consolelog"] = function (
 Blockly.Blocks["javascript_trycatch"] = {
   init: function () {
     this.appendDummyInput().appendField("Try to run code");
-    this.appendStatementInput("code").setCheck(null);
+    this.appendStatementInput("code").setCheck("default");
     this.appendDummyInput().appendField("If error");
-    this.appendStatementInput("error").setCheck(null);
+    this.appendStatementInput("error").setCheck("default");
     this.setInputsInline(false);
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("");
     this.setHelpUrl("");

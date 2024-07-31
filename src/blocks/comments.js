@@ -47,9 +47,9 @@ Blockly.Blocks["comment_statement"] = {
         new Blockly.FieldTextInput("comment that runs the code inside"),
         "TEXT"
       );
-    this.appendStatementInput("CODE").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("CODE").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#364759");
     this.setTooltip("");
     this.setHelpUrl("");

@@ -8,8 +8,8 @@ Blockly.Blocks["embed_create"] = {
       .appendField("Create an embed with name:")
       .appendField(new Blockly.FieldTextInput("name"), "name");
     this.appendStatementInput("config").setCheck("embedBlockCreatorBlock").appendField("then");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");

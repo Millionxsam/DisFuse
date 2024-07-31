@@ -26,8 +26,8 @@ Blockly.Blocks["buttons_add"] = {
     this.appendValueInput("url")
       .setCheck("String")
       .appendField("URL (only with link style):");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("AC41E9");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -38,7 +38,7 @@ Blockly.Blocks["buttons_add"] = {
 Blockly.Blocks["buttons_event"] = {
   init: function () {
     this.appendDummyInput().appendField("When a button is clicked");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#AC41E9");
     this.setTooltip("");
@@ -103,8 +103,8 @@ Blockly.Blocks["buttons_reply"] = {
     this.appendDummyInput()
       .appendField("embed(s):")
       .appendField(new Blockly.FieldTextInput("name"), "embeds");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("AC41E9");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -119,8 +119,8 @@ Blockly.Blocks["buttons_edit"] = {
     this.appendDummyInput()
       .appendField("embed(s):")
       .appendField(new Blockly.FieldTextInput("name"), "embeds");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("AC41E9");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -131,8 +131,8 @@ Blockly.Blocks["buttons_edit"] = {
 Blockly.Blocks["buttons_del"] = {
   init: function () {
     this.appendDummyInput().appendField("Delete the reply by the bot");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("AC41E9");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -262,11 +262,9 @@ javascript.javascriptGenerator.forBlock["buttons_add"] = function (
   );
   var url = block.getFieldValue("style");
 
-  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${
-    emoji || "''"
-  }).setStyle(${style || "1"}).setCustomId(${id || "''"}).setDisabled(${
-    disabled || "false"
-  }).setURL(${url || "''"}),`;
+  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${emoji || "''"
+    }).setStyle(${style || "1"}).setCustomId(${id || "''"}).setDisabled(${disabled || "false"
+    }).setURL(${url || "''"}),`;
   return code;
 };
 

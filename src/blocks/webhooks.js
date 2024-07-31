@@ -13,9 +13,9 @@ Blockly.Blocks["webhooks_create"] = {
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in channel:");
-    this.appendStatementInput("code").setCheck(null).appendField("then");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default").appendField("then");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("0000FF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -26,8 +26,8 @@ Blockly.Blocks["webhooks_send"] = {
   init: function () {
     this.appendDummyInput().appendField("Send a message as the webhook");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("0000FF");
     this.setTooltip("");
     this.setHelpUrl("");

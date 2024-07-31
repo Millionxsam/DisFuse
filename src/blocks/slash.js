@@ -5,7 +5,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["slash_received"] = {
   init: function () {
     this.appendDummyInput().appendField("When a slash command is received");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#00A859");
     this.setTooltip("");
@@ -19,13 +19,13 @@ Blockly.Blocks["slash_createcontainer"] = {
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands):");
-    this.appendStatementInput("commands").setCheck(null);
+    this.appendStatementInput("commands").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
   },
 };
 
@@ -42,14 +42,14 @@ Blockly.Blocks["slash_create"] = {
       .setCheck(["Array", "permission"])
       .appendField("required member permission(s):");
     this.appendStatementInput("options")
-      .setCheck(null)
+      .setCheck("default")
       .appendField("option(s):");
     this.setInputsInline(false);
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
   },
 };
 
@@ -78,11 +78,11 @@ Blockly.Blocks["slash_addoption"] = {
       .setCheck("Boolean")
       .appendField("required:");
     this.appendStatementInput("choices")
-      .setCheck(null)
+      .setCheck("default")
       .appendField("choices (only with text type & optional):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -99,8 +99,8 @@ Blockly.Blocks["slash_addchoice"] = {
       .setCheck("String")
       .appendField("value (returned in code):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -113,11 +113,11 @@ Blockly.Blocks["slash_addsubcommandgroup"] = {
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
     this.appendStatementInput("subcommands")
-      .setCheck(null)
+      .setCheck("default")
       .appendField("subcommands:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -139,10 +139,10 @@ Blockly.Blocks["slash_addsubcommand"] = {
     this.appendDummyInput().appendField("Add subcommand");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
-    this.appendStatementInput("options").setCheck(null).appendField("options:");
+    this.appendStatementInput("options").setCheck("default").appendField("options:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -204,8 +204,8 @@ Blockly.Blocks["slash_reply"] = {
       .setCheck("Boolean")
       .appendField("visible only to the user?");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -222,10 +222,10 @@ Blockly.Blocks["slash_reply_rows"] = {
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
-    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
+    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -237,8 +237,8 @@ Blockly.Blocks["slash_editreply"] = {
     this.appendDummyInput().appendField("Edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -363,9 +363,8 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       name: ${name},
       description: ${dsc},
       nsfw: ${nsfw},
-      defaultMemberPermissions: ${
-        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-      },
+      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+    },
       options: [${options}]
     },`;
 

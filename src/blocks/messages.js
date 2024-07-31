@@ -6,7 +6,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["msg_received"] = {
   init: function () {
     this.appendDummyInput().appendField("When a message is received");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
     this.setTooltip("");
@@ -22,8 +22,8 @@ Blockly.Blocks["msg_reply"] = {
       .setCheck("String")
       .appendField("embed name(s):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -37,10 +37,10 @@ Blockly.Blocks["msg_reply_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
+    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -166,8 +166,8 @@ javascript.javascriptGenerator.forBlock["msg_delete"] = function (
 Blockly.Blocks["msg_delete"] = {
   init: function () {
     this.appendDummyInput().appendField("Delete the user's message");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete a message");
     this.setHelpUrl("");
