@@ -100,9 +100,9 @@ Blockly.Blocks["msg_server"] = {
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `  client.on("messageCreate", async (message) => {
-          ${code}
-      });\n`;
+  var code = `client.on("messageCreate", async (message) => {
+${code}
+});\n`;
   return code;
 };
 
@@ -112,10 +112,10 @@ javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `message.reply({
-      content: ${content || "''"},
-      embeds: [${embeds.replaceAll("'", "")}],
-      components: [${rows}]
-      });\n`;
+  content: ${content || "''"},
+  embeds: [${embeds.replaceAll("'", "") || ''}],
+  components: [${rows || ''}]
+});\n`;
   return code;
 };
 
