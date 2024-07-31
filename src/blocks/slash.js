@@ -383,7 +383,7 @@ javascriptGenerator.forBlock["slash_addoption"] = function (block, generator) {
     type: ${dropdown_type},
     name: ${value_name},
     description: ${value_dsc},
-    required: ${value_required},
+    required: ${value_required || "false"},
     choices: [${statements_choices}]
   },`;
   return code;

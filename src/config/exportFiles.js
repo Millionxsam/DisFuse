@@ -204,4 +204,8 @@ module.exports = [
     
   `,
   },
+  {
+    name: ".replit",
+    content: `run = "node ."`,
+  },
 ];
