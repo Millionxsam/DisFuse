@@ -27,9 +27,9 @@ Blockly.Blocks["server_getone"] = {
 Blockly.Blocks["server_getall"] = {
   init: function () {
     this.appendDummyInput().appendField("For each server the bot is in");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -227,8 +227,8 @@ Blockly.Blocks["server_disableinvites"] = {
       )
       .appendField("invites on server:")
       .setAlign(Blockly.inputs.Align.LEFT);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -240,8 +240,8 @@ Blockly.Blocks["server_leave"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("Leave server:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -392,13 +392,12 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.guilds.cache${
-    dropdown_type === "name"
-      ? `.find(s => s.name === ${value_value})`
-      : dropdown_type === "id"
+  var code = `client.guilds.cache${dropdown_type === "name"
+    ? `.find(s => s.name === ${value_value})`
+    : dropdown_type === "id"
       ? `.get(${value_value})`
       : ""
-  }`;
+    }`;
 
   return [code, Order.NONE];
 };

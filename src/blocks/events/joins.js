@@ -50,7 +50,7 @@ createEventVariable(
 Blockly.Blocks["events_joins_guildmemberadd"] = {
   init: function () {
     this.appendDummyInput().appendField("When a member joins a server");
-    this.appendStatementInput("code").setCheck(null);
+    this.appendStatementInput("code").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#FF4F4F");
     this.setTooltip("");

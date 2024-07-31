@@ -23,8 +23,8 @@ Blockly.Blocks["poll_create"] = {
     this.appendStatementInput("CHOICES")
       .setCheck("pollChoicesBlock")
       .appendField("choices");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#656b75");
     this.setTooltip("Creates a new Discord poll.");
     this.setHelpUrl("");
@@ -90,8 +90,8 @@ Blockly.Blocks["poll_sendchannel"] = {
       .setCheck("String")
       .appendField("(optional) with text");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#656b75");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -112,7 +112,7 @@ javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
 Blockly.Blocks["poll_whenvoteadded"] = {
   init: function () {
     this.appendDummyInput().appendField("When a vote is added to a poll");
-    this.appendStatementInput("CODE").setCheck(null);
+    this.appendStatementInput("CODE").setCheck("default");
     this.setColour("#656b75");
     this.setTooltip(
       "Runs the code inside when a vote is added to any poll the bot can access to."

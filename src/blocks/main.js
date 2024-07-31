@@ -17,7 +17,7 @@ Blockly.Blocks["main_token"] = {
 Blockly.Blocks["main_ready"] = {
   init: function () {
     this.appendDummyInput().appendField("When the bot is logged in");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#FF6E33");
     this.setTooltip("");
@@ -71,8 +71,8 @@ Blockly.Blocks["main_presence"] = {
     this.appendValueInput("activity_name")
       .setCheck("String")
       .appendField("activity name:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#FF6E33");
     this.setTooltip("");
     this.setHelpUrl("");

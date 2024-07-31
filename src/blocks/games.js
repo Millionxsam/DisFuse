@@ -23,8 +23,8 @@ Blockly.Blocks["game_2048"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -51,8 +51,8 @@ Blockly.Blocks["game_connect4"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -79,8 +79,8 @@ Blockly.Blocks["game_fasttype"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -110,8 +110,8 @@ Blockly.Blocks["game_findemoji"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -135,8 +135,8 @@ Blockly.Blocks["game_flood"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -160,8 +160,8 @@ Blockly.Blocks["game_hangman"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -188,8 +188,8 @@ Blockly.Blocks["game_matchpairs"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -216,8 +216,8 @@ Blockly.Blocks["game_minesweeper"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -244,8 +244,8 @@ Blockly.Blocks["game_rps"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -269,8 +269,8 @@ Blockly.Blocks["game_slots"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -297,8 +297,8 @@ Blockly.Blocks["game_snake"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -328,8 +328,8 @@ Blockly.Blocks["game_tictactoe"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -353,8 +353,8 @@ Blockly.Blocks["game_wordle"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -400,8 +400,8 @@ Blockly.Blocks["game_trivia"] = {
       .setCheck(["Colour", "String"])
       .appendField("color:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#00B9A0");
     this.setTooltip("");
     this.setHelpUrl("");

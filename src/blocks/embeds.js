@@ -7,9 +7,9 @@ Blockly.Blocks["embed_create"] = {
     this.appendDummyInput()
       .appendField("Create an embed with name:")
       .appendField(new Blockly.FieldTextInput("name"), "name");
-    this.appendStatementInput("config").setCheck(null).appendField("then");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("config").setCheck("embedBlockCreatorBlock").appendField("then");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -21,8 +21,8 @@ Blockly.Blocks["embed_settitle"] = {
     this.appendValueInput("value")
       .setCheck("String")
       .appendField("Set embed title to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -34,8 +34,8 @@ Blockly.Blocks["embed_setdsc"] = {
     this.appendValueInput("value")
       .setCheck("String")
       .appendField("Set embed description to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -47,8 +47,8 @@ Blockly.Blocks["embed_setcolor"] = {
     this.appendValueInput("value")
       .setCheck(["Colour", "String"])
       .appendField("Set embed color to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -60,8 +60,8 @@ Blockly.Blocks["embed_seturl"] = {
     this.appendValueInput("value")
       .setCheck("String")
       .appendField("Set embed title URL to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -75,8 +75,8 @@ Blockly.Blocks["embed_setauthor"] = {
       .appendField("Set embed author name to:");
     this.appendValueInput("icon").setCheck("String").appendField("Icon URL:");
     this.appendValueInput("url").setCheck("String").appendField("Click URL:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -89,8 +89,8 @@ Blockly.Blocks["embed_setfooter"] = {
       .setCheck("String")
       .appendField("Set embed footer to:");
     this.appendValueInput("icon").setCheck("String").appendField("icon URL:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -102,8 +102,8 @@ Blockly.Blocks["embed_setimage"] = {
     this.appendValueInput("value")
       .setCheck("String")
       .appendField("Set embed image URL to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -115,8 +115,8 @@ Blockly.Blocks["embed_setthumb"] = {
     this.appendValueInput("value")
       .setCheck("String")
       .appendField("Set embed thumbnail URL to:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -129,8 +129,8 @@ Blockly.Blocks["embed_addfield"] = {
     this.appendValueInput("name").setCheck("String").appendField("field name:");
     this.appendValueInput("val").setCheck("String").appendField("field value:");
     this.appendValueInput("inline").setCheck("Boolean").appendField("inline:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -140,8 +140,8 @@ Blockly.Blocks["embed_addfield"] = {
 Blockly.Blocks["embed_settimestamp"] = {
   init: function () {
     this.appendDummyInput().appendField("Add timestamp");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "embedBlockCreatorBlock");
+    this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
     this.setTooltip("");
     this.setHelpUrl("");

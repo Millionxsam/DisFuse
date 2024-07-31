@@ -49,8 +49,8 @@ Blockly.Blocks["invite_delete"] = {
     this.appendValueInput("invite")
       .appendField("Delete invite:")
       .setCheck("invite");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#9d51b0");
     this.setTooltip("Deletes an invite.");
     this.setHelpUrl("");
@@ -123,7 +123,7 @@ javascriptGenerator.forBlock["invite_author"] = function (block, generator) {
 Blockly.Blocks["invite_invitecreated"] = {
   init: function () {
     this.appendDummyInput().appendField("When an invite is created");
-    this.appendStatementInput("code").setCheck(null);
+    this.appendStatementInput("code").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#9d51b0");
     this.setTooltip("Runs the code inside when an invite is created.");
@@ -146,7 +146,7 @@ javascriptGenerator.forBlock["invite_invitecreated"] = function (
 Blockly.Blocks["invite_invitedeleted"] = {
   init: function () {
     this.appendDummyInput().appendField("When an invite is deleted");
-    this.appendStatementInput("code").setCheck(null);
+    this.appendStatementInput("code").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#9d51b0");
     this.setTooltip("Runs the code inside when an invite is deleted.");
@@ -187,9 +187,9 @@ Blockly.Blocks["invite_foreach"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("For each invite on server:");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("9d51b0");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -229,9 +229,9 @@ Blockly.Blocks["invite_channel_foreach"] = {
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("For each invite on channel:");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("9d51b0");
     this.setTooltip("");
     this.setHelpUrl("");

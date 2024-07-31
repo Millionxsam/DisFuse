@@ -12,8 +12,8 @@ Blockly.Blocks["channel_send"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -30,9 +30,9 @@ Blockly.Blocks["channel_send_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -47,8 +47,8 @@ Blockly.Blocks["channel_setnsfw"] = {
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("on channel:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -60,9 +60,9 @@ Blockly.Blocks["channel_foreach"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("For each channel on server:");
-    this.appendStatementInput("code").setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.appendStatementInput("code").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -88,8 +88,8 @@ Blockly.Blocks["channel_setslowmode"] = {
       .setCheck("Number")
       .appendField("to (seconds):");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -102,8 +102,8 @@ Blockly.Blocks["channel_settopic"] = {
       .setCheck("channel")
       .appendField("Set topic of channel:");
     this.appendValueInput("topic").setCheck("String").appendField("to:");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -118,8 +118,8 @@ Blockly.Blocks["channel_starttyping"] = {
     this.appendValueInput("wait")
       .setCheck("Number")
       .appendField("and wait (seconds):");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -134,8 +134,8 @@ Blockly.Blocks["channel_bulkdelete"] = {
     this.appendValueInput("channel")
       .appendField("messages on channel:")
       .setCheck("channel");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setInputsInline(true);
     this.setTooltip("");
@@ -160,8 +160,8 @@ Blockly.Blocks["channel_setautoarchive"] = {
       .setCheck("channel")
       .appendField("for channel:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -340,8 +340,8 @@ Blockly.Blocks["channel_clone"] = {
       .appendField("Clone the channel:")
       .setCheck("channel");
     this.appendValueInput("name").appendField("new name:").setCheck("String");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -354,8 +354,8 @@ Blockly.Blocks["channel_del"] = {
       .appendField("Delete the channel:")
       .setCheck("channel");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -368,8 +368,8 @@ Blockly.Blocks["channel_setname"] = {
       .appendField("Rename channel:")
       .setCheck("channel");
     this.appendValueInput("name").appendField("new name:").setCheck("String");
-    this.setNextStatement(true, null);
-    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -447,11 +447,10 @@ javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(c => c.name == ${value_value})`
-  }`;
+  var code = `${value_server}.channels.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(c => c.name == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 

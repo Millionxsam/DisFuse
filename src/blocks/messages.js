@@ -6,7 +6,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["msg_received"] = {
   init: function () {
     this.appendDummyInput().appendField("When a message is received");
-    this.appendStatementInput("event").setCheck(null);
+    this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
     this.setTooltip("");
@@ -22,8 +22,8 @@ Blockly.Blocks["msg_reply"] = {
       .setCheck("String")
       .appendField("embed name(s):");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -37,10 +37,10 @@ Blockly.Blocks["msg_reply_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck(null).appendField("rows:");
+    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -100,9 +100,9 @@ Blockly.Blocks["msg_server"] = {
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   var code = generator.statementToCode(block, "event");
 
-  var code = `  client.on("messageCreate", async (message) => {
-          ${code}
-      });\n`;
+  var code = `client.on("messageCreate", async (message) => {
+${code}
+});\n`;
   return code;
 };
 
@@ -112,10 +112,10 @@ javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `message.reply({
-      content: ${content || "''"},
-      embeds: [${embeds.replaceAll("'", "")}],
-      components: [${rows}]
-      });\n`;
+  content: ${content || "''"},
+  embeds: [${embeds.replaceAll("'", "") || ''}],
+  components: [${rows || ''}]
+});\n`;
   return code;
 };
 
@@ -166,8 +166,8 @@ javascript.javascriptGenerator.forBlock["msg_delete"] = function (
 Blockly.Blocks["msg_delete"] = {
   init: function () {
     this.appendDummyInput().appendField("Delete the user's message");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete a message");
     this.setHelpUrl("");

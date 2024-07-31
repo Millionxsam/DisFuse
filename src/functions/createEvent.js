@@ -13,7 +13,7 @@ export function createEventBlock(
   Blockly.Blocks[blockId] = {
     init: function () {
       this.appendDummyInput().appendField(fieldText);
-      this.appendStatementInput("code").setCheck(null);
+      this.appendStatementInput("code").setCheck("default");
       this.setInputsInline(false);
       this.setColour(colour);
       this.setTooltip("");
