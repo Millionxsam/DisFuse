@@ -180,9 +180,6 @@ module.exports = [
         "mime-db": "^1.52.0",
         "mime-types": "^2.1.35",
         "moment": "^2.30.1",
-        "node": "^17.9.1",
-        "node-bin-setup": "^1.1.3",
-        "node-fetch": "^2.7.0",
         "process": "^0.11.10",
         "tr46": "^0.0.3",
         "ts-mixer": "^6.0.4",
@@ -203,9 +200,5 @@ module.exports = [
     }
     
   `,
-  },
-  {
-    name: ".replit",
-    content: `run = "node ."`,
   },
 ];
