@@ -169,7 +169,7 @@ module.exports = [
         "discord-api-types": "^0.33.5",
         "discord-gamecord": "^4.4.2",
         "discord-logs": "^2.2.1",
-        "discord.js": "^14.15.2",
+        "discord.js": "^14.15.3",
         "easy-json-database": "^1.5.1",
         "fast-deep-equal": "^3.1.3",
         "form-data": "^4.0.0",
@@ -194,6 +194,7 @@ module.exports = [
         "ws": "^8.17.0"
       },
       "scripts": {
+        "start": "node index.js",
         "test": "echo Error: no test specified && exit 1"
       },
       "keywords": [],

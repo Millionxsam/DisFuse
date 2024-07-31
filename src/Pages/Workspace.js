@@ -155,7 +155,7 @@ export default function Workspace() {
             workspace.tokenAlertPopupAppeared = project.private;
 
             if (project.owner.id !== user.id)
-              return (window.location = "/dashboard/projects");
+              return (window.location = "/projects");
 
             if (project.data) {
               Blockly.serialization.workspaces.load(
@@ -351,7 +351,12 @@ export default function Workspace() {
                   showConfirmButton: false,
                 });
               };
-          }, []);
+          }, [])
+          .catch((e) => {
+            console.error(e);
+            alert("This project does not exist, or you don't have permissions to see this project.");
+            return (window.location = "/projects");
+          });
 
         function toggleExport() {
           const exportBtn = document.querySelector(
@@ -378,7 +383,7 @@ export default function Workspace() {
       .catch((e) => {
         console.error(e);
         alert("This project does not exist");
-        return (window.location = "/dashboard/projects");
+        return (window.location = "/projects");
       });
   }, []);
 

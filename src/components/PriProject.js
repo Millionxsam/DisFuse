@@ -35,7 +35,11 @@ function deleteProject(projectId) {
   const token = localStorage.getItem("disfuse-token");
 
   (async () => {
-    let project = (await axios.get(apiUrl + `/projects/${projectId}`)).data;
+    let project = (await axios.get(apiUrl + `/projects/${projectId}`, {
+      headers: {
+        Authorization: token,
+      },
+    })).data;
 
     Swal.fire({
       title: "Delete Project",
