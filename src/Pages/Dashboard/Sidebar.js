@@ -23,7 +23,7 @@ export default function Sidebar() {
         },
       })
       .then(({ data }) => setUser(data));
-  });
+  }, []);
 
   return (
     <>
