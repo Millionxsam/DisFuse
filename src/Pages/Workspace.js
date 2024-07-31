@@ -230,26 +230,37 @@ export default function Workspace() {
               toggleExport();
             });
 
-            // document
-            //   .querySelector("button#templates")
-            //   .addEventListener("click", () => {
-            //     Swal.fire({
-            //       title: "Load Template",
-            //       text: "Which template would you like to load?",
-            //       showCancelButton: true,
-            //       cancelButtonText: "Cancel",
-            //       confirmButtonText: "Load",
-            //       input: "select",
-            //       inputOptions: {
-            //         pingCommand: "Ping Command (slash)",
-            //       },
-            //     }).then((result) => {
-            //       if (!result.isConfirmed) return;
+            document
+              .querySelector("button#templates")
+              .addEventListener("click", () => {
+                Swal.fire({
+                  title: "Load Template",
+                  text: "Which template would you like to load?",
+                  showCancelButton: true,
+                  cancelButtonText: "Cancel",
+                  background:
+                    usertheme.name === "candytheme" ||
+                    usertheme.name === "lighttheme"
+                      ? ""
+                      : "#282828",
+                  color:
+                    usertheme.name === "candytheme" ||
+                    usertheme.name === "lighttheme"
+                      ? ""
+                      : "white",
+                  confirmButtonText: "Load",
+                  input: "select",
+                  inputOptions: {
+                    slashCommand: "Slash Commands",
+                    pingCommand: "Ping Command",
+                  },
+                }).then((result) => {
+                  if (!result.isConfirmed) return;
 
-            //       const data = require(`../templates/${result.value}`);
-            //       Blockly.serialization.workspaces.load(data, workspace);
-            //     });
-            //   });
+                  const data = require(`../templates/${result.value}`);
+                  Blockly.serialization.workspaces.load(data, workspace);
+                });
+              });
 
             // Export event
             document
