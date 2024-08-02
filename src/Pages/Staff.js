@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         element.remove();
       }
     })
-  }, 100);
+  }, 300);
 });
 
 export default function Staff() {
