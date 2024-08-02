@@ -253,18 +253,20 @@ javascript.javascriptGenerator.forBlock["buttons_add"] = function (
 ) {
   var label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
   var emoji = generator.valueToCode(block, "emoji", javascript.Order.ATOMIC);
-  var style = generator.valueToCode(block, "style", javascript.Order.ATOMIC);
+  var style = block.getFieldValue("style");
   var id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var disabled = generator.valueToCode(
     block,
     "disabled",
     javascript.Order.ATOMIC
   );
-  var url = block.getFieldValue("style");
+  var url = generator.valueToCode(block, "url", javascript.Order.ATOMIC);
 
-  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${emoji || "''"
-    }).setStyle(${style || "1"}).setCustomId(${id || "''"}).setDisabled(${disabled || "false"
-    }).setURL(${url || "''"}),`;
+  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${
+    emoji || "''"
+  }).setStyle(${style}).setCustomId(${id || "''"}).setDisabled(${
+    disabled || "false"
+  }).setURL(${url || "''"}),`;
   return code;
 };
 
