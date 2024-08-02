@@ -262,11 +262,11 @@ javascript.javascriptGenerator.forBlock["buttons_add"] = function (
   );
   var url = generator.valueToCode(block, "url", javascript.Order.ATOMIC);
 
-  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${
-    emoji || "''"
-  }).setStyle(${style}).setCustomId(${id}).setDisabled(${
-    disabled || "false"
-  }).setURL(${url}),`;
+  var code = `new Discord.ButtonBuilder().setLabel(${
+    label || "''"
+  }).setStyle(${style}).setDisabled(${disabled || "false"})${
+    url ? `.setURL(${url})` : ""
+  }${id ? `.setCustomId(${id})` : ""}${emoji ? `.setEmoji(${emoji})` : ""},`;
   return code;
 };
 
