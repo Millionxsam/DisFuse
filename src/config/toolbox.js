@@ -1,6 +1,7 @@
 let block = "block";
 let category = "category";
 let sep = "sep";
+let label = "label";
 
 export const toolbox = {
   kind: "categoryToolbox",
@@ -1223,6 +1224,105 @@ export const toolbox = {
           ],
         },
         {
+          kind: category,
+          name: "Roles",
+          colour: "#32a87d",
+          contents: [
+            {
+              kind: "label",
+              text: "Get a role ↓",
+            },
+            {
+              kind: block,
+              type: "roles_getone"
+            },
+            {
+              kind: "label",
+              text: "Get all roles ↓",
+            },
+            {
+              kind: block,
+              type: "roles_foreach"
+            },
+            {
+              kind: block,
+              type: "roles_foreach_role"
+            },
+            {
+              kind: label,
+              text: "Get the highest role in a server ↓",
+            },
+            {
+              kind: block,
+              type: "roles_highest"
+            },
+            {
+              kind: "label",
+              text: "Create a role in a server ↓"
+            },
+            {
+              kind: block,
+              type: "roles_create"
+            },
+            {
+              kind: block,
+              type: "misc_permission"
+            },
+            {
+              kind: "label",
+              text: "Information about a role ↓",
+            },
+            {
+              kind: block,
+              type: "roles_name"
+            },
+            {
+              kind: block,
+              type: "roles_id"
+            },
+            {
+              kind: block,
+              type: "roles_position"
+            },
+            {
+              kind: block,
+              type: "roles_hexColor"
+            },
+            {
+              kind: block,
+              type: "roles_createdAt"
+            },
+            {
+              kind: block,
+              type: "roles_hasPermission"
+            },
+            {
+              kind: "label",
+              text: "Role actions ↓"
+            },
+            {
+              kind: block,
+              type: "roles_delete"
+            },
+            {
+              kind: block,
+              type: "roles_rename"
+            },
+            {
+              kind: block,
+              type: "roles_addToMember"
+            },
+            {
+              kind: block,
+              type: "roles_removeFromMember"
+            },
+            {
+              kind: block,
+              type: "roles_setPermissions"
+            }
+          ]
+        },
+        {
           kind: "category",
           name: "Emojis",
           colour: "DEB144",
@@ -1324,7 +1424,7 @@ export const toolbox = {
             },
             {
               kind: "label",
-              text: "-------------------------------------",
+              text: "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
             },
             {
               kind: "label",
@@ -1365,6 +1465,14 @@ export const toolbox = {
             {
               kind: "block",
               type: "member_timedout",
+            },
+            {
+              kind: "block",
+              type: "member_hasPermission",
+            },
+            {
+              kind: "block",
+              type: "misc_permission",
             },
             {
               kind: "block",

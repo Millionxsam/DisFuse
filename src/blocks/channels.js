@@ -59,7 +59,7 @@ Blockly.Blocks["channel_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each channel on server:");
+      .appendField("For each channel on the server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -248,7 +248,7 @@ Blockly.Blocks["channel_getone"] = {
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("on the server");
-    this.setOutput(true, null);
+    this.setOutput(true, "channel");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -550,8 +550,7 @@ javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
   var codeVal = generator.statementToCode(block, "code");
 
   var code = `${value_server}.channels.cache.forEach(channel => {
-    ${codeVal}
-  });`;
+    ${codeVal}});\n`;
   return code;
 };
 
@@ -604,6 +603,28 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["content", "embeds"],
       message: "You must specify the content or embeds to send",
+    },
+  ]
+);
+
+createRestrictions(
+  ["channel_channel"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["channel_foreach"],
+      message: 'This block must be under the "For each channel on the server" block',
+    },
+  ]
+);
+
+createRestrictions(
+  ["channel_foreach"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["server"],
+      message: "You must specify the server to iterate channels from.",
     },
   ]
 );

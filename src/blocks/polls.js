@@ -13,13 +13,13 @@ Blockly.Blocks["poll_create"] = {
       .appendField(new Blockly.FieldTextInput("poll", validator), "NAME");
     this.appendValueInput("QUESTION")
       .setCheck("String")
-      .appendField("set poll question to");
+      .appendField("set question to:");
     this.appendValueInput("DURATION")
       .setCheck("Number")
-      .appendField("set poll duration (hours) to");
+      .appendField("set duration (hours) to:");
     this.appendValueInput("MULTISELECT")
       .setCheck("Boolean")
-      .appendField("allow multiple answers");
+      .appendField("allow multiple answers?");
     this.appendStatementInput("CHOICES")
       .setCheck("pollChoicesBlock")
       .appendField("choices");
@@ -55,7 +55,7 @@ javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
 Blockly.Blocks["poll_choice"] = {
   init: function () {
     this.appendDummyInput().appendField("Create a choice");
-    this.appendValueInput("TEXT").setCheck("String").appendField("with text");
+    this.appendValueInput("TEXT").setCheck("String").appendField("with text:");
     this.appendValueInput("EMOJI")
       .setCheck(["String", "emoji"])
       .appendField("with emoji");

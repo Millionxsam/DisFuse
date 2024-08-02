@@ -50,6 +50,8 @@ import "../blocks/apps/scratch";
 import "../blocks/events/removes";
 import "../blocks/events/messages";
 import "../blocks/polls";
+import "../blocks/roles";
+
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
 
@@ -175,9 +177,15 @@ export default function Workspace() {
               "process",
               "emoji",
               "channel",
+              "channels",
               "member",
+              "members",
               "user",
+              "users",
               "guild",
+              "guilds",
+              "server",
+              "servers",
               "modalSubmitInteraction",
               "ForEachemojiInServer",
               "interaction",
@@ -191,6 +199,8 @@ export default function Workspace() {
               "AddServer",
               "messageDeleted",
               "messageReaction",
+              "role",
+              "roles"
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -240,12 +250,12 @@ export default function Workspace() {
                   cancelButtonText: "Cancel",
                   background:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "#282828",
                   color:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "white",
                   confirmButtonText: "Load",
@@ -354,8 +364,12 @@ export default function Workspace() {
           }, [])
           .catch((e) => {
             console.error(e);
-            alert("This project does not exist, or you don't have permissions to see this project.");
-            return (window.location = "/projects");
+
+            if (window.location.hostname === "localhost") {
+              if (String(e) == 'Error: Shortcut named "startSearch" already exists.') {
+                return (window.location.reload());
+              }
+            }
           });
 
         function toggleExport() {

@@ -332,33 +332,38 @@ p.modal-text {
 }
 
 .workspace-navbar .projectName {
-  font-size: 30px;
+  font-size: 1.5vw;
   cursor: default;
   background-color: var(--border-color);
   font-family: "Poetsen One";
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 0.7vw;
+  min-width: 5vw;
+  max-width: 15vw;
+  text-align: center;
 }
 
 .workspace-navbar .left {
   display: flex;
   align-items: center;
-  gap: 2vw;
+  gap: 0.5vw;
 }
 
 .workspace-navbar .logo {
   display: flex;
   align-items: center;
   gap: 1vw;
+  width: 4vw;
+  height: 4vw;
   transition: all 0.2s ease;
 }
 
 .workspace-navbar .logo:hover {
-  scale: 1.2;
+  scale: 1.1;
 }
 
 .workspace-navbar .logo img {
-  width: 3.5rem;
+  width: 4vw;
 }
 
 .workspace-navbar .left ul {
@@ -371,6 +376,9 @@ p.modal-text {
 .workspace-navbar .left ul button {
   display: flex;
   align-items: center;
+  font-size: 1.5vw;
+  max-height: 4vw;
+  overflow-wrap: anywhere;
 }
 
 .workspace-navbar .right ul {
@@ -381,7 +389,7 @@ p.modal-text {
 }
 
 .workspace-navbar .right ul i {
-  font-size: 20px;
+  font-size: 1.5vw;
 }
 
 .workspace-navbar .right ul a i {
@@ -392,7 +400,7 @@ p.modal-text {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 17px;
+  font-size: 1.3vw;
 }
 
 #workspace {
@@ -1679,6 +1687,7 @@ div.hidden:not(.shown) {
   align-items: center;
   transition: all 0.2s ease;
   cursor: default;
+  height: 14.5rem;
 }
 
 .staff-container .staff div:hover {
@@ -1707,4 +1716,10 @@ div.hidden:not(.shown) {
 
 .blocklyTreeRow {
   transition: all 0.1s ease;
+}
+
+.contributionsCounter {
+  font-size: 17px !important;
+  color: #bbbbbb;
+  margin-top: -0.5rem;
 }

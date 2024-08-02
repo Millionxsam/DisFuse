@@ -1,5 +1,35 @@
 import { Link } from "react-router-dom";
 
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(async () => {
+    let elements = Array.from(document.getElementsByClassName('contributionsCounter'));
+
+    let response = await fetch(`https://api.github.com/repos/Millionxsam/DisFuse/contributors`);
+
+    if (!response.ok) {
+      console.error(`Response was not ok: ${response.status}`);
+
+      return elements.forEach(element => {
+        element.remove();
+      });
+    }
+
+    let contributors = await response.json();
+
+    elements.forEach(element => {
+      try {
+        let username = element.innerText;
+        let data = contributors.find(item => item.login == username);
+
+        if (!data || !username) element.remove();
+        element.innerText = `Contributions: ${data.contributions}`;
+      } catch (error) {
+        element.remove();
+      }
+    })
+  }, 100);
+});
+
 export default function Staff() {
   return (
     <div className="staff-container">
@@ -9,10 +39,11 @@ export default function Staff() {
           <div>
             <img
               src="https://cdn.discordapp.com/avatars/745660092829007932/93962cecd720a5caa4df349120b5565e.webp?size=80"
-              alt="Millionxsam's Discord Profile Picture"
+              alt="Millionxsam's Discord Profile"
             />
             <h3>Millionxsam</h3>
             <p>Owner</p>
+            <p className="contributionsCounter">Millionxsam</p>
           </div>
         </Link>
 
@@ -20,10 +51,11 @@ export default function Staff() {
           <div>
             <img
               src="https://cdn.discordapp.com/avatars/694587798598058004/217a350592e07b2f51d3463899e81282.webp?size=80"
-              alt="ddededodediamante's Discord Profile Picture"
+              alt="ddededodediamante's Discord Profile"
             />
             <h3>ddededodediamante</h3>
             <p>Developer & Admin</p>
+            <p className="contributionsCounter">ddededodediamante</p>
           </div>
         </Link>
 
@@ -31,10 +63,11 @@ export default function Staff() {
           <div>
             <img
               src="https://cdn.discordapp.com/avatars/762076450047131648/b28c7ff6fbb8ba5662067b4c53ca327e.webp?size=80"
-              alt="TropicGalxy's Discord Profile Picture"
+              alt="TropicGalxy's Discord Profile"
             />
             <h3>TropicGalxy</h3>
             <p>Admin</p>
+            <p className="contributionsCounter">TropicGalxy</p>
           </div>
         </Link>
 
@@ -42,7 +75,7 @@ export default function Staff() {
           <div>
             <img
               src="https://cdn.discordapp.com/avatars/1142992462693015663/613fa252050536f2dedc0519dda9f132.webp?size=80"
-              alt="WhisPro's Discord Profile Picture"
+              alt="WhisPro's Discord Profile"
             />
             <h3>WhisPro</h3>
             <p>Moderator</p>
