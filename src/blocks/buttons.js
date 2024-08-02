@@ -264,9 +264,9 @@ javascript.javascriptGenerator.forBlock["buttons_add"] = function (
 
   var code = `new Discord.ButtonBuilder().setLabel(${label || "''"}).setEmoji(${
     emoji || "''"
-  }).setStyle(${style}).setCustomId(${id || "''"}).setDisabled(${
+  }).setStyle(${style}).setCustomId(${id}).setDisabled(${
     disabled || "false"
-  }).setURL(${url || "''"}),`;
+  }).setURL(${url}),`;
   return code;
 };
 
