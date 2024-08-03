@@ -47,11 +47,11 @@ import "../blocks/comments";
 import "../blocks/javascript";
 import "../blocks/time";
 import "../blocks/apps/scratch";
-import "../blocks/apps/youtube";
 import "../blocks/events/removes";
 import "../blocks/events/messages";
 import "../blocks/polls";
 import "../blocks/roles";
+import "../blocks/contextMenus";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
@@ -104,8 +104,6 @@ export default function Workspace() {
               localStorage.getItem("workspace-gridSnap") === null
                 ? false
                 : localStorage.getItem("workspace-gridSnap") === "true";
-
-            console.log(snapToGrid);
 
             let gridSpacing =
               localStorage.getItem("workspace-gridSpacing") || 35;
@@ -201,7 +199,7 @@ export default function Workspace() {
               "messageDeleted",
               "messageReaction",
               "role",
-              "roles"
+              "roles",
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -245,18 +243,18 @@ export default function Workspace() {
               .querySelector("button#templates")
               .addEventListener("click", () => {
                 Swal.fire({
-                  title: "bad temapltes",
-                  text: "what garabge do you want?",
+                  title: "Load Template",
+                  text: "Which template would you like to load?",
                   showCancelButton: true,
                   cancelButtonText: "Cancel",
                   background:
                     usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
+                    usertheme.name === "lighttheme"
                       ? ""
                       : "#282828",
                   color:
                     usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
+                    usertheme.name === "lighttheme"
                       ? ""
                       : "white",
                   confirmButtonText: "Load",
@@ -268,7 +266,13 @@ export default function Workspace() {
                 }).then((result) => {
                   if (!result.isConfirmed) return;
 
-                  const data = require(`../templates/${result.value}`);
+                  let data = require(`../templates/${result.value}`);
+
+                  data.blocks.blocks = data.blocks.blocks.concat(
+                    Blockly.serialization.workspaces.save(workspace)?.blocks
+                      ?.blocks || []
+                  );
+
                   Blockly.serialization.workspaces.load(data, workspace);
                 });
               });
@@ -280,11 +284,11 @@ export default function Workspace() {
                 if (!hasTokenBlock.current) return;
 
                 Swal.fire({
-                  title: "x port proyect",
+                  title: "Export Project",
                   icon: "info",
                   confirmButtonText: "Download",
                   showCancelButton: false,
-                  html: 'export text more like, uh, gone text!!!!!',
+                  html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
                 }).then((result) => {
                   if (!result.isConfirmed) return;
 
@@ -328,7 +332,7 @@ export default function Workspace() {
                       timer: 5000,
                       timerProgressBar: true,
                       icon: "success",
-                      title: "export gud",
+                      title: "Successfully exported",
                       showConfirmButton: false,
                     });
                   });
@@ -362,13 +366,16 @@ export default function Workspace() {
                   showConfirmButton: false,
                 });
               };
-          }, [])
+          })
           .catch((e) => {
             console.error(e);
 
             if (window.location.hostname === "localhost") {
-              if (String(e) == 'Error: Shortcut named "startSearch" already exists.') {
-                return (window.location.reload());
+              if (
+                String(e) ==
+                'Error: Shortcut named "startSearch" already exists.'
+              ) {
+                return window.location.reload();
               }
             }
           });
@@ -384,7 +391,7 @@ export default function Workspace() {
             exportBtn.classList.add("tooltipEle");
             tooltipEle.classList.add("tooltipText");
             tooltipEle.innerHTML =
-              'you need to include token dumb shit';
+              'Cannot export: the "login with token" block in "main" category is required';
 
             exportBtn.appendChild(tooltipEle);
           } else {
