@@ -1246,7 +1246,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_getone"
+              type: "roles_getone",
             },
             {
               kind: "label",
@@ -1254,11 +1254,11 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_foreach"
+              type: "roles_foreach",
             },
             {
               kind: block,
-              type: "roles_foreach_role"
+              type: "roles_foreach_role",
             },
             {
               kind: label,
@@ -1266,19 +1266,19 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_highest"
+              type: "roles_highest",
             },
             {
               kind: "label",
-              text: "Create a role in a server ↓"
+              text: "Create a role in a server ↓",
             },
             {
               kind: block,
-              type: "roles_create"
+              type: "roles_create",
             },
             {
               kind: block,
-              type: "misc_permission"
+              type: "misc_permission",
             },
             {
               kind: "label",
@@ -1286,53 +1286,53 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_name"
+              type: "roles_name",
             },
             {
               kind: block,
-              type: "roles_id"
+              type: "roles_id",
             },
             {
               kind: block,
-              type: "roles_position"
+              type: "roles_position",
             },
             {
               kind: block,
-              type: "roles_hexColor"
+              type: "roles_hexColor",
             },
             {
               kind: block,
-              type: "roles_createdAt"
+              type: "roles_createdAt",
             },
             {
               kind: block,
-              type: "roles_hasPermission"
+              type: "roles_hasPermission",
             },
             {
               kind: "label",
-              text: "Role actions ↓"
+              text: "Role actions ↓",
             },
             {
               kind: block,
-              type: "roles_delete"
+              type: "roles_delete",
             },
             {
               kind: block,
-              type: "roles_rename"
+              type: "roles_rename",
             },
             {
               kind: block,
-              type: "roles_addToMember"
+              type: "roles_addToMember",
             },
             {
               kind: block,
-              type: "roles_removeFromMember"
+              type: "roles_removeFromMember",
             },
             {
               kind: block,
-              type: "roles_setPermissions"
-            }
-          ]
+              type: "roles_setPermissions",
+            },
+          ],
         },
         {
           kind: "category",
@@ -1726,15 +1726,15 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "misc_int_reply",
+              type: "slash_reply",
             },
             {
               kind: "block",
-              type: "misc_int_reply_rows",
+              type: "slash_reply_rows",
             },
             {
               kind: "block",
-              type: "misc_int_editreply",
+              type: "slash_editreply",
             },
             {
               kind: "label",
@@ -2082,15 +2082,15 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "misc_int_reply",
+              type: "slash_reply",
             },
             {
               kind: "block",
-              type: "misc_int_reply_rows",
+              type: "slash_reply_rows",
             },
             {
               kind: "block",
-              type: "misc_int_editreply",
+              type: "slash_editreply",
             },
           ],
         },

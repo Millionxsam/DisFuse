@@ -82,6 +82,8 @@ Blockly.Blocks["misc_permission"] = {
   },
 };
 
+<<<<<<< HEAD
+=======
 Blockly.Blocks["misc_int_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the interaction");
@@ -180,6 +182,7 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
   return code;
 };
 
+>>>>>>> 5639daf521fcb8828a646969751044c48391c80b
 javascript.javascriptGenerator.forBlock["misc_permission"] = function (
   block,
   generator
