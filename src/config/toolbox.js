@@ -1103,7 +1103,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "webhooks_delete"
+              type: "webhooks_delete",
             },
           ],
         },
@@ -1805,7 +1805,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "contextMenu_received"
+              type: "contextMenu_received",
             },
             {
               kind: "label",
@@ -1813,15 +1813,15 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "misc_int_reply",
+              type: "slash_reply",
             },
             {
               kind: "block",
-              type: "misc_int_reply_rows",
+              type: "slash_reply_rows",
             },
             {
               kind: "block",
-              type: "misc_int_editreply",
+              type: "slash_editreply",
             },
             {
               kind: "label",
@@ -1829,31 +1829,31 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "contextMenu_name"
+              type: "contextMenu_name",
             },
             {
               kind: block,
-              type: "contextMenu_userMenu"
+              type: "contextMenu_userMenu",
             },
             {
               kind: block,
-              type: "contextMenu_messageMenu"
+              type: "contextMenu_messageMenu",
             },
             {
               kind: block,
-              type: "contextMenu_member"
+              type: "contextMenu_member",
             },
             {
               kind: block,
-              type: "contextMenu_user"
+              type: "contextMenu_user",
             },
             {
               kind: block,
-              type: "contextMenu_channel"
+              type: "contextMenu_channel",
             },
             {
               kind: block,
-              type: "contextMenu_server"
+              type: "contextMenu_server",
             },
             {
               kind: "label",
@@ -1861,7 +1861,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "contextMenu_targetUser"
+              type: "contextMenu_targetUser",
             },
             {
               kind: "label",
@@ -1869,9 +1869,9 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "contextMenu_targetMessage"
+              type: "contextMenu_targetMessage",
             },
-          ]
+          ],
         },
         {
           kind: "category",
