@@ -13,6 +13,7 @@ Blockly.Blocks["slash_received"] = {
   },
 };
 
+// kept for old projects compatibility
 Blockly.Blocks["slash_createcontainer"] = {
   init: function () {
     this.appendDummyInput().appendField("Set slash commands");
@@ -27,6 +28,26 @@ Blockly.Blocks["slash_createcontainer"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
   },
+};
+
+// kept for old projects compatibility
+javascriptGenerator.forBlock["slash_createcontainer"] = function (
+  block,
+  generator
+) {
+  var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
+  var statements_code = generator.statementToCode(block, "commands");
+
+  var code;
+
+  if (value_guild)
+    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}
+]);`;
+  else
+    code = `client.application.commands.set([${statements_code}
+]);`;
+
+  return code;
 };
 
 Blockly.Blocks["slash_create"] = {
@@ -48,8 +69,8 @@ Blockly.Blocks["slash_create"] = {
     this.setColour("#00A859");
     this.setTooltip("");
     this.setHelpUrl("");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, ["slashCreate", "contextMenuCreate"]);
+    this.setNextStatement(true, ["slashCreate", "contextMenuCreate"]);
   },
 };
 
@@ -326,29 +347,8 @@ javascriptGenerator.forBlock["slash_received"] = function (block, generator) {
   var code_statement = generator.statementToCode(block, "event");
 
   var code = `client.on("interactionCreate", async (interaction) => {
-          ${code_statement}
-      });`;
-  return code;
-};
-
-javascriptGenerator.forBlock["slash_createcontainer"] = function (
-  block,
-  generator
-) {
-  var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
-  var statements_commands = generator.statementToCode(block, "commands");
-
-  var code;
-
-  if (value_guild)
-    code = `client.guilds.cache.get(${value_guild}).commands.set([
-    ${statements_commands}
-  ]);`;
-  else if (!value_guild)
-    code = `client.application.commands.set([
-    ${statements_commands}
-  ]);`;
-
+  if (!interaction.isChatInputCommand()) return;
+${code_statement}});\n`;
   return code;
 };
 
@@ -358,13 +358,15 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
   var options = generator.statementToCode(block, "options");
   var nsfw = generator.valueToCode(block, "nsfw", Order.ATOMIC);
   var perm = generator.valueToCode(block, "perms", Order.ATOMIC);
+  var dm = generator.valueToCode(block, "dm", Order.ATOMIC)
 
-  var code = `{
+  var code = `\n{
       name: ${name},
+      type: Discord.ApplicationCommandType.ChatInput,
       description: ${dsc},
-      nsfw: ${nsfw},
-      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-    },
+      nsfw: ${nsfw || false},
+      dmPermission: ${dm || true},
+      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`},
       options: [${options}]
     },`;
 
@@ -463,8 +465,8 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_createcontainer"],
-      message: 'This block must be under "set slash commands" block',
+      blockTypes: ["slash_createcontainer", "misc_createcontainer"],
+      message: 'This block must be under "Set slash commands / context menus" block',
     },
   ]
 );
@@ -539,7 +541,7 @@ createRestrictions(
       message: 'This block must be under "when slash command received" event',
     },
     {
-      type: "hasParent",
+      type: "hasBlockInParent",
       blockTypes: ["slash_reply"],
       message: 'This block must be used AFTER "reply to the command" block',
     },

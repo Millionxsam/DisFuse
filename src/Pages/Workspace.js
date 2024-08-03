@@ -51,6 +51,7 @@ import "../blocks/events/removes";
 import "../blocks/events/messages";
 import "../blocks/polls";
 import "../blocks/roles";
+import "../blocks/contextMenus";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";

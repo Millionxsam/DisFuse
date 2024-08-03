@@ -1083,7 +1083,7 @@ export const toolbox = {
         {
           kind: "category",
           name: "Webhooks",
-          colour: "#0000FF",
+          colour: "#2d39a6",
           contents: [
             {
               kind: "label",
@@ -1100,6 +1100,10 @@ export const toolbox = {
             {
               kind: "block",
               type: "webhooks_send",
+            },
+            {
+              kind: block,
+              type: "webhooks_delete"
             },
           ],
         },
@@ -1645,7 +1649,7 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "slash_createcontainer",
+              type: "misc_createcontainer",
             },
             {
               kind: "block",
@@ -1753,6 +1757,87 @@ export const toolbox = {
               type: "slash_server",
             },
           ],
+        },
+        {
+          kind: category,
+          name: "Context Menus",
+          colour: "#5675A1",
+          contents: [
+            {
+              kind: "label",
+              text: "Create a context menu first ↓",
+            },
+            {
+              kind: "label",
+              text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+            },
+            {
+              kind: "block",
+              type: "misc_createcontainer",
+            },
+            {
+              kind: block,
+              type: "contextMenu_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                dms: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_received"
+            },
+            {
+              kind: "label",
+              text: "Information about the context menu clicked ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_name"
+            },
+            {
+              kind: block,
+              type: "contextMenu_userMenu"
+            },
+            {
+              kind: block,
+              type: "contextMenu_messageMenu"
+            },
+            {
+              kind: block,
+              type: "contextMenu_member"
+            },
+            {
+              kind: block,
+              type: "contextMenu_user"
+            },
+            {
+              kind: block,
+              type: "contextMenu_channel"
+            },
+            {
+              kind: block,
+              type: "contextMenu_server"
+            },
+
+
+
+
+
+
+          ]
         },
         {
           kind: "category",

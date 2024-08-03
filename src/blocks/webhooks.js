@@ -13,10 +13,10 @@ Blockly.Blocks["webhooks_create"] = {
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in channel:");
-    this.appendStatementInput("code").setCheck("default").appendField("then");
+    this.appendStatementInput("code").setCheck("webhookActionBlock").appendField("then");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("0000FF");
+    this.setColour("#2d39a6");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -26,9 +26,9 @@ Blockly.Blocks["webhooks_send"] = {
   init: function () {
     this.appendDummyInput().appendField("Send a message as the webhook");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("0000FF");
+    this.setPreviousStatement(true, "webhookActionBlock");
+    this.setNextStatement(true, "webhookActionBlock");
+    this.setColour("#2d39a6");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -76,6 +76,26 @@ javascript.javascriptGenerator.forBlock["webhooks_create"] = function (
   return code;
 };
 
+Blockly.Blocks["webhooks_delete"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("Delete the webhook");
+    this.setPreviousStatement(true, "webhookActionBlock");
+    this.setNextStatement(true, "webhookActionBlock");
+    this.setColour("#2d39a6");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["webhooks_delete"] = function (
+  block,
+  generator
+) {
+  var code = `webhook.delete();`;
+  return code;
+};
+
 createRestrictions(
   ["webhooks_create"],
   [
@@ -91,14 +111,20 @@ createRestrictions(
   ["webhooks_send"],
   [
     {
-      type: "hasParent",
-      blockTypes: ["webhooks_create"],
-      message: "This block must be under 'create a webhook' block",
-    },
-    {
       type: "notEmpty",
       blockTypes: ["content"],
       message: "You must specify content to send",
     },
   ]
 );
+
+createRestrictions(
+  ["webhooks_delete", "webhooks_send"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["webhooks_create"],
+      message: "This block must be under the 'Create a webhook' block",
+    }
+  ]
+)

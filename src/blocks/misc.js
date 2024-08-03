@@ -108,3 +108,49 @@ createRestrictions(
     },
   ]
 );
+
+Blockly.Blocks["misc_createcontainer"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Set slash commands / context menus");
+    this.appendValueInput("guild")
+      .setCheck("String")
+      .appendField("guild ID (leave blank for global commands and menus):");
+    this.appendStatementInput("code").setCheck(["contextMenuCreate", "slashCreate"]);
+    this.setInputsInline(false);
+    this.setColour("4192E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
+  block,
+  generator
+) {
+  var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
+  var statements_code = generator.statementToCode(block, "code");
+
+  var code;
+
+  if (value_guild)
+    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}
+]);`;
+  else
+    code = `client.application.commands.set([${statements_code}
+]);`;
+
+  return code;
+};
+
+createRestrictions(
+  ["misc_createcontainer"],
+  [
+    {
+      type: "hasNoBlockInParent",
+      blockTypes: ["misc_createcontainer"],
+      message: 'You can only have one of this type of block. The commands and menus will be overriden.'
+    }
+  ]
+)

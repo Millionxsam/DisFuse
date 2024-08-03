@@ -26,6 +26,14 @@ export function executeRestrictions(workspace) {
           if (!hasParentOfType(block, restriction.blockTypes))
             errors.push(restriction.message);
           break;
+        case "hasNoBlockInParent":
+          if (hasBlockInParentOfType(block, restriction.blockTypes))
+            errors.push(restriction.message);
+          break;
+        case "hasBlockInParent":
+          if (!hasBlockInParentOfType(block, restriction.blockTypes))
+            errors.push(restriction.message);
+          break;
         case "notEmpty":
           let empty = true;
           restriction.blockTypes.forEach((type) => {
@@ -72,3 +80,18 @@ function hasParentOfType(block, types) {
 
   return hasParent;
 }
+
+function hasBlockInParentOfType(block, types) {
+  let hasParent = false;
+
+  while (block.getParent()) {
+    if (types.includes(block.getParent().type)) {
+      hasParent = true;
+    }
+
+    block = block.getParent();
+  }
+
+  return hasParent;
+}
+
