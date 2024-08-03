@@ -1183,6 +1183,14 @@ export const toolbox = {
             },
             {
               kind: "block",
+              type: "channel_create",
+            },
+            {
+              kind: "block",
+              type: "channel_createdChannel",
+            },
+            {
+              kind: "block",
               type: "channel_send",
             },
             {
@@ -1718,15 +1726,15 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "slash_reply",
+              type: "misc_int_reply",
             },
             {
               kind: "block",
-              type: "slash_reply_rows",
+              type: "misc_int_reply_rows",
             },
             {
               kind: "block",
-              type: "slash_editreply",
+              type: "misc_int_editreply",
             },
             {
               kind: "label",
@@ -2048,15 +2056,15 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "slash_reply",
+              type: "misc_int_reply",
             },
             {
               kind: "block",
-              type: "slash_reply_rows",
+              type: "misc_int_reply_rows",
             },
             {
               kind: "block",
-              type: "slash_editreply",
+              type: "misc_int_editreply",
             },
           ],
         },

@@ -30,7 +30,7 @@ Blockly.Blocks["channel_send_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("D39600");
@@ -348,6 +348,78 @@ Blockly.Blocks["channel_clone"] = {
   },
 };
 
+Blockly.Blocks["channel_create"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Create a channel");
+    this.appendValueInput("guild")
+      .appendField("in the server:")
+      .setCheck("server");
+    this.appendValueInput("name").appendField("name:").setCheck("String");
+    this.appendValueInput("parent")
+      .appendField("in category:")
+      .setCheck("channel");
+    this.appendDummyInput()
+      .appendField("type:")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["announcements", "GuildAnnouncement"],
+          ["category", "GuildCategory"],
+          ["forum", "GuildForum"],
+          ["media", "GuildMedia"],
+          ["stage", "GuildStageVoice"],
+          ["text", "GuildText"],
+          ["voice", "GuildVoice"],
+        ]),
+        "type"
+      );
+    this.appendStatementInput("then").appendField("then:");
+    this.setInputsInline(false);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("D39600");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["channel_createdChannel"] = {
+  init: function () {
+    this.appendDummyInput().appendField("created channel");
+    this.setOutput(true, "channel");
+    this.setColour("D39600");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["channel_createdChannel"] = function (
+  block,
+  generator
+) {
+  var code = `createdChannel`;
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
+  const guild = generator.valueToCode(block, "guild", Order.ATOMIC);
+  const name = generator.valueToCode(block, "name", Order.NONE);
+  const parent = generator.valueToCode(block, "parent", Order.NONE);
+  const type = block.getFieldValue("type");
+  const then = generator.statementToCode(block, "then");
+
+  return `${guild}.channels.create({
+    name: ${name || "''"},
+    parent: ${parent || "null"},
+    type: Discord.ChannelType.${type}
+  })${
+    then
+      ? `.then(createdChannel => {
+    ${then}
+  });`
+      : ";"
+  }`;
+};
+
 Blockly.Blocks["channel_del"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -447,10 +519,11 @@ javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(c => c.name == ${value_value})`
-    }`;
+  var code = `${value_server}.channels.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(c => c.name == ${value_value})`
+  }`;
   return [code, Order.NONE];
 };
 
@@ -608,12 +681,28 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["channel_channel"],
+  ["channel_create"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["guild"],
+      message: "You must specify what server to create a channel in",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["name"],
+      message: "You must specify the name of the channel",
+    },
+  ]
+);
+
+createRestrictions(
+  ["channel_createdChannel"],
   [
     {
       type: "hasParent",
-      blockTypes: ["channel_foreach"],
-      message: 'This block must be under the "For each channel on the server" block',
+      blockTypes: ["channel_create"],
+      message: "This block must be under a 'create a channel' block",
     },
   ]
 );

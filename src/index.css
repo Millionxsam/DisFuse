@@ -146,11 +146,11 @@ input[type="number"]:hover {
   opacity: 0;
   transform: translateX(-9rem) scale(0.95);
   filter: blur(3px);
-  transition: all 0.5s 0.25s ease;
+  transition: opacity 0.5s 0.25s ease, transform 0.5s 0.25s ease,
+    filter 0.5s 0.25s ease;
 }
 
 .hidden.shown {
-  transition: all 0.5s 0.25s ease;
   opacity: 1;
   transform: none;
   filter: none;
@@ -192,7 +192,7 @@ input[type="number"]:hover {
   opacity: 0;
   height: 0.3vh;
   border-radius: 10px;
-  background-color: var(--main-color);
+  background-color: rgb(152, 174, 196);
   transition: all 0.2s ease;
   box-shadow: 0 0 1rem 0.1rem var(--main-color);
 }
@@ -220,7 +220,7 @@ input[type="number"]:hover {
   width: 35px;
 }
 
-.switch:active input:checked+.slider:before {
+.switch:active input:checked + .slider:before {
   left: -5px;
 }
 
@@ -252,15 +252,15 @@ input[type="number"]:hover {
   box-shadow: 0 0 10px 1px gray;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: var(--main-color);
 }
 
-input:focus+.slider {
+input:focus + .slider {
   box-shadow: 0 0 1px var(--main-color);
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(26px);
 }
 
@@ -331,6 +331,28 @@ p.modal-text {
   color: white;
 }
 
+.previewWorkspaceNavbar {
+  display: flex;
+  align-items: center;
+  background-color: var(--main-color);
+  height: 7.5vh;
+  padding: 2vh;
+  color: white;
+  position: relative;
+}
+
+.previewWorkspaceNavbar div:nth-child(2) {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.projectName {
+  font-size: 30px;
+}
 .workspace-navbar .projectName {
   font-size: 20px;
   cursor: default;
@@ -395,7 +417,8 @@ p.modal-text {
   font-size: 17px;
 }
 
-#workspace {
+#workspace,
+#previewWorkspace {
   height: 92.5vh;
 }
 
@@ -589,7 +612,8 @@ p.modal-text {
   border-radius: 10px;
 }
 
-#workspace input {
+#workspace input,
+#previewWorkspace input {
   border: none;
   padding: 0.25vh;
   background-color: var(--main-color);
@@ -600,7 +624,8 @@ p.modal-text {
   border-radius: 5px;
 }
 
-#workspace input::placeholder {
+#workspace input::placeholder,
+#previewWorkspace input::placeholder {
   color: white;
 }
 
@@ -682,11 +707,8 @@ p.modal-text {
 
 .home-container .head p strong {
   background: var(--main-color);
-  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #4095e6, rgb(226, 63, 226));
-  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #4095e6, rgb(226, 63, 226));
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -701,6 +723,31 @@ p.modal-text {
 .home-container .head .logo img {
   border-radius: 50%;
   height: 15rem;
+}
+
+.home-container .scrollDownBtn {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  transform: translateX(-50%);
+  width: min-content;
+  font-size: 4rem;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.home-container .scrollDownBtn:active i {
+  color: rgba(146, 146, 146, 0.849);
+}
+
+.home-container .scrollDownBtn i {
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.849);
+}
+
+.home-container .scrollDownBtn:hover i {
+  box-shadow: 0 0 2rem var(--main-color);
 }
 
 .dashboard-container {
@@ -764,6 +811,7 @@ p.modal-text {
 .sidebar-container ul {
   display: flex;
   flex-direction: column;
+  align-items: center;
   list-style: none;
   gap: 2rem;
   height: 30%;
@@ -775,6 +823,10 @@ p.modal-text {
   align-items: center;
   gap: 0.6rem;
   justify-content: center;
+}
+
+.sidebar-container ul a {
+  width: min-content;
 }
 
 .sidebar-container ul a:hover i {
@@ -817,8 +869,7 @@ p.modal-text {
   background-color: var(--foreground-color);
 }
 
-.projects-container,
-.settings-container {
+.projects-container {
   padding: 2rem;
   width: 100%;
   display: flex;
@@ -866,7 +917,8 @@ p.modal-text {
   text-overflow: ellipsis;
 }
 
-.priProject h1 i {
+.priProject h1 i,
+.pubProject h1 i {
   font-size: 20px;
 }
 
@@ -886,7 +938,7 @@ p.modal-text {
   border: 2px solid var(--border-color);
 }
 
-.projects-container>.buttons {
+.projects-container > .buttons {
   display: flex;
   gap: 1rem;
   margin-left: 1rem;
@@ -924,6 +976,11 @@ p.modal-text {
 .explore-container .exploration,
 .fav-container .favorites {
   margin-left: 1rem;
+}
+
+.explore-container .buttons {
+  display: flex;
+  gap: 1rem;
 }
 
 input.search {
@@ -982,6 +1039,16 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.pubProject h1 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pubProject .buttons {
@@ -1065,7 +1132,7 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 3rem;
 }
 
-.user-profile-container .body>div {
+.user-profile-container .body > div {
   background-color: var(--foreground-color);
   border: 2px solid var(--border-color);
   padding: 1.5rem;
@@ -1075,34 +1142,34 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 1rem;
 }
 
-.user-profile-container .body>div .buttons {
+.user-profile-container .body > div .buttons {
   display: flex;
   gap: 0.5vw;
 }
 
-.user-profile-container .body>div .buttons a {
+.user-profile-container .body > div .buttons a {
   width: 100%;
 }
 
-.user-profile-container .body>div .buttons button {
+.user-profile-container .body > div .buttons button {
   width: 100%;
 }
 
-.user-profile-container .body>div .info {
+.user-profile-container .body > div .info {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.user-profile-container .body>div .stats {
+.user-profile-container .body > div .stats {
   display: flex;
 }
 
-.user-profile-container .body>div .stats p:first-child {
+.user-profile-container .body > div .stats p:first-child {
   border: none;
 }
 
-.user-profile-container .body>div .stats p {
+.user-profile-container .body > div .stats p {
   border-left: 2px solid var(--border-color);
   padding: 0 0.5rem 0 0.5rem;
 }
@@ -1281,28 +1348,68 @@ textarea.replyInput::placeholder {
   color: rgb(194, 194, 194);
 }
 
-.settings-container .settings {
+.settings-container {
+  padding: 2rem;
+  width: 100%;
+  gap: 1.7rem;
   display: flex;
   flex-direction: column;
+}
+
+.settings-container .body {
+  display: flex;
   gap: 2rem;
 }
 
-.settings-container .settings>.category {
+.settings-container .body .categories {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 20px;
+  border-right: 2px solid var(--border-color);
+  padding: 1rem;
+  height: 80vh;
+}
+
+.settings-container .body .categories li {
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.settings-container .body .categories li:hover,
+.settings-container .body .categories li.active {
+  background-color: var(--border-color);
+}
+
+.settings-container .body .categories li:active {
+  background-color: rgba(112, 128, 144, 0.13);
+}
+
+.settings-container .settings {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.settings-container .settings>.category>.option {
-  margin-left: 2rem;
+.settings-container .settings .option {
   display: flex;
   align-items: center;
   gap: 1rem;
   font-size: 20px;
 }
 
-.settings-container .settings>.category>.option:first-of-type {
+.settings-container .settings .option:first-of-type {
   margin-top: 1rem;
+}
+
+.settings-container .settings .option div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--border-color);
+  padding: 0.5rem;
+  border-radius: 10px;
 }
 
 select {
@@ -1324,7 +1431,6 @@ select option {
 }
 
 @media (max-width: 1750px) {
-
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1334,7 +1440,6 @@ select option {
 }
 
 @media (max-width: 1400px) {
-
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1360,7 +1465,6 @@ select option {
 }
 
 @media (max-width: 1030px) {
-
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1419,6 +1523,15 @@ select option {
     display: block;
   }
 
+  .loadingAnim {
+    font-size: 30px;
+  }
+
+  .loadingAnim .spinner {
+    height: 2rem;
+    width: 2rem;
+  }
+
   .hamburger {
     width: 100%;
     background-color: var(--main-color);
@@ -1462,17 +1575,17 @@ select option {
     max-width: 90%;
   }
 
-  .project-page-container .head>.buttons {
+  .project-page-container .head > .buttons {
     flex-direction: column;
   }
 
-  .project-page-container .head>.buttons div {
+  .project-page-container .head > .buttons div {
     gap: 2vw;
   }
 }
 
 @media (max-width: 450px) {
-  .projects-container>.buttons {
+  .projects-container > .buttons {
     flex-direction: column;
     gap: 1rem;
   }
@@ -1494,6 +1607,9 @@ select option {
 }
 
 @media (max-width: 395px) {
+  .loadingAnim {
+    font-size: 20px;
+  }
 
   .projects-container .projects,
   .explore-container .exploration .content,
@@ -1506,8 +1622,8 @@ select option {
     grid-template-columns: 15rem !important;
   }
 
-  .pubProject>.buttons,
-  .priProject>.buttons {
+  .pubProject > .buttons,
+  .priProject > .buttons {
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -1529,6 +1645,14 @@ select option {
 }
 
 @media (max-width: 330px) {
+  .loadingAnim {
+    font-size: 20px;
+  }
+
+  .loadingAnim .spinner {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
 
   .projects-container .head,
   .explore-container .head,
@@ -1576,7 +1700,7 @@ select option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15rem;
+  margin-top: 25rem;
 }
 
 .home-container .body h2 {
@@ -1602,41 +1726,82 @@ select option {
   cursor: default;
   padding: 1rem;
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
   align-items: center;
   text-align: center;
   font-size: 20px;
   justify-content: center;
+  transition: all 0.2s ease, opacity 0.5s 0.25s ease, transform 0.5s 0.25s ease,
+    filter 0.5s 0.25s ease;
+}
+
+.features div i {
+  font-size: 30px;
+  transition: color 0.5s ease;
+}
+
+.features div:nth-child(1):hover i {
+  color: rgb(216, 181, 93);
+}
+.features div:nth-child(2):hover i {
+  color: lightgreen;
+}
+.features div:nth-child(3):hover i {
+  color: rgb(255, 255, 127);
+}
+.features div:nth-child(4):hover i {
+  color: rgb(157, 157, 255);
+}
+.features div:nth-child(5):hover i {
+  color: rgb(255, 129, 255);
+}
+.features div:nth-child(6):hover i {
+  color: rgb(255, 255, 127);
+}
+.features div:nth-child(7):hover i {
+  color: cyan;
+}
+.features div:nth-child(8):hover i {
+  color: rgb(255, 169, 169);
+}
+.features div:nth-child(9):hover i {
+  color: rgb(168, 81, 81);
 }
 
 .features div:hover {
   scale: 1.05;
-  transition: all 0.2s ease !important;
   box-shadow: 0 0 2rem var(--main-color);
-  opacity: 1;
 }
 
 .features div:nth-child(2) {
-  transition: all 0.5s 0.25s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
+    filter 0.5s 0.5s ease;
 }
 
 .features div:nth-child(3) {
-  transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
+    filter 0.5s 0.75s ease;
 }
 
 .features div:nth-child(5) {
-  transition: all 0.5s 0.25s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
+    filter 0.5s 0.5s ease;
 }
 
 .features div:nth-child(6) {
-  transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
+    filter 0.5s 0.75s ease;
 }
 
 .features div:nth-child(8) {
-  transition: all 0.5s 0.25s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
+    filter 0.5s 0.5s ease;
 }
 
 .features div:nth-child(9) {
-  transition: all 0.5s 0.5s ease, scale 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
+    filter 0.5s 0.75s ease;
 }
 
 h2.hidden:not(.shown),
@@ -1702,7 +1867,7 @@ div.hidden:not(.shown) {
 }
 
 .blocklyTreeIcon {
-  background-image: url('../public/media/sprite.png');
+  background-image: url("../public/media/sprite.png");
 }
 
 .blocklyTreeRow {

@@ -105,8 +105,6 @@ export default function Workspace() {
                 ? false
                 : localStorage.getItem("workspace-gridSnap") === "true";
 
-            console.log(snapToGrid);
-
             let gridSpacing =
               localStorage.getItem("workspace-gridSpacing") || 35;
 
@@ -201,7 +199,7 @@ export default function Workspace() {
               "messageDeleted",
               "messageReaction",
               "role",
-              "roles"
+              "roles",
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -251,12 +249,12 @@ export default function Workspace() {
                   cancelButtonText: "Cancel",
                   background:
                     usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
+                    usertheme.name === "lighttheme"
                       ? ""
                       : "#282828",
                   color:
                     usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
+                    usertheme.name === "lighttheme"
                       ? ""
                       : "white",
                   confirmButtonText: "Load",
@@ -268,7 +266,13 @@ export default function Workspace() {
                 }).then((result) => {
                   if (!result.isConfirmed) return;
 
-                  const data = require(`../templates/${result.value}`);
+                  let data = require(`../templates/${result.value}`);
+
+                  data.blocks.blocks = data.blocks.blocks.concat(
+                    Blockly.serialization.workspaces.save(workspace)?.blocks
+                      ?.blocks || []
+                  );
+
                   Blockly.serialization.workspaces.load(data, workspace);
                 });
               });
@@ -362,13 +366,16 @@ export default function Workspace() {
                   showConfirmButton: false,
                 });
               };
-          }, [])
+          })
           .catch((e) => {
             console.error(e);
 
             if (window.location.hostname === "localhost") {
-              if (String(e) == 'Error: Shortcut named "startSearch" already exists.') {
-                return (window.location.reload());
+              if (
+                String(e) ==
+                'Error: Shortcut named "startSearch" already exists.'
+              ) {
+                return window.location.reload();
               }
             }
           });
