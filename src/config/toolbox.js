@@ -2146,6 +2146,23 @@ export const toolbox = {
         {
           kind: "category",
           name: "Scratch",
+          colour: "#f73c2f",
+          contents: [
+            {
+              kind: "block",
+              type: "youtube_getprofile",
+            },
+            {
+              kind: "block",
+              type: "scratch_getprofileinfo",
+            },
+            {
+              kind: "block",
+              type: "scratch_getmessages",
+            },
+            {
+          kind: "category",
+          name: "YouTube",
           colour: "#0fbd8c",
           contents: [
             {
