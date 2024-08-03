@@ -109,7 +109,10 @@ Blockly.Blocks["slash_createcontainer"] = {
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands):");
-    this.appendStatementInput("commands").setCheck("default");
+    this.appendStatementInput("commands").setCheck([
+      "contextMenuCreate",
+      "slashCreate",
+    ]);
     this.setInputsInline(false);
     this.setColour("#00A859");
     this.setTooltip("");
