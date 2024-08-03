@@ -122,3 +122,55 @@ Blockly.Blocks["contextMenu_server"] = {
 };
 
 javascriptGenerator.forBlock["contextMenu_server"] = () => ['interaction.guild', Order.NONE];
+
+Blockly.Blocks["contextMenu_targetMessage"] = {
+    init: function () {
+        this.appendDummyInput().appendField("selected message of the menu");
+        this.setColour("#5675A1");
+        this.setOutput(true, 'message');
+    },
+};
+
+javascriptGenerator.forBlock["contextMenu_targetMessage"] = () => ['interaction.targetMessage', Order.NONE];
+
+Blockly.Blocks["contextMenu_targetUser"] = {
+    init: function () {
+        this.appendDummyInput().appendField("selected user of the menu");
+        this.setColour("#5675A1");
+        this.setOutput(true, 'user');
+    },
+};
+
+javascriptGenerator.forBlock["contextMenu_targetUser"] = () => ['interaction.targetUser', Order.NONE];
+
+createRestrictions(
+    ["contextMenu_create"],
+    [
+        {
+            type: "surroundParent",
+            blockTypes: ["slash_createcontainer", "misc_createcontainer"],
+            message: 'This block must be under "Set slash commands / context menus" block',
+        },
+    ]
+);
+
+createRestrictions(
+    [
+        "contextMenu_targetUser",
+        "contextMenu_targetMessage",
+        "contextMenu_member",
+        "contextMenu_user",
+        "contextMenu_channel",
+        "contextMenu_server",
+        "contextMenu_messageMenu",
+        "contextMenu_userMenu",
+        "contextMenu_name"
+    ],
+    [
+        {
+            type: "hasHat",
+            blockTypes: ["contextMenu_received"],
+            message: 'This block must be under "When a context menu is clicked" event',
+        },
+    ]
+);

@@ -95,7 +95,7 @@ Blockly.Blocks["misc_int_reply"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("4192E9");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -115,7 +115,7 @@ Blockly.Blocks["misc_int_reply_rows"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("4192E9");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -128,7 +128,7 @@ Blockly.Blocks["misc_int_editreply"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("4192E9");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -245,21 +245,11 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
 };
 
 createRestrictions(
-  ["misc_createcontainer"],
-  [
-    {
-      type: "hasNoBlockInParent",
-      blockTypes: ["misc_createcontainer"],
-      message: 'You can only have one of this type of block. The commands and menus will be overriden.'
-    }
-  ]
-)
-createRestrictions(
   ["misc_int_reply"],
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received", "modal_handle_interaction"],
+      blockTypes: ["slash_received", "modal_handle_interaction", "contextMenu_received"],
       message: "This block must be under an interaction event",
     },
   ]
@@ -270,7 +260,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received", "modal_handle_interaction"],
+      blockTypes: ["slash_received", "modal_handle_interaction", "contextMenu_received"],
       message: "This block must be under an interaction event",
     },
   ]
@@ -281,11 +271,11 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received"],
-      message: 'This block must be under "when slash command received" event',
+      blockTypes: ["slash_received", "contextMenu_received"],
+      message: 'This block must be under "when slash command received" or "when context menu clicked" event',
     },
     {
-      type: "hasParent",
+      type: "hasBlockInParent",
       blockTypes: ["slash_reply"],
       message: 'This block must be used AFTER "reply to the command" block',
     },

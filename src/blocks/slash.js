@@ -383,6 +383,7 @@ createRestrictions(
     },
   ]
 );
+
 createRestrictions(
   ["slash_addoption"],
   [
@@ -460,6 +461,7 @@ createRestrictions(
     },
   ]
 );
+
 createRestrictions(
   ["slash_name", "slash_member", "slash_user", "slash_channel", "slash_server"],
   [

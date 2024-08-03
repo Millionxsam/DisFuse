@@ -1809,6 +1809,22 @@ export const toolbox = {
             },
             {
               kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: "block",
+              type: "misc_int_reply",
+            },
+            {
+              kind: "block",
+              type: "misc_int_reply_rows",
+            },
+            {
+              kind: "block",
+              type: "misc_int_editreply",
+            },
+            {
+              kind: "label",
               text: "Information about the context menu clicked ↓",
             },
             {
@@ -1839,12 +1855,22 @@ export const toolbox = {
               kind: block,
               type: "contextMenu_server"
             },
-
-
-
-
-
-
+            {
+              kind: "label",
+              text: "Only if the menu is an user menu ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_targetUser"
+            },
+            {
+              kind: "label",
+              text: "Only if the menu is a message menu ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_targetMessage"
+            },
           ]
         },
         {
