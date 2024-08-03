@@ -2150,7 +2150,7 @@ export const toolbox = {
           contents: [
             {
               kind: "block",
-              type: "youtube_getprofile",
+              type: "scratch_getprofile",
             },
             {
               kind: "block",
@@ -2167,15 +2167,15 @@ export const toolbox = {
           contents: [
             {
               kind: "block",
-              type: "scratch_getprofile",
+              type: "youtube_getprofile",
             },
             {
               kind: "block",
-              type: "scratch_getprofileinfo",
+              type: "youtube_getprofileinfo",
             },
             {
               kind: "block",
-              type: "scratch_getmessages",
+              type: "youtube_getvideo",
             },
           ],
         },
