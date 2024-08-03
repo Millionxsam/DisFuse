@@ -13,7 +13,6 @@ Blockly.Blocks["slash_received"] = {
   },
 };
 
-<<<<<<< HEAD
 Blockly.Blocks["slash_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the interaction");
@@ -103,9 +102,7 @@ javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
   return code;
 };
 
-=======
 // kept for old projects compatibility
->>>>>>> 5639daf521fcb8828a646969751044c48391c80b
 Blockly.Blocks["slash_createcontainer"] = {
   init: function () {
     this.appendDummyInput().appendField("Set slash commands");
@@ -363,7 +360,7 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
   var options = generator.statementToCode(block, "options");
   var nsfw = generator.valueToCode(block, "nsfw", Order.ATOMIC);
   var perm = generator.valueToCode(block, "perms", Order.ATOMIC);
-  var dm = generator.valueToCode(block, "dm", Order.ATOMIC)
+  var dm = generator.valueToCode(block, "dm", Order.ATOMIC);
 
   var code = `\n{
       name: ${name},
@@ -371,7 +368,9 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       description: ${dsc},
       nsfw: ${nsfw || false},
       dmPermission: ${dm || true},
-      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`},
+      defaultMemberPermissions: ${
+        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+      },
       options: [${options}]
     },`;
 
@@ -471,7 +470,8 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["slash_createcontainer", "misc_createcontainer"],
-      message: 'This block must be under "Set slash commands / context menus" block',
+      message:
+        'This block must be under "Set slash commands / context menus" block',
     },
   ]
 );
@@ -528,16 +528,7 @@ createRestrictions(
     },
   ]
 );
-createRestrictions(
-  ["slash_reply"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received"],
-      message: 'This block must be under "when slash command received" event',
-    },
-  ]
-);
+
 createRestrictions(
   ["slash_editreply"],
   [
@@ -561,6 +552,53 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["slash_received"],
       message: 'This block must be under "when slash command received" event',
+    },
+  ]
+);
+
+createRestrictions(
+  ["slash_editreply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received", "contextMenu_received"],
+      message:
+        'This block must be under "when slash command received" or "when context menu clicked" event',
+    },
+    {
+      type: "hasBlockInParent",
+      blockTypes: ["slash_reply"],
+      message: 'This block must be used AFTER "reply to the command" block',
+    },
+  ]
+);
+
+createRestrictions(
+  ["slash_reply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: [
+        "slash_received",
+        "modal_handle_interaction",
+        "contextMenu_received",
+      ],
+      message: "This block must be under an interaction event",
+    },
+  ]
+);
+
+createRestrictions(
+  ["slash_reply_rows"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: [
+        "slash_received",
+        "modal_handle_interaction",
+        "contextMenu_received",
+      ],
+      message: "This block must be under an interaction event",
     },
   ]
 );

@@ -82,107 +82,6 @@ Blockly.Blocks["misc_permission"] = {
   },
 };
 
-<<<<<<< HEAD
-=======
-Blockly.Blocks["misc_int_reply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-Blockly.Blocks["misc_int_reply_rows"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-Blockly.Blocks["misc_int_editreply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_editreply"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-
-  var code = `interaction.editReply({
-    content: ${value_content},
-  });`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-
-  var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"}
-  });`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"},
-    components: [${rows}]
-  });`;
-  return code;
-};
-
->>>>>>> 5639daf521fcb8828a646969751044c48391c80b
 javascript.javascriptGenerator.forBlock["misc_permission"] = function (
   block,
   generator
@@ -218,7 +117,10 @@ Blockly.Blocks["misc_createcontainer"] = {
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands and menus):");
-    this.appendStatementInput("code").setCheck(["contextMenuCreate", "slashCreate"]);
+    this.appendStatementInput("code").setCheck([
+      "contextMenuCreate",
+      "slashCreate",
+    ]);
     this.setInputsInline(false);
     this.setColour("4192E9");
     this.setTooltip("");
@@ -246,41 +148,3 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
 
   return code;
 };
-
-createRestrictions(
-  ["misc_int_reply"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received", "modal_handle_interaction", "contextMenu_received"],
-      message: "This block must be under an interaction event",
-    },
-  ]
-);
-
-createRestrictions(
-  ["misc_int_reply_rows"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received", "modal_handle_interaction", "contextMenu_received"],
-      message: "This block must be under an interaction event",
-    },
-  ]
-);
-
-createRestrictions(
-  ["misc_int_editreply"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received", "contextMenu_received"],
-      message: 'This block must be under "when slash command received" or "when context menu clicked" event',
-    },
-    {
-      type: "hasBlockInParent",
-      blockTypes: ["slash_reply"],
-      message: 'This block must be used AFTER "reply to the command" block',
-    },
-  ]
-);
