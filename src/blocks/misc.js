@@ -5,9 +5,11 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
     this.appendDummyInput().appendField("Add a row");
-    this.appendStatementInput("components").setCheck("default").appendField("with:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
+    this.appendStatementInput("components")
+      .setCheck("default")
+      .appendField("with:");
+    this.setPreviousStatement(true, "rows");
+    this.setNextStatement(true, "rows");
     this.setColour("4192E9");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -80,6 +82,104 @@ Blockly.Blocks["misc_permission"] = {
   },
 };
 
+Blockly.Blocks["misc_int_reply"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendValueInput("ephemeral")
+      .setCheck("Boolean")
+      .appendField("visible only to the user?");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#00A859");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["misc_int_reply_rows"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendValueInput("ephemeral")
+      .setCheck("Boolean")
+      .appendField("visible only to the user?");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#00A859");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["misc_int_editreply"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Edit the reply");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#00A859");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_int_editreply"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+
+  var code = `interaction.editReply({
+    content: ${value_content},
+  });`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+
+  var code = `interaction.reply({
+    content: ${value_content || "''"},
+    embeds: [${value_embeds.replaceAll("'", "")}],
+    ephemeral: ${value_ephemeral || "false"}
+  });`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `interaction.reply({
+    content: ${value_content || "''"},
+    embeds: [${value_embeds.replaceAll("'", "")}],
+    ephemeral: ${value_ephemeral || "false"},
+    components: [${rows}]
+  });`;
+  return code;
+};
+
 javascript.javascriptGenerator.forBlock["misc_permission"] = function (
   block,
   generator
@@ -105,6 +205,44 @@ createRestrictions(
       type: "surroundParent",
       blockTypes: ["msg_reply_rows", "slash_reply_rows", "channel_send_rows"],
       message: "This block must be under a block that has a 'rows' section",
+    },
+  ]
+);
+
+createRestrictions(
+  ["misc_int_reply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received", "modal_handle_interaction"],
+      message: "This block must be under an interaction event",
+    },
+  ]
+);
+
+createRestrictions(
+  ["misc_int_reply_rows"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received", "modal_handle_interaction"],
+      message: "This block must be under an interaction event",
+    },
+  ]
+);
+
+createRestrictions(
+  ["misc_int_editreply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["slash_received"],
+      message: 'This block must be under "when slash command received" event',
+    },
+    {
+      type: "hasParent",
+      blockTypes: ["slash_reply"],
+      message: 'This block must be used AFTER "reply to the command" block',
     },
   ]
 );

@@ -139,7 +139,9 @@ Blockly.Blocks["slash_addsubcommand"] = {
     this.appendDummyInput().appendField("Add subcommand");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
-    this.appendStatementInput("options").setCheck("default").appendField("options:");
+    this.appendStatementInput("options")
+      .setCheck("default")
+      .appendField("options:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -193,58 +195,6 @@ Blockly.Blocks["slash_server"] = {
   },
 };
 
-Blockly.Blocks["slash_reply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the command");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#00A859");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-Blockly.Blocks["slash_reply_rows"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the command");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#00A859");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-Blockly.Blocks["slash_editreply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#00A859");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
 Blockly.Blocks["slash_getoption"] = {
   init: function () {
     this.appendDummyInput()
@@ -283,43 +233,6 @@ javascriptGenerator.forBlock["slash_getoption"] = function (block, generator) {
 
   var code = `interaction.options.get${dropdown_type}(${value_name})`;
   return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-
-  var code = `interaction.editReply({
-    content: ${value_content},
-  });`;
-  return code;
-};
-
-javascriptGenerator.forBlock["slash_reply"] = function (block, generator) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-
-  var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"}
-  });`;
-  return code;
-};
-
-javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"},
-    components: [${rows}]
-  });`;
-  return code;
 };
 
 javascriptGenerator.forBlock["slash_received"] = function (block, generator) {
@@ -363,8 +276,9 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       name: ${name},
       description: ${dsc},
       nsfw: ${nsfw},
-      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-    },
+      defaultMemberPermissions: ${
+        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+      },
       options: [${options}]
     },`;
 
@@ -520,31 +434,7 @@ createRestrictions(
     },
   ]
 );
-createRestrictions(
-  ["slash_reply"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received"],
-      message: 'This block must be under "when slash command received" event',
-    },
-  ]
-);
-createRestrictions(
-  ["slash_editreply"],
-  [
-    {
-      type: "hasHat",
-      blockTypes: ["slash_received"],
-      message: 'This block must be under "when slash command received" event',
-    },
-    {
-      type: "hasParent",
-      blockTypes: ["slash_reply"],
-      message: 'This block must be used AFTER "reply to the command" block',
-    },
-  ]
-);
+
 createRestrictions(
   ["slash_name", "slash_member", "slash_user", "slash_channel", "slash_server"],
   [

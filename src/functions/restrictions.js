@@ -19,6 +19,7 @@ export function executeRestrictions(workspace) {
     const errors = [];
 
     restrictions[block.type].forEach((restriction) => {
+      // eslint-disable-next-line default-case
       switch (restriction.type) {
         case "hasParent":
           if (!hasParentOfType(block, restriction.blockTypes))

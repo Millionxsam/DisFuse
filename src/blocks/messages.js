@@ -37,7 +37,7 @@ Blockly.Blocks["msg_reply_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -113,8 +113,8 @@ javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
 
   var code = `message.reply({
   content: ${content || "''"},
-  embeds: [${embeds.replaceAll("'", "") || ''}],
-  components: [${rows || ''}]
+  embeds: [${embeds.replaceAll("'", "") || ""}],
+  components: [${rows || ""}]
 });\n`;
   return code;
 };
