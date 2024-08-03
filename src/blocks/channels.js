@@ -59,7 +59,7 @@ Blockly.Blocks["channel_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each channel on server:");
+      .appendField("For each channel on the server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -623,8 +623,7 @@ javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
   var codeVal = generator.statementToCode(block, "code");
 
   var code = `${value_server}.channels.cache.forEach(channel => {
-    ${codeVal}
-  });`;
+    ${codeVal}});\n`;
   return code;
 };
 
@@ -704,6 +703,17 @@ createRestrictions(
       type: "hasParent",
       blockTypes: ["channel_create"],
       message: "This block must be under a 'create a channel' block",
+    },
+  ]
+);
+
+createRestrictions(
+  ["channel_foreach"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["server"],
+      message: "You must specify the server to iterate channels from.",
     },
   ]
 );

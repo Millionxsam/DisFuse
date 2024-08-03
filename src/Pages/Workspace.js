@@ -50,6 +50,8 @@ import "../blocks/apps/scratch";
 import "../blocks/events/removes";
 import "../blocks/events/messages";
 import "../blocks/polls";
+import "../blocks/roles";
+
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
 
@@ -173,9 +175,15 @@ export default function Workspace() {
               "process",
               "emoji",
               "channel",
+              "channels",
               "member",
+              "members",
               "user",
+              "users",
               "guild",
+              "guilds",
+              "server",
+              "servers",
               "modalSubmitInteraction",
               "ForEachemojiInServer",
               "interaction",
@@ -189,6 +197,8 @@ export default function Workspace() {
               "AddServer",
               "messageDeleted",
               "messageReaction",
+              "role",
+              "roles",
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -355,7 +365,19 @@ export default function Workspace() {
                   showConfirmButton: false,
                 });
               };
-          }, []);
+          })
+          .catch((e) => {
+            console.error(e);
+
+            if (window.location.hostname === "localhost") {
+              if (
+                String(e) ==
+                'Error: Shortcut named "startSearch" already exists.'
+              ) {
+                return window.location.reload();
+              }
+            }
+          });
 
         function toggleExport() {
           const exportBtn = document.querySelector(
