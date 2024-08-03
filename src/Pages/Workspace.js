@@ -102,8 +102,6 @@ export default function Workspace() {
                 ? false
                 : localStorage.getItem("workspace-gridSnap") === "true";
 
-            console.log(snapToGrid);
-
             let gridSpacing =
               localStorage.getItem("workspace-gridSpacing") || 35;
 
@@ -257,7 +255,13 @@ export default function Workspace() {
                 }).then((result) => {
                   if (!result.isConfirmed) return;
 
-                  const data = require(`../templates/${result.value}`);
+                  let data = require(`../templates/${result.value}`);
+
+                  data.blocks.blocks = data.blocks.blocks.concat(
+                    Blockly.serialization.workspaces.save(workspace)?.blocks
+                      ?.blocks || []
+                  );
+
                   Blockly.serialization.workspaces.load(data, workspace);
                 });
               });
@@ -351,12 +355,7 @@ export default function Workspace() {
                   showConfirmButton: false,
                 });
               };
-          }, [])
-          .catch((e) => {
-            console.error(e);
-            alert("This project does not exist, or you don't have permissions to see this project.");
-            return (window.location = "/projects");
-          });
+          }, []);
 
         function toggleExport() {
           const exportBtn = document.querySelector(
