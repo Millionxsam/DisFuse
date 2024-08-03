@@ -1083,7 +1083,7 @@ export const toolbox = {
         {
           kind: "category",
           name: "Webhooks",
-          colour: "#0000FF",
+          colour: "#2d39a6",
           contents: [
             {
               kind: "label",
@@ -1100,6 +1100,10 @@ export const toolbox = {
             {
               kind: "block",
               type: "webhooks_send",
+            },
+            {
+              kind: block,
+              type: "webhooks_delete",
             },
           ],
         },
@@ -1179,6 +1183,14 @@ export const toolbox = {
             },
             {
               kind: "block",
+              type: "channel_create",
+            },
+            {
+              kind: "block",
+              type: "channel_createdChannel",
+            },
+            {
+              kind: "block",
               type: "channel_send",
             },
             {
@@ -1234,7 +1246,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_getone"
+              type: "roles_getone",
             },
             {
               kind: "label",
@@ -1242,11 +1254,11 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_foreach"
+              type: "roles_foreach",
             },
             {
               kind: block,
-              type: "roles_foreach_role"
+              type: "roles_foreach_role",
             },
             {
               kind: label,
@@ -1254,19 +1266,19 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_highest"
+              type: "roles_highest",
             },
             {
               kind: "label",
-              text: "Create a role in a server ↓"
+              text: "Create a role in a server ↓",
             },
             {
               kind: block,
-              type: "roles_create"
+              type: "roles_create",
             },
             {
               kind: block,
-              type: "misc_permission"
+              type: "misc_permission",
             },
             {
               kind: "label",
@@ -1274,53 +1286,53 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "roles_name"
+              type: "roles_name",
             },
             {
               kind: block,
-              type: "roles_id"
+              type: "roles_id",
             },
             {
               kind: block,
-              type: "roles_position"
+              type: "roles_position",
             },
             {
               kind: block,
-              type: "roles_hexColor"
+              type: "roles_hexColor",
             },
             {
               kind: block,
-              type: "roles_createdAt"
+              type: "roles_createdAt",
             },
             {
               kind: block,
-              type: "roles_hasPermission"
+              type: "roles_hasPermission",
             },
             {
               kind: "label",
-              text: "Role actions ↓"
+              text: "Role actions ↓",
             },
             {
               kind: block,
-              type: "roles_delete"
+              type: "roles_delete",
             },
             {
               kind: block,
-              type: "roles_rename"
+              type: "roles_rename",
             },
             {
               kind: block,
-              type: "roles_addToMember"
+              type: "roles_addToMember",
             },
             {
               kind: block,
-              type: "roles_removeFromMember"
+              type: "roles_removeFromMember",
             },
             {
               kind: block,
-              type: "roles_setPermissions"
-            }
-          ]
+              type: "roles_setPermissions",
+            },
+          ],
         },
         {
           kind: "category",
@@ -1645,7 +1657,7 @@ export const toolbox = {
             },
             {
               kind: "block",
-              type: "slash_createcontainer",
+              type: "misc_createcontainer",
             },
             {
               kind: "block",
@@ -1751,6 +1763,113 @@ export const toolbox = {
             {
               kind: "block",
               type: "slash_server",
+            },
+          ],
+        },
+        {
+          kind: category,
+          name: "Context Menus",
+          colour: "#5675A1",
+          contents: [
+            {
+              kind: "label",
+              text: "Create a context menu first ↓",
+            },
+            {
+              kind: "label",
+              text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+            },
+            {
+              kind: "block",
+              type: "misc_createcontainer",
+            },
+            {
+              kind: block,
+              type: "contextMenu_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                dms: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_received",
+            },
+            {
+              kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: "block",
+              type: "slash_reply",
+            },
+            {
+              kind: "block",
+              type: "slash_reply_rows",
+            },
+            {
+              kind: "block",
+              type: "slash_editreply",
+            },
+            {
+              kind: "label",
+              text: "Information about the context menu clicked ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_name",
+            },
+            {
+              kind: block,
+              type: "contextMenu_userMenu",
+            },
+            {
+              kind: block,
+              type: "contextMenu_messageMenu",
+            },
+            {
+              kind: block,
+              type: "contextMenu_member",
+            },
+            {
+              kind: block,
+              type: "contextMenu_user",
+            },
+            {
+              kind: block,
+              type: "contextMenu_channel",
+            },
+            {
+              kind: block,
+              type: "contextMenu_server",
+            },
+            {
+              kind: "label",
+              text: "Only if the menu is an user menu ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_targetUser",
+            },
+            {
+              kind: "label",
+              text: "Only if the menu is a message menu ↓",
+            },
+            {
+              kind: block,
+              type: "contextMenu_targetMessage",
             },
           ],
         },
@@ -2146,7 +2265,7 @@ export const toolbox = {
         {
           kind: "category",
           name: "Scratch",
-          colour: "#f73c2f",
+          colour: "#0fbd8c",
           contents: [
             {
               kind: "block",
@@ -2159,23 +2278,6 @@ export const toolbox = {
             {
               kind: "block",
               type: "scratch_getmessages",
-            },
-            {
-          kind: "category",
-          name: "YouTube",
-          colour: "#0fbd8c",
-          contents: [
-            {
-              kind: "block",
-              type: "youtube_getprofile",
-            },
-            {
-              kind: "block",
-              type: "youtube_getprofileinfo",
-            },
-            {
-              kind: "block",
-              type: "youtube_getvideo",
             },
           ],
         },
