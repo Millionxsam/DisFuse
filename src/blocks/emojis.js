@@ -4,13 +4,13 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["emoji_getallinserver"] = {
   init: function () {
-    this.appendDummyInput().appendField("For each emoji in the server:");
+    this.appendDummyInput().appendField("For each emoji on the server:");
     this.appendValueInput("server").setCheck("server");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
-    this.setTooltip("Runs a code for each emoji in a server.");
+    this.setTooltip("Runs a code for each emoji on a server.");
     this.setHelpUrl("");
     this.setInputsInline(true);
   },
@@ -33,7 +33,7 @@ Blockly.Blocks["emoji_getallinserver_value"] = {
     this.appendDummyInput().appendField("current emoji in loop");
     this.setOutput("emoji");
     this.setColour("DEB144");
-    this.setTooltip("The current emoji in the server of the loop.");
+    this.setTooltip("The current emoji on the server of the loop.");
     this.setHelpUrl("");
   },
 };
@@ -345,6 +345,17 @@ createRestrictions(
       type: "hasParent",
       blockTypes: ["emoji_getallinserver"],
       message: 'This block must be in a "for each emoji in the server" block',
+    },
+  ]
+);
+
+createRestrictions(
+  ["emoji_getallinserver"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["server"],
+      message: "You must specify the server to iterate emojis from.",
     },
   ]
 );

@@ -38,7 +38,7 @@ Blockly.Blocks["server_getall"] = {
 
 Blockly.Blocks["server_guild"] = {
   init: function () {
-    this.appendDummyInput().appendField("server");
+    this.appendDummyInput().appendField("current server in the loop");
     this.setOutput(true, "server");
     this.setColour("A33DAC");
     this.setTooltip("");
@@ -428,7 +428,7 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["server_getall"],
-      message: 'This block must be under the "for each server" block',
+      message: 'This block must be under the "For each server the bot is in" block',
     },
   ]
 );
