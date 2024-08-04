@@ -193,12 +193,12 @@ export default function ProjectPage() {
           <p>{project.description}</p>
         </div>
         <div className="buttons">
-          <Link to={`/@${project.owner?.username}/${project._id}/view`}>
+          {/* <Link to={`/@${project.owner?.username}/${project._id}/view`}>
             <div className="darkBtn">
               <i class="fa-solid fa-eye"></i>
               <div>View</div>
             </div>
-          </Link>
+          </Link> */}
           <div
             onClick={toggleLike}
             className={`darkBtn like${
