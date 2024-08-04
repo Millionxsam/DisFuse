@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, Outlet, Router } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const { discordUrl } = require("../../config/config.json");
@@ -74,6 +74,15 @@ export default function Sidebar() {
                   <i class="fa-solid fa-star"></i> <div>Favorites</div>
                 </li>
               </Link>
+              {/* <Link
+                onClick={() => setActive(false)}
+                className="underline-effect"
+                to="/notifications"
+              >
+                <li>
+                  <i class="fa-solid fa-bell"></i> <div>Notifications</div>
+                </li>
+              </Link> */}
               <Link
                 onClick={() => setActive(false)}
                 className="underline-effect"

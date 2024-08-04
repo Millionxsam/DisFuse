@@ -11,8 +11,10 @@ import Explore from "./Pages/Dashboard/Explore";
 import UserProfile from "./Pages/UserProfile";
 import ProjectPage from "./Pages/ProjectPage";
 import Favorites from "./Pages/Dashboard/Favorites";
-import Settings from "./Pages/Dashboard/Settings";
 import Staff from "./Pages/Staff";
+import Settings from "./Pages/Dashboard/Settings/Settings";
+import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
+import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
 
 export default function App() {
   setInterval(() => {
@@ -31,16 +33,29 @@ export default function App() {
         <Route path="/" element={[<Navbar />, <Home />]} />
         <Route path="/staff" element={[<Navbar />, <Staff />]} />
 
-        <Route path="/dashboard/projects" element={<Navigate to="/projects" />} />
+        <Route
+          path="/dashboard/projects"
+          element={<Navigate to="/projects" />}
+        />
         <Route path="/dashboard/explore" element={<Navigate to="/explore" />} />
-        <Route path="/dashboard/favorites" element={<Navigate to="/favorites" />} />
-        <Route path="/dashboard/settings" element={<Navigate to="/settings" />} />
+        <Route
+          path="/dashboard/favorites"
+          element={<Navigate to="/favorites" />}
+        />
+        <Route
+          path="/dashboard/settings"
+          element={<Navigate to="/settings" />}
+        />
 
         <Route path="/" element={[<Auth />, <Sidebar />]}>
           <Route path="projects" element={<Projects />} />
           <Route path="explore" element={<Explore />} />
           <Route path="favorites" element={<Favorites />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="settings" element={<Settings />}>
+            <Route index element={<Navigate to={"/settings/workspace"} />} />
+            <Route path="workspace" element={<WorkspaceSettings />} />
+            {/* <Route path="notifications" element={<NotificationSettings />} /> */}
+          </Route>
         </Route>
 
         <Route path="/" element={[<Sidebar />, <Auth />]}>
