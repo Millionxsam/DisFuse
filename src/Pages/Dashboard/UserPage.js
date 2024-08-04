@@ -6,7 +6,7 @@ import LoadingAnim from "../../components/LoadingAnim";
 
 const { apiUrl } = require("../../config/config.json");
 
-export default function UserProfile() {
+export default function UserPage() {
   const { username } = useParams();
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);

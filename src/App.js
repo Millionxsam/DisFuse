@@ -6,15 +6,14 @@ import Navbar from "./components/Navbar";
 import "./index.css";
 import Auth from "./Auth";
 import Sidebar from "./Pages/Dashboard/Sidebar";
-import Projects from "./Pages/Dashboard/Projects";
 import Explore from "./Pages/Dashboard/Explore";
-import UserProfile from "./Pages/UserProfile";
-import ProjectPage from "./Pages/ProjectPage";
 import Favorites from "./Pages/Dashboard/Favorites";
 import Staff from "./Pages/Staff";
 import Settings from "./Pages/Dashboard/Settings/Settings";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
-import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
+import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
+import UserPage from "./Pages/Dashboard/UserPage";
+import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
 
 export default function App() {
   setInterval(() => {
@@ -48,7 +47,7 @@ export default function App() {
         />
 
         <Route path="/" element={[<Auth />, <Sidebar />]}>
-          <Route path="projects" element={<Projects />} />
+          <Route path="projects" element={<MyProjects />} />
           <Route path="explore" element={<Explore />} />
           <Route path="favorites" element={<Favorites />} />
           <Route path="settings" element={<Settings />}>
@@ -59,7 +58,7 @@ export default function App() {
         </Route>
 
         <Route path="/" element={[<Sidebar />, <Auth />]}>
-          <Route path="/:username" element={<UserProfile />} />
+          <Route path="/:username" element={<UserPage />} />
           <Route path="/:username/:projectId" element={<ProjectPage />} />
         </Route>
 
