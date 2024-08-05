@@ -918,6 +918,10 @@ export const toolbox = {
               text: "Information about the message ↓",
             },
             {
+              kind: block,
+              type: "msg_msg",
+            },
+            {
               kind: "block",
               type: "msg_content",
             },
@@ -937,6 +941,14 @@ export const toolbox = {
               kind: "block",
               type: "msg_server",
             },
+            {
+              kind: label,
+              text: "Information about a message ↓"
+            },
+            {
+              kind: "block",
+              type: "message_property",
+            },
           ],
         },
         {
@@ -944,6 +956,10 @@ export const toolbox = {
           name: "Polls",
           colour: "#656b75",
           contents: [
+            {
+              kind: "label",
+              text: "Create a poll ↓",
+            },
             {
               kind: block,
               type: "poll_create",
@@ -957,8 +973,8 @@ export const toolbox = {
               type: "poll_sendchannel",
             },
             {
-              kind: sep,
-              gap: "40",
+              kind: "label",
+              text: "Events ↓",
             },
             {
               kind: block,
