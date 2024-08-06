@@ -9,7 +9,7 @@ createEventBlock(
   "When a member joins a server",
   "#FF4F4F",
   "guildMemberAdd",
-  ["joinedMember", "joinedServer"]
+  ["joinedMember"]
 );
 
 createEventVariable(
@@ -25,7 +25,7 @@ createEventVariable(
   "joining server",
   "#FF4F4F",
   "server",
-  "joinedServer"
+  "joinedMember.guild"
 );
 
 createRestrictions(
