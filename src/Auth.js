@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const { discordUrl, apiUrl } = require("./config/config.json");
 
-const { authUrl } = require("./config/config.json");
+const { authUrl, devAuthUrl } = require("./config/config.json");
 
 export default function Auth() {
   const [params, setParams] = useSearchParams(window.location.hash.slice(1));
@@ -27,10 +27,12 @@ export default function Auth() {
   const token = localStorage.getItem("disfuse-token");
   const exp = parseInt(localStorage.getItem("disfuse-token-exp"));
 
-  if (!token || Date.now() > exp) window.location = authUrl;
+  if (!token || Date.now() > exp) {
+    if (window.location.hostname === 'localhost') window.location = devAuthUrl;
+    else window.location = authUrl;
+  }
 
-  if (window.location.href.includes("#"))
-    window.location = window.location.pathname;
+  if (window.location.href.includes("#")) window.location = window.location.pathname;
 
   axios.post(apiUrl + "/users", null, {
     headers: {

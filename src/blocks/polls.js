@@ -58,7 +58,7 @@ Blockly.Blocks["poll_choice"] = {
     this.appendValueInput("TEXT").setCheck("String").appendField("with text:");
     this.appendValueInput("EMOJI")
       .setCheck(["String", "emoji"])
-      .appendField("with emoji");
+      .appendField("with emoji:");
     this.setPreviousStatement(true, "pollChoicesBlock");
     this.setNextStatement(true, "pollChoicesBlock");
     this.setColour("#656b75");
@@ -81,14 +81,14 @@ Blockly.Blocks["poll_sendchannel"] = {
     };
 
     this.appendDummyInput()
-      .appendField("Send poll named")
+      .appendField("Send poll named:")
       .appendField(new Blockly.FieldTextInput("poll", validator), "NAME");
     this.appendValueInput("CHANNEL")
       .setCheck("channel")
-      .appendField("to channel");
+      .appendField("to channel:");
     this.appendValueInput("MESSAGE")
       .setCheck("String")
-      .appendField("(optional) with text");
+      .appendField("(optional) with text:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");

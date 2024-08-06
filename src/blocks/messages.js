@@ -1,6 +1,5 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import javascript from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["msg_received"] = {
@@ -41,6 +40,16 @@ Blockly.Blocks["msg_reply_rows"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
+    this.setColour("#336EFF");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["msg_msg"] = {
+  init: function () {
+    this.appendDummyInput().appendField("message received");
+    this.setOutput(true, "message");
     this.setColour("#336EFF");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -130,6 +139,11 @@ javascriptGenerator.forBlock["msg_reply"] = function (block, generator) {
   return code;
 };
 
+javascriptGenerator.forBlock["msg_msg"] = function (block, generator) {
+  var code = "message.content";
+  return [code, Order.NONE];
+};
+
 javascriptGenerator.forBlock["msg_content"] = function (block, generator) {
   var code = "message.content";
   return [code, Order.NONE];
@@ -155,7 +169,7 @@ javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["msg_delete"] = function (
+javascriptGenerator.forBlock["msg_delete"] = function (
   block,
   generator
 ) {
@@ -174,6 +188,62 @@ Blockly.Blocks["msg_delete"] = {
   },
 };
 
+Blockly.Blocks['message_property'] = {
+  init: function () {
+    this.appendValueInput('message')
+      .setCheck('message').appendField('get')
+      .appendField(new Blockly.FieldDropdown([
+        ['content', 'content'],
+        ['ID', 'id'],
+        ['author as member', 'member'],
+        ['author as user', 'author'],
+        ['channel', 'channel'],
+        ['server', 'guild'],
+        ['creation date', 'createdAt'],
+        ['URL', 'url'],
+      ]), 'property').appendField('of message');
+    this.setColour("336EFF");
+    this.setOutput(true, null);
+    this.setOnChange(function () {
+      let type = this.getFieldValue('property');
+
+      switch (type) {
+        case 'content':
+          this.setOutput(true, 'String');
+          break;
+        case 'id':
+          this.setOutput(true, 'String');
+          break;
+        case 'member':
+          this.setOutput(true, 'member');
+          break;
+        case 'author':
+          this.setOutput(true, 'user');
+          break;
+        case 'channel':
+          this.setOutput(true, 'channel');
+          break;
+        case 'guild':
+          this.setOutput(true, 'server');
+          break;
+        case 'createdAt':
+          this.setOutput(true, 'date');
+          break;
+        case 'url':
+          this.setOutput(true, 'String');
+          break;
+      }
+    });
+  }
+};
+
+javascriptGenerator.forBlock['message_property'] = function (block, generator) {
+  var val_message = generator.valueToCode(block, 'message', Order.ATOMIC);
+  var field_property = block.getFieldValue('property');
+  var code = `${val_message}.${field_property}`;
+  return [code, Order.NONE];
+};
+
 createRestrictions(
   [
     "msg_content",
@@ -182,6 +252,7 @@ createRestrictions(
     "msg_channel",
     "msg_server",
     "msg_delete",
+    "msg_msg"
   ],
   [
     {
@@ -207,3 +278,14 @@ createRestrictions(
     },
   ]
 );
+
+createRestrictions(
+  ["message_property"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message"],
+      message: 'You must specify the message to get the properties from',
+    },
+  ]
+)
