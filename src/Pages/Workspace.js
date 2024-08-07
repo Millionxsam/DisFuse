@@ -210,6 +210,7 @@ export default function Workspace() {
                 pasteAllToBackpack: true,
               },
             });
+
             backpack.init();
 
             const workspaceSearch = new WorkspaceSearch(workspace);
@@ -249,12 +250,12 @@ export default function Workspace() {
                   cancelButtonText: "Cancel",
                   background:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "#282828",
                   color:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "white",
                   confirmButtonText: "Load",

@@ -694,6 +694,10 @@ export const toolbox = {
           kind: "block",
           type: "time_createdate",
         },
+        {
+          kind: "block",
+          type: "time_timestampFromDate",
+        },
       ],
     },
     {

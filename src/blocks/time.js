@@ -76,3 +76,30 @@ javascriptGenerator.forBlock["time_createdate"] = function (block, generator) {
 
   return [`new Date(${time})`, Order.NEW];
 };
+
+Blockly.Blocks["time_timestampFromDate"] = {
+  init: function () {
+    this.appendValueInput("DATE")
+      .setCheck("date")
+      .appendField("create timestamp from date");
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldDropdown([
+        ['short time', 't'],
+        ['long time', 'T'],
+        ['short date', 'd'],
+        ['long date', 'D'],
+        ['short datetime', 'f'],
+        ['long datetime', 'F'],
+        ['relative time', 'R'],
+      ]), 'STYLE');
+    this.setOutput(true, "String");
+    this.setColour("#db4b9c");
+  },
+};
+
+javascriptGenerator.forBlock["time_timestampFromDate"] = function (block, generator) {
+  var date = generator.valueToCode(block, 'DATE', Order.ATOMIC);
+  var style = block.getFieldValue('STYLE');
+
+  return [`'<t:' + Math.floor(${date}.getTime() / 1000) + ':${style}>'`, Order.NONE];
+};
