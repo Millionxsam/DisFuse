@@ -113,12 +113,16 @@ Blockly.Blocks["main_ping"] = {
 
 Blockly.Blocks["main_amountservers"] = {
   init: function () {
-    this.appendDummyInput().appendField("Get the amount of servers the bots in");
+    this.appendDummyInput().appendField("Get the amount of servers the bot in");
     this.setOutput(true, "Number");
     this.setColour("#FF6E33");
     this.setTooltip("");
     this.setHelpUrl("");
   },
+};
+
+javascriptGenerator.forBlock["main_amountservers"] = function (block, generator) {
+  return ['client.guilds.cache.size, Order.NONE];
 };
 
 javascriptGenerator.forBlock["main_token"] = function (block, generator) {
