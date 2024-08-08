@@ -796,6 +796,10 @@ export const toolbox = {
         },
         {
           kind: "block",
+          type: "main_servermembers",
+        },
+        {
+          kind: "block",
           type: "main_readyAt",
         },
         {
