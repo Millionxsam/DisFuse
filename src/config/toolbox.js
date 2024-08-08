@@ -796,7 +796,7 @@ export const toolbox = {
         },
         {
           kind: "block",
-          type: "main_servermembers",
+          type: "main_amountservers",
         },
         {
           kind: "block",
