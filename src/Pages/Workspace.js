@@ -52,6 +52,7 @@ import "../blocks/events/messages";
 import "../blocks/polls";
 import "../blocks/roles";
 import "../blocks/contextMenus";
+import "../blocks/threads";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
@@ -200,6 +201,7 @@ export default function Workspace() {
               "messageReaction",
               "role",
               "roles",
+              "createdThread",
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins

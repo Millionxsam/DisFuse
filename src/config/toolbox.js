@@ -957,6 +957,37 @@ export const toolbox = {
         },
         {
           kind: category,
+          name: "Threads",
+          colour: "#5b67a5",
+          contents: [
+            {
+              kind: label,
+              text: "Create a thread ↓"
+            },
+            {
+              kind: block,
+              type: "threads_msgCreateThread"
+            },
+            {
+              kind: block,
+              type: "threads_channelCreateThread"
+            },
+            {
+              kind: block,
+              type: "threads_createdThread"
+            },
+            {
+              kind: label,
+              text: "Information about a thread ↓"
+            },
+            {
+              kind: block,
+              type: "threads_name"
+            },
+          ],
+        },
+        {
+          kind: category,
           name: "Polls",
           colour: "#656b75",
           contents: [
@@ -1154,7 +1185,7 @@ export const toolbox = {
             },
             {
               kind: "label",
-              text: "Information about channel ↓",
+              text: "Information about a channel ↓",
             },
             {
               kind: "block",
