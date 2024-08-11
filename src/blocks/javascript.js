@@ -18,7 +18,25 @@ Blockly.Blocks["javascript_raw"] = {
   },
 };
 
-javascriptGenerator.forBlock["javascript_raw"] = function (block, generator) {
+javascriptGenerator.forBlock["javascript_raw"] = function (block) {
+  return `${block.getFieldValue("CODE")}\n`;
+};
+
+Blockly.Blocks["javascript_raw_float"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("raw code:")
+      .appendField(
+        new Blockly.FieldMultilineInput("console.log('hi');"),
+        "CODE"
+      );
+    this.setColour("#c93a5e");
+    this.setTooltip("Inserts raw javascript code.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_raw_float"] = function (block) {
   return `${block.getFieldValue("CODE")}\n`;
 };
 
@@ -34,10 +52,7 @@ Blockly.Blocks["javascript_raw_value"] = {
   },
 };
 
-javascriptGenerator.forBlock["javascript_raw_value"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["javascript_raw_value"] = function (block) {
   var code = `${block.getFieldValue("CODE")}`;
 
   return [code, Order.NONE];
@@ -65,7 +80,7 @@ javascriptGenerator.forBlock["javascript_wait"] = function (block, generator) {
 
 Blockly.Blocks["javascript_consolelog"] = {
   init: function () {
-    this.appendValueInput("LOG").setCheck(null).appendField("console log:");
+    this.appendValueInput("log").setCheck(null).appendField("console log:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -78,9 +93,49 @@ javascriptGenerator.forBlock["javascript_consolelog"] = function (
   block,
   generator
 ) {
-  var log = generator.valueToCode(block, "LOG", Order.ATOMIC);
+  var log = generator.valueToCode(block, "log", Order.ATOMIC);
 
   return `console.log(${log});\n`;
+};
+
+Blockly.Blocks["javascript_consolewarn"] = {
+  init: function () {
+    this.appendValueInput("log").setCheck(null).appendField("console warn:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#c93a5e");
+    this.setTooltip("Logs a warn to the console.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_consolewarn"] = function (
+  block,
+  generator
+) {
+  var log = generator.valueToCode(block, "log", Order.ATOMIC);
+
+  return `console.warn(${log});\n`;
+};
+
+Blockly.Blocks["javascript_consoleerror"] = {
+  init: function () {
+    this.appendValueInput("log").setCheck(null).appendField("console error:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#c93a5e");
+    this.setTooltip("Logs an error to the console.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_consoleerror"] = function (
+  block,
+  generator
+) {
+  var log = generator.valueToCode(block, "log", Order.ATOMIC);
+
+  return `console.error(${log});\n`;
 };
 
 Blockly.Blocks["javascript_trycatch"] = {
@@ -120,7 +175,4 @@ Blockly.Blocks["javascript_trycatch_error"] = {
   },
 };
 
-javascriptGenerator.forBlock["javascript_trycatch_error"] = () => [
-  "errorButWithLengthyName",
-  Order.NONE,
-];
+javascriptGenerator.forBlock["javascript_trycatch_error"] = () => ["errorButWithLengthyName", Order.NONE,];

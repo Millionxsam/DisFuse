@@ -729,6 +729,10 @@ export const toolbox = {
           type: "javascript_raw",
         },
         {
+          kind: block,
+          type: "javascript_raw_float"
+        },
+        {
           kind: "block",
           type: "javascript_raw_value",
         },
@@ -747,6 +751,14 @@ export const toolbox = {
         {
           kind: "block",
           type: "javascript_consolelog",
+        },
+        {
+          kind: block,
+          type: "javascript_consolewarn",
+        },
+        {
+          kind: block,
+          type: "javascript_consoleerror",
         },
         {
           kind: "label",
@@ -966,6 +978,22 @@ export const toolbox = {
           contents: [
             {
               kind: label,
+              text: "Get a thread ↓"
+            },
+            {
+              kind: block,
+              type: "threads_getone"
+            },
+            {
+              kind: block,
+              type: "threads_msgHasThread"
+            },
+            {
+              kind: block,
+              type: "threads_msgThread"
+            },
+            {
+              kind: label,
               text: "Create a thread ↓"
             },
             {
@@ -985,8 +1013,80 @@ export const toolbox = {
               text: "Information about a thread ↓"
             },
             {
+              kind: 'block',
+              type: 'threads_name'
+            },
+            {
+              kind: 'block',
+              type: 'threads_createdAt'
+            },
+            {
+              kind: 'block',
+              type: 'threads_lastMessage'
+            },
+            {
+              kind: 'block',
+              type: 'threads_author'
+            },
+            {
+              kind: 'block',
+              type: 'threads_authorMember'
+            },
+            {
+              kind: 'block',
+              type: 'threads_id'
+            },
+            {
+              kind: 'block',
+              type: 'threads_memberCount'
+            },
+            {
+              kind: 'block',
+              type: 'threads_parentChannel'
+            },
+            {
+              kind: label,
+              text: "Thread actions ↓"
+            },
+            {
               kind: block,
-              type: "threads_name"
+              type: "threads_setName"
+            },
+            {
+              kind: block,
+              type: "threads_setArchived"
+            },
+            {
+              kind: block,
+              type: "threads_setLocked"
+            },
+            {
+              kind: block,
+              type: "threads_setSlowmode"
+            },
+            {
+              kind: block,
+              type: "threads_pin"
+            },
+            {
+              kind: block,
+              type: "threads_unpin"
+            },
+            {
+              kind: block,
+              type: "threads_join"
+            },
+            {
+              kind: block,
+              type: "threads_leave"
+            },
+            {
+              kind: block,
+              type: "threads_addUser"
+            },
+            {
+              kind: block,
+              type: "threads_removeUser"
             },
           ],
         },
@@ -2158,28 +2258,25 @@ export const toolbox = {
       contents: [
         {
           kind: "category",
-          name: "Member Joins",
+          name: "Server Actions",
           colour: "FF4F4F",
           contents: [
             {
               kind: "block",
-              type: "events_joins_guildmemberadd",
+              type: "events_guild_memberAdd",
             },
             {
               kind: "block",
-              type: "events_joins_guildmemberadd_member",
+              type: "events_guild_memberAdd_member",
             },
             {
               kind: "block",
-              type: "events_joins_guildmemberadd_server",
+              type: "events_guild_memberAdd_server",
             },
-          ],
-        },
-        {
-          kind: "category",
-          name: "Member Leaves / Kicked",
-          colour: "FF4F4F",
-          contents: [
+            {
+              kind: sep,
+              gap: "50",
+            },
             {
               kind: "block",
               type: "events_remove_guildmemberremove",
@@ -2187,6 +2284,30 @@ export const toolbox = {
             {
               kind: "block",
               type: "events_remove_guildmemberremove_member",
+            },
+            {
+              kind: "block",
+              type: "events_remove_guildmemberremove_server",
+            },
+            {
+              kind: sep,
+              gap: "50",
+            },
+            {
+              kind: "block",
+              type: "events_guild_created",
+            },
+            {
+              kind: "block",
+              type: "events_guild_created_guild",
+            },
+            {
+              kind: "block",
+              type: "events_guild_deleted",
+            },
+            {
+              kind: "block",
+              type: "events_guild_deleted_guild",
             },
           ],
         },
@@ -2205,7 +2326,7 @@ export const toolbox = {
             },
             {
               kind: sep,
-              gap: "40",
+              gap: "50",
             },
             {
               kind: block,
