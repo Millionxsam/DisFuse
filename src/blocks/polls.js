@@ -19,7 +19,7 @@ Blockly.Blocks["poll_create"] = {
       .appendField("set duration (hours) to:");
     this.appendValueInput("MULTISELECT")
       .setCheck("Boolean")
-      .appendField("allow multiple answers?");
+      .appendField("allow multiple answers:");
     this.appendStatementInput("CHOICES")
       .setCheck("pollChoicesBlock")
       .appendField("choices");
@@ -88,7 +88,7 @@ Blockly.Blocks["poll_sendchannel"] = {
       .appendField("to channel:");
     this.appendValueInput("MESSAGE")
       .setCheck("String")
-      .appendField("(optional) with text:");
+      .appendField("with text:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");

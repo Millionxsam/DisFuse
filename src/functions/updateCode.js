@@ -62,7 +62,7 @@ export default function updateCode(workspace, project) {
         client.setMaxListeners(0);
         
         client.on("ready", () => {
-            console.log(client.user.username + " is logged in");
+          console.log(client.user.username + " is logged in");
         });
         
         ${code}

@@ -30,7 +30,6 @@ import "../blocks/messages";
 import "../blocks/slash";
 import "../blocks/servers";
 import "../blocks/games";
-import "../blocks/events/joins";
 import "../blocks/text";
 import "../blocks/channels";
 import "../blocks/embeds";
@@ -47,11 +46,13 @@ import "../blocks/comments";
 import "../blocks/javascript";
 import "../blocks/time";
 import "../blocks/apps/scratch";
-import "../blocks/events/removes";
+import "../blocks/events/DEPRECATED_joins";
 import "../blocks/events/messages";
 import "../blocks/polls";
 import "../blocks/roles";
 import "../blocks/contextMenus";
+import "../blocks/threads";
+import "../blocks/events/servers";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
@@ -200,6 +201,7 @@ export default function Workspace() {
               "messageReaction",
               "role",
               "roles",
+              "createdThread",
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -210,6 +212,7 @@ export default function Workspace() {
                 pasteAllToBackpack: true,
               },
             });
+
             backpack.init();
 
             const workspaceSearch = new WorkspaceSearch(workspace);
@@ -249,12 +252,12 @@ export default function Workspace() {
                   cancelButtonText: "Cancel",
                   background:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "#282828",
                   color:
                     usertheme.name === "candytheme" ||
-                    usertheme.name === "lighttheme"
+                      usertheme.name === "lighttheme"
                       ? ""
                       : "white",
                   confirmButtonText: "Load",

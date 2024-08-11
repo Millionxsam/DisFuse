@@ -139,7 +139,7 @@ Blockly.Blocks["member_dm_rows"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("default").appendField("rows:");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
