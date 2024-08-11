@@ -113,7 +113,7 @@ Blockly.Blocks["main_ping"] = {
 
 Blockly.Blocks["main_amountservers"] = {
   init: function () {
-    this.appendDummyInput().appendField("get the amount of servers the bot in");
+    this.appendDummyInput().appendField("amount of servers the bot is in");
     this.setOutput(true, "Number");
     this.setColour("#FF6E33");
     this.setTooltip("");

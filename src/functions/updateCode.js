@@ -70,5 +70,6 @@ export default function updateCode(workspace, project) {
 
   js = beautify(js, { format: "js" });
 
+  workspace.jsCodeOutput = js;
   codeEle.innerText = js;
 }

@@ -298,7 +298,7 @@ export default function Workspace() {
                   const zip = new JSZip();
 
                   const codeEle = document.getElementById("code");
-                  const indexjs = `${codeEle.innerText}`;
+
                   const envFile = `${project.secrets
                     .map((s) => `${s.name}=${s.value}`)
                     .join("\n")}`;
@@ -309,9 +309,11 @@ export default function Workspace() {
 
                   zip.file(
                     "index.js",
-                    `${beautify(indexjs, { format: "js" })}`
+                    beautify(workspace.jsCodeOutput, { format: "js" })
                   );
+
                   zip.file(".env", envFile);
+
                   zip.file(
                     `${project.name}.df`,
                     JSON.stringify(

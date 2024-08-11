@@ -188,7 +188,8 @@ module.exports = [
         "undici-types": "^5.26.5",
         "webidl-conversions": "^3.0.1",
         "whatwg-url": "^5.0.0",
-        "ws": "^8.17.0"
+        "ws": "^8.17.0",
+        "dotenv": "^16.0.3"
       },
       "scripts": {
         "start": "node index.js",
