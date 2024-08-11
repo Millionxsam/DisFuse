@@ -44,11 +44,11 @@ javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
 
   return `let PollCreator${text_name} = {
   question: {
-    text: ${value_question}
+    text: ${value_question || "''"}
   },
   answers: [${statements_choices}],
-  duration: ${value_duration},
-  allowMultiselect: ${value_multiselect}
+  duration: ${value_duration || "24"},
+  allowMultiselect: ${value_multiselect || "false"}
 };\n`;
 };
 
@@ -71,7 +71,7 @@ javascriptGenerator.forBlock["poll_choice"] = function (block, generator) {
   var value_text = generator.valueToCode(block, "TEXT", Order.ATOMIC);
   var value_emoji = generator.valueToCode(block, "EMOJI", Order.ATOMIC);
 
-  return `{ text:${value_text}, emoji:${value_emoji}},\n`;
+  return `{ text: ${value_text || "''"}, emoji: ${value_emoji || "null"}},\n`;
 };
 
 Blockly.Blocks["poll_sendchannel"] = {
@@ -101,10 +101,11 @@ Blockly.Blocks["poll_sendchannel"] = {
 javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
   var text_name = block.getFieldValue("NAME");
   var value_channel = generator.valueToCode(block, "CHANNEL", Order.ATOMIC);
-  var value_message = generator.valueToCode(block, "MESSAGE", Order.ATOMIC) || '';
+  var value_message =
+    generator.valueToCode(block, "MESSAGE", Order.ATOMIC) || "";
 
   return `${value_channel}.send({
-  content: ${value_message},
+  content: ${value_message || "''"},
   poll: PollCreator${text_name}
 });\n`;
 };
