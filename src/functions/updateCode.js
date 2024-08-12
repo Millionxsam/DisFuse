@@ -44,6 +44,7 @@ export default function updateCode(workspace, project) {
     const gamecord = require("discord-gamecord");
     const Database = require("easy-json-database");
     const process = require("process");
+    const lyricsFinder = require("lyrics-finder");
     
     process.on("uncaughtException", (e) => {
         console.error(e);

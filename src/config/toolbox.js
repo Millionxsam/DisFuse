@@ -2459,6 +2459,25 @@ export const toolbox = {
         },
       ],
     },
+    {
+      kind: category,
+      name: "Music",
+      colour: "#379e37",
+      contents: [
+        {
+          kind: "label",
+          text: "Get lyrics ↓",
+        },
+        {
+          kind: "block",
+          type: "music_findLyrics",
+        },
+        {
+          kind: "block",
+          type: "music_findLyrics_lyrics",
+        },
+      ]
+    }
     // {
     //   kind: "category",
     //   name: "Games",

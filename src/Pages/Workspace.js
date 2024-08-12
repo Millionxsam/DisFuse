@@ -53,6 +53,7 @@ import "../blocks/roles";
 import "../blocks/contextMenus";
 import "../blocks/threads";
 import "../blocks/events/servers";
+import "../blocks/music";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
@@ -202,6 +203,8 @@ export default function Workspace() {
               "role",
               "roles",
               "createdThread",
+              "lyrics",
+              "lyricsFinder"
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
