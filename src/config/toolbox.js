@@ -497,6 +497,30 @@ export const toolbox = {
             },
           },
         },
+        {
+          kind: "label",
+          text: "Advanced | RegExp Blocks ↓",
+        },
+        {
+          kind: block,
+          type: "text_regexp"
+        },
+        {
+          kind: block,
+          type: "text_regexp_test"
+        },
+        {
+          kind: block,
+          type: "text_regexp_match"
+        },
+        {
+          kind: block,
+          type: "text_regexp_exec"
+        },
+        {
+          kind: block,
+          type: "text_regexp_replace"
+        },
       ],
     },
     {
