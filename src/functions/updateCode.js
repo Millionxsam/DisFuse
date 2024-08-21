@@ -9,17 +9,44 @@ function hasToken(input) {
 }
 
 export default function updateCode(workspace, project) {
+  const allBlocks = workspace.getAllBlocks();
   const codeEle = document.getElementById("code");
+
+  const blockImports = {
+    "fs_": ["fs", "path"],
+    "music_": "lyrics-finder",
+    "db_": "easy-json-database"
+  };
+  let blockImportCode = "";
 
   const topBlocks = ["db_create"];
 
   let code = javascriptGenerator.workspaceToCode(workspace);
 
   topBlocks.forEach((topBlock) => {
-    let c = workspace.getAllBlocks().find((b) => b.type === topBlock);
+    let c = allBlocks.find((b) => b.type === topBlock);
     if (!c) return;
 
     code = code.replace(javascriptGenerator.blockToCode(c), "");
+  });
+
+  Object.keys(blockImports).forEach((importBlock) => {
+    let c = allBlocks.find((b) => b.type.startsWith(importBlock));
+    if (!c) return;
+
+    function fixImport(module = '') {
+      return module.replaceAll('-', '');
+    }
+
+    const importName = blockImports[importBlock];
+
+    if (Array.isArray(importName)) {
+      importName.forEach(i => {
+        blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
+      });
+    } else {
+      blockImportCode += `const ${fixImport(importName)} = require("${importName}");\n`;
+    }
   });
 
   if (hasToken(code) && !workspace.tokenAlertPopupAppeared) {
@@ -42,32 +69,28 @@ export default function updateCode(workspace, project) {
     const Discord = require("discord.js");
     const moment = require("moment");
     const gamecord = require("discord-gamecord");
-    const Database = require("easy-json-database");
     const process = require("process");
-    const lyricsFinder = require("lyrics-finder");
-    
+    ${blockImportCode}
     process.on("uncaughtException", (e) => {
-        console.error(e);
+      console.error(e);
     });
     
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    ${workspace
-      .getAllBlocks()
+    ${allBlocks
       .filter((b) => topBlocks.includes(b.type))
       .map((b) => javascriptGenerator.blockToCode(b))
       .join("\n")}
         
-        const client = new Discord.Client({ intents: 3276799 });
+    const client = new Discord.Client({ intents: 3276799 });
         
-        client.setMaxListeners(0);
+    client.setMaxListeners(0);
         
-        client.on("ready", () => {
-          console.log(client.user.username + " is logged in");
-        });
+    client.on("ready", () => {
+      console.log(client.user.tag + " is logged in!");
+    });
         
-        ${code}
-        `;
+    ${code}`;
 
   js = beautify(js, { format: "js" });
 
