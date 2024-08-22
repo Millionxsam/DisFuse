@@ -53,6 +53,8 @@ import "../blocks/roles";
 import "../blocks/contextMenus";
 import "../blocks/threads";
 import "../blocks/events/servers";
+import "../blocks/music";
+import "../blocks/files";
 
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
@@ -202,6 +204,13 @@ export default function Workspace() {
               "role",
               "roles",
               "createdThread",
+              "lyrics",
+              "lyricsFinder",
+              "filePath",
+              "fs",
+              "readData",
+              "err",
+              "files"
             ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
             // Initiating plugins
@@ -265,6 +274,7 @@ export default function Workspace() {
                   inputOptions: {
                     slashCommand: "Slash Commands",
                     pingCommand: "Ping Command",
+                    economyCommand: "Economy Commands",
                   },
                 }).then((result) => {
                   if (!result.isConfirmed) return;
@@ -298,7 +308,7 @@ export default function Workspace() {
                   const zip = new JSZip();
 
                   const codeEle = document.getElementById("code");
-                  const indexjs = `${codeEle.innerText}`;
+
                   const envFile = `${project.secrets
                     .map((s) => `${s.name}=${s.value}`)
                     .join("\n")}`;
@@ -309,9 +319,11 @@ export default function Workspace() {
 
                   zip.file(
                     "index.js",
-                    `${beautify(indexjs, { format: "js" })}`
+                    beautify(workspace.jsCodeOutput, { format: "js" })
                   );
+
                   zip.file(".env", envFile);
+
                   zip.file(
                     `${project.name}.df`,
                     JSON.stringify(

@@ -372,7 +372,7 @@ createRestrictions(
   ["invite_foreach_var"],
   [
     {
-      type: "notEmpty",
+      type: "hasParent",
       blockTypes: ["invite_channel_foreach", "invite_foreach"],
       message:
         'This block must be under a "for each invite on server/channel" block',

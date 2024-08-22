@@ -21,6 +21,14 @@ export default function Settings() {
               Workspace
             </li>
           </Link>
+          <Link to="/settings/website">
+            <li
+              onClick={() => setCategory("website")}
+              className={category === "website" ? "active" : ""}
+            >
+              Appearance
+            </li>
+          </Link>
           {/* <Link to="/settings/notifications">
             <li
               onClick={() => setCategory("notifications")}

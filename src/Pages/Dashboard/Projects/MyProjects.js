@@ -84,8 +84,8 @@ export default function MyProjects() {
         confirmButtonText: "Create",
         input: "select",
         inputOptions: {
-          public: "Public",
           private: "Private",
+          public: "Public",
         },
       }).then((result) => {
         if (result.isConfirmed) isPrivate = result.value === "private";
@@ -344,8 +344,8 @@ export default function MyProjects() {
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-            ? "No projects"
-            : ""}
+              ? "No projects"
+              : ""}
         </div>
       </div>
     </>

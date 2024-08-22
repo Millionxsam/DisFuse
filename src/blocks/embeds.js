@@ -161,7 +161,7 @@ javascriptGenerator.forBlock["embed_addfield"] = function (block, generator) {
   var value_val = generator.valueToCode(block, "val", Order.ATOMIC);
   var value_inline = generator.valueToCode(block, "inline", Order.ATOMIC);
 
-  var code = `.addField({ name: ${value_name}, value: ${value_val}, inline: ${value_inline} })`;
+  var code = `.addFields({ name: ${value_name}, value: ${value_val}, inline: ${value_inline} })`;
   return code;
 };
 

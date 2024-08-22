@@ -5,7 +5,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["javascript_raw"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("raw code:")
+      .appendField("Raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
         "CODE"
@@ -25,7 +25,7 @@ javascriptGenerator.forBlock["javascript_raw"] = function (block) {
 Blockly.Blocks["javascript_raw_float"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("raw code:")
+      .appendField("Raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
         "CODE"
@@ -62,7 +62,7 @@ Blockly.Blocks["javascript_wait"] = {
   init: function () {
     this.appendValueInput("number")
       .setCheck("Number")
-      .appendField("wait (in milliseconds):");
+      .appendField("Wait (in milliseconds):");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -80,7 +80,7 @@ javascriptGenerator.forBlock["javascript_wait"] = function (block, generator) {
 
 Blockly.Blocks["javascript_consolelog"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("console log:");
+    this.appendValueInput("log").setCheck(null).appendField("Console log:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -100,7 +100,7 @@ javascriptGenerator.forBlock["javascript_consolelog"] = function (
 
 Blockly.Blocks["javascript_consolewarn"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("console warn:");
+    this.appendValueInput("log").setCheck(null).appendField("Console warn:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -120,7 +120,7 @@ javascriptGenerator.forBlock["javascript_consolewarn"] = function (
 
 Blockly.Blocks["javascript_consoleerror"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("console error:");
+    this.appendValueInput("log").setCheck(null).appendField("Console error:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");

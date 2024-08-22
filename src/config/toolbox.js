@@ -497,6 +497,30 @@ export const toolbox = {
             },
           },
         },
+        {
+          kind: "label",
+          text: "Advanced | RegExp Blocks ↓",
+        },
+        {
+          kind: block,
+          type: "text_regexp"
+        },
+        {
+          kind: block,
+          type: "text_regexp_test"
+        },
+        {
+          kind: block,
+          type: "text_regexp_match"
+        },
+        {
+          kind: block,
+          type: "text_regexp_exec"
+        },
+        {
+          kind: block,
+          type: "text_regexp_replace"
+        },
       ],
     },
     {
@@ -2408,6 +2432,35 @@ export const toolbox = {
     },
     {
       kind: "category",
+      name: "Apps",
+      colour: "#0fbd8c",
+      contents: [
+        {
+          kind: "category",
+          name: "Scratch",
+          colour: "#0fbd8c",
+          contents: [
+            {
+              kind: "block",
+              type: "scratch_getprofile",
+            },
+            {
+              kind: "block",
+              type: "scratch_getprofileinfo",
+            },
+            {
+              kind: "block",
+              type: "scratch_getmessages",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      kind: "sep",
+    },
+    {
+      kind: "category",
       name: "Comments",
       colour: "#364759",
       contents: [
@@ -2434,30 +2487,66 @@ export const toolbox = {
       ],
     },
     {
-      kind: "category",
-      name: "Apps",
-      colour: "#0fbd8c",
+      kind: category,
+      name: "Music",
+      colour: "#379e37",
       contents: [
         {
-          kind: "category",
-          name: "Scratch",
-          colour: "#0fbd8c",
-          contents: [
-            {
-              kind: "block",
-              type: "scratch_getprofile",
-            },
-            {
-              kind: "block",
-              type: "scratch_getprofileinfo",
-            },
-            {
-              kind: "block",
-              type: "scratch_getmessages",
-            },
-          ],
+          kind: "label",
+          text: "Get lyrics ↓",
         },
-      ],
+        {
+          kind: "block",
+          type: "music_findLyrics",
+        },
+        {
+          kind: "block",
+          type: "music_findLyrics_lyrics",
+        },
+      ]
+    },
+    {
+      kind: category,
+      name: "Files",
+      colour: "#eb8334",
+      contents: [
+        {
+          kind: label,
+          text: "Files will be created AFTER the bot is run"
+        },
+        {
+          kind: "label",
+          text: "Read data from files ↓",
+        },
+        {
+          kind: "block",
+          type: "fs_readFile",
+        },
+        {
+          kind: "block",
+          type: "fs_readFile_data",
+        },
+        {
+          kind: "block",
+          type: "fs_readdir",
+        },
+        {
+          kind: "block",
+          type: "fs_readdir_name",
+        },
+        {
+          kind: "block",
+          type: "fs_readdir_path",
+        },
+        {
+          kind: "label",
+          text: "Write a file ↓",
+        },
+        {
+          kind: "block",
+          type: "fs_writeFile",
+        },
+      ]
     },
     // {
     //   kind: "category",
