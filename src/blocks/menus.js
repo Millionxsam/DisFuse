@@ -12,7 +12,9 @@ Blockly.Blocks["menus_add"] = {
     this.appendValueInput("disabled")
       .setCheck("Boolean")
       .appendField("disabled?");
-    this.appendStatementInput("options").setCheck("default").appendField("options:");
+    this.appendStatementInput("options")
+      .setCheck("default")
+      .appendField("options:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -78,7 +80,7 @@ Blockly.Blocks["menus_member"] = {
   init: function () {
     this.appendDummyInput().appendField("member who clicked the menu");
     this.setColour("#51B800");
-    this.setOutput(true, "String");
+    this.setOutput(true, "member");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -88,7 +90,7 @@ Blockly.Blocks["menus_user"] = {
   init: function () {
     this.appendDummyInput().appendField("user who clicked the menu");
     this.setColour("#51B800");
-    this.setOutput(true, "String");
+    this.setOutput(true, "user");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -98,7 +100,7 @@ Blockly.Blocks["menus_channel"] = {
   init: function () {
     this.appendDummyInput().appendField("channel of the menu");
     this.setColour("#51B800");
-    this.setOutput(true, "String");
+    this.setOutput(true, "channel");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -108,7 +110,7 @@ Blockly.Blocks["menus_server"] = {
   init: function () {
     this.appendDummyInput().appendField("server of the menu");
     this.setColour("#51B800");
-    this.setOutput(true, "String");
+    this.setOutput(true, "server");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -280,9 +282,11 @@ javascript.javascriptGenerator.forBlock["menus_add"] = function (
   );
   var statements_options = generator.statementToCode(block, "options");
 
-  var code = `new Discord.StringSelectMenuBuilder().setPlaceholder(${value_placeholder || "''"
-    }).setCustomId(${value_id || "''"}).setDisabled(${value_disabled || "false"
-    }).addOptions([${statements_options}]),`;
+  var code = `new Discord.StringSelectMenuBuilder().setPlaceholder(${
+    value_placeholder || "''"
+  }).setCustomId(${value_id || "''"}).setDisabled(${
+    value_disabled || "false"
+  }).addOptions([${statements_options}]),`;
   return code;
 };
 
