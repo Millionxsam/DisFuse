@@ -5,7 +5,7 @@ Blockly.Blocks["text_newline"] = {
   init: function () {
     this.appendDummyInput().appendField("new line");
     this.setOutput(true, "String");
-    this.setColour("ffbf00");
+    this.setColour("#59c059");
   },
 };
 
@@ -33,7 +33,7 @@ Blockly.Blocks['text_regexp'] = {
       .appendField("regexp")
       .appendField(new Blockly.FieldTextInput('/regexp/', regexpValidator), 'regexp');
     this.setOutput(true, 'regexp');
-    this.setColour('ffbf00');
+    this.setColour('#59c059');
   }
 }
 
@@ -49,7 +49,7 @@ Blockly.Blocks['text_regexp_test'] = {
       .setCheck('regexp').appendField('test regexp');
     this.appendValueInput('string')
       .setCheck('String').appendField('on string');
-    this.setColour('#ffbf00');
+    this.setColour('#59c059');
     this.setOutput(true, 'Boolean');
   }
 };
@@ -69,7 +69,7 @@ Blockly.Blocks['text_regexp_match'] = {
       .setCheck('regexp').appendField('match regexp');
     this.appendValueInput('string')
       .setCheck('String').appendField('on string');
-    this.setColour('#ffbf00');
+    this.setColour('#59c059');
     this.setOutput(true, 'Array');
   }
 };
@@ -89,7 +89,7 @@ Blockly.Blocks['text_regexp_exec'] = {
       .setCheck('regexp').appendField('exec regexp');
     this.appendValueInput('string')
       .setCheck('String').appendField('on string');
-    this.setColour('#ffbf00');
+    this.setColour('#59c059');
     this.setOutput(true, 'Array');
   }
 };
@@ -111,7 +111,7 @@ Blockly.Blocks['text_regexp_replace'] = {
       .setCheck('String').appendField('on string');
     this.appendValueInput('replace')
       .setCheck('String').appendField('with string');
-    this.setColour('#ffbf00');
+    this.setColour('#59c059');
     this.setOutput(true, 'String');
   }
 };
@@ -132,7 +132,7 @@ Blockly.Blocks['text_regexp_search'] = {
       .setCheck('regexp').appendField('search regexp');
     this.appendValueInput('string')
       .setCheck('String').appendField('on string');
-    this.setColour('#ffbf00');
+    this.setColour('#59c059');
     this.setOutput(true, 'Number');
   }
 };

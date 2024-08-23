@@ -98,6 +98,7 @@ export default function Workspace() {
             }
 
             let userrender = localStorage.getItem("blocklyRenderer") ?? "zelos";
+
             let usersounds =
               localStorage.getItem("workspaceSounds") === null
                 ? true
@@ -111,12 +112,44 @@ export default function Workspace() {
             let gridSpacing =
               localStorage.getItem("workspace-gridSpacing") || 35;
 
+            const blockStyles = {
+              'blockStyles': {
+                'logic_blocks': {
+                  'colourPrimary': '#4c97ff',
+                },
+                'loop_blocks': {
+                  'colourPrimary': '#0fbd8c',
+                },
+                'math_blocks': {
+                  'colourPrimary': '#ffbf00',
+                },
+                'text_blocks': {
+                  'colourPrimary': '#59c059',
+                },
+                'list_blocks': {
+                  'colourPrimary': '#9966ff'
+                },
+                'colour_blocks': {
+                  'colourPrimary': '#cf63cf'
+                },
+                'variable_blocks': {
+                  'colourPrimary': '#ff8c1a',
+                },
+                'procedure_blocks': {
+                  'colourPrimary': '#ff6680',
+                },
+              },
+            };
+
             // Inject workspace
             const workspace = Blockly.inject(
               document.getElementById("workspace"),
               {
                 toolbox,
-                theme: usertheme,
+                theme: {
+                  ...usertheme,
+                  ...blockStyles
+                },
                 move: {
                   wheel: true,
                 },
@@ -172,6 +205,8 @@ export default function Workspace() {
               "Discord",
               "moment",
               "gamecord",
+              "discordgamecord",
+              "easyjsondatabase",
               "Database",
               "client",
               "databases",

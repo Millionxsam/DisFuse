@@ -156,7 +156,7 @@ Blockly.Blocks["server_creationdate"] = {
       .setCheck("server")
       .appendField("creation date of server:");
     this.setInputsInline(true);
-    this.setOutput(true, "String");
+    this.setOutput(true, "date");
     this.setColour("A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -317,7 +317,7 @@ javascriptGenerator.forBlock["server_creationdate"] = function (
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `moment(${value_server}.createdAt).format("LLLL")`;
+  var code = `${value_server}.createdAt)`;
   return [code, Order.NONE];
 };
 

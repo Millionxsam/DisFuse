@@ -2,6 +2,29 @@ import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
+Blockly.Blocks["msg_getone"] = {
+  init: function () {
+    this.appendValueInput("id")
+      .setCheck("String")
+      .appendField("get the message with id equal to");
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("on the channel");
+    this.setInputsInline(false);
+    this.setOutput(true, 'message')
+    this.setColour("#336EFF");
+  },
+};
+
+javascriptGenerator.forBlock["msg_getone"] = function (block, generator) {
+  var id = block.getFieldValue('id');
+  var channel = block.getFieldValue('channel');
+
+  var code = `await ${channel}.messages.fetch(${id})`;
+
+  return [code, Order.AWAIT];
+};
+
 Blockly.Blocks["msg_received"] = {
   init: function () {
     this.appendDummyInput().appendField("When a message is received");
@@ -104,6 +127,28 @@ Blockly.Blocks["msg_server"] = {
     this.setTooltip("");
     this.setHelpUrl("");
   },
+};
+
+Blockly.Blocks["msg_react"] = {
+  init: function () {
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("React to message:");
+    this.appendValueInput("reaction")
+      .setCheck(["String", "emoji"])
+      .appendField("with emoji:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#336EFF");
+  },
+};
+
+javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.ATOMIC);
+  var reaction = generator.valueToCode(block, "reaction", Order.ATOMIC);
+
+  return `${message}.react(${reaction});\n`;
 };
 
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {

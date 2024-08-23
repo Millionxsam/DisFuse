@@ -121,6 +121,15 @@ Blockly.Blocks["main_amountservers"] = {
   },
 };
 
+Blockly.Blocks["main_destroy"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Shutdown the bot");
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("#FF6E33");
+  },
+};
+
 javascriptGenerator.forBlock["main_amountservers"] = function (block, generator) {
   return ['client.guilds.cache.size', Order.NONE];
 };
@@ -178,6 +187,8 @@ javascriptGenerator.forBlock["main_ping"] = function (block, generator) {
   var code = "client.ws.ping";
   return [code, Order.NONE];
 };
+
+javascriptGenerator.forBlock["main_destroy"] = () => 'client.destroy();'
 
 createRestrictions(
   ["main_token"],

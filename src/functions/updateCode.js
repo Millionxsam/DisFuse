@@ -2,6 +2,12 @@ import beautify from "beautify";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import '../hljs.css';
+
+hljs.registerLanguage('javascript', javascript);
+
 function hasToken(input) {
   return /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
     input
@@ -10,12 +16,13 @@ function hasToken(input) {
 
 export default function updateCode(workspace, project) {
   const allBlocks = workspace.getAllBlocks();
-  const codeEle = document.getElementById("code");
+  const codeEle = document.getElementById("codecontent");
 
   const blockImports = {
     "fs_": ["fs", "path"],
     "music_": "lyrics-finder",
-    "db_": "easy-json-database"
+    "db_": "easy-json-database",
+    "game_": "discord-gamecord"
   };
   let blockImportCode = "";
 
@@ -29,6 +36,11 @@ export default function updateCode(workspace, project) {
 
     code = code.replace(javascriptGenerator.blockToCode(c), "");
   });
+
+  let topBlocksCode = allBlocks
+    .filter((b) => topBlocks.includes(b.type))
+    .map((b) => javascriptGenerator.blockToCode(b))
+    .join("\n");
 
   Object.keys(blockImports).forEach((importBlock) => {
     let c = allBlocks.find((b) => b.type.startsWith(importBlock));
@@ -64,11 +76,8 @@ export default function updateCode(workspace, project) {
     workspace.tokenAlertPopupAppeared = true;
   }
 
-  let js = `
-    require("dotenv").config();
+  let js = `require("dotenv").config();
     const Discord = require("discord.js");
-    const moment = require("moment");
-    const gamecord = require("discord-gamecord");
     const process = require("process");
     ${blockImportCode}
     process.on("uncaughtException", (e) => {
@@ -77,11 +86,7 @@ export default function updateCode(workspace, project) {
     
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    ${allBlocks
-      .filter((b) => topBlocks.includes(b.type))
-      .map((b) => javascriptGenerator.blockToCode(b))
-      .join("\n")}
-        
+    ${topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''}
     const client = new Discord.Client({ intents: 3276799 });
         
     client.setMaxListeners(0);
@@ -95,5 +100,5 @@ export default function updateCode(workspace, project) {
   js = beautify(js, { format: "js" });
 
   workspace.jsCodeOutput = js;
-  codeEle.innerText = js;
+  codeEle.innerHTML = hljs.highlight(js, { language: 'javascript' }).value
 }

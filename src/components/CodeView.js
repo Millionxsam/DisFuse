@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function CodeView() {
   useEffect(() => {
     document.getElementById(
-      "code"
+      "codecontent"
     ).innerText = `No blocks are in the workspace`;
   }, []);
 
@@ -19,7 +19,7 @@ export default function CodeView() {
         </button>
         <i style={{ display: "none" }} className="fa-solid fa-check check"></i>
       </div>
-      <pre id="code"></pre>
+      <pre id="code"><code id="codecontent"></code></pre>
     </div>
   );
 }
