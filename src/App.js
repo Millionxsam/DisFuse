@@ -11,7 +11,6 @@ import Favorites from "./Pages/Dashboard/Favorites";
 import Staff from "./Pages/Staff";
 import Settings from "./Pages/Dashboard/Settings/Settings";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
-import WebsiteSettings from "./Pages/Dashboard/Settings/WebsiteSettings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
 import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
@@ -22,14 +21,6 @@ import Inbox from "./Pages/Dashboard/Inbox";
 import "./index.css";
 
 export default function App() {
-  useEffect(() => {
-    let theme = localStorage.getItem("websiteTheme") || "DFTheme";
-
-    if (theme === "LightTheme") {
-      import("./index-light.css");
-    }
-  }, []);
-
   setInterval(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -77,7 +68,6 @@ export default function App() {
           <Route path="settings" element={<Settings />}>
             <Route index element={<Navigate to={"/settings/workspace"} />} />
             <Route path="workspace" element={<WorkspaceSettings />} />
-            <Route path="website" element={<WebsiteSettings />} />
             <Route path="notifications" element={<NotificationSettings />} />
           </Route>
         </Route>

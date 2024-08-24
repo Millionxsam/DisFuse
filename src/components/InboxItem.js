@@ -43,7 +43,7 @@ export default function InboxItem({ item, user, index }) {
       axios
         .get(
           apiUrl +
-            `/comments/${item.notification.projectId}/${item.notification.commentId}`
+          `/comments/${item.notification.projectId}/${item.notification.commentId}`
         )
         .then(({ data: comment }) => {
           setComment(comment);

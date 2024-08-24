@@ -9,6 +9,7 @@ const { discordUrl, apiUrl } = require("../../config/config.json");
 export default function Inbox() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [shown, setShown] = useState([]);
 
   useEffect(() => {
     axios
@@ -25,6 +26,7 @@ export default function Inbox() {
           .then(({ data: user }) => {
             setUser(user);
             setLoading(false);
+            setShown(user.inbox);
 
             setTimeout(() => {
               user.inbox = user.inbox.map((i) => {
@@ -57,7 +59,8 @@ export default function Inbox() {
               Authorization: localStorage.getItem("disfuse-token"),
             },
           })
-          .then(({ data }) => setUser(data));
+          .then(({ data }) => setUser(data))
+          .then(() => window.location.reload());
       }
     });
   }
@@ -69,16 +72,16 @@ export default function Inbox() {
       </div>
 
       <div className="buttons">
-        <button onClick={clearAll}>
-          <i class="fa-solid fa-check"></i> Clear All
+        <button onClick={clearAll} id="rdbt">
+          <i class="fa-solid fa-trash"></i> Clear All
         </button>
       </div>
 
       <div className="notifications">
         {loading ? (
           <LoadingAnim />
-        ) : user.inbox?.length ? (
-          user.inbox
+        ) : shown?.length ? (
+          shown
             ?.slice()
             .reverse()
             .map((item, index) => (

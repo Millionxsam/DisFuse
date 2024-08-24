@@ -221,7 +221,7 @@ input[type="number"]:hover {
   height: 0;
 }
 
-.switch input:disabled + .slider {
+.switch input:disabled+.slider {
   opacity: 0.25;
   cursor: not-allowed;
 }
@@ -230,7 +230,7 @@ input[type="number"]:hover {
   width: 35px;
 }
 
-.switch:active input:checked + .slider:before {
+.switch:active input:checked+.slider:before {
   left: -5px;
 }
 
@@ -262,15 +262,15 @@ input[type="number"]:hover {
   box-shadow: 0 0 10px 1px gray;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--main-color);
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px var(--main-color);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(26px);
 }
 
@@ -361,7 +361,7 @@ p.modal-text {
   position: relative;
 }
 
-.previewWorkspaceNavbar > div {
+.previewWorkspaceNavbar>div {
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -974,7 +974,7 @@ p.modal-text {
   gap: 0.25rem;
 }
 
-.priProject .top > i {
+.priProject .top>i {
   opacity: 0.75;
 }
 
@@ -1008,7 +1008,7 @@ p.modal-text {
   border: 2px solid var(--border-color);
 }
 
-.projects-container > .buttons {
+.projects-container>.buttons {
   display: flex;
   gap: 1rem;
   margin-left: 1rem;
@@ -1209,7 +1209,7 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 3rem;
 }
 
-.user-profile-container .body > div {
+.user-profile-container .body>div {
   background-color: var(--foreground-color);
   border: 2px solid var(--border-color);
   padding: 1.5rem;
@@ -1219,34 +1219,34 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 1rem;
 }
 
-.user-profile-container .body > div .buttons {
+.user-profile-container .body>div .buttons {
   display: flex;
   gap: 0.5vw;
 }
 
-.user-profile-container .body > div .buttons a {
+.user-profile-container .body>div .buttons a {
   width: 100%;
 }
 
-.user-profile-container .body > div .buttons button {
+.user-profile-container .body>div .buttons button {
   width: 100%;
 }
 
-.user-profile-container .body > div .info {
+.user-profile-container .body>div .info {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.user-profile-container .body > div .stats {
+.user-profile-container .body>div .stats {
   display: flex;
 }
 
-.user-profile-container .body > div .stats p:first-child {
+.user-profile-container .body>div .stats p:first-child {
   border: none;
 }
 
-.user-profile-container .body > div .stats p {
+.user-profile-container .body>div .stats p {
   border-left: 2px solid var(--border-color);
   padding: 0 0.5rem 0 0.5rem;
 }
@@ -1514,6 +1514,7 @@ select option {
 }
 
 @media (max-width: 1750px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1523,6 +1524,7 @@ select option {
 }
 
 @media (max-width: 1400px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1602,6 +1604,7 @@ select option {
 }
 
 @media (max-width: 1030px) {
+
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
@@ -1709,17 +1712,17 @@ select option {
     max-width: 90%;
   }
 
-  .project-page-container .head > .buttons {
+  .project-page-container .head>.buttons {
     flex-direction: column;
   }
 
-  .project-page-container .head > .buttons div {
+  .project-page-container .head>.buttons div {
     gap: 2vw;
   }
 }
 
 @media (max-width: 450px) {
-  .projects-container > .buttons {
+  .projects-container>.buttons {
     flex-direction: column;
     gap: 1rem;
   }
@@ -1756,8 +1759,8 @@ select option {
     grid-template-columns: 15rem !important;
   }
 
-  .pubProject > .buttons,
-  .priProject > .buttons {
+  .pubProject>.buttons,
+  .priProject>.buttons {
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -2086,4 +2089,9 @@ div.hidden:not(.shown) {
 
 .inbox-container .notifications .inbox-item.unread:hover {
   border-left: 1rem solid var(--main-color);
+}
+
+.inbox-container .buttons {
+  display: flex;
+  gap: 1rem;
 }
