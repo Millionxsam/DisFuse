@@ -76,7 +76,7 @@ export default function Reply({ reply: r, user, project, comment }) {
 
   return (
     <>
-      <div className="reply">
+      <div id={`${reply?._id}`} className="reply">
         <div className="top">
           <Link to={`/@${author.username}`}>
             <img src={author.avatar} alt="" />

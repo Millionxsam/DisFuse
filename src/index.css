@@ -49,9 +49,9 @@ body {
 
 .loadingAnim {
   display: flex;
+  color: white;
   gap: 1rem;
   font-size: 40px;
-  align-items: center;
 }
 
 .loadingAnim .spinner {
@@ -76,6 +76,7 @@ button {
   display: flex;
   align-items: center;
   gap: 0.5vw;
+  white-space: nowrap;
   justify-content: center;
   border: none;
   padding: 1.75vh;
@@ -98,7 +99,6 @@ button:hover {
 
 button#rdbt:hover {
   background-color: #ff3c3cb0;
-  border-radius: 1.3rem;
 }
 
 button:active {
@@ -136,6 +136,11 @@ input[type="number"] {
   border-radius: 10px;
   padding: 0.5rem;
   color: white;
+}
+
+input:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 input[type="number"]:hover {
@@ -214,6 +219,11 @@ input[type="number"]:hover {
   opacity: 0;
   width: 0;
   height: 0;
+}
+
+.switch input:disabled + .slider {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .switch:active .slider:before {
@@ -323,12 +333,22 @@ p.modal-text {
 
 .workspace-navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: var(--main-color);
   height: 7.5vh;
   padding: 2vh;
   color: white;
+}
+
+.workspace-navbar .content-container {
+  display: flex;
+  width: 100%;
+  transition: all 0.5s ease;
+}
+
+.workspace-navbar i.menu {
+  display: none;
+  margin-left: auto;
 }
 
 .previewWorkspaceNavbar {
@@ -341,7 +361,7 @@ p.modal-text {
   position: relative;
 }
 
-.previewWorkspaceNavbar div:nth-child(2) {
+.previewWorkspaceNavbar > div {
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -351,10 +371,8 @@ p.modal-text {
 }
 
 .projectName {
+  margin-left: 1rem;
   font-size: 30px;
-}
-.workspace-navbar .projectName {
-  font-size: 20px;
   cursor: default;
   background-color: var(--border-color);
   font-family: "Poetsen One";
@@ -364,6 +382,8 @@ p.modal-text {
 
 .workspace-navbar .left {
   display: flex;
+  margin-left: 1rem;
+  justify-content: center;
   align-items: center;
   gap: 0.6vw;
 }
@@ -390,9 +410,10 @@ p.modal-text {
   list-style: none;
 }
 
-.workspace-navbar .left ul button {
+.workspace-navbar .right {
+  margin-left: auto;
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .workspace-navbar .right ul {
@@ -422,7 +443,7 @@ p.modal-text {
   height: 92.5vh;
 }
 
-.workspace-load-container {
+.load-container {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -616,7 +637,7 @@ p.modal-text {
 #previewWorkspace input {
   border: none;
   padding: 0.25vh;
-  background-color: var(--main-color);
+  background-color: transparent;
   color: white;
   width: 6rem;
   font-size: 16px;
@@ -720,9 +741,27 @@ p.modal-text {
   gap: 1.5rem;
 }
 
+.home-container .head .logo {
+  position: relative;
+  height: 240px;
+}
+
 .home-container .head .logo img {
   border-radius: 50%;
   height: 15rem;
+  position: relative;
+}
+
+.home-container .head .logo::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(red, blue, purple, red);
+  z-index: -1;
+  filter: blur(15px);
+  animation: spin 6s linear infinite;
 }
 
 .home-container .scrollDownBtn {
@@ -737,11 +776,11 @@ p.modal-text {
 }
 
 .home-container .scrollDownBtn:active i {
-  color: rgba(146, 146, 146, 0.849);
+  color: rgba(187, 187, 187, 0.849);
 }
 
 .home-container .scrollDownBtn i {
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.849);
 }
@@ -825,6 +864,12 @@ p.modal-text {
   justify-content: center;
 }
 
+.sidebar-container ul li span {
+  background-color: red;
+  padding: 0 3px 0 3px;
+  border-radius: 10px;
+}
+
 .sidebar-container ul a {
   width: min-content;
 }
@@ -838,6 +883,7 @@ p.modal-text {
 }
 
 .sidebar-container .nametag {
+  cursor: pointer;
   background-color: var(--border-color);
   display: flex;
   justify-content: center;
@@ -846,8 +892,11 @@ p.modal-text {
   gap: 0.5rem;
 }
 
+.sidebar-container .nametag:hover {
+  background-color: var(--main-color);
+}
+
 .sidebar-container .nametag div {
-  cursor: default;
   max-width: 10rem;
   overflow: hidden;
   white-space: nowrap;
@@ -856,6 +905,8 @@ p.modal-text {
 
 .sidebar-container .nametag img {
   border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
 }
 
 .sidebar-container .nametag i {
@@ -903,17 +954,27 @@ p.modal-text {
 
 .priProject .buttons {
   display: flex;
+  margin-top: auto;
   gap: 0.5rem;
   width: 100%;
+}
+
+.priProject .top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.priProject .top > i {
+  opacity: 0.75;
 }
 
 .priProject h1 {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -924,7 +985,7 @@ p.modal-text {
 
 .priProject .buttons button {
   width: 50%;
-  border-radius: 1.6rem;
+  border-radius: 1.5rem;
 }
 
 .projects-container .nametag {
@@ -958,7 +1019,8 @@ p.modal-text {
 }
 
 .explore-container,
-.fav-container {
+.fav-container,
+.inbox-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -967,14 +1029,16 @@ p.modal-text {
 }
 
 .explore-container .head,
-.fav-container .head {
+.fav-container .head,
+.inbox-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
 }
 
 .explore-container .exploration,
-.fav-container .favorites {
+.fav-container .favorites,
+.inbox-container .notifications {
   margin-left: 1rem;
 }
 
@@ -1045,13 +1109,13 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .pubProject .buttons {
+  margin-top: auto;
   display: flex;
   gap: 0.5vw;
 }
@@ -1105,6 +1169,10 @@ input[type="search"]::-webkit-search-results-decoration {
   align-items: center;
   gap: 1rem;
   font-size: 30px;
+}
+
+.user-profile-container .head .nametag p {
+  font-size: 20px;
 }
 
 .user-profile-container .head .nametag img {
@@ -1264,6 +1332,11 @@ input[type="search"]::-webkit-search-results-decoration {
   gap: 1rem;
   padding: 1rem;
   border-radius: 16px;
+}
+
+.comment.highlighted,
+.reply.highlighted {
+  background-color: #002c55 !important;
 }
 
 .comment .top {
@@ -1428,6 +1501,7 @@ select:hover {
 select option {
   font-size: 15px;
   background-color: var(--foreground-color);
+  color: white;
 }
 
 @media (max-width: 1750px) {
@@ -1448,9 +1522,63 @@ select option {
   }
 }
 
+@media (max-width: 1350px) {
+  .workspace-navbar button {
+    font-size: 16px;
+  }
+
+  .projectName {
+    font-size: 25px;
+  }
+
+  .workspace-navbar .right #autosave-indicator {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 1300px) {
   .home-container .head p {
     max-width: 60%;
+  }
+}
+
+@media (max-width: 1150px) {
+  .workspace-navbar .content-container {
+    position: absolute;
+    justify-content: center;
+    top: 7.5vh;
+    z-index: 100;
+    flex-direction: column;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--main-color);
+    height: 0;
+    overflow: hidden;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .workspace-navbar i.menu {
+    display: block;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .workspace-navbar .right {
+    margin: 0;
+  }
+
+  .workspace-navbar .right ul {
+    flex-direction: column;
+  }
+
+  .workspace-navbar .left ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .workspace-navbar .left ul button {
+    width: 100%;
   }
 }
 
@@ -1494,10 +1622,6 @@ select option {
   }
 
   .navbar {
-    display: none;
-  }
-
-  .workspace-navbar {
     display: none;
   }
 
@@ -1557,7 +1681,8 @@ select option {
   .user-profile-container,
   .fav-container,
   .settings-container,
-  .project-page-container {
+  .project-page-container,
+  .inbox-container {
     margin-top: 2rem;
   }
 
@@ -1631,7 +1756,8 @@ select option {
   .projects-container .head,
   .explore-container .head,
   .fav-container .head,
-  .settings-container .head {
+  .settings-container .head,
+  .inbox-container .head {
     font-size: 40px;
   }
 
@@ -1657,12 +1783,9 @@ select option {
   .projects-container .head,
   .explore-container .head,
   .fav-container .head,
-  .settings-container .head {
+  .settings-container .head,
+  .inbox-container .head {
     font-size: 30px;
-  }
-
-  button {
-    font-size: 15px;
   }
 
   .home-container .head .buttons {
@@ -1878,4 +2001,72 @@ div.hidden:not(.shown) {
   font-size: 17px !important;
   color: #bbbbbb;
   margin-top: -0.5rem;
+}
+
+.inbox-container .notifications {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.inbox-container .notifications .inbox-item {
+  background-color: var(--border-color);
+  align-items: center;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  transition: border 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.inbox-container .notifications .inbox-item .clearBtn {
+  opacity: 0;
+  position: absolute;
+  left: 1rem;
+  font-size: 25px;
+  border-radius: 10px;
+  padding: 5px;
+  transition: opacity 0.2s ease;
+}
+
+.inbox-container .notifications .inbox-item .clearBtn:hover {
+  background-color: red;
+}
+
+.inbox-container .notifications .inbox-item .info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.inbox-container .notifications .inbox-item p {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.inbox-container .notifications .inbox-item p .userTag {
+  padding: 0;
+}
+
+.inbox-container .notifications .inbox-item.unread {
+  border-left: 0.5rem solid var(--main-color);
+}
+
+.inbox-container .notifications .inbox-item:hover {
+  background-color: var(--foreground-color);
+}
+
+.inbox-container .notifications .inbox-item:hover .info {
+  margin-left: 2.5rem;
+}
+
+.inbox-container .notifications .inbox-item:hover .clearBtn {
+  opacity: 1;
+}
+
+.inbox-container .notifications .inbox-item.unread:hover {
+  border-left: 1rem solid var(--main-color);
 }

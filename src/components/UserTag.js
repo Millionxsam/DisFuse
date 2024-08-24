@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
-
 export default function UserTag({ user }) {
   return (
-    <Link className="userTag" to={`/@${user?.username}`}>
+    <div
+      className="userTag"
+      onClick={() => (window.location = `/@${user?.username}`)}
+    >
       <img src={user?.avatar} alt="" />
-      <p>@{user?.username}</p>
-    </Link>
+      <p>{user?.displayName || user?.username || "Loading..."}</p>
+    </div>
   );
 }

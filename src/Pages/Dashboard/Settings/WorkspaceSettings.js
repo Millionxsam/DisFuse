@@ -1,45 +1,53 @@
+import { useState } from "react";
 import Switch from "../../../components/Switch";
+import { useEffect } from "react";
+import axios from "axios";
+import LoadingAnim from "../../../components/LoadingAnim";
+
+let { discordUrl, apiUrl } = require("../../../config/config.json");
 
 export default function WorkspaceSettings() {
-  // const token = localStorage.getItem("disfuse-token");
-  // const [user, setUser] = useState({});
+  const token = localStorage.getItem("disfuse-token");
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(discordUrl + "/users/@me", {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     .then(({ data }) => {
-  //       setUser(data);
-  //     });
-  // }, [token]);
+  useEffect(() => {
+    axios
+      .get(discordUrl + "/users/@me", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(({ data }) => {
+        axios
+          .get(apiUrl + `/users/${data.id}`, {
+            headers: { Authorization: token },
+          })
+          .then(({ data: user }) => {
+            setUser(user);
+            setLoading(false);
+          });
+      });
+  }, [token]);
 
-  function changeTheme() {
-    const newTheme = document.querySelector("#workspace-theme").value;
-    localStorage.setItem("workspaceTheme", newTheme);
+  function updateSetting(setting, value) {
+    if (typeof setting === "object")
+      user.settings.workspace[setting[0]][setting[1]] = value;
+    else user.settings.workspace[setting] = value;
+
+    axios.put(apiUrl + `/users/${user.id}/settings`, user.settings, {
+      headers: { Authorization: token },
+    });
   }
 
-  function changeRenderer() {
-    const newRenderer = document.querySelector("#workspace-renderer").value;
-    localStorage.setItem("blocklyRenderer", newRenderer);
+  function toggleDisableState(settings) {
+    settings.forEach((setting) => {
+      document.querySelector("#workspace-" + setting).disabled =
+        !document.querySelector("#workspace-" + setting).disabled;
+    });
   }
 
-  function changeSounds() {
-    const enabled = document.querySelector("#workspace-sounds").checked;
-    localStorage.setItem("workspaceSounds", enabled);
-  }
-
-  function changeGridSnap() {
-    const enabled = document.querySelector("#workspace-gridSnap").checked;
-    localStorage.setItem("workspace-gridSnap", enabled);
-  }
-
-  function changeGridSpacing() {
-    const spacing = document.querySelector("#workspace-gridSpacing").value;
-    localStorage.setItem("workspace-gridSpacing", spacing);
-  }
+  if (loading) return <LoadingAnim />;
 
   return (
     <>
@@ -52,8 +60,8 @@ export default function WorkspaceSettings() {
         <div className="option">
           <label htmlFor="workspace-theme">Workspace theme:</label>
           <select
-            defaultValue={localStorage.getItem("workspaceTheme") || "DFTheme"}
-            onChange={changeTheme}
+            defaultValue={user.settings?.workspace.theme}
+            onChange={(e) => updateSetting("theme", e.currentTarget.value)}
             id="workspace-theme"
           >
             <option value="DFTheme">Dark (default)</option>
@@ -66,8 +74,8 @@ export default function WorkspaceSettings() {
         <div className="option">
           <label htmlFor="workspace-renderer">Workspace renderer:</label>
           <select
-            defaultValue={localStorage.getItem("blocklyRenderer") || "zelos"}
-            onChange={changeRenderer}
+            defaultValue={user.settings?.workspace.renderer ?? "zelos"}
+            onChange={(e) => updateSetting("renderer", e.currentTarget.value)}
             id="workspace-renderer"
           >
             <option value="zelos">Zelos (default)</option>
@@ -78,35 +86,44 @@ export default function WorkspaceSettings() {
         <div className="option">
           <p>Workspace sounds:</p>
           <Switch
-            defaultChecked={
-              localStorage.getItem("workspaceSounds") === null
-                ? true
-                : localStorage.getItem("workspaceSounds") === "true"
-            }
+            defaultChecked={user.settings?.workspace.sounds ?? true}
+            onChange={(e) => updateSetting("sounds", e.currentTarget.checked)}
             id={"workspace-sounds"}
-            onChange={changeSounds}
+          />
+        </div>
+        <div className="option">
+          <p>Show grid:</p>
+          <Switch
+            defaultChecked={user.settings?.workspace.grid.enabled ?? true}
+            onChange={(e) => {
+              updateSetting(["grid", "enabled"], e.currentTarget.checked);
+              toggleDisableState(["gridSnap", "gridSpacing"]);
+            }}
+            id="workspace-showGrid"
           />
         </div>
         <div className="option">
           <p>Snap to grid:</p>
           <Switch
-            defaultChecked={
-              localStorage.getItem("workspace-gridSnap") === null
-                ? false
-                : localStorage.getItem("workspace-gridSnap") === "true"
+            defaultChecked={user.settings?.workspace.grid.snap ?? false}
+            onChange={(e) =>
+              updateSetting(["grid", "snap"], e.currentTarget.checked)
             }
             id="workspace-gridSnap"
-            onChange={changeGridSnap}
+            disabled={!user.settings.workspace.grid.enabled}
           />
         </div>
         <div className="option">
           <label htmlFor="workspace-gridSpacing">Grid spacing:</label>
           <input
             type="number"
-            defaultValue={localStorage.getItem("workspace-gridSpacing") || "35"}
+            defaultValue={user.settings?.workspace.grid.spacing ?? 35}
+            onChange={(e) =>
+              updateSetting(["grid", "spacing"], e.currentTarget.value)
+            }
             placeholder="Default: 35"
-            onChange={changeGridSpacing}
             id="workspace-gridSpacing"
+            disabled={!user.settings.workspace.grid.enabled}
           />
         </div>
       </div>

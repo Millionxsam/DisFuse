@@ -29,14 +29,14 @@ export default function Settings() {
               Appearance
             </li>
           </Link>
-          {/* <Link to="/settings/notifications">
+          <Link to="/settings/notifications">
             <li
               onClick={() => setCategory("notifications")}
               className={category === "notifications" ? "active" : ""}
             >
               Notifications
             </li>
-          </Link> */}
+          </Link>
         </ul>
         <Outlet />
       </div>

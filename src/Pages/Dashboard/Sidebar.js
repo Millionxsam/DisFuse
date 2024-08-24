@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const { discordUrl } = require("../../config/config.json");
+const { discordUrl, apiUrl } = require("../../config/config.json");
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!active)
@@ -22,7 +23,12 @@ export default function Sidebar() {
           Authorization: localStorage.getItem("disfuse-token"),
         },
       })
-      .then(({ data }) => setUser(data));
+      .then(({ data }) => {
+        axios.get(apiUrl + "/users").then(({ data: users }) => {
+          let user = users.find((u) => u.id === data.id);
+          setUser(user);
+        });
+      });
   }, []);
 
   return (
@@ -74,15 +80,20 @@ export default function Sidebar() {
                   <i class="fa-solid fa-star"></i> <div>Favorites</div>
                 </li>
               </Link>
-              {/* <Link
+              <Link
                 onClick={() => setActive(false)}
                 className="underline-effect"
-                to="/notifications"
+                to="/inbox"
               >
                 <li>
-                  <i class="fa-solid fa-bell"></i> <div>Notifications</div>
+                  <i class="fa-solid fa-inbox"></i> <div>Inbox</div>
+                  {user.inbox?.filter((i) => !i.read).length ? (
+                    <span>{user.inbox?.filter((i) => !i.read).length}</span>
+                  ) : (
+                    ""
+                  )}
                 </li>
-              </Link> */}
+              </Link>
               <Link
                 onClick={() => setActive(false)}
                 className="underline-effect"
@@ -95,11 +106,11 @@ export default function Sidebar() {
             </ul>
           </div>
           <div className="bottom">
-            <div className="nametag">
-              <img
-                src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
-                alt=""
-              />
+            <div
+              className="nametag"
+              onClick={() => navigate(`/@${user.username}`)}
+            >
+              <img src={user.avatar} alt="" />
               <div>{user.username}</div>
               <i
                 onClick={logout}
@@ -114,20 +125,8 @@ export default function Sidebar() {
   );
 }
 
-function logout() {
+function logout(e) {
+  e.stopPropagation();
   localStorage.removeItem("disfuse-token");
-
-  Swal.fire({
-    toast: true,
-    icon: "success",
-    text: "Successfully logged out",
-    timer: 3000,
-    timerProgressBar: true,
-    position: "top-right",
-    showConfirmButton: false,
-  });
-
-  setTimeout(() => {
-    window.location = "/";
-  }, 3000);
+  window.location = "/";
 }

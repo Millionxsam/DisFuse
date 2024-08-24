@@ -146,14 +146,12 @@ export default function ProjectPage() {
 
       axios
         .post(
-          apiUrl + `/projects/${user.id}`,
+          apiUrl + `/projects`,
           {
-            project: {
-              name,
-              description: dsc,
-              private: isPrivate,
-              data: project.data,
-            },
+            name,
+            description: dsc,
+            private: isPrivate,
+            data: project.data,
           },
           {
             headers: {
@@ -171,17 +169,20 @@ export default function ProjectPage() {
   function postComment() {
     const content = document.querySelector("textarea.commentInput").value;
 
-    axios.post(
-      apiUrl + `/comments/${project._id}`,
-      {
-        content,
-      },
-      {
-        headers: { Authorization: localStorage.getItem("disfuse-token") },
-      }
-    );
-
-    window.location.reload();
+    axios
+      .post(
+        apiUrl + `/comments/${project._id}`,
+        {
+          content,
+        },
+        {
+          headers: { Authorization: localStorage.getItem("disfuse-token") },
+        }
+      )
+      .then(({ data }) => {
+        window.location.hash = data._id;
+        window.location.reload();
+      });
   }
 
   return (
@@ -193,12 +194,12 @@ export default function ProjectPage() {
           <p>{project.description}</p>
         </div>
         <div className="buttons">
-          {/* <Link to={`/@${project.owner?.username}/${project._id}/view`}>
+          <Link to={`/@${project.owner?.username}/${project._id}/view`}>
             <div className="darkBtn">
               <i class="fa-solid fa-eye"></i>
               <div>View</div>
             </div>
-          </Link> */}
+          </Link>
           <div
             onClick={toggleLike}
             className={`darkBtn like${

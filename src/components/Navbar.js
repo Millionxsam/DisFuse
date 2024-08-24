@@ -23,7 +23,7 @@ export default function Navbar() {
         </ul>
         <ul className="buttons">
           <li id="discord">
-            <Link to="https://dsc.gg/disfuse">
+            <Link target="_blank " rel="noopener" to="https://dsc.gg/disfuse">
               <i class="fa-brands fa-discord"></i> Discord
             </Link>
           </li>

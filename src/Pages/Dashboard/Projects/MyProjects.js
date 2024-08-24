@@ -28,7 +28,9 @@ export default function MyProjects() {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
           })
           .then(({ data: p }) => {
-            setProjects(p);
+            setProjects(
+              p.sort((a, b) => new Date(b.lastEdited) - new Date(a.lastEdited))
+            );
             setShown(p);
             setLoading(false);
           });
@@ -96,13 +98,11 @@ export default function MyProjects() {
 
       axios
         .post(
-          apiUrl + `/projects/${user.id}`,
+          apiUrl + `/projects`,
           {
-            project: {
-              name,
-              description: dsc,
-              private: isPrivate,
-            },
+            name,
+            description: dsc,
+            private: isPrivate,
           },
           {
             headers: {
@@ -224,6 +224,7 @@ export default function MyProjects() {
       title: "Sort Projects",
       input: "select",
       inputOptions: {
+        lastEdited: "Last Edited",
         "a-z": "Alphabetically (A to Z)",
         "z-a": "Reverse Alphabetically (Z to A)",
         oldest: "Oldest First",
@@ -239,7 +240,7 @@ export default function MyProjects() {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        let sortedProjects = [...projects];
+        let sortedProjects = projects;
 
         if (result.value === "a-z") {
           sortedProjects.sort((a, b) => a.name.localeCompare(b.name));
@@ -253,10 +254,22 @@ export default function MyProjects() {
           sortedProjects.sort(
             (a, b) => new Date(b.created) - new Date(a.created)
           );
+        } else if (result.value === "lastEdited") {
+          sortedProjects.sort(
+            (a, b) => new Date(b.lastEdited) - new Date(a.lastEdited)
+          );
         }
 
-        setShown(sortedProjects);
+        const query = document.querySelector("input.search").value;
+
         setProjects(sortedProjects);
+        setShown(
+          sortedProjects.filter(
+            (p) =>
+              p?.name?.toLowerCase().includes(query.toLowerCase()) ||
+              p?.description?.toLowerCase().includes(query.toLowerCase())
+          )
+        );
       }
     });
   }
@@ -314,7 +327,7 @@ export default function MyProjects() {
             alt=""
           />
           Hello,
-          <div>{user?.username}</div>
+          <div>{user?.global_name || user?.username}</div>
         </div>
         <div className="head">
           <i class="fa-solid fa-cubes"></i> My Projects
@@ -338,14 +351,15 @@ export default function MyProjects() {
           type="search"
           placeholder="Search Projects"
           className="search"
+          style={{ marginLeft: "1rem" }}
         />
         {isLoading ? <LoadingAnim /> : ""}
         <div className="projects">
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-              ? "No projects"
-              : ""}
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </>

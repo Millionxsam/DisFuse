@@ -12,11 +12,11 @@ import axios from "axios";
 
 import "../functions/registerContextMenus";
 import { toolbox } from "../config/toolbox";
-import { DFTheme } from "../components/DFTheme";
-import { DarkerTheme } from "../components/DarkerTheme";
-import { LightTheme } from "../components/LightTheme";
-import { BlueBlackTheme } from "../components/BlueBlackTheme";
-import { CandyTheme } from "../components/CandyTheme";
+import { DFTheme } from "../components/themes/DFTheme";
+import { DarkerTheme } from "../components/themes/DarkerTheme";
+import { LightTheme } from "../components/themes/LightTheme";
+import { BlueBlackTheme } from "../components/themes/BlueBlackTheme";
+import { CandyTheme } from "../components/themes/CandyTheme";
 import exportFiles from "../config/exportFiles";
 import { executeRestrictions } from "../functions/restrictions";
 import CodeView from "../components/CodeView";
@@ -73,326 +73,363 @@ export default function Workspace() {
           Authorization: localStorage.getItem("disfuse-token"),
         },
       })
-      .then(({ data: user }) => {
+      .then(({ data }) => {
         axios
-          .get(apiUrl + `/projects/${projectId}`, {
+          .get(apiUrl + `/users/${data.id}`, {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
           })
-          .then(({ data: project }) => {
-            toggleExport();
-
-            let usertheme = localStorage.getItem("workspaceTheme");
-
-            if (!usertheme) usertheme = "DFTheme";
-
-            if (usertheme === "DFTheme") {
-              usertheme = DFTheme;
-            } else if (usertheme === "DarkerTheme") {
-              usertheme = DarkerTheme;
-            } else if (usertheme === "LightTheme") {
-              usertheme = LightTheme;
-            } else if (usertheme === "BlueBlackTheme") {
-              usertheme = BlueBlackTheme;
-            } else if (usertheme === "CandyTheme") {
-              usertheme = CandyTheme;
-            }
-
-            let userrender = localStorage.getItem("blocklyRenderer") ?? "zelos";
-            let usersounds =
-              localStorage.getItem("workspaceSounds") === null
-                ? true
-                : localStorage.getItem("workspaceSounds") === "true";
-
-            let snapToGrid =
-              localStorage.getItem("workspace-gridSnap") === null
-                ? false
-                : localStorage.getItem("workspace-gridSnap") === "true";
-
-            let gridSpacing =
-              localStorage.getItem("workspace-gridSpacing") || 35;
-
-            // Inject workspace
-            const workspace = Blockly.inject(
-              document.getElementById("workspace"),
-              {
-                toolbox,
-                theme: usertheme,
-                move: {
-                  wheel: true,
+          .then(({ data: user }) => {
+            axios
+              .get(apiUrl + `/projects/${projectId}`, {
+                headers: {
+                  Authorization: localStorage.getItem("disfuse-token"),
                 },
-                renderer: userrender,
-                collapse: true,
-                comments: true,
-                disable: true,
-                maxBlocks: Infinity,
-                trashcan: true,
-                horizontalLayout: false,
-                toolboxPosition: "start",
-                css: true,
-                media: "https://blockly-demo.appspot.com/static/media/",
-                rtl: false,
-                scrollbars: true,
-                sounds: usersounds,
-                oneBasedIndex: true,
-                grid: {
-                  spacing: gridSpacing,
-                  length: 5,
-                  colour: "#8888886e",
-                  snap: snapToGrid,
-                },
-                zoom: {
-                  controls: true,
-                  wheel: true,
-                  startScale: 1,
-                  maxScale: 3,
-                  minScale: 0.3,
-                  scaleSpeed: 1.2,
-                },
-              }
-            );
+              })
+              .then(({ data: project }) => {
+                toggleExport();
 
-            document.querySelector(".workspace-navbar .projectName").innerHTML =
-              project.name;
+                let theme = user.settings.workspace.theme || "DFTheme";
 
-            setLoading(false);
+                if (theme === "DFTheme") theme = DFTheme;
+                else if (theme === "DarkerTheme") theme = DarkerTheme;
+                else if (theme === "LightTheme") theme = LightTheme;
+                else if (theme === "BlueBlackTheme") theme = BlueBlackTheme;
+                else if (theme === "CandyTheme") theme = CandyTheme;
 
-            workspace.tokenAlertPopupAppeared = project.private;
+                let renderer = user.settings.workspace.renderer ?? "zelos";
+                let sounds = user.settings.workspace.sounds ?? true;
+                let showGrid = user.settings.workspace.grid.enabled ?? true;
+                let snapToGrid = user.settings.workspace.grid.snap ?? false;
+                let gridSpacing = user.settings.workspace.grid.spacing ?? 35;
 
-            if (project.owner.id !== user.id)
-              return (window.location = "/projects");
+                // Inject workspace
+                const workspace = Blockly.inject(
+                  document.getElementById("workspace"),
+                  {
+                    toolbox,
+                    theme,
+                    move: {
+                      wheel: true,
+                    },
+                    renderer,
+                    collapse: true,
+                    comments: true,
+                    disable: true,
+                    maxBlocks: Infinity,
+                    trashcan: true,
+                    horizontalLayout: false,
+                    toolboxPosition: "start",
+                    css: true,
+                    media: "https://blockly-demo.appspot.com/static/media/",
+                    rtl: false,
+                    scrollbars: true,
+                    sounds: sounds,
+                    oneBasedIndex: true,
+                    grid: showGrid
+                      ? {
+                          spacing: gridSpacing,
+                          length: 5,
+                          colour: "#8888886e",
+                          snap: snapToGrid,
+                        }
+                      : false,
+                    zoom: {
+                      controls: true,
+                      wheel: true,
+                      startScale: 1,
+                      maxScale: 3,
+                      minScale: 0.3,
+                      scaleSpeed: 1.2,
+                    },
+                  }
+                );
 
-            if (project.data) {
-              Blockly.serialization.workspaces.load(
-                JSON.parse(project.data),
-                workspace
-              );
-            }
+                document.querySelector(
+                  ".workspace-navbar .projectName"
+                ).innerHTML = project.name;
 
-            [
-              "Discord",
-              "moment",
-              "gamecord",
-              "Database",
-              "client",
-              "databases",
-              "wait",
-              "process",
-              "emoji",
-              "channel",
-              "channels",
-              "member",
-              "members",
-              "user",
-              "users",
-              "guild",
-              "guilds",
-              "server",
-              "servers",
-              "modalSubmitInteraction",
-              "ForEachemojiInServer",
-              "interaction",
-              "int",
-              "scratchUserProfileInformation",
-              "errorButWithLengthyName",
-              "error",
-              "PollCreator",
-              "leavingMember",
-              "AddMember",
-              "AddServer",
-              "messageDeleted",
-              "messageReaction",
-              "role",
-              "roles",
-              "createdThread",
-              "lyrics",
-              "lyricsFinder",
-              "filePath",
-              "fs",
-              "readData",
-              "err",
-              "files"
-            ].forEach((word) => javascriptGenerator.addReservedWords(word));
+                [
+                  "Discord",
+                  "moment",
+                  "gamecord",
+                  "Database",
+                  "client",
+                  "databases",
+                  "wait",
+                  "process",
+                  "emoji",
+                  "channel",
+                  "channels",
+                  "member",
+                  "members",
+                  "user",
+                  "users",
+                  "guild",
+                  "guilds",
+                  "server",
+                  "servers",
+                  "modalSubmitInteraction",
+                  "ForEachemojiInServer",
+                  "interaction",
+                  "int",
+                  "scratchUserProfileInformation",
+                  "errorButWithLengthyName",
+                  "error",
+                  "PollCreator",
+                  "leavingMember",
+                  "AddMember",
+                  "AddServer",
+                  "messageDeleted",
+                  "messageReaction",
+                  "role",
+                  "roles",
+                  "createdThread",
+                  "lyrics",
+                  "lyricsFinder",
+                  "filePath",
+                  "fs",
+                  "readData",
+                  "err",
+                  "files",
+                ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
-            // Initiating plugins
-            const backpack = new Backpack(workspace, {
-              allowEmptyBackpackOpen: false,
-              contextMenu: {
-                copyAllToBackpack: true,
-                pasteAllToBackpack: true,
-              },
-            });
+                if (project.owner.id !== user.id)
+                  return (window.location = "/projects");
 
-            backpack.init();
+                if (project.data) {
+                  Blockly.serialization.workspaces.load(
+                    JSON.parse(project.data),
+                    workspace
+                  );
+                }
 
-            const workspaceSearch = new WorkspaceSearch(workspace);
-            workspaceSearch.init();
-
-            const zoomToFit = new ZoomToFitControl(workspace);
-            zoomToFit.init();
-
-            // Disable orphans
-            workspace.addChangeListener(Blockly.Events.disableOrphans);
-
-            // When workspace changes
-            workspace.addChangeListener((e) => {
-              autosave(workspace, projectId, e);
-              addTooltips(workspace);
-              executeRestrictions(workspace);
-              updateCode(workspace, project);
-
-              if (
-                workspace
-                  .getAllBlocks(false)
-                  .find((b) => b.type === "main_token")
-              )
-                hasTokenBlock.current = true;
-              else hasTokenBlock.current = false;
-
-              toggleExport();
-            });
-
-            document
-              .querySelector("button#templates")
-              .addEventListener("click", () => {
-                Swal.fire({
-                  title: "Load Template",
-                  text: "Which template would you like to load?",
-                  showCancelButton: true,
-                  cancelButtonText: "Cancel",
-                  background:
-                    usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
-                      ? ""
-                      : "#282828",
-                  color:
-                    usertheme.name === "candytheme" ||
-                      usertheme.name === "lighttheme"
-                      ? ""
-                      : "white",
-                  confirmButtonText: "Load",
-                  input: "select",
-                  inputOptions: {
-                    slashCommand: "Slash Commands",
-                    pingCommand: "Ping Command",
-                    economyCommand: "Economy Commands",
+                // Initiating plugins
+                const backpack = new Backpack(workspace, {
+                  allowEmptyBackpackOpen: false,
+                  contextMenu: {
+                    copyAllToBackpack: true,
+                    pasteAllToBackpack: true,
                   },
-                }).then((result) => {
-                  if (!result.isConfirmed) return;
-
-                  let data = require(`../templates/${result.value}`);
-
-                  data.blocks.blocks = data.blocks.blocks.concat(
-                    Blockly.serialization.workspaces.save(workspace)?.blocks
-                      ?.blocks || []
-                  );
-
-                  Blockly.serialization.workspaces.load(data, workspace);
                 });
-              });
+                const workspaceSearch = new WorkspaceSearch(workspace);
+                const zoomToFit = new ZoomToFitControl(workspace);
 
-            // Export event
-            document
-              .querySelector("button.export")
-              .addEventListener("click", () => {
-                if (!hasTokenBlock.current) return;
+                backpack.init();
+                workspaceSearch.init();
+                zoomToFit.init();
 
-                Swal.fire({
-                  title: "Export Project",
-                  icon: "info",
-                  confirmButtonText: "Download",
-                  showCancelButton: false,
-                  html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
-                }).then((result) => {
-                  if (!result.isConfirmed) return;
+                // Disable blocks that are not attached to anything
+                workspace.addChangeListener(Blockly.Events.disableOrphans);
 
-                  const zip = new JSZip();
+                setLoading(false);
 
-                  const codeEle = document.getElementById("code");
+                const codeEle = document.getElementById("code");
 
-                  const envFile = `${project.secrets
-                    .map((s) => `${s.name}=${s.value}`)
-                    .join("\n")}`;
+                const envFile = `${project.secrets
+                  .map((s) => `${s.name}=${s.value}`)
+                  .join("\n")}`;
 
-                  exportFiles.forEach((file) => {
-                    zip.file(file.name, file.content);
-                  });
+                // When workspace changes
+                workspace.addChangeListener((e) => {
+                  autosave(workspace, projectId, e);
+                  addTooltips(workspace);
+                  executeRestrictions(workspace);
+                  updateCode(workspace, project);
 
-                  zip.file(
-                    "index.js",
-                    beautify(workspace.jsCodeOutput, { format: "js" })
-                  );
+                  if (
+                    workspace
+                      .getAllBlocks(false)
+                      .find((b) => b.type === "main_token")
+                  )
+                    hasTokenBlock.current = true;
+                  else hasTokenBlock.current = false;
 
-                  zip.file(".env", envFile);
+                  toggleExport();
+                });
 
-                  zip.file(
-                    `${project.name}.df`,
-                    JSON.stringify(
-                      Blockly.serialization.workspaces.save(workspace)
-                    )
-                  );
-
-                  zip.generateAsync({ type: "blob" }).then((content) => {
-                    let url = window.URL.createObjectURL(content);
-                    let anchor = document.createElement("a");
-                    anchor.href = url;
-                    anchor.download = `${project.name}.zip`;
-
-                    anchor.click();
-
-                    window.URL.revokeObjectURL(url);
-
+                document
+                  .querySelector("button#templates")
+                  .addEventListener("click", () => {
                     Swal.fire({
-                      toast: true,
-                      position: "bottom-end",
-                      timer: 5000,
-                      timerProgressBar: true,
-                      icon: "success",
-                      title: "Successfully exported",
-                      showConfirmButton: false,
+                      title: "Load Template",
+                      text: "Which template would you like to load?",
+                      showCancelButton: true,
+                      cancelButtonText: "Cancel",
+                      background:
+                        theme.name === "candytheme" ||
+                        theme.name === "lighttheme"
+                          ? ""
+                          : "#282828",
+                      color:
+                        theme.name === "candytheme" ||
+                        theme.name === "lighttheme"
+                          ? ""
+                          : "white",
+                      confirmButtonText: "Load",
+                      input: "select",
+                      inputOptions: {
+                        slashCommand: "Slash Commands",
+                        pingCommand: "Ping Command",
+                      },
                     });
                   });
+
+                // When workspace changes
+                workspace.addChangeListener((e) => {
+                  autosave(workspace, projectId, e);
+                  addTooltips(workspace);
+                  executeRestrictions(workspace);
+                  updateCode(workspace, project);
+
+                  if (
+                    workspace
+                      .getAllBlocks(false)
+                      .find((b) => b.type === "main_token")
+                  )
+                    hasTokenBlock.current = true;
+                  else hasTokenBlock.current = false;
+
+                  toggleExport();
                 });
+
+                document
+                  .querySelector("button#templates")
+                  .addEventListener("click", () => {
+                    Swal.fire({
+                      title: "Load Template",
+                      text: "Which template would you like to load?",
+                      showCancelButton: true,
+                      cancelButtonText: "Cancel",
+                      background:
+                        theme.name === "candytheme" ||
+                        theme.name === "lighttheme"
+                          ? ""
+                          : "#282828",
+                      color:
+                        theme.name === "candytheme" ||
+                        theme.name === "lighttheme"
+                          ? ""
+                          : "white",
+                      confirmButtonText: "Load",
+                      input: "select",
+                      inputOptions: {
+                        slashCommand: "Slash Commands",
+                        pingCommand: "Ping Command",
+                      },
+                    }).then((result) => {
+                      if (!result.isConfirmed) return;
+
+                      let data = require(`../templates/${result.value}`);
+
+                      data.blocks.blocks = data.blocks.blocks.concat(
+                        Blockly.serialization.workspaces.save(workspace)?.blocks
+                          ?.blocks || []
+                      );
+
+                      Blockly.serialization.workspaces.load(data, workspace);
+                    });
+                  });
+
+                // Export button event
+                document
+                  .querySelector("button.export")
+                  .addEventListener("click", () => {
+                    if (!hasTokenBlock.current) return;
+
+                    Swal.fire({
+                      title: "Export Project",
+                      icon: "info",
+                      confirmButtonText: "Download",
+                      showCancelButton: false,
+                      html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+                    }).then((result) => {
+                      if (!result.isConfirmed) return;
+
+                      const zip = new JSZip();
+
+                      const codeEle = document.getElementById("code");
+                      const indexjs = `${codeEle.innerText}`;
+                      const envFile = `${project.secrets
+                        .map((s) => `${s.name}=${s.value}`)
+                        .join("\n")}`;
+
+                      exportFiles.forEach((file) => {
+                        zip.file(file.name, file.content);
+                      });
+
+                      zip.file(
+                        "index.js",
+                        `${beautify(indexjs, { format: "js" })}`
+                      );
+                      zip.file(".env", envFile);
+                      zip.file(
+                        `${project.name}.df`,
+                        JSON.stringify(
+                          Blockly.serialization.workspaces.save(workspace)
+                        )
+                      );
+
+                      zip.generateAsync({ type: "blob" }).then((content) => {
+                        let url = window.URL.createObjectURL(content);
+                        let anchor = document.createElement("a");
+                        anchor.href = url;
+                        anchor.download = `${project.name}.zip`;
+
+                        anchor.click();
+
+                        window.URL.revokeObjectURL(url);
+
+                        Swal.fire({
+                          toast: true,
+                          position: "bottom-end",
+                          timer: 5000,
+                          timerProgressBar: true,
+                          icon: "success",
+                          title: "Successfully exported",
+                          showConfirmButton: false,
+                        });
+                      });
+                    });
+                  });
+
+                // Save file event
+                document.querySelector(
+                  ".workspace-navbar .left #save"
+                ).onclick = async () => {
+                  const data = JSON.stringify(
+                    Blockly.serialization.workspaces.save(workspace)
+                  );
+                  const blob = new Blob([data], { type: "text/plain" });
+
+                  let url = window.URL.createObjectURL(blob);
+                  let anchor = document.createElement("a");
+                  anchor.href = url;
+                  anchor.download = `${project.name}.df`;
+
+                  anchor.click();
+
+                  window.URL.revokeObjectURL(url);
+
+                  Swal.fire({
+                    toast: true,
+                    position: "bottom-end",
+                    timer: 5000,
+                    timerProgressBar: true,
+                    icon: "success",
+                    title: "Successfully saved",
+                    showConfirmButton: false,
+                  });
+                };
+              })
+              .catch((e) => {
+                if (
+                  window.location.hostname === "localhost" &&
+                  String(e) ===
+                    'Error: Shortcut named "startSearch" already exists.'
+                ) {
+                  return window.location.reload();
+                } else throw new Error(e);
               });
-
-            // Save file event
-            document.querySelector(".workspace-navbar .left #save").onclick =
-              async () => {
-                const data = JSON.stringify(
-                  Blockly.serialization.workspaces.save(workspace)
-                );
-                const blob = new Blob([data], { type: "text/plain" });
-
-                let url = window.URL.createObjectURL(blob);
-                let anchor = document.createElement("a");
-                anchor.href = url;
-                anchor.download = `${project.name}.df`;
-
-                anchor.click();
-
-                window.URL.revokeObjectURL(url);
-
-                Swal.fire({
-                  toast: true,
-                  position: "bottom-end",
-                  timer: 5000,
-                  timerProgressBar: true,
-                  icon: "success",
-                  title: "Successfully saved",
-                  showConfirmButton: false,
-                });
-              };
-          })
-          .catch((e) => {
-            console.error(e);
-
-            if (window.location.hostname === "localhost") {
-              if (
-                String(e) ==
-                'Error: Shortcut named "startSearch" already exists.'
-              ) {
-                return window.location.reload();
-              }
-            }
           });
 
         function toggleExport() {
@@ -428,9 +465,7 @@ export default function Workspace() {
     <>
       <CodeView />
       <SecretsView />
-      <div className="workspace-load-container">
-        {isLoading ? <LoadingAnim /> : ""}
-      </div>
+      <div className="load-container">{isLoading ? <LoadingAnim /> : ""}</div>
       <div id="workspace"></div>
     </>
   );

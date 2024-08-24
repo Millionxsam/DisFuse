@@ -5,7 +5,7 @@ import LoadingAnim from "../../../components/LoadingAnim";
 import * as Blockly from "blockly";
 
 import { toolbox } from "../../../config/toolbox";
-import { DFTheme } from "../../../components/DFTheme";
+import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
 const { apiUrl } = require("../../../config/config.json");

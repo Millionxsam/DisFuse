@@ -15,15 +15,18 @@ import WebsiteSettings from "./Pages/Dashboard/Settings/WebsiteSettings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
 import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
+import ViewProject from "./Pages/Dashboard/Projects/ViewProject";
+import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
+import Inbox from "./Pages/Dashboard/Inbox";
 
-import './index.css';
+import "./index.css";
 
 export default function App() {
   useEffect(() => {
     let theme = localStorage.getItem("websiteTheme") || "DFTheme";
 
-    if (theme === 'LightTheme') {
-      import('./index-light.css');
+    if (theme === "LightTheme") {
+      import("./index-light.css");
     }
   }, []);
 
@@ -47,10 +50,7 @@ export default function App() {
           path="/dashboard/projects"
           element={<Navigate to="/projects" />}
         />
-        <Route
-          path="/dashboard/explore"
-          element={<Navigate to="/explore" />}
-        />
+        <Route path="/dashboard/explore" element={<Navigate to="/explore" />} />
         <Route
           path="/dashboard/favorites"
           element={<Navigate to="/favorites" />}
@@ -60,22 +60,29 @@ export default function App() {
           element={<Navigate to="/settings" />}
         />
 
-        <Route path="/" element={[<Auth />, <Sidebar />]}>
+        <Route
+          path="/"
+          element={
+            <Auth>
+              <Sidebar />
+            </Auth>
+          }
+        >
           <Route path="projects" element={<MyProjects />} />
           <Route path="explore" element={<Explore />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="inbox" element={<Inbox />} />
+          <Route path="/:username" element={<UserPage />} />
+          <Route path="/:username/:projectId" element={<ProjectPage />} />
           <Route path="settings" element={<Settings />}>
             <Route index element={<Navigate to={"/settings/workspace"} />} />
             <Route path="workspace" element={<WorkspaceSettings />} />
             <Route path="website" element={<WebsiteSettings />} />
-            {/* <Route path="notifications" element={<NotificationSettings />} /> */}
+            <Route path="notifications" element={<NotificationSettings />} />
           </Route>
         </Route>
 
-        <Route path="/" element={[<Sidebar />, <Auth />]}>
-          <Route path="/:username" element={<UserPage />} />
-          <Route path="/:username/:projectId" element={<ProjectPage />} />
-        </Route>
+        <Route path="/:username/:projectId/view" element={<ViewProject />} />
 
         <Route
           path="/:username/:projectId/workspace"

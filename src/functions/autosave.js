@@ -8,6 +8,7 @@ export default function autosave(workspace, projectId, e) {
     Blockly.Events.VIEWPORT_CHANGE,
     Blockly.Events.SELECTED,
     Blockly.Events.CLICK,
+    Blockly.Events.TOOLBOX_ITEM_SELECT,
   ];
   if (ignoredEvents.includes(e.type)) return;
 

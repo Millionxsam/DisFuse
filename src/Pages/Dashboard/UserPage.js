@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
+import { Helmet } from "react-helmet";
 
 const { apiUrl } = require("../../config/config.json");
 
@@ -29,26 +30,38 @@ export default function UserPage() {
   }, [username]);
 
   return (
-    <div className="user-profile-container">
-      <div className="head">
-        <div className="nametag">
-          <img src={user.avatar} alt="" />
-          <h1>{user.username}</h1>
+    <>
+      <Helmet>
+        <meta property="og:title" content={`@${user.username} on DisFuse`} />
+        <meta
+          property="og:description"
+          content="Create a Discord bot with block coding!"
+        />
+      </Helmet>
+
+      <div className="user-profile-container">
+        <div className="head">
+          <div className="nametag">
+            <img src={user.avatar} alt="" />
+            <div>
+              <h1>{user.displayName || user.username}</h1>
+              <p>@{user.username}</p>
+            </div>
+          </div>
+          <div className="stats">
+            <p>{projects.length} Projects</p>
+          </div>
         </div>
-        <div className="stats">
-          <p>0 Followers</p>
-          <p>{projects.length} Projects</p>
+        <h1>Projects</h1>
+        {isLoading ? <LoadingAnim /> : ""}
+        <div className="body">
+          {projects.length > 0
+            ? projects.map((project) => <PubProject project={project} />)
+            : !isLoading
+            ? "No public projects"
+            : ""}
         </div>
       </div>
-      <h1>Projects</h1>
-      {isLoading ? <LoadingAnim /> : ""}
-      <div className="body">
-        {projects.length > 0
-          ? projects.map((project) => <PubProject project={project} />)
-          : !isLoading
-          ? "No public projects"
-          : ""}
-      </div>
-    </div>
+    </>
   );
 }

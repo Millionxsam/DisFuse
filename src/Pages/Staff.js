@@ -1,36 +1,41 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(async () => {
-    let elements = Array.from(document.getElementsByClassName('contributionsCounter'));
-
-    let response = await fetch(`https://api.github.com/repos/Millionxsam/DisFuse/contributors`);
-
-    if (!response.ok) {
-      console.error(`Response was not ok: ${response.status}`);
-
-      return elements.forEach(element => {
-        element.remove();
-      });
-    }
-
-    let contributors = await response.json();
-
-    elements.forEach(element => {
-      try {
-        let username = element.innerText;
-        let data = contributors.find(item => item.login == username);
-
-        if (!data || !username) element.remove();
-        element.innerText = `Contributions: ${data.contributions}`;
-      } catch (error) {
-        element.remove();
-      }
-    })
-  }, 300);
-});
-
 export default function Staff() {
+  useEffect(() => {
+    (async () => {
+      let elements = Array.from(
+        document.getElementsByClassName("contributionsCounter")
+      );
+
+      let response = await fetch(
+        `https://api.github.com/repos/Millionxsam/DisFuse/contributors`
+      );
+
+      if (!response.ok) {
+        console.error(`Response was not ok: ${response.status}`);
+
+        return elements.forEach((element) => {
+          element.remove();
+        });
+      }
+
+      let contributors = await response.json();
+
+      elements.forEach((element) => {
+        try {
+          let username = element.innerText;
+          let data = contributors.find((item) => item.login === username);
+
+          if (!data || !username) element.remove();
+          element.innerText = `Contributions: ${data.contributions}`;
+        } catch (error) {
+          element.remove();
+        }
+      });
+    })();
+  }, []);
+
   return (
     <div className="staff-container">
       <h1>DisFuse Staff</h1>
@@ -50,7 +55,7 @@ export default function Staff() {
         <Link to="https://github.com/ddededodediamante">
           <div>
             <img
-              src="https://cdn.discordapp.com/avatars/694587798598058004/217a350592e07b2f51d3463899e81282.webp?size=80"
+              src="https://cdn.discordapp.com/avatars/694587798598058004/cc4dd2163f7c42384aeb29d933f909d6.webp?size=80"
               alt="ddededodediamante's Discord Profile"
             />
             <h3>ddededodediamante</h3>

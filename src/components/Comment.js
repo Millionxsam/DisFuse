@@ -17,6 +17,15 @@ export default function Comment({ project, comment: c, user, index }) {
       .then(({ data }) =>
         setAuthor(data.find((u) => u.id === comment.authorId))
       );
+
+    if (window.location.hash) {
+      const commentEle = document.getElementById(
+        window.location.hash.replace("#", "")
+      );
+
+      commentEle?.scrollIntoView({ behavior: "smooth" });
+      commentEle?.classList.add("highlighted");
+    }
   }, []);
 
   function toggleLike() {
@@ -51,9 +60,12 @@ export default function Comment({ project, comment: c, user, index }) {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
         }
       )
-      .then(({ data }) => setComment(data));
+      .then(({ data }) => {
+        setComment(data);
 
-    window.location.reload();
+        window.location.hash = data.replies[data.replies.length - 1]._id;
+        window.location.reload();
+      });
   }
 
   function editComment() {
@@ -92,7 +104,7 @@ export default function Comment({ project, comment: c, user, index }) {
   }
 
   return (
-    <div className="comment">
+    <div id={`${comment?._id}`} className="comment">
       <div className="top">
         <Link to={`/@${author.username}`}>
           <img src={author.avatar} alt="" />

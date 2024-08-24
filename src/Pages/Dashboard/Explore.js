@@ -19,9 +19,7 @@ export default function Explore() {
         },
       })
       .then(({ data }) => {
-        data = data.sort(
-          (a, b) => (b.likes.length) - (a.likes.length)
-        );
+        data = data.sort((a, b) => b.likes.length - a.likes.length);
 
         setProjects(data);
         setShown(data);
@@ -72,13 +70,9 @@ export default function Explore() {
             (a, b) => new Date(b.created) - new Date(a.created)
           );
         } else if (result.value === "mostLiked") {
-          sortedProjects.sort(
-            (a, b) => (b.likes.length) - (a.likes.length)
-          );
+          sortedProjects.sort((a, b) => b.likes.length - a.likes.length);
         } else if (result.value === "mostCloned") {
-          sortedProjects.sort(
-            (a, b) => (b.clones.length) - (a.clones.length)
-          );
+          sortedProjects.sort((a, b) => b.clones.length - a.clones.length);
         }
 
         setShown(sortedProjects);
@@ -93,16 +87,16 @@ export default function Explore() {
         <i class="fa-solid fa-earth-americas"></i> Explore
       </div>
       <div className="buttons">
+        <input
+          onChange={search}
+          type="search"
+          placeholder="Search Projects"
+          className="search"
+        />
         <button onClick={sort}>
           <i class="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
         </button>
       </div>
-      <input
-        onChange={search}
-        type="search"
-        placeholder="Search Projects"
-        className="search"
-      />
       <div className="exploration">
         <h1>Featured</h1>
         {isLoading ? <LoadingAnim /> : ""}
@@ -110,8 +104,8 @@ export default function Explore() {
           {shown.length > 0
             ? shown.map((project) => <PubProject project={project} />)
             : !isLoading
-              ? "No projects"
-              : ""}
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </div>

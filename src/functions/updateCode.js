@@ -13,9 +13,9 @@ export default function updateCode(workspace, project) {
   const codeEle = document.getElementById("code");
 
   const blockImports = {
-    "fs_": ["fs", "path"],
-    "music_": "lyrics-finder",
-    "db_": "easy-json-database"
+    fs_: ["fs", "path"],
+    music_: "lyrics-finder",
+    db_: "easy-json-database",
   };
   let blockImportCode = "";
 
@@ -24,28 +24,32 @@ export default function updateCode(workspace, project) {
   let code = javascriptGenerator.workspaceToCode(workspace);
 
   topBlocks.forEach((topBlock) => {
-    let c = allBlocks.find((b) => b.type === topBlock);
-    if (!c) return;
+    let existingBlocks = allBlocks.filter((b) => b.type === topBlock);
+    if (!existingBlocks?.length) return;
 
-    code = code.replace(javascriptGenerator.blockToCode(c), "");
+    existingBlocks.forEach((block) => {
+      code = code.replace(javascriptGenerator.blockToCode(block), "");
+    });
   });
 
   Object.keys(blockImports).forEach((importBlock) => {
     let c = allBlocks.find((b) => b.type.startsWith(importBlock));
     if (!c) return;
 
-    function fixImport(module = '') {
-      return module.replaceAll('-', '');
+    function fixImport(module = "") {
+      return module.replaceAll("-", "");
     }
 
     const importName = blockImports[importBlock];
 
     if (Array.isArray(importName)) {
-      importName.forEach(i => {
+      importName.forEach((i) => {
         blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
       });
     } else {
-      blockImportCode += `const ${fixImport(importName)} = require("${importName}");\n`;
+      blockImportCode += `const ${fixImport(
+        importName
+      )} = require("${importName}");\n`;
     }
   });
 
@@ -77,6 +81,7 @@ export default function updateCode(workspace, project) {
     
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     ${allBlocks
       .filter((b) => topBlocks.includes(b.type))
       .map((b) => javascriptGenerator.blockToCode(b))
@@ -86,9 +91,9 @@ export default function updateCode(workspace, project) {
         
     client.setMaxListeners(0);
         
-    client.on("ready", () => {
-      console.log(client.user.tag + " is logged in!");
-    });
+        client.on("ready", () => {
+          console.log(client.user.username + " is logged in");
+        });
         
     ${code}`;
 
