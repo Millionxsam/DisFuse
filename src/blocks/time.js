@@ -65,7 +65,7 @@ Blockly.Blocks["time_createdate"] = {
   init: function () {
     this.appendValueInput("TIME")
       .setCheck("String")
-      .appendField("create date with time");
+      .appendField("create date from time");
     this.setOutput(true, "date");
     this.setColour("#db4b9c");
   },

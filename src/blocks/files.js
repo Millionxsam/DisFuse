@@ -114,13 +114,68 @@ Blockly.Blocks['fs_readdir_path'] = {
 
 javascriptGenerator.forBlock['fs_readFile_data'] = () => ['readData', Order.NONE];
 
+Blockly.Blocks['fs_deleteFile'] = {
+    init: function () {
+        this.appendValueInput('path')
+            .setCheck('String')
+            .appendField('Delete file from path:');
+        this.setPreviousStatement(true, 'default');
+        this.setNextStatement(true, 'default');
+        this.setColour('#eb8334');
+        this.setTooltip('Deletes a file from a path.');
+    }
+};
+
+javascriptGenerator.forBlock['fs_deleteFile'] = function (block, generator) {
+    var path = generator.valueToCode(block, 'path', Order.ATOMIC);
+
+    return `fs.unlink(${path}, (err) => {
+  if (err) throw err;
+});\n`;
+};
+
+Blockly.Blocks['fs_renameFile'] = {
+    init: function () {
+        this.appendValueInput('path')
+            .setCheck('String')
+            .appendField('Rename file from path:');
+        this.appendValueInput('newpath')
+            .setCheck('String')
+            .appendField('New path:');
+        this.setPreviousStatement(true, 'default');
+        this.setNextStatement(true, 'default');
+        this.setColour('#eb8334');
+        this.setTooltip('Renames a file from a path.');
+    }
+};
+
+javascriptGenerator.forBlock['fs_renameFile'] = function (block, generator) {
+    var path = generator.valueToCode(block, 'path', Order.ATOMIC);
+    var newpath = generator.valueToCode(block, 'newpath', Order.ATOMIC);
+
+    return `fs.rename(${path}, ${newpath}, (err) => {
+  if (err) throw err;
+});\n`;
+};
+
 createRestrictions(
-    ["fs_readFile", "fs_writeFile", "fs_readdir"],
+    ["fs_readFile", "fs_writeFile", "fs_readdir", "fs_deleteFile", "fs_renameFile"],
     [
         {
             type: "notEmpty",
             blockTypes: ["path"],
             message: "You must specify a valid path",
+        }
+    ]
+);
+
+createRestrictions(
+    ["fs_renameFile"],
+    [
+        {
+            type: "notEmpty",
+            blockTypes: ["newpath"],
+            message: "You must specify the new path for the file",
         }
     ]
 );

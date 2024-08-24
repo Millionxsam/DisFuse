@@ -96,10 +96,10 @@ Blockly.Blocks["emoji_getemojiwith"] = {
         ]),
         "with"
       )
-      .appendField("equal to:");
+      .appendField("equal to");
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("on the server:");
+      .appendField("on the server");
     this.setOutput(true, "emoji");
     this.setColour("DEB144");
     this.setTooltip("Gets an emoji with a specific name/id on a server.");

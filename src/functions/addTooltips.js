@@ -13,15 +13,14 @@ export default function addTooltips(workspace) {
       let beforeInputTooltip = block?.getTooltip()?.split("Input")[0] || "";
       block.setTooltip(
         beforeInputTooltip +
-          "\n" +
-          inputs
-            ?.map(
-              (input, i) =>
-                `Input ${i + 1}: ${
-                  input?.connection?.check?.join(", ") || "Any"
-                }`
-            )
-            .join("\n")
+        "\n" +
+        inputs
+          ?.map(
+            (input, i) =>
+              `Input ${i + 1}: ${input?.connection?.check?.join(", ") || "Any"
+              }`
+          )
+          .join("\n")
       );
     }
 
@@ -30,8 +29,8 @@ export default function addTooltips(workspace) {
         block?.getTooltip().split("Output(s):")[0] || "";
       block.setTooltip(
         beforeOutputTooltip +
-          "\nOutput(s): " +
-          outputs.map((output) => output ?? "Any").join(", ")
+        "\nOutput(s): " +
+        outputs.map((output) => output ?? "Any").join(", ")
       );
     }
   });

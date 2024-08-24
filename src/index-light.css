@@ -457,14 +457,19 @@ p.modal-text {
 }
 
 #code {
-  font-family: monospace;
-  padding: 2vh;
+  font-family: monospace !important;
+  padding: 1.5vh;
   font-size: 15px;
-  background-color: #00284e;
-  border: 4px solid var(--main-color);
+  background-color: #1f2c38;
+  border: 4px solid #274864;
   border-radius: 10px;
   max-height: 90vh;
   overflow: auto;
+}
+
+#code * {
+  font-family: monospace !important;
+  font-weight: 400;
 }
 
 .code-view .top {

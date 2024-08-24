@@ -152,6 +152,8 @@ export default function Workspace() {
                   "Discord",
                   "moment",
                   "gamecord",
+                  "discordgamecord",
+                  "easyjsondatabase",
                   "Database",
                   "client",
                   "databases",
@@ -222,12 +224,6 @@ export default function Workspace() {
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
 
                 setLoading(false);
-
-                const codeEle = document.getElementById("code");
-
-                const envFile = `${project.secrets
-                  .map((s) => `${s.name}=${s.value}`)
-                  .join("\n")}`;
 
                 // When workspace changes
                 workspace.addChangeListener((e) => {

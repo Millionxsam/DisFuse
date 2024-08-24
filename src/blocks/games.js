@@ -416,7 +416,7 @@ javascriptGenerator.forBlock["game_trivia"] = function (block, generator) {
   var value_mode = block.getFieldValue("mode");
   var value_dif = block.getFieldValue("difficulty");
 
-  var code = `new gamecord.Trivia({
+  var code = `new discordgamecord.Trivia({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -435,7 +435,7 @@ javascriptGenerator.forBlock["game_wordle"] = function (block, generator) {
   var value_title = generator.valueToCode(block, "title", Order.ATOMIC);
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
 
-  var code = `new gamecord.Wordle({
+  var code = `new discordgamecord.Wordle({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -457,7 +457,7 @@ javascriptGenerator.forBlock["game_tictactoe"] = function (block, generator) {
     Order.ATOMIC
   );
 
-  var code = `new gamecord.TicTacToe({
+  var code = `new discordgamecord.TicTacToe({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -476,7 +476,7 @@ javascriptGenerator.forBlock["game_snake"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_overtitle = generator.valueToCode(block, "overtitle", Order.ATOMIC);
 
-  var code = `new gamecord.Snake({
+  var code = `new discordgamecord.Snake({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -493,7 +493,7 @@ javascriptGenerator.forBlock["game_slots"] = function (block, generator) {
   var value_title = generator.valueToCode(block, "title", Order.ATOMIC);
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
 
-  var code = `new gamecord.Slots({
+  var code = `new discordgamecord.Slots({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -510,7 +510,7 @@ javascriptGenerator.forBlock["game_rps"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
 
-  var code = `new gamecord.RockPaperScissors({
+  var code = `new discordgamecord.RockPaperScissors({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -528,7 +528,7 @@ javascriptGenerator.forBlock["game_minesweeper"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
 
-  var code = `new gamecord.Minesweeper({
+  var code = `new discordgamecord.Minesweeper({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -546,7 +546,7 @@ javascriptGenerator.forBlock["game_matchpairs"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
 
-  var code = `new gamecord.MatchPairs({
+  var code = `new discordgamecord.MatchPairs({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -563,7 +563,7 @@ javascriptGenerator.forBlock["game_hangman"] = function (block, generator) {
   var value_title = generator.valueToCode(block, "title", Order.ATOMIC);
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
 
-  var code = `new gamecord.Hangman({
+  var code = `new discordgamecord.Hangman({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -579,7 +579,7 @@ javascriptGenerator.forBlock["game_flood"] = function (block, generator) {
   var value_title = generator.valueToCode(block, "title", Order.ATOMIC);
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
 
-  var code = `new gamecord.Flood({
+  var code = `new discordgamecord.Flood({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -597,7 +597,7 @@ javascriptGenerator.forBlock["game_findemoji"] = function (block, generator) {
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
   var value_finddsc = generator.valueToCode(block, "finddsc", Order.ATOMIC);
 
-  var code = `new gamecord.FindEmoji({
+  var code = `new discordgamecord.FindEmoji({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -616,7 +616,7 @@ javascriptGenerator.forBlock["game_fasttype"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
 
-  var code = `new gamecord.FastType({
+  var code = `new discordgamecord.FastType({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -634,7 +634,7 @@ javascriptGenerator.forBlock["game_connect4"] = function (block, generator) {
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var value_status = generator.valueToCode(block, "status", Order.ATOMIC);
 
-  var code = `new gamecord.Connect4({
+  var code = `new discordgamecord.Connect4({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
@@ -651,7 +651,7 @@ javascriptGenerator.forBlock["game_2048"] = function (block, generator) {
   var value_title = generator.valueToCode(block, "title", Order.ATOMIC);
   var value_color = generator.valueToCode(block, "color", Order.ATOMIC);
 
-  var code = `new gamecord.TwoZeroFourEight({
+  var code = `new discordgamecord.TwoZeroFourEight({
         message: ${dropdown_slash === "true" ? "interaction" : "message"},
         isSlashGame: ${dropdown_slash},
         embed: {
