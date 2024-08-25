@@ -28,7 +28,14 @@ export default function Comment({ project, comment: c, user, index }) {
     }
   }, []);
 
+  var likeButtonEnabled = true;
+
   function toggleLike() {
+    if (!likeButtonEnabled) return;
+
+    likeButtonEnabled = false;
+    setTimeout(() => likeButtonEnabled = true, 700);
+
     axios
       .patch(apiUrl + `/comments/${project._id}/${comment._id}/likes`, null, {
         headers: {
@@ -47,8 +54,9 @@ export default function Comment({ project, comment: c, user, index }) {
   }
 
   function postReply() {
-    const content = document.querySelectorAll("textarea.replyInput")[index]
-      .value;
+    const content = document.querySelectorAll("textarea.replyInput")[index].value.trim();
+
+    if (content == '') return;
 
     axios
       .post(
@@ -122,9 +130,8 @@ export default function Comment({ project, comment: c, user, index }) {
       <div className="bottom">
         <div
           onClick={toggleLike}
-          className={`like${
-            comment?.likes?.includes(user.id) ? " active" : ""
-          }${newLike ? " newLike" : ""}`}
+          className={`like${comment?.likes?.includes(user.id) ? " active" : ""
+            }${newLike ? " newLike" : ""}`}
         >
           <i class="fa-solid fa-heart"></i>
           <div>{comment?.likes?.length}</div>
