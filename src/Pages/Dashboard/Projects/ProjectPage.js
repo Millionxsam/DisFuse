@@ -26,23 +26,28 @@ export default function ProjectPage() {
         },
       })
       .then(({ data }) => {
-        axios.get(apiUrl + "/users").then(({ data: users }) => {
-          setUser(users.find((u) => u.id === data.id));
+        axios.get(apiUrl + "/users/" + data.id, {
+          headers: {
+            Authorization: localStorage.getItem("disfuse-token"),
+          },
+        })
+          .then(({ data: user }) => {
+            setUser(user);
 
-          axios
-            .get(apiUrl + `/projects/${projectId}`, {
-              headers: { Authorization: localStorage.getItem("disfuse-token") },
-            })
-            .then(async ({ data: project }) => {
-              setProject(project);
+            axios
+              .get(apiUrl + `/projects/${projectId}`, {
+                headers: { Authorization: localStorage.getItem("disfuse-token") },
+              })
+              .then(async ({ data: project }) => {
+                setProject(project);
 
-              axios.get(apiUrl + `/comments/${projectId}`).then(({ data }) => {
-                setComments(data);
-                setLoading(false);
-              });
-            })
-            .catch(() => (window.location = "/explore"));
-        });
+                axios.get(apiUrl + `/comments/${projectId}`).then(({ data }) => {
+                  setComments(data);
+                  setLoading(false);
+                });
+              })
+              .catch(() => (window.location = "/explore"));
+          });
       });
   }, [projectId]);
 
