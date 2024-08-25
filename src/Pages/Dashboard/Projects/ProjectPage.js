@@ -48,7 +48,14 @@ export default function ProjectPage() {
 
   if (!project) return (window.location = "/explore");
 
+  var likeButtonEnabled = true;
+
   function toggleLike() {
+    if (!likeButtonEnabled) return;
+
+    likeButtonEnabled = false;
+    setTimeout(() => likeButtonEnabled = true, 700);
+
     axios
       .patch(apiUrl + `/projects/${project._id}/likes`, null, {
         headers: {
@@ -61,7 +68,14 @@ export default function ProjectPage() {
       });
   }
 
+  var favButtonEnabled = true;
+
   function toggleFav(favId) {
+    if (!favButtonEnabled) return;
+
+    favButtonEnabled = false;
+    setTimeout(() => favButtonEnabled = true, 700);
+
     axios
       .patch(
         apiUrl + `/users/${user.id}/favorites`,
@@ -167,7 +181,11 @@ export default function ProjectPage() {
   }
 
   function postComment() {
-    const content = document.querySelector("textarea.commentInput").value;
+    const content = document.querySelector("textarea.commentInput").value.trim();
+
+    if (content == '') return;
+
+    document.querySelector("textarea.commentInput").value = '';
 
     axios
       .post(
@@ -202,9 +220,8 @@ export default function ProjectPage() {
           </Link>
           <div
             onClick={toggleLike}
-            className={`darkBtn like${
-              project.likes?.includes(user.id) ? " active" : ""
-            }${newLike ? " newLike" : ""}`}
+            className={`darkBtn like${project.likes?.includes(user.id) ? " active" : ""
+              }${newLike ? " newLike" : ""}`}
           >
             <i class="fa-solid fa-heart"></i>
             <div>{project.likes?.length} Likes</div>
@@ -215,9 +232,8 @@ export default function ProjectPage() {
           </div>
           <div
             onClick={() => toggleFav(projectId)}
-            className={`darkBtn fav${
-              user.favorites?.includes(projectId) ? " active" : ""
-            }${newFav ? " newFav" : ""}`}
+            className={`darkBtn fav${user.favorites?.includes(projectId) ? " active" : ""
+              }${newFav ? " newFav" : ""}`}
           >
             <i class="fa-solid fa-star"></i>
             <div>
