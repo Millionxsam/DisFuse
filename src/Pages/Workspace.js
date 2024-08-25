@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
-import { Backpack } from "@blockly/workspace-backpack";
+import { Backpack, backpackChange } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
 import "@blockly/toolbox-search";
@@ -127,11 +127,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                          spacing: gridSpacing,
-                          length: 5,
-                          colour: "#8888886e",
-                          snap: snapToGrid,
-                        }
+                        spacing: gridSpacing,
+                        length: 5,
+                        colour: "#8888886e",
+                        snap: snapToGrid,
+                      }
                       : false,
                     zoom: {
                       controls: true,
@@ -220,6 +220,25 @@ export default function Workspace() {
                 workspaceSearch.init();
                 zoomToFit.init();
 
+                function setBackpackStorage() {
+                  console.log('backpack stored');
+                  localStorage.setItem('dfWorkspaceBackpack', JSON.stringify(
+                    backpack.getContents() || []
+                  ));
+                }
+
+                backpack.onDragEnter = setBackpackStorage;
+                backpack.onDragExit = setBackpackStorage;
+                backpack.onDrop = setBackpackStorage;
+
+                try {
+                  backpack.setContents(
+                    JSON.parse(
+                      localStorage.getItem('dfWorkspaceBackpack')
+                    )
+                  );
+                } catch (_) { }
+
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
 
@@ -227,6 +246,7 @@ export default function Workspace() {
 
                 // When workspace changes
                 workspace.addChangeListener((e) => {
+                  setBackpackStorage();
                   autosave(workspace, projectId, e);
                   addTooltips(workspace);
                   executeRestrictions(workspace);
@@ -253,12 +273,12 @@ export default function Workspace() {
                       cancelButtonText: "Cancel",
                       background:
                         theme.name === "candytheme" ||
-                        theme.name === "lighttheme"
+                          theme.name === "lighttheme"
                           ? ""
                           : "#282828",
                       color:
                         theme.name === "candytheme" ||
-                        theme.name === "lighttheme"
+                          theme.name === "lighttheme"
                           ? ""
                           : "white",
                       confirmButtonText: "Load",
@@ -298,12 +318,12 @@ export default function Workspace() {
                       cancelButtonText: "Cancel",
                       background:
                         theme.name === "candytheme" ||
-                        theme.name === "lighttheme"
+                          theme.name === "lighttheme"
                           ? ""
                           : "#282828",
                       color:
                         theme.name === "candytheme" ||
-                        theme.name === "lighttheme"
+                          theme.name === "lighttheme"
                           ? ""
                           : "white",
                       confirmButtonText: "Load",
@@ -421,7 +441,7 @@ export default function Workspace() {
                 if (
                   window.location.hostname === "localhost" &&
                   String(e) ===
-                    'Error: Shortcut named "startSearch" already exists.'
+                  'Error: Shortcut named "startSearch" already exists.'
                 ) {
                   return window.location.reload();
                 } else throw new Error(e);
