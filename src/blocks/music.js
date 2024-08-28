@@ -64,4 +64,4 @@ createRestrictions(
             message: 'This block must be under a "Get lyrics" block',
         },
     ]
-)
+);

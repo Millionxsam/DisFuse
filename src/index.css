@@ -2095,3 +2095,37 @@ div.hidden:not(.shown) {
   display: flex;
   gap: 1rem;
 }
+
+.swal2-popup button {
+  padding: 1.5vh;
+  border-radius: 0.6rem;
+  transition: all 0.2s ease !important;
+}
+
+.swal2-popup button:hover {
+  border-radius: 0.9rem;
+}
+
+.swal2-cancel {
+  background-color: gray !important;
+}
+
+.swal2-cancel:hover {
+  background-color: rgba(128, 128, 128, 0.596) !important;
+}
+
+.swal2-confirm {
+  background-color: rgb(112, 102, 224) !important;
+}
+
+.swal2-confirm:hover {
+  background: rgba(112, 102, 224, 0.596) !important;
+}
+
+.swal2-deny {
+  background: rgb(255, 59, 59) !important;
+}
+
+.swal2-deny:hover {
+  background: rgba(255, 59, 59, 0.596) !important;
+}

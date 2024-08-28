@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
-import { Backpack, backpackChange } from "@blockly/workspace-backpack";
+import { Backpack } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
 import "@blockly/toolbox-search";
@@ -19,7 +19,6 @@ import { BlueBlackTheme } from "../components/themes/BlueBlackTheme";
 import { CandyTheme } from "../components/themes/CandyTheme";
 import exportFiles from "../config/exportFiles";
 import { executeRestrictions } from "../functions/restrictions";
-import CodeView from "../components/CodeView";
 import { useParams } from "react-router-dom";
 import autosave from "../functions/autosave";
 import addTooltips from "../functions/addTooltips";
@@ -56,6 +55,7 @@ import "../blocks/events/servers";
 import "../blocks/music";
 import "../blocks/files";
 
+import CodeView from "../components/CodeView";
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
 
@@ -263,33 +263,6 @@ export default function Workspace() {
                   toggleExport();
                 });
 
-                document
-                  .querySelector("button#templates")
-                  .addEventListener("click", () => {
-                    Swal.fire({
-                      title: "Load Template",
-                      text: "Which template would you like to load?",
-                      showCancelButton: true,
-                      cancelButtonText: "Cancel",
-                      background:
-                        theme.name === "candytheme" ||
-                          theme.name === "lighttheme"
-                          ? ""
-                          : "#282828",
-                      color:
-                        theme.name === "candytheme" ||
-                          theme.name === "lighttheme"
-                          ? ""
-                          : "white",
-                      confirmButtonText: "Load",
-                      input: "select",
-                      inputOptions: {
-                        slashCommand: "Slash Commands",
-                        pingCommand: "Ping Command",
-                      },
-                    });
-                  });
-
                 // When workspace changes
                 workspace.addChangeListener((e) => {
                   autosave(workspace, projectId, e);
@@ -308,6 +281,7 @@ export default function Workspace() {
                   toggleExport();
                 });
 
+                // Templates button event
                 document
                   .querySelector("button#templates")
                   .addEventListener("click", () => {
@@ -355,7 +329,7 @@ export default function Workspace() {
                     Swal.fire({
                       title: "Export Project",
                       icon: "info",
-                      confirmButtonText: "Download",
+                      confirmButtonText: "Download ZIP",
                       showCancelButton: false,
                       html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
                     }).then((result) => {

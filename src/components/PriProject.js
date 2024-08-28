@@ -16,7 +16,7 @@ export default function PriProject({ project }) {
             {project.private ? <i class="fa-solid fa-lock"></i> : ""}
           </h1>
           <i>
-            {project.lastEdited ? (
+            {project.lastEdited && project.lastEdited != 0 ? (
               <>
                 Edited{" "}
                 {ms(Date.now() - new Date(project.lastEdited).getTime(), {

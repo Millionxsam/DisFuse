@@ -29,7 +29,9 @@ export default function MyProjects() {
           })
           .then(({ data: p }) => {
             setProjects(
-              p.sort((a, b) => new Date(b.lastEdited) - new Date(a.lastEdited))
+              p.sort(
+                (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+              )
             );
             setShown(p);
             setLoading(false);
@@ -256,7 +258,7 @@ export default function MyProjects() {
           );
         } else if (result.value === "lastEdited") {
           sortedProjects.sort(
-            (a, b) => new Date(b.lastEdited) - new Date(a.lastEdited)
+            (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
           );
         }
 
@@ -358,8 +360,8 @@ export default function MyProjects() {
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-            ? "No projects"
-            : ""}
+              ? "No projects"
+              : ""}
         </div>
       </div>
     </>
