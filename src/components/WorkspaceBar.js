@@ -14,14 +14,22 @@ export default function WorkspaceBar() {
 
   function openMenu() {
     if (!active) {
-      document.querySelector(
-        ".workspace-navbar .content-container"
-      ).style.height = "55%";
+      if (document.body.clientWidth <= 396) {
+        document.querySelector(
+          ".workspace-navbar .content-container"
+        ).style.height = "45%";
+      } else {
+        document.querySelector(
+          ".workspace-navbar .content-container"
+        ).style.height = "30vh";
+      }
+
       setActive(true);
     } else {
       document.querySelector(
         ".workspace-navbar .content-container"
       ).style.height = "0";
+
       setActive(false);
     }
   }
@@ -67,6 +75,9 @@ export default function WorkspaceBar() {
               <button className="export" style={{ height: "3rem" }}>
                 <div>Export</div>
                 <i class="fa-solid fa-download"></i>
+                <span className="tooltipText">
+                  Cannot export: the "login with token" block in "main" category is required
+                </span>
               </button>
             </ul>
           </div>

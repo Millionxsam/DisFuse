@@ -54,6 +54,7 @@ import "../blocks/threads";
 import "../blocks/events/servers";
 import "../blocks/music";
 import "../blocks/files";
+import "../blocks/objects";
 
 import CodeView from "../components/CodeView";
 import SecretsView from "../components/SecretsView";
@@ -95,6 +96,30 @@ export default function Workspace() {
                 else if (theme === "LightTheme") theme = LightTheme;
                 else if (theme === "BlueBlackTheme") theme = BlueBlackTheme;
                 else if (theme === "CandyTheme") theme = CandyTheme;
+
+                let zelosBlock = Blockly.Themes.Zelos.blockStyles;
+
+                theme = {
+                  ...theme,
+                  "blockStyles": {
+                    "text_blocks": zelosBlock['math_blocks'],
+                    "math_blocks": zelosBlock['text_blocks'],
+                    "colour_blocks": {
+                      "colourPrimary": "#ad794c",
+                      "colourSecondary": "#8d5b3d",
+                      "colourTertiary": "#6b3f2c"
+                    },
+                    "logic_blocks": Blockly.Themes.Zelos.blockStyles['logic_blocks'],
+                    "loop_blocks": Blockly.Themes.Zelos.blockStyles['loop_blocks'],
+                    "list_blocks": Blockly.Themes.Zelos.blockStyles['list_blocks'],
+                    "procedure_blocks": Blockly.Themes.Zelos.blockStyles['procedure_blocks'],
+                    "variable_blocks": Blockly.Themes.Zelos.blockStyles['variable_blocks'],
+                    "variable_dynamic_blocks": Blockly.Themes.Zelos.blockStyles['variable_dynamic_blocks'],
+                    "hat_blocks": Blockly.Themes.Zelos.blockStyles['hat_blocks']
+                  }
+                }
+
+                console.log(Blockly.Themes.Zelos.blockStyles)
 
                 let renderer = user.settings.workspace.renderer ?? "zelos";
                 let sounds = user.settings.workspace.sounds ?? true;
@@ -426,21 +451,13 @@ export default function Workspace() {
           const exportBtn = document.querySelector(
             ".workspace-navbar button.export"
           );
-          const tooltipEle = document.createElement("span");
 
           if (!hasTokenBlock.current) {
             exportBtn.classList.add("disabled");
             exportBtn.classList.add("tooltipEle");
-            tooltipEle.classList.add("tooltipText");
-            tooltipEle.innerHTML =
-              'Cannot export: the "login with token" block in "main" category is required';
-
-            exportBtn.appendChild(tooltipEle);
           } else {
             exportBtn.classList.remove("disabled");
             exportBtn.classList.remove("tooltipEle");
-
-            tooltipEle.remove();
           }
         }
       })
