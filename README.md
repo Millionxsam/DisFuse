@@ -32,6 +32,6 @@ Coming soon: guide on how to contribute to DisFuse and become a developer.
 
 If you need any help, want to ask questions about the website, want to show off your creations, or just want to be part of the community, make sure to join our Discord server!
 
-![Discord Banner 1](https://discord.com/api/guilds/1232427191099457626/widget.png?style=banner2)
+[![Discord Banner 1](https://discord.com/api/guilds/1232427191099457626/widget.png?style=banner2)](https://dsc.gg/disfuse)
 
 > This project was inspired by [Scratch for Discord](https://github.com/Androz2091/scratch-for-discord)
