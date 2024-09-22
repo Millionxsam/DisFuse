@@ -922,6 +922,8 @@ p.modal-text {
   border-radius: 50%;
   height: 2rem;
   width: 2rem;
+  max-width: 2rem;
+  max-height: 2rem;
 }
 
 .sidebar-container .nametag i {
@@ -1193,6 +1195,10 @@ input[type="search"]::-webkit-search-results-decoration {
 .user-profile-container .head .nametag img {
   border-radius: 50%;
   border: 2px solid var(--border-color);
+  height: 128px;
+  width: 128px;
+  background-color: #002c55;
+  transition: border-radius 0.2s ease;
 }
 
 .user-profile-container .head .stats {
