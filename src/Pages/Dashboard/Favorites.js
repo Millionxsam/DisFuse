@@ -24,12 +24,18 @@ export default function Favorites() {
           },
         })
           .then(({ data: user }) => {
-            axios.get(apiUrl + "/projects").then(({ data: projects }) => {
-              let p = user.favorites.map((f) => projects.find((p) => p._id === f));
-              setProjects(p);
-              setShown(p);
-              setLoading(false);
-            });
+            axios
+              .get(apiUrl + "/projects", {
+                headers: {
+                  Authorization: localStorage.getItem("disfuse-token"),
+                },
+              })
+              .then(({ data: projects }) => {
+                let p = user.favorites.map((f) => projects.find((p) => p._id === f));
+                setProjects(p);
+                setShown(p);
+                setLoading(false);
+              });
           });
       });
   }, []);

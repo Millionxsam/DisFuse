@@ -623,9 +623,153 @@ export const toolbox = {
       ],
     },
     {
+      kind: category,
+      name: "Objects",
+      colour: "#BA59CE",
+      contents: [
+        {
+          kind: "label",
+          text: "Objects are like lists, but each item has a value",
+        },
+        {
+          kind: "label",
+          text: "Create an object ↓",
+        },
+        {
+          kind: "block",
+          type: "object_new",
+        },
+        {
+          kind: "block",
+          type: "object_addkey",
+        },
+        {
+          kind: "label",
+          text: "Object actions ↓",
+        },
+        {
+          kind: "block",
+          type: "object_setkey",
+          inputs: {
+            key: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "",
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "block",
+          type: "object_deletekey",
+          inputs: {
+            key: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "",
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "block",
+          type: "object_stringify",
+        },
+        {
+          kind: "block",
+          type: "object_parse",
+          inputs: {
+            string: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "",
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: label,
+          text: "Information about object ↓",
+        },
+        {
+          kind: block,
+          type: "object_getkey",
+          inputs: {
+            key: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "",
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: block,
+          type: "object_has",
+          inputs: {
+            string: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "",
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: block,
+          type: "object_length",
+        },
+        {
+          kind: block,
+          type: "object_keys"
+        },
+        {
+          kind: block,
+          type: "object_values"
+        },
+      ]
+    },
+    {
+      kind: "category",
+      name: "Time",
+      colour: "#db4b9c",
+      contents: [
+        {
+          kind: "block",
+          type: "time_date_now",
+        },
+        {
+          kind: "block",
+          type: "time_date",
+        },
+        {
+          kind: "block",
+          type: "time_between",
+        },
+        {
+          kind: "block",
+          type: "time_createdate",
+        },
+        {
+          kind: "block",
+          type: "time_timestampFromDate",
+        },
+      ],
+    },
+    {
       kind: "category",
       name: "Color",
-      categorystyle: "colour_category",
+      colour: "#ad794c",
       contents: [
         {
           kind: "block",
@@ -694,33 +838,6 @@ export const toolbox = {
               },
             },
           },
-        },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Time",
-      colour: "#db4b9c",
-      contents: [
-        {
-          kind: "block",
-          type: "time_date_now",
-        },
-        {
-          kind: "block",
-          type: "time_date",
-        },
-        {
-          kind: "block",
-          type: "time_between",
-        },
-        {
-          kind: "block",
-          type: "time_createdate",
-        },
-        {
-          kind: "block",
-          type: "time_timestampFromDate",
         },
       ],
     },
