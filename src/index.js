@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
 // move this to the workspace.js
-import "../blocks/events/members";
+import "./blocks/events/members";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
