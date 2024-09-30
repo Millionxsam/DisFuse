@@ -297,23 +297,23 @@ export const toolbox = {
         },
         {
           kind: block,
-          type: "text_regexp"
+          type: "text_regexp",
         },
         {
           kind: block,
-          type: "text_regexp_test"
+          type: "text_regexp_test",
         },
         {
           kind: block,
-          type: "text_regexp_match"
+          type: "text_regexp_match",
         },
         {
           kind: block,
-          type: "text_regexp_exec"
+          type: "text_regexp_exec",
         },
         {
           kind: block,
-          type: "text_regexp_replace"
+          type: "text_regexp_replace",
         },
       ],
     },
@@ -754,7 +754,7 @@ export const toolbox = {
         },
         {
           kind: block,
-          type: "javascript_raw_float"
+          type: "javascript_raw_float",
         },
         {
           kind: "block",
@@ -856,7 +856,7 @@ export const toolbox = {
         },
         {
           kind: "block",
-          type: "main_destroy"
+          type: "main_destroy",
         },
         {
           kind: "label",
@@ -943,7 +943,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "msg_getone"
+              type: "msg_getone",
             },
             {
               kind: "label",
@@ -975,7 +975,7 @@ export const toolbox = {
               inputs: {
                 message: {
                   shadow: {
-                    type: "msg_msg"
+                    type: "msg_msg",
                   },
                 },
                 reaction: {
@@ -1018,7 +1018,7 @@ export const toolbox = {
             },
             {
               kind: label,
-              text: "Information about a message ↓"
+              text: "Information about a message ↓",
             },
             {
               kind: "block",
@@ -1033,115 +1033,115 @@ export const toolbox = {
           contents: [
             {
               kind: label,
-              text: "Get a thread ↓"
+              text: "Get a thread ↓",
             },
             {
               kind: block,
-              type: "threads_getone"
+              type: "threads_getone",
             },
             {
               kind: block,
-              type: "threads_msgHasThread"
+              type: "threads_msgHasThread",
             },
             {
               kind: block,
-              type: "threads_msgThread"
+              type: "threads_msgThread",
             },
             {
               kind: label,
-              text: "Create a thread ↓"
+              text: "Create a thread ↓",
             },
             {
               kind: block,
-              type: "threads_msgCreateThread"
+              type: "threads_msgCreateThread",
             },
             {
               kind: block,
-              type: "threads_channelCreateThread"
+              type: "threads_channelCreateThread",
             },
             {
               kind: block,
-              type: "threads_createdThread"
+              type: "threads_createdThread",
             },
             {
               kind: label,
-              text: "Information about a thread ↓"
+              text: "Information about a thread ↓",
             },
             {
-              kind: 'block',
-              type: 'threads_name'
+              kind: "block",
+              type: "threads_name",
             },
             {
-              kind: 'block',
-              type: 'threads_createdAt'
+              kind: "block",
+              type: "threads_createdAt",
             },
             {
-              kind: 'block',
-              type: 'threads_lastMessage'
+              kind: "block",
+              type: "threads_lastMessage",
             },
             {
-              kind: 'block',
-              type: 'threads_author'
+              kind: "block",
+              type: "threads_author",
             },
             {
-              kind: 'block',
-              type: 'threads_authorMember'
+              kind: "block",
+              type: "threads_authorMember",
             },
             {
-              kind: 'block',
-              type: 'threads_id'
+              kind: "block",
+              type: "threads_id",
             },
             {
-              kind: 'block',
-              type: 'threads_memberCount'
+              kind: "block",
+              type: "threads_memberCount",
             },
             {
-              kind: 'block',
-              type: 'threads_parentChannel'
+              kind: "block",
+              type: "threads_parentChannel",
             },
             {
               kind: label,
-              text: "Thread actions ↓"
+              text: "Thread actions ↓",
             },
             {
               kind: block,
-              type: "threads_setName"
+              type: "threads_setName",
             },
             {
               kind: block,
-              type: "threads_setArchived"
+              type: "threads_setArchived",
             },
             {
               kind: block,
-              type: "threads_setLocked"
+              type: "threads_setLocked",
             },
             {
               kind: block,
-              type: "threads_setSlowmode"
+              type: "threads_setSlowmode",
             },
             {
               kind: block,
-              type: "threads_pin"
+              type: "threads_pin",
             },
             {
               kind: block,
-              type: "threads_unpin"
+              type: "threads_unpin",
             },
             {
               kind: block,
-              type: "threads_join"
+              type: "threads_join",
             },
             {
               kind: block,
-              type: "threads_leave"
+              type: "threads_leave",
             },
             {
               kind: block,
-              type: "threads_addUser"
+              type: "threads_addUser",
             },
             {
               kind: block,
-              type: "threads_removeUser"
+              type: "threads_removeUser",
             },
           ],
         },
@@ -1460,7 +1460,7 @@ export const toolbox = {
             },
             {
               kind: "label",
-              text: "Get all roles ↓",
+              text: "Loop through each role in a server ↓",
             },
             {
               kind: block,
@@ -1469,6 +1469,19 @@ export const toolbox = {
             {
               kind: block,
               type: "roles_foreach_role",
+            },
+
+            {
+              kind: label,
+              text: "Loop through each member who has a certain role ↓",
+            },
+            {
+              kind: block,
+              type: "roles_foreachMember",
+            },
+            {
+              kind: block,
+              type: "roles_currentLoopMember",
             },
             {
               kind: label,
@@ -1489,6 +1502,14 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_permission",
+            },
+            {
+              kind: "label",
+              text: "Check whether a certain member has a role ↓",
+            },
+            {
+              kind: block,
+              type: "roles_hasRole",
             },
             {
               kind: "label",
@@ -1517,6 +1538,13 @@ export const toolbox = {
             {
               kind: block,
               type: "roles_hasPermission",
+              inputs: {
+                permission: {
+                  shadow: {
+                    type: "misc_permission",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -1691,10 +1719,13 @@ export const toolbox = {
             {
               kind: "block",
               type: "member_hasPermission",
-            },
-            {
-              kind: "block",
-              type: "misc_permission",
+              inputs: {
+                permission: {
+                  shadow: {
+                    type: "misc_permission",
+                  },
+                },
+              },
             },
             {
               kind: "block",
@@ -2397,6 +2428,37 @@ export const toolbox = {
             },
           ],
         },
+        {
+          kind: category,
+          name: "Member Actions",
+          colour: "FF4F4F",
+          contents: [
+            {
+              kind: block,
+              type: "events_members_addRole",
+            },
+            {
+              kind: block,
+              type: "events_members_addRole_member",
+            },
+            {
+              kind: block,
+              type: "events_members_addRole_role",
+            },
+            {
+              kind: block,
+              type: "events_members_removeRole",
+            },
+            {
+              kind: block,
+              type: "events_members_removeRole_member",
+            },
+            {
+              kind: block,
+              type: "events_members_removeRole_role",
+            },
+          ],
+        },
       ],
     },
     {
@@ -2534,7 +2596,7 @@ export const toolbox = {
           kind: "block",
           type: "music_findLyrics_lyrics",
         },
-      ]
+      ],
     },
     {
       kind: category,
@@ -2543,7 +2605,7 @@ export const toolbox = {
       contents: [
         {
           kind: label,
-          text: "Files will be created AFTER the bot is run"
+          text: "Files will be created AFTER the bot is run",
         },
         {
           kind: "label",
@@ -2583,13 +2645,13 @@ export const toolbox = {
         },
         {
           kind: block,
-          type: "fs_deleteFile"
+          type: "fs_deleteFile",
         },
         {
           kind: block,
-          type: "fs_renameFile"
+          type: "fs_renameFile",
         },
-      ]
+      ],
     },
     // {
     //   kind: "category",

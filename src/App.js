@@ -3,7 +3,6 @@ import Workspace from "./Pages/Workspace";
 import Home from "./Pages/Home";
 import WorkspaceBar from "./components/WorkspaceBar";
 import Navbar from "./components/Navbar";
-import { useEffect } from "react";
 import Auth from "./Auth";
 import Sidebar from "./Pages/Dashboard/Sidebar";
 import Explore from "./Pages/Dashboard/Explore";
