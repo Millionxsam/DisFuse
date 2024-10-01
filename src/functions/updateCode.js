@@ -92,7 +92,8 @@ export default function updateCode(workspace, project) {
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     ${topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''}
     const client = new Discord.Client({ intents: 3276799 });
-        
+    require("discord-logs")(client);
+
     client.setMaxListeners(0);
         
     client.on("ready", () => {

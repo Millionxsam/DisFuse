@@ -609,10 +609,11 @@ javascript.javascriptGenerator.forBlock["member_getuser"] = function (
     javascript.Order.ATOMIC
   );
 
-  var code = `client.users.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(u => u.username == ${value_value})`
-    }`;
+  var code = `client.users.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(u => u.username == ${value_value})`
+  }`;
   return [code, javascript.Order.NONE];
 };
 
@@ -632,18 +633,23 @@ javascript.javascriptGenerator.forBlock["member_getone"] = function (
     javascript.Order.ATOMIC
   );
 
-  var code = `${value_server}.members.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(m => m.username == ${value_value})`
-    }`;
+  var code = `${value_server}.members.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(m => m.username == ${value_value})`
+  }`;
   return [code, javascript.Order.NONE];
 };
 
 Blockly.Blocks["member_hasPermission"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("does member");
-    this.appendValueInput("permission").setCheck("permission").appendField("have the");
-    this.appendDummyInput().appendField("permission?");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("does member");
+    this.appendValueInput("permission")
+      .setCheck("permission")
+      .appendField("have the");
+    this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
     this.setColour("#00A018");
     this.setTooltip("");
@@ -651,9 +657,16 @@ Blockly.Blocks["member_hasPermission"] = {
   },
 };
 
-javascript.javascriptGenerator.forBlock["member_hasPermission"] = function (block, generator) {
+javascript.javascriptGenerator.forBlock["member_hasPermission"] = function (
+  block,
+  generator
+) {
   var member = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
-  var permission = generator.valueToCode(block, "permission", javascript.Order.ATOMIC);
+  var permission = generator.valueToCode(
+    block,
+    "permission",
+    javascript.Order.ATOMIC
+  );
 
   var code = `${member}.permissions.has(${permission})`;
   return [code, javascript.Order.NONE];
@@ -683,28 +696,28 @@ createRestrictions(
 
 createRestrictions(
   [
-    'member_bot',
-    'member_dm',
-    'member_kick',
-    'member_timeout',
-    'member_ban',
-    'member_setnick',
-    'member_created',
-    'member_accent',
-    'member_system',
-    'member_username',
-    'member_user',
-    'member_nickname',
-    'member_joined',
-    'member_id',
-    'member_color',
-    'member_timedout'
+    "member_bot",
+    "member_dm",
+    "member_kick",
+    "member_timeout",
+    "member_ban",
+    "member_setnick",
+    "member_created",
+    "member_accent",
+    "member_system",
+    "member_username",
+    "member_user",
+    "member_nickname",
+    "member_joined",
+    "member_id",
+    "member_color",
+    "member_timedout",
   ],
   [
     {
       type: "notEmpty",
       blockTypes: ["member"],
-      message: "You must specify the member."
+      message: "You must specify the member.",
     },
   ]
 );
