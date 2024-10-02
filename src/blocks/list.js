@@ -46,3 +46,20 @@ createRestrictions(
     },
   ]
 );
+
+Blockly.Blocks['list_merge'] = {
+  init: function () {
+    this.appendValueInput('list').setCheck('Array').appendField('merge list');
+    this.appendValueInput('list2').setCheck('Array').appendField('with');
+    this.setInputsInline(true);
+    this.setColour('#9966ff');
+    this.setOutput(true, 'Array');
+  },
+};
+
+javascriptGenerator.forBlock['list_merge'] = function (block, generator) {
+  var val_list = generator.valueToCode(block, 'list', Order.ATOMIC);
+  var val_list2 = generator.valueToCode(block, 'list2', Order.ATOMIC);
+  var code = `${val_list}.concat(${val_list2})`;
+  return [code, Order.NONE];
+};

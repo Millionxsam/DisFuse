@@ -10,6 +10,10 @@ import JSZip from 'jszip';
 import beautify from 'beautify';
 import axios from 'axios';
 
+import CodeView from '../components/CodeView';
+import SecretsView from '../components/SecretsView';
+import LoadingAnim from '../components/LoadingAnim';
+
 import '../functions/registerContextMenus';
 import { toolbox } from '../config/toolbox';
 import { DFTheme } from '../components/themes/DFTheme';
@@ -24,43 +28,14 @@ import autosave from '../functions/autosave';
 import addTooltips from '../functions/addTooltips';
 import updateCode from '../functions/updateCode';
 
-import '../blocks/main';
-import '../blocks/messages';
-import '../blocks/slash';
-import '../blocks/servers';
-import '../blocks/games';
-import '../blocks/text';
-import '../blocks/channels';
-import '../blocks/embeds';
-import '../blocks/webhooks';
-import '../blocks/database';
-import '../blocks/misc';
-import '../blocks/buttons';
-import '../blocks/menus';
-import '../blocks/members';
-import '../blocks/emojis';
-import '../blocks/modals';
-import '../blocks/invites';
-import '../blocks/comments';
-import '../blocks/javascript';
-import '../blocks/time';
-import '../blocks/apps/scratch';
-import '../blocks/events/DEPRECATED_joins';
-import '../blocks/events/messages';
-import '../blocks/polls';
-import '../blocks/roles';
-import '../blocks/contextMenus';
-import '../blocks/threads';
-import '../blocks/events/servers';
-import '../blocks/music';
-import '../blocks/files';
-import '../blocks/objects';
-import '../blocks/math';
-import '../blocks/list';
+require
+  .context('../blocks', true, /\.js$/)
+  .keys()
+  .forEach((key) => {
+    key = key.replace('./', '');
 
-import CodeView from '../components/CodeView';
-import SecretsView from '../components/SecretsView';
-import LoadingAnim from '../components/LoadingAnim';
+    import(`../blocks/${key}`).catch(console.error);
+  });
 
 const { apiUrl, discordUrl } = require('../config/config.json');
 

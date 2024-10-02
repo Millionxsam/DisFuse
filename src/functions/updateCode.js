@@ -23,6 +23,7 @@ export default function updateCode(workspace, project) {
     music_: 'lyrics-finder',
     db_: 'easy-json-database',
     game_: 'discord-gamecord',
+    events_: { type: 'code', value: 'require("discord-logs")(client);\n' },
   };
   let blockImportCode = '';
 
@@ -54,7 +55,9 @@ export default function updateCode(workspace, project) {
 
     const importName = blockImports[importBlock];
 
-    if (Array.isArray(importName)) {
+    if (typeof importName === 'object') {
+      if (importName['type'] === 'code') blockImportCode += importName['value'];
+    } else if (Array.isArray(importName)) {
       importName.forEach((i) => {
         blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
       });
@@ -82,18 +85,17 @@ export default function updateCode(workspace, project) {
 
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
+    const client = new Discord.Client({ intents: 3276799 });
+    const databases = {};
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     const process = require("process");
-    ${blockImportCode}
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    
-    const databases = {};
-    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    ${topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''}
-    const client = new Discord.Client({ intents: 3276799 });
-    require("discord-logs")(client);
-
+    ${blockImportCode !== '' ? '\n' + blockImportCode : ''} ${
+    topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''
+  }
     client.setMaxListeners(0);
         
     client.on("ready", () => {

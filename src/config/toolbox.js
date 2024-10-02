@@ -176,6 +176,28 @@ export const toolbox = {
         },
         {
           kind: 'block',
+          type: 'text_startOrEndWith',
+          inputs: {
+            text: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'abc',
+                },
+              },
+            },
+            text2: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: '',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'block',
           type: 'text_indexOf',
           inputs: {
             VALUE: {
@@ -255,6 +277,28 @@ export const toolbox = {
             TEXT: {
               shadow: {
                 type: 'text',
+              },
+            },
+          },
+        },
+        {
+          kind: 'block',
+          type: 'text_repeat',
+          inputs: {
+            text: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'abc',
+                },
+              },
+            },
+            times: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 3,
+                },
               },
             },
           },
@@ -623,6 +667,17 @@ export const toolbox = {
         {
           kind: 'block',
           type: 'lists_reverse',
+        },
+        {
+          kind: 'block',
+          type: 'list_merge',
+          inputs: {
+            list: {
+              block: {
+                type: 'variables_get',
+              },
+            },
+          },
         },
         {
           kind: 'block',
@@ -2603,6 +2658,21 @@ export const toolbox = {
             },
           ],
         },
+        {
+          kind: category,
+          name: 'Custom',
+          colour: '#999999',
+          contents: [
+            {
+              kind: block,
+              type: 'events_custom',
+            },
+            {
+              kind: block,
+              type: 'events_customParameter',
+            },
+          ],
+        },
       ],
     },
     {
@@ -2797,68 +2867,68 @@ export const toolbox = {
         },
       ],
     },
-    // {
-    //   kind: "category",
-    //   name: "Games",
-    //   colour: "00B9A0",
-    //   contents: [
-    //     {
-    //       kind: "block",
-    //       type: "game_2048",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_connect4",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_fasttype",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_findemoji",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_flood",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_hangman",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_matchpairs",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_minesweeper",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_rps",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_slots",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_snake",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_tictactoe",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_wordle",
-    //     },
-    //     {
-    //       kind: "block",
-    //       type: "game_trivia",
-    //     },
-    //   ],
-    // },
+    {
+      kind: 'category',
+      name: 'Games',
+      colour: '#4fb88a',
+      contents: [
+        {
+          kind: 'block',
+          type: 'game_2048',
+        },
+        {
+          kind: 'block',
+          type: 'game_connect4',
+        },
+        {
+          kind: 'block',
+          type: 'game_fasttype',
+        },
+        {
+          kind: 'block',
+          type: 'game_findemoji',
+        },
+        {
+          kind: 'block',
+          type: 'game_flood',
+        },
+        {
+          kind: 'block',
+          type: 'game_hangman',
+        },
+        {
+          kind: 'block',
+          type: 'game_matchpairs',
+        },
+        {
+          kind: 'block',
+          type: 'game_minesweeper',
+        },
+        {
+          kind: 'block',
+          type: 'game_rps',
+        },
+        {
+          kind: 'block',
+          type: 'game_slots',
+        },
+        {
+          kind: 'block',
+          type: 'game_snake',
+        },
+        {
+          kind: 'block',
+          type: 'game_tictactoe',
+        },
+        {
+          kind: 'block',
+          type: 'game_wordle',
+        },
+        {
+          kind: 'block',
+          type: 'game_trivia',
+        },
+      ],
+    },
   ],
 };
