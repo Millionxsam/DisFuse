@@ -2093,6 +2093,10 @@ div.hidden:not(.shown) {
   padding: 4px 2px 4px 2px;
 }
 
+.blocklyToolboxDiv * {
+  outline: none;
+}
+
 .contributionsCounter {
   font-size: 17px !important;
   color: #bbbbbb;

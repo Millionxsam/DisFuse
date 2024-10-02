@@ -2382,7 +2382,7 @@ export const toolbox = {
         },
         {
           kind: 'category',
-          name: 'Menus',
+          name: 'Select Menus',
           colour: '#51B800',
           contents: [
             {
@@ -2448,6 +2448,10 @@ export const toolbox = {
             {
               kind: 'block',
               type: 'menus_edit',
+            },
+            {
+              kind: 'block',
+              type: 'menus_update',
             },
             {
               kind: 'block',
