@@ -46,6 +46,10 @@ export const toolbox = {
           kind: 'block',
           type: 'logic_ternary',
         },
+        {
+          kind: 'block',
+          type: 'logic_nullishOperator',
+        },
       ],
     },
     {

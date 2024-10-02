@@ -88,7 +88,7 @@ button {
   transition: all 0.2s ease;
 }
 
-button#rdbt {
+button#red {
   background-color: #ff3c3c;
 }
 
@@ -97,7 +97,7 @@ button:hover {
   border-radius: 1.3rem;
 }
 
-button#rdbt:hover {
+button#red:hover {
   background-color: #ff3c3cb0;
 }
 
@@ -986,10 +986,23 @@ p.modal-text {
   opacity: 0.75;
 }
 
+.priProject .top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .priProject h1 {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.priProject h1 p {
+  max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

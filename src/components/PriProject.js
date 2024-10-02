@@ -1,37 +1,44 @@
-import axios from "axios";
-import ms from "ms";
-import Swal from "sweetalert2";
+import axios from 'axios';
+import ms from 'ms';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require('../config/config.json');
 
 export default function PriProject({ project }) {
   if (!project) return;
 
-  let lastEdited = new Date(project?.lastEdited)
+  let lastEdited = new Date(project?.lastEdited);
 
   return (
     <>
       <div className="priProject">
         <div className="top">
           <h1>
-            {project.name}
-            {project.private ? <i class="fa-solid fa-lock"></i> : ""}
+            {project.private ? (
+              <p>{project.name}</p>
+            ) : (
+              <Link to={`/@${project.owner.username}/${project._id}`}>
+                {project.name}
+              </Link>
+            )}
+            {project.private ? <i class="fa-solid fa-lock"></i> : ''}
           </h1>
           <i>
             {lastEdited && lastEdited.getTime() != 0 ? (
               <>
-                Edited{" "}
+                Edited{' '}
                 {ms(Date.now() - lastEdited.getTime(), {
                   long: true,
-                })}{" "}
+                })}{' '}
                 ago
               </>
             ) : (
-              ""
+              ''
             )}
           </i>
         </div>
-        <p>{project.description || "No description"}</p>
+        <p>{project.description || 'No description'}</p>
         <div className="buttons">
           <button
             onClick={() =>
@@ -40,7 +47,7 @@ export default function PriProject({ project }) {
           >
             Open
           </button>
-          <button onClick={() => deleteProject(project)} id="rdbt">
+          <button onClick={() => deleteProject(project)} id="red">
             Delete
           </button>
         </div>
@@ -50,15 +57,15 @@ export default function PriProject({ project }) {
 }
 
 function deleteProject(project) {
-  const token = localStorage.getItem("disfuse-token");
+  const token = localStorage.getItem('disfuse-token');
 
   Swal.fire({
-    title: "Delete Project",
+    title: 'Delete Project',
     text: `Are you sure you want to delete "${project.name}"?`,
-    icon: "warning",
-    footer: "This action is irreversible!",
-    confirmButtonColor: "red",
-    confirmButtonText: "Delete forever",
+    icon: 'warning',
+    footer: 'This action is irreversible!',
+    confirmButtonColor: 'red',
+    confirmButtonText: 'Delete forever',
     showCancelButton: true,
     focusCancel: true,
   }).then((result) => {

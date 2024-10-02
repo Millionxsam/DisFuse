@@ -319,6 +319,7 @@ export default function Workspace() {
                       inputOptions: {
                         slashCommand: 'Slash Commands',
                         pingCommand: 'Ping Command',
+                        economyCommand: 'Economy Commands',
                       },
                     }).then((result) => {
                       if (!result.isConfirmed) return;
