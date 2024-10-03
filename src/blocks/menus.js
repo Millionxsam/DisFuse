@@ -120,9 +120,7 @@ Blockly.Blocks["menus_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the click");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendDummyInput()
-      .appendField("embed(s):")
-      .appendField(new Blockly.FieldTextInput("name"), "embeds");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("51B800");
@@ -136,9 +134,22 @@ Blockly.Blocks["menus_edit"] = {
   init: function () {
     this.appendDummyInput().appendField("Edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendDummyInput()
-      .appendField("embed(s):")
-      .appendField(new Blockly.FieldTextInput("name"), "embeds");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("51B800");
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setInputsInline(false);
+  },
+};
+
+Blockly.Blocks["menus_update"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Update the original message");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("51B800");
@@ -177,12 +188,32 @@ javascript.javascriptGenerator.forBlock["menus_edit"] = function (
     "content",
     javascript.Order.ATOMIC
   );
-  var embeds = block.getFieldValue("embeds");
+  var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
   var code = `interaction.editReply({
-        content: ${content || "''"},
-        embeds: [${embeds}]
-    });`;
+  content: ${content || "''"},
+  embeds: [${embeds}]
+});`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock["menus_update"] = function (
+  block,
+  generator
+) {
+  var content = generator.valueToCode(
+    block,
+    "content",
+    javascript.Order.ATOMIC
+  );
+  var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `interaction.update({
+  content: ${content || "''"},
+  embeds: [${embeds}],
+  components: [${rows || ""}]
+});`;
   return code;
 };
 
@@ -195,12 +226,12 @@ javascript.javascriptGenerator.forBlock["menus_reply"] = function (
     "content",
     javascript.Order.ATOMIC
   );
-  var embeds = block.getFieldValue("embeds");
+  var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
-  var code = `interaction.reply({
-        content: ${content || "''"},
-        embeds: [${embeds}]
-    });`;
+  var code = `int.reply({
+  content: ${content || "''"},
+  embeds: [${embeds}]
+});`;
   return code;
 };
 
@@ -334,7 +365,7 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["menus_reply", "menus_edit"],
+  ["menus_reply", "menus_edit", "menus_update"],
   [
     {
       type: "hasHat",
@@ -355,7 +386,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["misc_addrow"],
-      message: 'This block must be under a "add row" block',
+      message: 'This block must be under an "add row" block',
     },
     {
       type: "notEmpty",

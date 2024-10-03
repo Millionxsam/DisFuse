@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import InboxItem from "../../components/InboxItem";
-import LoadingAnim from "../../components/LoadingAnim";
-import Swal from "sweetalert2";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import InboxItem from '../../components/InboxItem';
+import LoadingAnim from '../../components/LoadingAnim';
+import Swal from 'sweetalert2';
 
-const { discordUrl, apiUrl } = require("../../config/config.json");
+const { discordUrl, apiUrl } = require('../../config/config.json');
 
 export default function Inbox() {
   const [user, setUser] = useState({});
@@ -13,15 +13,15 @@ export default function Inbox() {
 
   useEffect(() => {
     axios
-      .get(discordUrl + "/users/@me", {
+      .get(discordUrl + '/users/@me', {
         headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
+          Authorization: localStorage.getItem('disfuse-token'),
         },
       })
       .then(({ data }) => {
         axios
           .get(apiUrl + `/users/${data.id}`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
+            headers: { Authorization: localStorage.getItem('disfuse-token') },
           })
           .then(({ data: user }) => {
             setUser(user);
@@ -36,7 +36,7 @@ export default function Inbox() {
 
               axios.put(apiUrl + `/users/${user.id}/inbox`, user.inbox, {
                 headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
+                  Authorization: localStorage.getItem('disfuse-token'),
                 },
               });
             }, 1000);
@@ -46,17 +46,17 @@ export default function Inbox() {
 
   function clearAll() {
     Swal.fire({
-      title: "Clear inbox?",
+      title: 'Clear inbox?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Yes, clear all",
+      confirmButtonText: 'Yes, clear all',
     }).then((response) => {
       if (response.isConfirmed) {
         axios
           .put(apiUrl + `/users/${user.id}/inbox`, [], {
             headers: {
-              Authorization: localStorage.getItem("disfuse-token"),
+              Authorization: localStorage.getItem('disfuse-token'),
             },
           })
           .then(({ data }) => setUser(data))
@@ -72,7 +72,7 @@ export default function Inbox() {
       </div>
 
       <div className="buttons">
-        <button onClick={clearAll} id="rdbt">
+        <button onClick={clearAll} id="red">
           <i class="fa-solid fa-trash"></i> Clear All
         </button>
       </div>
@@ -88,7 +88,7 @@ export default function Inbox() {
               <InboxItem item={item} user={user} index={index} />
             ))
         ) : (
-          "No notifications"
+          'No notifications'
         )}
       </div>
     </div>

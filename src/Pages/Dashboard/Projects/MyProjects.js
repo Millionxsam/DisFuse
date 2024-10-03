@@ -1,13 +1,13 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import PriProject from "../../../components/PriProject";
-import LoadingAnim from "../../../components/LoadingAnim";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import PriProject from '../../../components/PriProject';
+import LoadingAnim from '../../../components/LoadingAnim';
 
-const { discordUrl, apiUrl } = require("../../../config/config.json");
+const { discordUrl, apiUrl } = require('../../../config/config.json');
 
 export default function MyProjects() {
-  const token = localStorage.getItem("disfuse-token");
+  const token = localStorage.getItem('disfuse-token');
   const [projects, setProjects] = useState([]);
   const [shown, setShown] = useState([]);
   const [user, setUser] = useState({});
@@ -15,7 +15,7 @@ export default function MyProjects() {
 
   useEffect(() => {
     axios
-      .get(discordUrl + "/users/@me", {
+      .get(discordUrl + '/users/@me', {
         headers: {
           Authorization: token,
         },
@@ -25,12 +25,13 @@ export default function MyProjects() {
 
         axios
           .get(apiUrl + `/users/${data.id}/projects`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
+            headers: { Authorization: localStorage.getItem('disfuse-token') },
           })
           .then(({ data: p }) => {
             setProjects(
               p.sort(
-                (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+                (a, b) =>
+                  new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
               )
             );
             setShown(p);
@@ -41,9 +42,9 @@ export default function MyProjects() {
 
   function newProject() {
     const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3"],
+      progressSteps: ['1', '2', '3'],
       animation: false,
-      confirmButtonText: "Next >",
+      confirmButtonText: 'Next >',
     });
 
     (async () => {
@@ -51,13 +52,13 @@ export default function MyProjects() {
       let cancelled = false;
 
       await Queue.fire({
-        title: "Enter your project name",
-        input: "text",
-        inputPlaceholder: "DisFuse Project",
+        title: 'Enter your project name',
+        input: 'text',
+        inputPlaceholder: 'DisFuse Project',
         showCancelButton: true,
         inputValidator: (i) => {
           if (i.length >= 3) return false;
-          else return "The name must be at least 3 characters";
+          else return 'The name must be at least 3 characters';
         },
         animation: true,
         currentProgressStep: 0,
@@ -69,11 +70,11 @@ export default function MyProjects() {
       if (cancelled) return;
 
       await Queue.fire({
-        title: "Enter the description (optional)",
+        title: 'Enter the description (optional)',
         currentProgressStep: 1,
-        input: "text",
+        input: 'text',
         showCancelButton: true,
-        inputPlaceholder: "Some description",
+        inputPlaceholder: 'Some description',
       }).then((result) => {
         if (result.isConfirmed) dsc = result.value;
         else cancelled = true;
@@ -82,17 +83,17 @@ export default function MyProjects() {
       if (cancelled) return;
 
       await Queue.fire({
-        title: "Project Visibility",
+        title: 'Project Visibility',
         currentProgressStep: 2,
         showCancelButton: true,
-        confirmButtonText: "Create",
-        input: "select",
+        confirmButtonText: 'Create',
+        input: 'select',
         inputOptions: {
-          private: "Private",
-          public: "Public",
+          private: 'Private',
+          public: 'Public',
         },
       }).then((result) => {
-        if (result.isConfirmed) isPrivate = result.value === "private";
+        if (result.isConfirmed) isPrivate = result.value === 'private';
         else cancelled = true;
       });
 
@@ -120,11 +121,11 @@ export default function MyProjects() {
   }
 
   function loadFile() {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".df";
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.df';
 
-    fileInput.addEventListener("change", (e) => {
+    fileInput.addEventListener('change', (e) => {
       let file = e.target.files[0];
       if (!file) return;
 
@@ -134,23 +135,23 @@ export default function MyProjects() {
         let data = event.target.result;
 
         const Queue = Swal.mixin({
-          progressSteps: ["1", "2", "3"],
+          progressSteps: ['1', '2', '3'],
           animation: false,
-          confirmButtonText: "Next >",
+          confirmButtonText: 'Next >',
         });
 
         let name, dsc, isPrivate;
         let cancelled = false;
 
         await Queue.fire({
-          title: "Enter your project name",
-          input: "text",
-          inputValue: file.name.replace(".df", ""),
+          title: 'Enter your project name',
+          input: 'text',
+          inputValue: file.name.replace('.df', ''),
           showCancelButton: true,
-          inputPlaceholder: "DisFuse Project",
+          inputPlaceholder: 'DisFuse Project',
           inputValidator: (i) => {
             if (i.length >= 3) return false;
-            else return "The name must be at least 3 characters";
+            else return 'The name must be at least 3 characters';
           },
           animation: true,
           currentProgressStep: 0,
@@ -162,11 +163,11 @@ export default function MyProjects() {
         if (cancelled) return;
 
         await Queue.fire({
-          title: "Enter the description (optional)",
+          title: 'Enter the description (optional)',
           currentProgressStep: 1,
           showCancelButton: true,
-          input: "text",
-          inputPlaceholder: "Some description",
+          input: 'text',
+          inputPlaceholder: 'Some description',
         }).then((result) => {
           if (result.isConfirmed) dsc = result.value;
           else cancelled = true;
@@ -175,17 +176,17 @@ export default function MyProjects() {
         if (cancelled) return;
 
         await Queue.fire({
-          title: "Project Visibility",
+          title: 'Project Visibility',
           currentProgressStep: 2,
           showCancelButton: true,
-          confirmButtonText: "Create",
-          input: "select",
+          confirmButtonText: 'Create',
+          input: 'select',
           inputOptions: {
-            public: "Public",
-            private: "Private",
+            public: 'Public',
+            private: 'Private',
           },
         }).then((result) => {
-          if (result.isConfirmed) isPrivate = result.value === "private";
+          if (result.isConfirmed) isPrivate = result.value === 'private';
           else cancelled = true;
         });
 
@@ -223,46 +224,46 @@ export default function MyProjects() {
 
   function sort() {
     Swal.fire({
-      title: "Sort Projects",
-      input: "select",
+      title: 'Sort Projects',
+      input: 'select',
       inputOptions: {
-        lastEdited: "Last Edited",
-        "a-z": "Alphabetically (A to Z)",
-        "z-a": "Reverse Alphabetically (Z to A)",
-        oldest: "Oldest First",
-        newest: "Newest First",
+        lastEdited: 'Last Edited',
+        'a-z': 'Alphabetically (A to Z)',
+        'z-a': 'Reverse Alphabetically (Z to A)',
+        oldest: 'Oldest First',
+        newest: 'Newest First',
       },
-      inputPlaceholder: "Select sorting order",
+      inputPlaceholder: 'Select sorting order',
       showCancelButton: true,
-      confirmButtonText: "Sort",
+      confirmButtonText: 'Sort',
       inputValidator: (value) => {
         if (!value) {
-          return "You need to choose a sorting order!";
+          return 'You need to choose a sorting order!';
         }
       },
     }).then((result) => {
       if (result.isConfirmed) {
         let sortedProjects = projects;
 
-        if (result.value === "a-z") {
+        if (result.value === 'a-z') {
           sortedProjects.sort((a, b) => a.name.localeCompare(b.name));
-        } else if (result.value === "z-a") {
+        } else if (result.value === 'z-a') {
           sortedProjects.sort((a, b) => b.name.localeCompare(a.name));
-        } else if (result.value === "oldest") {
+        } else if (result.value === 'oldest') {
           sortedProjects.sort(
             (a, b) => new Date(a.created) - new Date(b.created)
           );
-        } else if (result.value === "newest") {
+        } else if (result.value === 'newest') {
           sortedProjects.sort(
             (a, b) => new Date(b.created) - new Date(a.created)
           );
-        } else if (result.value === "lastEdited") {
+        } else if (result.value === 'lastEdited') {
           sortedProjects.sort(
             (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
           );
         }
 
-        const query = document.querySelector("input.search").value;
+        const query = document.querySelector('input.search').value;
 
         setProjects(sortedProjects);
         setShown(
@@ -278,28 +279,28 @@ export default function MyProjects() {
 
   function filter() {
     Swal.fire({
-      title: "Filter Projects",
-      input: "select",
+      title: 'Filter Projects',
+      input: 'select',
       inputOptions: {
-        none: "Show All",
-        public: "Only Public",
-        private: "Only Private",
+        none: 'Show All',
+        public: 'Only Public',
+        private: 'Only Private',
       },
-      inputPlaceholder: "Select filter for projects",
+      inputPlaceholder: 'Select filter for projects',
       showCancelButton: true,
-      confirmButtonText: "Filter",
+      confirmButtonText: 'Filter',
       inputValidator: (value) => {
         if (!value) {
-          return "You need to choose a filter for the projects!";
+          return 'You need to choose a filter for the projects!';
         }
       },
     }).then((result) => {
       if (result.isConfirmed) {
         let filterProjects = [...projects];
 
-        if (result.value === "public") {
+        if (result.value === 'public') {
           filterProjects = filterProjects.filter((p) => !p.private);
-        } else if (result.value === "private") {
+        } else if (result.value === 'private') {
           filterProjects = filterProjects.filter((p) => p.private);
         }
 
@@ -309,7 +310,7 @@ export default function MyProjects() {
   }
 
   function search() {
-    const query = document.querySelector("input.search").value;
+    const query = document.querySelector('input.search').value;
 
     setShown(
       projects.filter(
@@ -353,15 +354,15 @@ export default function MyProjects() {
           type="search"
           placeholder="Search Projects"
           className="search"
-          style={{ marginLeft: "1rem" }}
+          style={{ marginLeft: '1rem' }}
         />
-        {isLoading ? <LoadingAnim /> : ""}
+        {isLoading ? <LoadingAnim /> : ''}
         <div className="projects">
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-              ? "No projects"
-              : ""}
+            ? 'No projects'
+            : ''}
         </div>
       </div>
     </>
