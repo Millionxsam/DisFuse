@@ -6,6 +6,7 @@ import App from "./App";
 
 // move this to the workspace.js
 import "./blocks/events/members";
+import "./blocks/logic";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

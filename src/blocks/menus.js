@@ -164,7 +164,7 @@ javascript.javascriptGenerator.forBlock["menus_del"] = function (
   block,
   generator
 ) {
-  var code = `int.deleteReply();`;
+  var code = `interaction.deleteReply();`;
   return code;
 };
 
@@ -179,7 +179,7 @@ javascript.javascriptGenerator.forBlock["menus_edit"] = function (
   );
   var embeds = block.getFieldValue("embeds");
 
-  var code = `int.editReply({
+  var code = `interaction.editReply({
         content: ${content || "''"},
         embeds: [${embeds}]
     });`;
@@ -197,7 +197,7 @@ javascript.javascriptGenerator.forBlock["menus_reply"] = function (
   );
   var embeds = block.getFieldValue("embeds");
 
-  var code = `int.reply({
+  var code = `interaction.reply({
         content: ${content || "''"},
         embeds: [${embeds}]
     });`;
@@ -208,7 +208,7 @@ javascript.javascriptGenerator.forBlock["menus_server"] = function (
   block,
   generator
 ) {
-  var code = `int.guild`;
+  var code = `interaction.guild`;
   return [code, javascript.Order.NONE];
 };
 
@@ -216,7 +216,7 @@ javascript.javascriptGenerator.forBlock["menus_channel"] = function (
   block,
   generator
 ) {
-  var code = `int.channel`;
+  var code = `interaction.channel`;
   return [code, javascript.Order.NONE];
 };
 
@@ -224,7 +224,7 @@ javascript.javascriptGenerator.forBlock["menus_user"] = function (
   block,
   generator
 ) {
-  var code = `int.member.user`;
+  var code = `interaction.member.user`;
   return [code, javascript.Order.NONE];
 };
 
@@ -232,7 +232,7 @@ javascript.javascriptGenerator.forBlock["menus_member"] = function (
   block,
   generator
 ) {
-  var code = `int.member`;
+  var code = `interaction.member`;
   return [code, javascript.Order.NONE];
 };
 
@@ -240,7 +240,7 @@ javascript.javascriptGenerator.forBlock["menus_id"] = function (
   block,
   generator
 ) {
-  var code = `int.customId`;
+  var code = `interaction.customId`;
   return [code, javascript.Order.NONE];
 };
 
@@ -248,7 +248,7 @@ javascript.javascriptGenerator.forBlock["menus_value"] = function (
   block,
   generator
 ) {
-  var code = `int.values[0]`;
+  var code = `interaction.values[0]`;
   return [code, javascript.Order.NONE];
 };
 
@@ -258,8 +258,8 @@ javascript.javascriptGenerator.forBlock["menus_event"] = function (
 ) {
   var code_statement = generator.statementToCode(block, "event");
 
-  var code = `  client.on("interactionCreate", async (int) => {
-        if(!int.isStringSelectMenu()) return;
+  var code = `  client.on("interactionCreate", async (interaction) => {
+        if(!interaction.isStringSelectMenu()) return;
             ${code_statement}
         });\n`;
   return code;

@@ -46,6 +46,26 @@ export const toolbox = {
           kind: "block",
           type: "logic_ternary",
         },
+        {
+          kind: label,
+          text: "--------------------------------",
+        },
+        {
+          kind: "block",
+          type: "logic_switch",
+        },
+        {
+          kind: "block",
+          type: "logic_case",
+        },
+        {
+          kind: "block",
+          type: "logic_default",
+        },
+        {
+          kind: label,
+          text: "--------------------------------",
+        },
       ],
     },
     {
@@ -731,13 +751,13 @@ export const toolbox = {
         },
         {
           kind: block,
-          type: "object_keys"
+          type: "object_keys",
         },
         {
           kind: block,
-          type: "object_values"
+          type: "object_values",
         },
-      ]
+      ],
     },
     {
       kind: "category",
@@ -2087,6 +2107,18 @@ export const toolbox = {
               type: "slash_reply",
             },
             {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: "block",
+              type: "misc_deferReply",
+            },
+            {
               kind: "block",
               type: "slash_reply_rows",
             },
@@ -2172,6 +2204,18 @@ export const toolbox = {
             {
               kind: "block",
               type: "slash_reply",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: "block",
+              type: "misc_deferReply",
             },
             {
               kind: "block",
@@ -2289,6 +2333,18 @@ export const toolbox = {
               type: "buttons_reply",
             },
             {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: "block",
+              type: "misc_deferReply",
+            },
+            {
               kind: "block",
               type: "buttons_edit",
             },
@@ -2358,6 +2414,18 @@ export const toolbox = {
             {
               kind: "label",
               text: "Menu actions ↓",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: "block",
+              type: "misc_deferReply",
             },
             {
               kind: "block",
@@ -2441,6 +2509,18 @@ export const toolbox = {
             {
               kind: "block",
               type: "slash_reply",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: "block",
+              type: "misc_deferReply",
             },
             {
               kind: "block",
