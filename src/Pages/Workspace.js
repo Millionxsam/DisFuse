@@ -208,6 +208,8 @@ export default function Workspace() {
                   'err',
                   'files',
                   'filterItem',
+                  'localVar',
+                  'newWebhook',
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.owner.id !== user.id)
