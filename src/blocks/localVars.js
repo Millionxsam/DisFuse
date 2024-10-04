@@ -84,7 +84,7 @@ Blockly.Blocks['localVars_get'] = {
   },
 };
 
-javascriptGenerator.forBlock['localVar_get'] = function (block, generator) {
+javascriptGenerator.forBlock['localVars_get'] = function (block, generator) {
   var variable = block.getFieldValue('variable');
   return [`${variable}`, Order.NONE];
 };
