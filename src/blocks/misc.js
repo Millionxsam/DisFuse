@@ -16,6 +16,34 @@ Blockly.Blocks["misc_addrow"] = {
   },
 };
 
+Blockly.Blocks["misc_deferReply"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Defer reply");
+    this.appendValueInput("ephemeral")
+      .appendField("visible only to the user?")
+      .setCheck("Boolean");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("4192E9");
+    this.setTooltip(
+      'This displays the "Bot is thinking..." message. Use this when you need to allow more time for your bot to reply to a command.'
+    );
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_deferReply"] = function (
+  block,
+  generator
+) {
+  var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+
+  var code = `await interaction.deferReply({ ephemeral: ${
+    ephemeral || "false"
+  } });`;
+  return code;
+};
+
 Blockly.Blocks["misc_permission"] = {
   init: function () {
     this.setOutput(true, "permission");
@@ -105,7 +133,12 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["msg_reply_rows", "slash_reply_rows", "channel_send_rows", "member_dm_rows"],
+      blockTypes: [
+        "msg_reply_rows",
+        "slash_reply_rows",
+        "channel_send_rows",
+        "member_dm_rows",
+      ],
       message: "This block must be under a block that has a 'rows' section",
     },
   ]

@@ -173,8 +173,8 @@ javascriptGenerator.forBlock["modal_handle_interaction"] = function (
 ) {
   var statements_code = generator.statementToCode(block, "code");
 
-  const code = `client.on('interactionCreate', async (modalSubmitInteraction) => {
-  if (!modalSubmitInteraction.isModalSubmit()) return;
+  const code = `client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isModalSubmit()) return;
 ${statements_code}});\n`;
   return code;
 };
@@ -199,7 +199,7 @@ javascriptGenerator.forBlock["modal_get_input_value"] = function (
 ) {
   var customId = generator.valueToCode(block, "customId", Order.ATOMIC);
 
-  const code = `(modalSubmitInteraction).fields.getTextInputValue(${customId})`;
+  const code = `(interaction).fields.getTextInputValue(${customId})`;
   return [code, Order.ATOMIC];
 };
 
@@ -214,7 +214,7 @@ Blockly.Blocks["modal_get_author"] = {
 };
 
 javascriptGenerator.forBlock["modal_get_author"] = function (block, generator) {
-  return [`(modalSubmitInteraction).user`, Order.ATOMIC];
+  return [`(interaction).user`, Order.ATOMIC];
 };
 
 Blockly.Blocks["modal_get_customId"] = {
@@ -231,7 +231,7 @@ javascriptGenerator.forBlock["modal_get_customId"] = function (
   block,
   generator
 ) {
-  return [`(modalSubmitInteraction).customId`, Order.ATOMIC];
+  return [`(interaction).customId`, Order.ATOMIC];
 };
 
 createRestrictions(
