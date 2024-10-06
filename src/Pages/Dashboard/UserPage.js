@@ -98,11 +98,24 @@ export default function UserPage() {
     });
   }
 
+  let description =
+    "Check out this user's profile and projects on DisFuse, a platform to create Discord bots with block coding!";
+
   return (
     <>
       <Helmet>
-        <meta property="og:title" content={`${user.displayName} on DisFuse`} />
+        <meta name="description" content={description} />
         <title>{`${user.displayName} on DisFuse`}</title>
+
+        <meta property="og:title" content={`${user.displayName} on DisFuse`} />
+        <meta property="og:description" content={description} />
+        <meta
+          property="og:image"
+          content={
+            user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
+          }
+        />
+        <meta property="og:type" content="profile" />
       </Helmet>
 
       <div className="user-profile-container">
@@ -120,7 +133,7 @@ export default function UserPage() {
             </div>
             {user.id !== localUser.id && (
               <button
-                id={blocked ? "" : "red"}
+                id={blocked ? "" : "rdbt"}
                 onClick={() => toggleBlockUser(user)}
               >
                 {blocked ? "Unblock User" : "Block User"}
