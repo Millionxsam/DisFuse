@@ -71,11 +71,10 @@ export default function ViewProject() {
           );
         }
       });
-  }, [projectId]);
+  }, []);
 
   return (
     <>
-      <CodeView />
       <div className="previewWorkspaceNavbar">
         <Link to={`/@${project.author?.username}/${project._id}`}>
           <button style={{ fontSize: "17px" }}>

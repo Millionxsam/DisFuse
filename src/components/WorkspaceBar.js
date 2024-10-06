@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import * as Blockly from "blockly";
 
-export default function WorkspaceBar() {
+export default function WorkspaceBar({ workspace }) {
   const [active, setActive] = useState(false);
 
   function showCode() {
@@ -43,6 +44,10 @@ export default function WorkspaceBar() {
           </Link>
         </div>
         <div className="projectName"></div>
+        <i
+          onClick={() => openWorkspaceTabs(workspace)}
+          class="workspace-tabs-open fa-solid fa-chevron-down"
+        ></i>
         <div className="content-container">
           <div className="left">
             <ul>
@@ -75,16 +80,22 @@ export default function WorkspaceBar() {
               <button className="export" style={{ height: "3rem" }}>
                 <div>Export</div>
                 <i class="fa-solid fa-download"></i>
-                <span className="tooltipText">
-                  Cannot export: the "login with token" block in "main" category is required
-                </span>
               </button>
             </ul>
           </div>
         </div>
         <i onClick={openMenu} class="fa-solid fa-bars menu"></i>
       </div>
-      <Outlet />
     </>
   );
+}
+
+function openWorkspaceTabs(workspace) {
+  document.querySelector(".workspace-tabs").style.display = "flex";
+  document.querySelector("#workspace").style.height = "87.5vh";
+  document.querySelector(
+    ".workspace-navbar .workspace-tabs-open"
+  ).style.display = "none";
+
+  Blockly.svgResize(workspace);
 }

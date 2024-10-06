@@ -75,7 +75,7 @@ export default function App() {
 
         <Route
           path="/:username/:projectId/workspace"
-          element={[<Auth />, <WorkspaceBar />, <Workspace />]}
+          element={[<Auth />, <Workspace />]}
         />
       </Routes>
     </>

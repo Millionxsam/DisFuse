@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import PubProject from '../../components/PubProject';
-import LoadingAnim from '../../components/LoadingAnim';
-import { Helmet } from 'react-helmet';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import PubProject from "../../components/PubProject";
+import LoadingAnim from "../../components/LoadingAnim";
+import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 
-const { apiUrl, discordUrl } = require('../../config/config.json');
+const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function UserPage() {
   const { username } = useParams();
@@ -19,25 +19,25 @@ export default function UserPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data: users } = await axios.get(apiUrl + '/users');
+        const { data: users } = await axios.get(apiUrl + "/users");
         const user = users.find(
-          (u) => u.username === username.replace('@', '')
+          (u) => u.username === username.replace("@", "")
         );
         setUser(user);
 
         const [projectsData, discordUser] = await Promise.all([
           axios.get(apiUrl + `/users/${user.id}/projects`, {
-            headers: { Authorization: localStorage.getItem('disfuse-token') },
+            headers: { Authorization: localStorage.getItem("disfuse-token") },
           }),
-          axios.get(discordUrl + '/users/@me', {
-            headers: { Authorization: localStorage.getItem('disfuse-token') },
+          axios.get(discordUrl + "/users/@me", {
+            headers: { Authorization: localStorage.getItem("disfuse-token") },
           }),
         ]);
 
         const { data: localUserData } = await axios.get(
-          apiUrl + '/users/' + discordUser.data.id,
+          apiUrl + "/users/" + discordUser.data.id,
           {
-            headers: { Authorization: localStorage.getItem('disfuse-token') },
+            headers: { Authorization: localStorage.getItem("disfuse-token") },
           }
         );
 
@@ -45,7 +45,7 @@ export default function UserPage() {
         setBlocked(localUserData.blocked.includes(user.id));
         setProjects(projectsData.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -64,7 +64,7 @@ export default function UserPage() {
           {},
           {
             headers: {
-              Authorization: localStorage.getItem('disfuse-token'),
+              Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
@@ -77,18 +77,18 @@ export default function UserPage() {
           else setProjects([]);
         })
         .catch((error) => {
-          console.error('Error blocking user:', error);
+          console.error("Error blocking user:", error);
         });
     }
 
     Swal.fire({
-      title: 'Block User',
+      title: "Block User",
       text: `Are you sure you want to block @${user.username}?`,
       footer:
-        'When you block a user, all of your projects will be hidden from them, their projects will be hidden from you, and neither of you will receive notifications from each other.',
-      icon: 'warning',
-      confirmButtonColor: 'red',
-      confirmButtonText: 'Block user',
+        "When you block a user, all of your projects will be hidden from them, their projects will be hidden from you, and neither of you will receive notifications from each other.",
+      icon: "warning",
+      confirmButtonColor: "red",
+      confirmButtonText: "Block user",
       showCancelButton: true,
       focusCancel: true,
     }).then((result) => {
@@ -101,12 +101,8 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <meta property="og:title" content={`@${user.username} on DisFuse`} />
-        <title>{`@${user.username} on DisFuse`}</title>
-        <meta
-          property="og:description"
-          content="Create a Discord bot with block coding!"
-        />
+        <meta property="og:title" content={`${user.displayName} on DisFuse`} />
+        <title>{`${user.displayName} on DisFuse`}</title>
       </Helmet>
 
       <div className="user-profile-container">
@@ -114,7 +110,7 @@ export default function UserPage() {
           <div className="nametag">
             <img
               src={
-                user.avatar || 'https://cdn.discordapp.com/embed/avatars/0.png'
+                user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
               }
               alt=""
             />
@@ -124,10 +120,10 @@ export default function UserPage() {
             </div>
             {user.id !== localUser.id && (
               <button
-                id={blocked ? '' : 'red'}
+                id={blocked ? "" : "red"}
                 onClick={() => toggleBlockUser(user)}
               >
-                {blocked ? 'Unblock User' : 'Block User'}
+                {blocked ? "Unblock User" : "Block User"}
                 <i className="fa-solid fa-ban"></i>
               </button>
             )}
@@ -144,7 +140,7 @@ export default function UserPage() {
                 <PubProject key={project.id} project={project} />
               ))
             : !isLoading
-            ? 'No public projects'
+            ? "No public projects"
             : null}
         </div>
       </div>

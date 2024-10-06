@@ -8,10 +8,10 @@ export default function PubProject({ project }) {
     <>
       <div className="pubProject">
         <div className="info">
-          <h1>
-            {project.name}
+          <div className="name-container">
+            <h1>{project.name}</h1>
             {project.private ? <i class="fa-solid fa-lock"></i> : ""}
-          </h1>
+          </div>
           <UserTag user={project.owner} />
           <p>{project.description}</p>
         </div>

@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Ubuntu Sans', 'Roboto', sans-serif;
+  font-family: "Ubuntu Sans", "Roboto", sans-serif;
   --main-color: #014f98;
   --border-color: rgba(112, 128, 144, 0.233);
   --foreground-color: #001222;
@@ -130,7 +130,7 @@ button.disabled:active {
   scale: 1;
 }
 
-input[type='number'] {
+input[type="number"] {
   background-color: transparent;
   border: 2px solid var(--border-color);
   border-radius: 10px;
@@ -143,7 +143,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-input[type='number']:hover {
+input[type="number"]:hover {
   background-color: var(--border-color);
 }
 
@@ -184,6 +184,7 @@ input[type='number']:hover {
 
 .userTag p {
   padding-right: 0.25rem;
+  white-space: nowrap;
 }
 
 .unerline-effect {
@@ -192,7 +193,7 @@ input[type='number']:hover {
 }
 
 .underline-effect::after {
-  content: '';
+  content: "";
   display: block;
   opacity: 0;
   height: 0.3vh;
@@ -252,7 +253,7 @@ input[type='number']:hover {
 .slider:before {
   position: absolute;
   border-radius: 2rem;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -355,6 +356,19 @@ p.modal-text {
   margin-left: auto;
 }
 
+i.workspacesMenuBtn {
+  font-size: 30px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  background-color: var(--border-color);
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+i.workspacesMenuBtn:hover {
+  color: var(--foreground-color);
+}
+
 .previewWorkspaceNavbar {
   display: flex;
   align-items: center;
@@ -377,15 +391,12 @@ p.modal-text {
 .projectName {
   margin-left: 1rem;
   font-size: 30px;
-}
-
-.workspace-navbar .projectName {
-  font-size: 20px;
   cursor: default;
   background-color: var(--border-color);
-  font-family: 'Poetsen One';
+  font-family: "Poetsen One";
   border-radius: 10px;
   padding: 0.5rem;
+  white-space: nowrap;
 }
 
 .workspace-navbar .left {
@@ -447,10 +458,104 @@ p.modal-text {
   min-width: 150px;
 }
 
-#workspace,
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+#workspace {
+  height: 87.5vh;
+  width: 100%;
+}
 #previewWorkspace {
-  height: calc(100vh - 70px);
-  overflow: hidden !important;
+  height: 92.5vh;
+  width: 100%;
+}
+
+.workspace-tabs {
+  height: 5vh;
+  overflow: auto;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--foreground-color);
+  border-left: 2px solid var(--border-color);
+}
+
+.workspace-navbar .workspace-tabs-open {
+  display: none;
+  margin-left: 1rem;
+  scale: 1.25;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+}
+
+.workspace-navbar .workspace-tabs-open:hover {
+  scale: 1.5;
+}
+
+.workspace-tabs > div:first-child {
+  margin-left: 1rem;
+}
+
+.workspace-tabs .tab.active {
+  background-color: var(--border-color);
+}
+
+.workspace-tabs > div {
+  background-color: var(--main-color);
+  padding: 3px 10px 3px 10px;
+  border-radius: 1rem;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.workspace-tabs > div:hover {
+  background-color: var(--border-color);
+}
+
+.workspace-tabs div .buttons {
+  display: flex;
+}
+
+.workspace-tabs div .buttons i {
+  padding: 6px;
+  border-radius: 5px;
+}
+
+.workspace-tabs div .buttons i:hover {
+  background-color: var(--main-color);
+}
+
+.workspace-tabs .newTab {
+  background-color: var(--border-color);
+  padding: 0.5rem;
+}
+
+.workspace-tabs .newTab:hover {
+  background-color: var(--main-color);
 }
 
 .load-container {
@@ -485,7 +590,7 @@ p.modal-text {
   color: white;
 }
 
-#code {
+.code-view .code {
   font-family: monospace !important;
   padding: 1.5vh;
   font-size: 15px;
@@ -496,7 +601,7 @@ p.modal-text {
   overflow: auto;
 }
 
-#code * {
+.code-view .code * {
   font-family: monospace !important;
   font-weight: 400;
 }
@@ -732,7 +837,7 @@ p.modal-text {
 
 .home-container .head h1 {
   font-size: 70px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .home-container .head p {
@@ -768,7 +873,7 @@ p.modal-text {
 }
 
 .home-container .head .logo::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -854,7 +959,7 @@ p.modal-text {
 }
 
 .sidebar-container .logo div {
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .sidebar-container .logo img {
@@ -992,25 +1097,9 @@ p.modal-text {
   gap: 0.25rem;
 }
 
-.priProject h1 {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.priProject h1 p {
-  max-width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.priProject h1 i,
-.pubProject h1 i {
-  font-size: 20px;
+.priProject .name-container i,
+.pubProject .name-container i {
+  font-size: 30px;
 }
 
 .priProject .buttons button {
@@ -1103,10 +1192,10 @@ input.search:focus::placeholder {
   color: rgba(190, 190, 190, 0.288);
 }
 
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
@@ -1135,13 +1224,19 @@ input[type='search']::-webkit-search-results-decoration {
   gap: 1rem;
 }
 
-.pubProject h1 {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.pubProject h1,
+.priProject h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.pubProject .name-container,
+.priProject .name-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .pubProject .buttons {
@@ -1707,6 +1802,45 @@ select option {
   }
 }
 
+@media (max-width: 1070px) {
+  .home-container .head p {
+    max-width: 70%;
+  }
+
+  .staff-container .staff {
+    grid-template-columns: repeat(2, 20rem) !important;
+  }
+}
+
+@media (max-width: 1030px) {
+  .projects-container .projects,
+  .explore-container .exploration .content,
+  .fav-container .favorites .content,
+  .user-profile-container .body {
+    grid-template-columns: repeat(1, 20rem);
+  }
+
+  .features {
+    grid-template-columns: repeat(2, 20rem) !important;
+    grid-template-rows: auto !important;
+  }
+}
+
+@media (max-width: 930px) {
+  .home-container .head p {
+    max-width: 80%;
+  }
+
+  .previewWorkspaceNavbar {
+    justify-content: space-between;
+  }
+
+  .previewWorkspaceNavbar > div {
+    position: initial;
+    transform: none;
+  }
+}
+
 @media (max-width: 810px) {
   .home-container .head p {
     max-width: 80%;
@@ -1763,7 +1897,7 @@ select option {
   }
 
   .hamburger div {
-    font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+    font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
   }
 
   .hamburger i {
@@ -1924,7 +2058,7 @@ select option {
 .home-container .body h2 {
   text-align: center;
   font-size: 50px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .features {
@@ -2048,7 +2182,7 @@ div.hidden:not(.shown) {
 .staff-container h1 {
   text-align: center;
   font-size: 50px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .staff-container .staff {
@@ -2093,7 +2227,7 @@ div.hidden:not(.shown) {
 }
 
 .blocklyTreeIcon {
-  background-image: url('../public/media/sprite.png');
+  background-image: url("../public/media/sprite.png");
 }
 
 .blocklyTreeRow {
@@ -2191,28 +2325,20 @@ div.hidden:not(.shown) {
 
 .swal2-popup button {
   padding: 1.5vh;
-  border-radius: 0.6rem;
+  border-radius: 10px !important;
   transition: all 0.2s ease !important;
 }
 
 .swal2-popup button:hover {
-  border-radius: 0.9rem;
-}
-
-.swal2-cancel {
-  background-color: gray !important;
+  border-radius: 15px !important;
 }
 
 .swal2-cancel:hover {
-  background-color: rgba(128, 128, 128, 0.596) !important;
-}
-
-.swal2-confirm {
-  background-color: rgb(112, 102, 224) !important;
+  opacity: 0.6 !important;
 }
 
 .swal2-confirm:hover {
-  background: rgba(112, 102, 224, 0.596) !important;
+  opacity: 0.6 !important;
 }
 
 .swal2-deny {
@@ -2221,4 +2347,63 @@ div.hidden:not(.shown) {
 
 .swal2-deny:hover {
   background: rgba(255, 59, 59, 0.596) !important;
+}
+
+/* Swal2 dark styling > */
+
+.swal2-container.dark .swal2-validation-message {
+  background-color: var(--border-color);
+  color: white;
+}
+
+.swal2-container.dark * {
+  color: rgb(236, 236, 236);
+}
+
+.swal2-container.dark .swal2-footer {
+  border-top: 1px solid #555555;
+}
+
+.swal2-container.dark .swal2-progress-step.swal2-active-progress-step {
+  background: #1e5f9c;
+}
+
+.swal2-container.dark .swal2-progress-step:not(.swal2-active-progress-step),
+.swal2-container.dark .swal2-progress-step-line {
+  background: #205061 !important;
+}
+
+.code-view-tabs {
+  display: flex;
+  gap: 1rem;
+}
+
+.code-view-tabs div {
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-view-tabs div:hover {
+  background-color: var(--border-color);
+}
+
+.code-view-tabs div.active {
+  background-color: var(--border-color);
+}
+
+.code-view-tabs div.active::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  margin-top: 5px;
+  background-color: var(--main-color);
+}
+
+.swal2-html-container p.missingBlock {
+  background-color: var(--border-color);
+  border-radius: 10px;
+  padding: 10px;
 }
