@@ -1,6 +1,10 @@
-# DisFuse
+# [DisFuse](https://disfuse.vercel.app)
 
-![disfuse](https://github.com/user-attachments/assets/71f0b5f8-faf3-4194-b0bd-ceacb5fb62a5)
+[![Static Badge](https://img.shields.io/badge/DisFuse-Website-blue)](https://disfuse.vercel.app)
+[![Discord](https://img.shields.io/discord/1232427191099457626?style=flat&logo=discord&label=Discord&labelColor=gray&color=blue)](https://dsc.gg/disfuse)
+[![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+![DisFuse](https://github.com/user-attachments/assets/71f0b5f8-faf3-4194-b0bd-ceacb5fb62a5)
 
 **Make your own advanced Discord bot with simple, easy-to-use block coding!**
 
@@ -34,4 +38,6 @@ If you need any help, want to ask questions about the website, want to show off 
 
 [![Discord Banner 1](https://discord.com/api/guilds/1232427191099457626/widget.png?style=banner2)](https://dsc.gg/disfuse)
 
-> This project was inspired by [Scratch for Discord](https://github.com/Androz2091/scratch-for-discord)
+## License
+
+**© 2024 DisFuse**. This work is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
