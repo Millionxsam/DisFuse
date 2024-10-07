@@ -126,7 +126,6 @@ export default function WorkspaceSettings() {
             disabled={!user.settings.workspace.grid.enabled}
           />
         </div>
-        <p>Customize how the workspace's toolbox will appear like</p>
         <div className="option">
           <p>Icons on toolbar:</p>
           <Switch
