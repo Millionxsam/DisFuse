@@ -133,7 +133,8 @@ export default function Workspace() {
 
                 let toolboxBtIcons =
                   user.settings.workspace.toolboxBtIcons.enabled ?? true;
-                if (toolboxBtIcons) {
+
+                if (!toolboxBtIcons) {
                   let styleEle = document.createElement('style');
                   styleEle.innerHTML = `
                     .workspace-navbar * button i:not(.fa-discord) {
