@@ -132,7 +132,7 @@ export default function Workspace() {
                 let gridSpacing = user.settings.workspace.grid.spacing ?? 35;
 
                 let toolboxBtIcons =
-                  user.settings.workspace.toolboxBtIcons.enabled ?? true;
+                  user.settings.workspace.toolboxBtIcons ?? true;
 
                 if (!toolboxBtIcons) {
                   let styleEle = document.createElement('style');
