@@ -26,6 +26,7 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "sweetalert2": "^11.10.8",
+    "vercel": "^37.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

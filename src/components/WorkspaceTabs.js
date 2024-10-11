@@ -1,8 +1,8 @@
-import axios from "axios";
-import Swal from "sweetalert2";
-import * as Blockly from "blockly";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import * as Blockly from 'blockly';
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require('../config/config.json');
 
 export default function WorkspaceTabs({
   currentTab,
@@ -15,14 +15,14 @@ export default function WorkspaceTabs({
     <div className="workspace-tabs">
       <div
         onClick={() => closeTabs(workspace)}
-        style={{ height: "2rem", width: "2rem" }}
+        style={{ height: '2rem', width: '2rem' }}
       >
         <i class="fa-solid fa-xmark"></i>
       </div>
       {project.workspaces?.map((workspace, index) => (
         <div
           onClick={() => onClick(index)}
-          className={`tab${currentTab._id === workspace._id ? " active" : ""}`}
+          className={`tab${currentTab._id === workspace._id ? ' active' : ''}`}
         >
           <div>{workspace.name}</div>
           <div className="buttons">
@@ -49,11 +49,15 @@ export default function WorkspaceTabs({
 }
 
 function closeTabs(workspace) {
-  document.querySelector(".workspace-tabs").style.display = "none";
-  document.querySelector("#workspace").style.height = "92.5vh";
+  document.querySelector('.workspace-tabs').style.height = '0vh';
+  document.querySelector('#workspace').style.height = '92.5vh';
+
   document.querySelector(
-    ".workspace-navbar .workspace-tabs-open"
-  ).style.display = "block";
+    '.workspace-navbar .workspace-tabs-open'
+  ).style.opacity = '1';
+
+  document.getElementById('workspace-tabs-open-container').style.width =
+    '2.5rem';
 
   Blockly.svgResize(workspace);
 }
@@ -62,11 +66,11 @@ function editWorkspaceName(e, workspace, project, modalColors) {
   e.stopPropagation();
 
   Swal.fire({
-    title: "Edit workspace name",
-    text: "Change the name of this workspace",
-    input: "text",
+    title: 'Edit workspace name',
+    text: 'Change the name of this workspace',
+    input: 'text',
     inputValue: workspace.name,
-    confirmButtonText: "Change",
+    confirmButtonText: 'Change',
     showCancelButton: true,
     ...modalColors,
   }).then((response) => {
@@ -80,7 +84,7 @@ function editWorkspaceName(e, workspace, project, modalColors) {
         },
         {
           headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
+            Authorization: localStorage.getItem('disfuse-token'),
           },
         }
       )
@@ -92,10 +96,10 @@ function deleteWorkspace(e, workspace, project, modalColors) {
   e.stopPropagation();
 
   Swal.fire({
-    title: "Delete workspace",
+    title: 'Delete workspace',
     text: `Are you sure you want to delete ${workspace.name}?`,
-    footer: "This is not reversible!",
-    confirmButtonText: "Delete",
+    footer: 'This is not reversible!',
+    confirmButtonText: 'Delete',
     showCancelButton: true,
     ...modalColors,
   }).then((response) => {
@@ -104,7 +108,7 @@ function deleteWorkspace(e, workspace, project, modalColors) {
     axios
       .delete(apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`, {
         headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
+          Authorization: localStorage.getItem('disfuse-token'),
         },
       })
       .then(() => window.location.reload());

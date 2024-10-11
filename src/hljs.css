@@ -1,17 +1,16 @@
 pre code.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 1em !important;
-    font-family: monospace !important;
+  display: block;
+  overflow-x: auto;
+  padding: 1em !important;
+  font-family: monospace !important;
 }
 
 code.hljs {
-    font-family: monospace !important;
-    padding: 3px 5px !important;
+  font-family: monospace !important;
+  padding: 3px 5px !important;
 }
 
 /*
-
 Atom One Dark by Daniel Gamage
 Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
 
@@ -27,25 +26,25 @@ hue-5:   #e06c75
 hue-5-2: #be5046
 hue-6:   #d19a66
 hue-6-2: #e6c07b
-
 */
+
 .hljs {
-    color: #abb2bf;
-    background: #282c34 !important;
+  color: #abb2bf;
+  background: #282c34 !important;
 }
 
 .hljs-comment,
 .hljs-quote {
-    color: #4d5461 !important;
-    font-style: italic !important;
-    font-weight: 400 !important;
+  color: #4d5461 !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
 }
 
 .hljs-doctag,
 .hljs-keyword,
 .hljs-formula {
-    color: #c764e6 !important;
-    font-weight: 400 !important;
+  color: #c764e6 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-section,
@@ -53,13 +52,13 @@ hue-6-2: #e6c07b
 .hljs-selector-tag,
 .hljs-deletion,
 .hljs-subst {
-    color: #eb5965 !important;
-    font-weight: 400 !important;
+  color: #eb5965 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-literal {
-    color: #42c5d6 !important;
-    font-weight: 400 !important;
+  color: #42c5d6 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-string,
@@ -67,8 +66,8 @@ hue-6-2: #e6c07b
 .hljs-addition,
 .hljs-attribute,
 .hljs-meta .hljs-string {
-    color: #97db66 !important;
-    font-weight: 400 !important;
+  color: #97db66 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-attr,
@@ -79,8 +78,8 @@ hue-6-2: #e6c07b
 .hljs-selector-attr,
 .hljs-selector-pseudo,
 .hljs-number {
-    color: #ec9b4e !important;
-    font-weight: 400 !important;
+  color: #ec9b4e !important;
+  font-weight: 400 !important;
 }
 
 .hljs-symbol,
@@ -89,27 +88,27 @@ hue-6-2: #e6c07b
 .hljs-meta,
 .hljs-selector-id,
 .hljs-title {
-    color: #4dabf8 !important;
-    font-weight: 400 !important;
+  color: #4dabf8 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-built_in,
 .hljs-title.class_,
 .hljs-class .hljs-title {
-    color: #f0bf65 !important;
-    font-weight: 400 !important;
+  color: #f0bf65 !important;
+  font-weight: 400 !important;
 }
 
 .hljs-emphasis {
-    font-style: italic !important;
-    font-weight: 400 !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
 }
 
 .hljs-strong {
-    font-weight: bold !important;
+  font-weight: bold !important;
 }
 
 .hljs-link {
-    text-decoration: underline !important;
-    font-weight: 400 !important;
+  text-decoration: underline !important;
+  font-weight: 400 !important;
 }
