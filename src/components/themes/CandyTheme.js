@@ -8,7 +8,7 @@ export const CandyTheme = Blockly.Theme.defineTheme("CandyTheme", {
     toolboxForegroundColour: "#000000",
     flyoutBackgroundColour: "#9994ff",
     flyoutForegroundColour: "#000000",
-    flyoutOpacity: 0.8,
+    flyoutOpacity: 0.85,
     scrollbarColour: "#78ffa0",
     insertionMarkerColour: "#000000",
     insertionMarkerOpacity: 0.3,

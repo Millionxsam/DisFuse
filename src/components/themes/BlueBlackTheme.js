@@ -8,7 +8,7 @@ export const BlueBlackTheme = Blockly.Theme.defineTheme("BlueBlackTheme", {
     toolboxForegroundColour: "#FFFFFF",
     flyoutBackgroundColour: "#003363",
     flyoutForegroundColour: "#A5A5A5",
-    flyoutOpacity: 0.5,
+    flyoutOpacity: 0.85,
     scrollbarColour: "#797979",
     insertionMarkerColour: "#000000",
     insertionMarkerOpacity: 0.3,

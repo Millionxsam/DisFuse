@@ -1091,7 +1091,7 @@ export const toolbox = {
         },
         {
           kind: "block",
-          type: "main_amountservers",
+          type: "main_numberof",
         },
         {
           kind: "block",

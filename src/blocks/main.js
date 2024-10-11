@@ -65,6 +65,7 @@ Blockly.Blocks["main_presence"] = {
           ["Streaming", "1"],
           ["Listening", "2"],
           ["Watching", "3"],
+          ["Custom", "4"],
         ]),
         "activity_type"
       );
@@ -111,10 +112,43 @@ Blockly.Blocks["main_ping"] = {
   },
 };
 
+// deprecated
 Blockly.Blocks["main_amountservers"] = {
   init: function () {
-    this.appendDummyInput().appendField("amount of servers the bot is in");
+    this.appendDummyInput()
+      .appendField("number of")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["servers", "guilds"],
+          ["users", "users"],
+          ["channels", "channels"],
+        ]),
+        "property"
+      );
+    this.appendDummyInput().appendField("of the bot");
     this.setOutput(true, "Number");
+    this.setColour("#FF6E33");
+    this.setInputsInline(true);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["main_numberof"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("number of")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["servers", "guilds"],
+          ["users", "users"],
+          ["channels", "channels"],
+        ]),
+        "property"
+      );
+    this.appendDummyInput().appendField("of the bot");
+    this.setOutput(true, "Number");
+    this.setInputsInline(true);
     this.setColour("#FF6E33");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -130,8 +164,17 @@ Blockly.Blocks["main_destroy"] = {
   },
 };
 
-javascriptGenerator.forBlock["main_amountservers"] = function (block, generator) {
-  return ['client.guilds.cache.size', Order.NONE];
+javascriptGenerator.forBlock["main_amountservers"] = function (
+  block,
+  generator
+) {
+  return ["client.guilds.cache.size", Order.NONE];
+};
+
+javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {
+  const property = block.getFieldValue("property");
+
+  return [`client.${property}.cache.size`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["main_token"] = function (block, generator) {
@@ -188,7 +231,7 @@ javascriptGenerator.forBlock["main_ping"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["main_destroy"] = () => 'client.destroy();'
+javascriptGenerator.forBlock["main_destroy"] = () => "client.destroy();";
 
 createRestrictions(
   ["main_token"],
