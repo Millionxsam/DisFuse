@@ -60,7 +60,7 @@ Blockly.Blocks["buttons_member"] = {
   init: function () {
     this.appendDummyInput().appendField("member who clicked the button");
     this.setColour("#AC41E9");
-    this.setOutput(true, "String");
+    this.setOutput(true, "member");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -70,7 +70,7 @@ Blockly.Blocks["buttons_user"] = {
   init: function () {
     this.appendDummyInput().appendField("user who clicked the button");
     this.setColour("#AC41E9");
-    this.setOutput(true, "String");
+    this.setOutput(true, "user");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -80,7 +80,7 @@ Blockly.Blocks["buttons_channel"] = {
   init: function () {
     this.appendDummyInput().appendField("channel of the button");
     this.setColour("#AC41E9");
-    this.setOutput(true, "String");
+    this.setOutput(true, "channel");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -90,13 +90,13 @@ Blockly.Blocks["buttons_server"] = {
   init: function () {
     this.appendDummyInput().appendField("server of the button");
     this.setColour("#AC41E9");
-    this.setOutput(true, "String");
+    this.setOutput(true, "server");
     this.setTooltip("");
     this.setHelpUrl("");
   },
 };
 
-Blockly.Blocks["buttons_reply"] = {
+Blockly.Blocks["slash_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the click");
     this.appendValueInput("content").setCheck("String").appendField("content:");
@@ -112,7 +112,7 @@ Blockly.Blocks["buttons_reply"] = {
   },
 };
 
-Blockly.Blocks["buttons_edit"] = {
+Blockly.Blocks["slash_edit"] = {
   init: function () {
     this.appendDummyInput().appendField("Edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
@@ -145,42 +145,6 @@ javascript.javascriptGenerator.forBlock["buttons_del"] = function (
   generator
 ) {
   var code = `interaction.deleteReply();`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["buttons_edit"] = function (
-  block,
-  generator
-) {
-  var content = generator.valueToCode(
-    block,
-    "content",
-    javascript.Order.ATOMIC
-  );
-  var embeds = block.getFieldValue("embeds");
-
-  var code = `interaction.editReply({
-        content: ${content || "''"},
-        embeds: [${embeds}]
-    });`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["buttons_reply"] = function (
-  block,
-  generator
-) {
-  var content = generator.valueToCode(
-    block,
-    "content",
-    javascript.Order.ATOMIC
-  );
-  var embeds = block.getFieldValue("embeds");
-
-  var code = `interaction.reply({
-        content: ${content || "''"},
-        embeds: [${embeds}]
-    });`;
   return code;
 };
 

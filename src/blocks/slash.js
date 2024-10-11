@@ -56,6 +56,10 @@ Blockly.Blocks["slash_editreply"] = {
   init: function () {
     this.appendDummyInput().appendField("Edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -67,9 +71,13 @@ Blockly.Blocks["slash_editreply"] = {
 
 javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
 
   var code = `interaction.editReply({
-    content: ${value_content},
+    content: ${value_content || "''"},
+    embeds: [${value_embeds.replaceAll("'", "")}],
+    components: [${rows}]
   });`;
   return code;
 };

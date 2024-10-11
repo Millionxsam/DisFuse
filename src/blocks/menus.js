@@ -228,7 +228,7 @@ javascript.javascriptGenerator.forBlock["menus_reply"] = function (
   );
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
-  var code = `int.reply({
+  var code = `interaction.reply({
   content: ${content || "''"},
   embeds: [${embeds}]
 });`;
