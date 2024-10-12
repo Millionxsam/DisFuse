@@ -3087,6 +3087,10 @@ export const toolbox = {
           kind: block,
           type: 'fs_renameFile',
         },
+        {
+          kind: block,
+          type: 'fs_sendFile',
+        },
       ],
     },
     {

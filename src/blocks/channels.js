@@ -736,13 +736,15 @@ Blockly.Blocks['channel_set_permission'] = {
       .setCheck('channel')
       .appendField('on channel:');
     this.appendValueInput('role')
-      .setCheck(['role', 'everyone'])
-      .appendField('for role/everyone:');
+      .setCheck(['role', 'everyone', 'member'])
+      .appendField('for role/everyone/member:');
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
     this.setColour('D39600');
-    this.setTooltip('Sets a permission for a role or everyone on a channel.');
+    this.setTooltip(
+      'Sets a permission for a role, everyone or a member on a channel.'
+    );
   },
 };
 
@@ -781,7 +783,7 @@ createRestrictions(
     {
       type: 'notEmpty',
       blockTypes: ['role'],
-      message: 'You must specify the role or everyone',
+      message: 'You must specify the role, everyone or the member',
     },
   ]
 );
