@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function CodeView() {
-  const [activeCode, setActiveCode] = useState("workspace");
+  const [activeCode, setActiveCode] = useState('workspace');
 
   useEffect(() => {
-    if (activeCode === "workspace") {
+    if (activeCode === 'workspace') {
       document
-        .querySelector(".code-view-tabs #currentWorkspace")
-        .classList.add("active");
+        .querySelector('.code-view-tabs #currentWorkspace')
+        .classList.add('active');
       document
-        .querySelector(".code-view-tabs #fullProject")
-        .classList.remove("active");
+        .querySelector('.code-view-tabs #fullProject')
+        .classList.remove('active');
 
-      document.querySelector(".workspace.code").style.display = "block";
-      document.querySelector(".project.code").style.display = "none";
-    } else if (activeCode === "project") {
+      document.querySelector('.workspace.code').style.display = 'block';
+      document.querySelector('.project.code').style.display = 'none';
+    } else if (activeCode === 'project') {
       document
-        .querySelector(".code-view-tabs #currentWorkspace")
-        .classList.remove("active");
+        .querySelector('.code-view-tabs #currentWorkspace')
+        .classList.remove('active');
       document
-        .querySelector(".code-view-tabs #fullProject")
-        .classList.add("active");
+        .querySelector('.code-view-tabs #fullProject')
+        .classList.add('active');
 
-      document.querySelector(".workspace.code").style.display = "none";
-      document.querySelector(".project.code").style.display = "block";
+      document.querySelector('.workspace.code').style.display = 'none';
+      document.querySelector('.project.code').style.display = 'block';
     }
   }, [activeCode]);
 
@@ -37,13 +37,13 @@ export default function CodeView() {
         <button id="copy" onClick={copyCode}>
           Copy
         </button>
-        <i style={{ display: "none" }} className="fa-solid fa-check check"></i>
+        <i style={{ display: 'none' }} className="fa-solid fa-check check"></i>
       </div>
       <div className="code-view-tabs">
-        <div id="currentWorkspace" onClick={() => setActiveCode("workspace")}>
+        <div id="currentWorkspace" onClick={() => setActiveCode('workspace')}>
           Current Workspace
         </div>
-        <div id="fullProject" onClick={() => setActiveCode("project")}>
+        <div id="fullProject" onClick={() => setActiveCode('project')}>
           Whole Project
         </div>
       </div>
@@ -58,17 +58,17 @@ export default function CodeView() {
 }
 
 function closeCode() {
-  document.querySelector(".code-view").style.display = "none";
+  document.querySelector('.code-view').style.display = 'none';
 }
 
 function copyCode() {
   navigator.clipboard.writeText(
-    document.querySelector(".code-view #code").innerText
+    document.querySelector('#codecontent').innerText
   );
 
-  document.querySelector(".code-view .top .check").style.display = "block";
+  document.querySelector('.code-view .top .check').style.display = 'block';
 
   setTimeout(() => {
-    document.querySelector(".code-view .top .check").style.display = "none";
+    document.querySelector('.code-view .top .check').style.display = 'none';
   }, 3000);
 }
