@@ -170,10 +170,17 @@ Blockly.Blocks['fs_sendFile'] = {
     this.appendValueInput('channel')
       .setCheck('String')
       .appendField('to channel:');
+    this.appendValueInput('content')
+      .setCheck('String')
+      .appendField('with content:');
+    this.appendValueInput('embeds')
+      .setCheck('String')
+      .appendField('embed name(s):');
+    this.appendStatementInput('rows').setCheck('rows').appendField('rows:');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('#34eb83');
-    this.setTooltip('Sends a file to a specified Discord channel.');
+    this.setColour('#eb8334');
+    this.setTooltip('Sends a file to a specific channel.');
     this.setHelpUrl('');
   },
 };
@@ -181,8 +188,16 @@ Blockly.Blocks['fs_sendFile'] = {
 javascriptGenerator.forBlock['fs_sendFile'] = function (block, generator) {
   var path = generator.valueToCode(block, 'path', Order.ATOMIC);
   var channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
+  var content = generator.valueToCode(block, 'content', Order.ATOMIC);
+  var embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
+  var rows = generator.statementToCode(block, 'rows');
 
-  var code = `${channel}.send({ files: [${path}] });\n`;
+  var code = `${channel}.send({
+  files: [${path}],
+  content: ${content || "''"},
+  embeds: [${embeds.replaceAll("'", '') || ''}],
+  components: [${rows || ''}]
+});\n`;
 
   return code;
 };
