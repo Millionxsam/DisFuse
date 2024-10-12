@@ -1651,6 +1651,18 @@ export const toolbox = {
             },
             {
               kind: 'label',
+              text: 'Create a channel ↓',
+            },
+            {
+              kind: 'block',
+              type: 'channel_create',
+            },
+            {
+              kind: 'block',
+              type: 'channel_createdChannel',
+            },
+            {
+              kind: 'label',
               text: 'Information about a channel ↓',
             },
             {
@@ -1693,18 +1705,9 @@ export const toolbox = {
               kind: 'block',
               type: 'channel_created',
             },
-
             {
               kind: 'label',
               text: 'Channel actions ↓',
-            },
-            {
-              kind: 'block',
-              type: 'channel_create',
-            },
-            {
-              kind: 'block',
-              type: 'channel_createdChannel',
             },
             {
               kind: 'block',
@@ -1749,6 +1752,18 @@ export const toolbox = {
             {
               kind: 'block',
               type: 'channel_setname',
+            },
+            {
+              kind: block,
+              type: 'channel_set_permission',
+            },
+            {
+              kind: block,
+              type: 'misc_permissionChannel',
+            },
+            {
+              kind: block,
+              type: 'misc_everyone',
             },
           ],
         },

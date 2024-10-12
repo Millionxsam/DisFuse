@@ -288,3 +288,65 @@ javascript.javascriptGenerator.forBlock['misc_createcontainer'] = function (
 
   return code;
 };
+
+Blockly.Blocks['misc_everyone'] = {
+  init: function () {
+    this.appendDummyInput().appendField('@everyone');
+    this.setOutput(true, 'everyone');
+    this.setColour('4192E9');
+  },
+};
+
+javascript.javascriptGenerator.forBlock['misc_everyone'] = () => [
+  'everyone',
+  Order.NONE,
+];
+
+Blockly.Blocks['misc_permissionChannel'] = {
+  init: function () {
+    this.setOutput(true, 'permissionChannel');
+    this.setColour('4192E9');
+    this.appendDummyInput()
+      .appendField('permission')
+      .appendField(
+        new Blockly.FieldDropdown([
+          ['ViewChannel', 'ViewChannel'],
+          ['SendMessages', 'SendMessages'],
+          ['SendTTSMessages', 'SendTTSMessages'],
+          ['ManageMessages', 'ManageMessages'],
+          ['EmbedLinks', 'EmbedLinks'],
+          ['AttachFiles', 'AttachFiles'],
+          ['ReadMessageHistory', 'ReadMessageHistory'],
+          ['MentionEveryone', 'MentionEveryone'],
+          ['UseExternalEmojis', 'UseExternalEmojis'],
+          ['AddReactions', 'AddReactions'],
+          ['ManageThreads', 'ManageThreads'],
+          ['CreatePublicThreads', 'CreatePublicThreads'],
+          ['CreatePrivateThreads', 'CreatePrivateThreads'],
+          ['SendMessagesInThreads', 'SendMessagesInThreads'],
+          ['UseSlashCommands', 'UseSlashCommands'],
+          ['UseExternalStickers', 'UseExternalStickers'],
+        ]),
+        'permission'
+      );
+  },
+};
+
+javascript.javascriptGenerator.forBlock['misc_permissionChannel'] = function (
+  block
+) {
+  var perm = block.getFieldValue('permission');
+  return [`'${perm}'`, Order.NONE];
+};
+
+createRestrictions(
+  ['misc_permissionChannel'],
+  [
+    {
+      type: 'hasParent',
+      blockTypes: ['channel_set_permission'],
+      message:
+        "This block must be be in a 'set permission ... to ... in channel' block",
+    },
+  ]
+);
