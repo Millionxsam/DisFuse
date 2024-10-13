@@ -241,6 +241,8 @@ export default function Workspace() {
                   'filterItem',
                   'localVar',
                   'newWebhook',
+                  'captcha',
+                  'Captcha',
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
