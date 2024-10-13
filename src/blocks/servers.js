@@ -317,7 +317,7 @@ javascriptGenerator.forBlock["server_creationdate"] = function (
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.createdAt)`;
+  var code = `${value_server}.createdAt`;
   return [code, Order.NONE];
 };
 
@@ -392,12 +392,13 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.guilds.cache${dropdown_type === "name"
-    ? `.find(s => s.name === ${value_value})`
-    : dropdown_type === "id"
+  var code = `client.guilds.cache${
+    dropdown_type === "name"
+      ? `.find(s => s.name === ${value_value})`
+      : dropdown_type === "id"
       ? `.get(${value_value})`
       : ""
-    }`;
+  }`;
 
   return [code, Order.NONE];
 };
@@ -428,7 +429,8 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["server_getall"],
-      message: 'This block must be under the "For each server the bot is in" block',
+      message:
+        'This block must be under the "For each server the bot is in" block',
     },
   ]
 );
