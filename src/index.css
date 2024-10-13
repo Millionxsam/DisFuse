@@ -2256,12 +2256,6 @@ div.hidden:not(.shown) {
   outline: none;
 }
 
-.contributionsCounter {
-  font-size: 17px !important;
-  color: #bbbbbb;
-  margin-top: -0.5rem;
-}
-
 .inbox-container .notifications {
   display: flex;
   flex-direction: column;

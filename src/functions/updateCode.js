@@ -106,9 +106,17 @@ function setUpCode(workspace, blocks) {
     workspace.tokenAlertPopupAppeared = true;
   }
 
+  let mobilePresenceBot;
+  let mainTokenBlock = blocks.find((b) => b.type === 'main_token');
+  if (mainTokenBlock) {
+    console.log(mainTokenBlock);
+  }
+
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
-    const client = new Discord.Client({ intents: 3276799 });
+    const client = new Discord.Client({
+      intents: 3276799,
+    });
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
