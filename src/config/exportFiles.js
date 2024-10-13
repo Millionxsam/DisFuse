@@ -164,6 +164,7 @@ module.exports = [
       "main": "index.js",
       "dependencies": {
         "asynckit": "^0.4.0",
+        "axios": "^1.7.7",
         "combined-stream": "^1.0.8",
         "delayed-stream": "^1.0.0",
         "discord-api-types": "^0.33.5",
