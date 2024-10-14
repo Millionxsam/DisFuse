@@ -7,7 +7,9 @@ Blockly.Blocks['main_token'] = {
     this.appendValueInput('token')
       .setCheck('String')
       .appendField('Log in to bot with the token:');
-    this.appendValueInput('mobile').setCheck('Boolean').appendField('Mobile:');
+    this.appendDummyInput()
+      .appendField('Mobile:')
+      .appendField(new Blockly.FieldCheckbox('FALSE'), 'mobile');
     this.setInputsInline(false);
     this.setColour('#FF6E33');
   },

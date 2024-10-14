@@ -243,6 +243,7 @@ export default function Workspace() {
                   'newWebhook',
                   'captcha',
                   'Captcha',
+                  'permsChannel',
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
