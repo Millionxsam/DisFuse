@@ -851,7 +851,7 @@ javascriptGenerator.forBlock["channel_set_permission"] = function (
   block,
   generator
 ) {
-  const permission = generator.valueToCode(block, "permission", Order.ATOMIC);
+  const permission = generator.valueToCode(block, "permission", Order.NONE);
   const action = block.getFieldValue("action");
   const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   const role = generator.valueToCode(block, "role", Order.ATOMIC);
