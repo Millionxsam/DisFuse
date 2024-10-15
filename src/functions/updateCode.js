@@ -116,13 +116,13 @@ function setUpCode(workspace, blocks) {
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
     const client = new Discord.Client({
-      intents: 3276799${
-        mobilePresenceBot
-          ? ',\nws: { properties: { $browser: "Discord iOS" }}'
-          : ''
-      }
+      intents: 3276799
     });
-    
+    ${
+      mobilePresenceBot
+        ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
+        : ''
+    }
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -135,7 +135,7 @@ function setUpCode(workspace, blocks) {
   }
     client.setMaxListeners(0);
         
-    client.on("ready", () => {
+    client.on("ready", async () => {
       console.log(client.user.tag + " is logged in!");
     });
         

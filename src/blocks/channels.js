@@ -856,7 +856,7 @@ javascriptGenerator.forBlock['channel_set_permission'] = function (
   const channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
   const role = generator.valueToCode(block, 'role', Order.ATOMIC);
 
-  const allow = action === 'allow' ? 'true' : 'null';
+  const allow = action === 'allow' ? 'true' : 'false';
 
   if (role === '(everyone)') {
     return `let permsChannel = ${channel};
