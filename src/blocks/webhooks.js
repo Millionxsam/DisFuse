@@ -67,7 +67,7 @@ javascriptGenerator.forBlock['webhooks_create'] = function (block, generator) {
   var code = `${channel}.createWebhook({
   name: "${name}",
   avatar: ${avatar || '""'}
-}).then((newWebhook) => {
+}).then(async (newWebhook) => {
   ${statements_code}});`;
 
   return code;

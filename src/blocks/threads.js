@@ -46,7 +46,7 @@ javascriptGenerator.forBlock['threads_msgCreateThread'] = function (
   }
 })`;
 
-  if (then) code += `.then(createdThread => {\n${then}})`;
+  if (then) code += `.then(async (createdThread) => {\n${then}})`;
 
   code += ';\n';
 
@@ -97,7 +97,7 @@ javascriptGenerator.forBlock['threads_channelCreateThread'] = function (
   }
 })`;
 
-  if (then) code += `.then(createdThread => {\n${then}})`;
+  if (then) code += `.then(async (createdThread) => {\n${then}})`;
 
   code += ';\n';
 

@@ -1,141 +1,141 @@
-import * as Blockly from "blockly/core";
-import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
+import * as Blockly from 'blockly/core';
+import { Order, javascriptGenerator } from 'blockly/javascript';
+import { createRestrictions } from '../functions/restrictions';
 
-Blockly.Blocks["invite_create"] = {
+Blockly.Blocks['invite_create'] = {
   init: function () {
-    this.appendValueInput("channel")
-      .appendField("create invite for channel:")
-      .setCheck("channel");
-    this.appendValueInput("uses")
-      .appendField("amount of uses:")
-      .setCheck("Number");
-    this.setOutput(true, "invite");
-    this.setColour("#9d51b0");
-    this.setTooltip("Creates an invite URL for a channel.");
-    this.setHelpUrl("");
+    this.appendValueInput('channel')
+      .appendField('create invite for channel:')
+      .setCheck('channel');
+    this.appendValueInput('uses')
+      .appendField('amount of uses:')
+      .setCheck('Number');
+    this.setOutput(true, 'invite');
+    this.setColour('#9d51b0');
+    this.setTooltip('Creates an invite URL for a channel.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_create"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-  var uses = generator.valueToCode(block, "uses", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_create'] = function (block, generator) {
+  var channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
+  var uses = generator.valueToCode(block, 'uses', Order.ATOMIC);
 
   const code = `await ${channel}.createInvite({ maxAge:0, maxUses:${uses}, unique:true })`;
   return [code, Order.AWAIT];
 };
 
-Blockly.Blocks["invite_get"] = {
+Blockly.Blocks['invite_get'] = {
   init: function () {
-    this.appendValueInput("invite")
-      .appendField("get invite with URL:")
-      .setCheck("String");
-    this.setOutput(true, "invite");
-    this.setColour("#9d51b0");
-    this.setTooltip("Gets an invite from an URL.");
-    this.setHelpUrl("");
+    this.appendValueInput('invite')
+      .appendField('get invite with URL:')
+      .setCheck('String');
+    this.setOutput(true, 'invite');
+    this.setColour('#9d51b0');
+    this.setTooltip('Gets an invite from an URL.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_get"] = function (block, generator) {
-  var invite = generator.valueToCode(block, "invite", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_get'] = function (block, generator) {
+  var invite = generator.valueToCode(block, 'invite', Order.ATOMIC);
 
   const code = `await client.fetchInvite(${invite})`;
   return [code, Order.AWAIT];
 };
 
-Blockly.Blocks["invite_delete"] = {
+Blockly.Blocks['invite_delete'] = {
   init: function () {
-    this.appendValueInput("invite")
-      .appendField("Delete invite:")
-      .setCheck("invite");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#9d51b0");
-    this.setTooltip("Deletes an invite.");
-    this.setHelpUrl("");
+    this.appendValueInput('invite')
+      .appendField('Delete invite:')
+      .setCheck('invite');
+    this.setPreviousStatement(true, 'default');
+    this.setNextStatement(true, 'default');
+    this.setColour('#9d51b0');
+    this.setTooltip('Deletes an invite.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_delete"] = function (block, generator) {
-  var invite = generator.valueToCode(block, "invite", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_delete'] = function (block, generator) {
+  var invite = generator.valueToCode(block, 'invite', Order.ATOMIC);
 
   return `await ${invite}.delete();\n`;
 };
 
-Blockly.Blocks["invite_url"] = {
+Blockly.Blocks['invite_url'] = {
   init: function () {
-    this.appendValueInput("invite")
-      .appendField("get url of invite:")
-      .setCheck("invite");
-    this.setOutput(true, "String");
-    this.setColour("#9d51b0");
-    this.setTooltip("Gets the URL of an invite.");
-    this.setHelpUrl("");
+    this.appendValueInput('invite')
+      .appendField('get url of invite:')
+      .setCheck('invite');
+    this.setOutput(true, 'String');
+    this.setColour('#9d51b0');
+    this.setTooltip('Gets the URL of an invite.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_url"] = function (block, generator) {
-  var invite = generator.valueToCode(block, "invite", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_url'] = function (block, generator) {
+  var invite = generator.valueToCode(block, 'invite', Order.ATOMIC);
 
   const code = `${invite}.url`;
   return [code, Order.ATOMIC];
 };
 
-Blockly.Blocks["invite_channel"] = {
+Blockly.Blocks['invite_channel'] = {
   init: function () {
-    this.appendValueInput("invite")
-      .appendField("get channel of invite:")
-      .setCheck("invite");
-    this.setOutput(true, "channel");
-    this.setColour("#9d51b0");
-    this.setTooltip("Gets the channel of an invite.");
-    this.setHelpUrl("");
+    this.appendValueInput('invite')
+      .appendField('get channel of invite:')
+      .setCheck('invite');
+    this.setOutput(true, 'channel');
+    this.setColour('#9d51b0');
+    this.setTooltip('Gets the channel of an invite.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_channel"] = function (block, generator) {
-  var invite = generator.valueToCode(block, "invite", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_channel'] = function (block, generator) {
+  var invite = generator.valueToCode(block, 'invite', Order.ATOMIC);
 
   const code = `${invite}.channel`;
   return [code, Order.ATOMIC];
 };
 
-Blockly.Blocks["invite_author"] = {
+Blockly.Blocks['invite_author'] = {
   init: function () {
-    this.appendValueInput("invite")
-      .appendField("get author of invite:")
-      .setCheck("invite");
-    this.setOutput(true, "user");
-    this.setColour("#9d51b0");
-    this.setTooltip("Gets the user that created the invite.");
-    this.setHelpUrl("");
+    this.appendValueInput('invite')
+      .appendField('get author of invite:')
+      .setCheck('invite');
+    this.setOutput(true, 'user');
+    this.setColour('#9d51b0');
+    this.setTooltip('Gets the user that created the invite.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_author"] = function (block, generator) {
-  var invite = generator.valueToCode(block, "invite", Order.ATOMIC);
+javascriptGenerator.forBlock['invite_author'] = function (block, generator) {
+  var invite = generator.valueToCode(block, 'invite', Order.ATOMIC);
 
   const code = `${invite}.inviter`;
   return [code, Order.ATOMIC];
 };
 
-Blockly.Blocks["invite_invitecreated"] = {
+Blockly.Blocks['invite_invitecreated'] = {
   init: function () {
-    this.appendDummyInput().appendField("When an invite is created");
-    this.appendStatementInput("code").setCheck("default");
+    this.appendDummyInput().appendField('When an invite is created');
+    this.appendStatementInput('code').setCheck('default');
     this.setInputsInline(false);
-    this.setColour("#9d51b0");
-    this.setTooltip("Runs the code inside when an invite is created.");
-    this.setHelpUrl("");
+    this.setColour('#9d51b0');
+    this.setTooltip('Runs the code inside when an invite is created.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_invitecreated"] = function (
+javascriptGenerator.forBlock['invite_invitecreated'] = function (
   block,
   generator
 ) {
-  var statements_code = generator.statementToCode(block, "code");
+  var statements_code = generator.statementToCode(block, 'code');
 
   var code = `client.on("inviteCreate", async (inviteEventCreateOrDelete) => {
     ${statements_code}
@@ -143,22 +143,22 @@ javascriptGenerator.forBlock["invite_invitecreated"] = function (
   return code;
 };
 
-Blockly.Blocks["invite_invitedeleted"] = {
+Blockly.Blocks['invite_invitedeleted'] = {
   init: function () {
-    this.appendDummyInput().appendField("When an invite is deleted");
-    this.appendStatementInput("code").setCheck("default");
+    this.appendDummyInput().appendField('When an invite is deleted');
+    this.appendStatementInput('code').setCheck('default');
     this.setInputsInline(false);
-    this.setColour("#9d51b0");
-    this.setTooltip("Runs the code inside when an invite is deleted.");
-    this.setHelpUrl("");
+    this.setColour('#9d51b0');
+    this.setTooltip('Runs the code inside when an invite is deleted.');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_invitedeleted"] = function (
+javascriptGenerator.forBlock['invite_invitedeleted'] = function (
   block,
   generator
 ) {
-  var statements_code = generator.statementToCode(block, "code");
+  var statements_code = generator.statementToCode(block, 'code');
 
   var code = `client.on("inviteDelete", async (inviteEventCreateOrDelete) => {
     ${statements_code}
@@ -166,39 +166,39 @@ javascriptGenerator.forBlock["invite_invitedeleted"] = function (
   return code;
 };
 
-Blockly.Blocks["invite_event_var"] = {
+Blockly.Blocks['invite_event_var'] = {
   init: function () {
-    this.appendDummyInput().appendField("the invite created/deleted");
+    this.appendDummyInput().appendField('the invite created/deleted');
     this.setInputsInline(false);
-    this.setColour("#9d51b0");
-    this.setOutput(true, "invite");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    this.setColour('#9d51b0');
+    this.setOutput(true, 'invite');
+    this.setTooltip('');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_event_var"] = function (block, generator) {
+javascriptGenerator.forBlock['invite_event_var'] = function (block, generator) {
   var code = `inviteEventCreateOrDelete`;
   return [code, Order.NONE];
 };
 
-Blockly.Blocks["invite_foreach"] = {
+Blockly.Blocks['invite_foreach'] = {
   init: function () {
-    this.appendValueInput("server")
-      .setCheck("server")
-      .appendField("For each invite on server:");
-    this.appendStatementInput("code").setCheck("default");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("9d51b0");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    this.appendValueInput('server')
+      .setCheck('server')
+      .appendField('For each invite on server:');
+    this.appendStatementInput('code').setCheck('default');
+    this.setPreviousStatement(true, 'default');
+    this.setNextStatement(true, 'default');
+    this.setColour('9d51b0');
+    this.setTooltip('');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_foreach"] = function (block, generator) {
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var codeVal = generator.statementToCode(block, "code");
+javascriptGenerator.forBlock['invite_foreach'] = function (block, generator) {
+  var value_server = generator.valueToCode(block, 'server', Order.ATOMIC);
+  var codeVal = generator.statementToCode(block, 'code');
 
   var code = `${value_server}.invites.cache.forEach(inviteForEachInLoop => {
     ${codeVal}
@@ -206,17 +206,17 @@ javascriptGenerator.forBlock["invite_foreach"] = function (block, generator) {
   return code;
 };
 
-Blockly.Blocks["invite_foreach_var"] = {
+Blockly.Blocks['invite_foreach_var'] = {
   init: function () {
-    this.appendDummyInput().appendField("current invite on the loop");
-    this.setOutput(true, "invite");
-    this.setColour("9d51b0");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    this.appendDummyInput().appendField('current invite on the loop');
+    this.setOutput(true, 'invite');
+    this.setColour('9d51b0');
+    this.setTooltip('');
+    this.setHelpUrl('');
   },
 };
 
-javascriptGenerator.forBlock["invite_foreach_var"] = function (
+javascriptGenerator.forBlock['invite_foreach_var'] = function (
   block,
   generator
 ) {
@@ -224,28 +224,28 @@ javascriptGenerator.forBlock["invite_foreach_var"] = function (
   return [code, Order.NONE];
 };
 
-Blockly.Blocks["invite_channel_foreach"] = {
+Blockly.Blocks['invite_channel_foreach'] = {
   init: function () {
-    this.appendValueInput("channel")
-      .setCheck("channel")
-      .appendField("For each invite on channel:");
-    this.appendStatementInput("code").setCheck("default");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("9d51b0");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    this.appendValueInput('channel')
+      .setCheck('channel')
+      .appendField('For each invite on channel:');
+    this.appendStatementInput('code').setCheck('default');
+    this.setPreviousStatement(true, 'default');
+    this.setNextStatement(true, 'default');
+    this.setColour('9d51b0');
+    this.setTooltip('');
+    this.setHelpUrl('');
   },
 };
-javascriptGenerator.forBlock["invite_channel_foreach"] = function (
+javascriptGenerator.forBlock['invite_channel_foreach'] = function (
   block,
   generator
 ) {
-  var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-  var codeVal = generator.statementToCode(block, "code");
+  var value_channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
+  var codeVal = generator.statementToCode(block, 'code');
 
-  var code = `${value_channel}.fetchInvites(true).then(allTheInvites => {
-    allTheInvites.forEach(inviteForEachInLoop => {
+  var code = `${value_channel}.fetchInvites(true).then(async (allTheInvites) => {
+    allTheInvites.forEach(async (inviteForEachInLoop) => {
     ${codeVal}
     }
 });\n`;
@@ -254,126 +254,126 @@ javascriptGenerator.forBlock["invite_channel_foreach"] = function (
 };
 
 createRestrictions(
-  ["invite_create"],
+  ['invite_create'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["channel"],
-      message: "You must specify the channel to create the invite for.",
+      type: 'notEmpty',
+      blockTypes: ['channel'],
+      message: 'You must specify the channel to create the invite for.',
     },
     {
-      type: "notEmpty",
-      blockTypes: ["uses"],
-      message: "You must specify the amount of uses for the invite.",
-    },
-  ]
-);
-
-createRestrictions(
-  ["invite_get"],
-  [
-    {
-      type: "notEmpty",
-      blockTypes: ["invite"],
-      message: "You must specify the URL for the invite.",
+      type: 'notEmpty',
+      blockTypes: ['uses'],
+      message: 'You must specify the amount of uses for the invite.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_delete"],
+  ['invite_get'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["invite"],
-      message: "You must specify the invite to delete.",
+      type: 'notEmpty',
+      blockTypes: ['invite'],
+      message: 'You must specify the URL for the invite.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_url"],
+  ['invite_delete'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["invite"],
-      message: "You must specify the invite to get the URL from.",
+      type: 'notEmpty',
+      blockTypes: ['invite'],
+      message: 'You must specify the invite to delete.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_channel"],
+  ['invite_url'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["invite"],
-      message: "You must specify the invite to get the channel from.",
+      type: 'notEmpty',
+      blockTypes: ['invite'],
+      message: 'You must specify the invite to get the URL from.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_author"],
+  ['invite_channel'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["invite"],
-      message: "You must specify the invite to get the author from.",
+      type: 'notEmpty',
+      blockTypes: ['invite'],
+      message: 'You must specify the invite to get the channel from.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_invitecreated"],
+  ['invite_author'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["code"],
-      message: "You must specify the code to run when an invite is created.",
+      type: 'notEmpty',
+      blockTypes: ['invite'],
+      message: 'You must specify the invite to get the author from.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_invitedeleted"],
+  ['invite_invitecreated'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["code"],
-      message: "You must specify the code to run when an invite is deleted.",
+      type: 'notEmpty',
+      blockTypes: ['code'],
+      message: 'You must specify the code to run when an invite is created.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_foreach"],
+  ['invite_invitedeleted'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["server"],
-      message: "You must specify the server to iterate invites from.",
+      type: 'notEmpty',
+      blockTypes: ['code'],
+      message: 'You must specify the code to run when an invite is deleted.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_channel_foreach"],
+  ['invite_foreach'],
   [
     {
-      type: "notEmpty",
-      blockTypes: ["channel"],
-      message: "You must specify the channel to iterate invites from.",
+      type: 'notEmpty',
+      blockTypes: ['server'],
+      message: 'You must specify the server to iterate invites from.',
     },
   ]
 );
 
 createRestrictions(
-  ["invite_foreach_var"],
+  ['invite_channel_foreach'],
   [
     {
-      type: "hasParent",
-      blockTypes: ["invite_channel_foreach", "invite_foreach"],
+      type: 'notEmpty',
+      blockTypes: ['channel'],
+      message: 'You must specify the channel to iterate invites from.',
+    },
+  ]
+);
+
+createRestrictions(
+  ['invite_foreach_var'],
+  [
+    {
+      type: 'hasParent',
+      blockTypes: ['invite_channel_foreach', 'invite_foreach'],
       message:
         'This block must be under a "for each invite on server/channel" block',
     },
@@ -381,11 +381,11 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["invite_event_var"],
+  ['invite_event_var'],
   [
     {
-      type: "hasParent",
-      blockTypes: ["invite_invitedeleted", "invite_invitecreated"],
+      type: 'hasParent',
+      blockTypes: ['invite_invitedeleted', 'invite_invitecreated'],
       message:
         'This block must be under a "when an invite is created/deleted" block',
     },

@@ -480,9 +480,8 @@ javascriptGenerator.forBlock['channel_create'] = function (block, generator) {
     type: Discord.ChannelType.${type}
   })${
     then
-      ? `.then(createdChannel => {
-    ${then}
-  });`
+      ? `.then(async (createdChannel) => {
+  ${then}});`
       : ';'
   }`;
 };
