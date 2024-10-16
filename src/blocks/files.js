@@ -168,7 +168,7 @@ Blockly.Blocks['fs_sendFile'] = {
       .setCheck('String')
       .appendField('Send file from path:');
     this.appendValueInput('channel')
-      .setCheck('String')
+      .setCheck('channel')
       .appendField('to channel:');
     this.appendValueInput('content')
       .setCheck('String')
@@ -193,7 +193,7 @@ javascriptGenerator.forBlock['fs_sendFile'] = function (block, generator) {
   var rows = generator.statementToCode(block, 'rows');
 
   var code = `${channel}.send({
-  files: [${path}],
+  files: [new Discord.AttachmentBuilder(${path})],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
   components: [${rows || ''}]

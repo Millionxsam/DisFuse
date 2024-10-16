@@ -79,12 +79,12 @@ function setUpCode(workspace, blocks) {
 
     const importName = blockImports[importBlock];
 
-    if (typeof importName === 'object') {
-      if (importName['type'] === 'code') blockImportCode += importName['value'];
-    } else if (Array.isArray(importName)) {
+    if (Array.isArray(importName)) {
       importName.forEach((i) => {
         blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
       });
+    } else if (typeof importName === 'object') {
+      if (importName['type'] === 'code') blockImportCode += importName['value'];
     } else {
       blockImportCode += `const ${fixImport(
         importName
