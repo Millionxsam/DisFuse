@@ -185,8 +185,7 @@ javascriptGenerator.forBlock['main_ready'] = function (block, generator) {
   var code_statement = generator.statementToCode(block, 'event');
 
   var code = `client.on("ready", async () => {
-    ${code_statement}
-  });\n`;
+  ${code_statement}});\n`;
   return code;
 };
 

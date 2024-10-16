@@ -391,13 +391,16 @@ i.workspacesMenuBtn:hover {
 
 .projectName {
   margin-left: 1rem;
-  font-size: 30px;
+  font-size: 27px;
   cursor: default;
   background-color: var(--border-color);
   font-family: 'Poetsen One';
   border-radius: 10px;
   padding: 0.5rem;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 16rem;
 }
 
 .workspace-navbar .left {
