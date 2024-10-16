@@ -340,6 +340,7 @@ Blockly.Blocks['channel_clone'] = {
       .appendField('Clone the channel:')
       .setCheck('channel');
     this.appendValueInput('name').appendField('new name:').setCheck('String');
+    this.appendStatementInput('then').appendField('then:');
     this.setNextStatement(true, 'default');
     this.setPreviousStatement(true, 'default');
     this.setColour('D39600');
@@ -478,12 +479,11 @@ javascriptGenerator.forBlock['channel_create'] = function (block, generator) {
     name: ${name || "''"},
     parent: ${parent || 'null'},
     type: Discord.ChannelType.${type}
-  })${
-    then
+  })${then
       ? `.then(async (createdChannel) => {
   ${then}});`
       : ';'
-  }`;
+    }`;
 };
 
 Blockly.Blocks['channel_del'] = {
@@ -533,8 +533,14 @@ javascriptGenerator.forBlock['channel_del'] = function (block, generator) {
 javascriptGenerator.forBlock['channel_clone'] = function (block, generator) {
   var channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
   var name = generator.valueToCode(block, 'name', Order.NONE);
+  var then = generator.statementToCode(block, 'then');
 
-  var code = `${channel}.clone({ name: ${name || `${channel}.name`} });`;
+  var code = `${channel}.clone({ name: ${name || `${channel}.name`} })`
+
+  if (then) code += `.then(async (createdChannel) => {
+  ${then}});`;
+  else code += ';';
+
   return code;
 };
 
@@ -585,11 +591,10 @@ javascriptGenerator.forBlock['channel_getone'] = function (block, generator) {
   var value_value = generator.valueToCode(block, 'value', Order.ATOMIC);
   var value_server = generator.valueToCode(block, 'server', Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${
-    dropdown_type === 'id'
-      ? `.get(${value_value})`
-      : `.find(c => c.name == ${value_value})`
-  }`;
+  var code = `${value_server}.channels.cache${dropdown_type === 'id'
+    ? `.get(${value_value})`
+    : `.find(c => c.name == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 
@@ -799,8 +804,8 @@ createRestrictions(
   [
     {
       type: 'hasParent',
-      blockTypes: ['channel_create'],
-      message: "This block must be under a 'create a channel' block",
+      blockTypes: ['channel_create', 'channel_clone'],
+      message: "This block must be under a 'create channel' or 'clone channel' block",
     },
   ]
 );

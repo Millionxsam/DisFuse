@@ -119,7 +119,7 @@ export default function Workspace() {
                       Blockly.Themes.Zelos.blockStyles['variable_blocks'],
                     variable_dynamic_blocks:
                       Blockly.Themes.Zelos.blockStyles[
-                        'variable_dynamic_blocks'
+                      'variable_dynamic_blocks'
                       ],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles['hat_blocks'],
                   },
@@ -169,11 +169,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                          spacing: gridSpacing,
-                          length: 5,
-                          colour: '#8888886e',
-                          snap: snapToGrid,
-                        }
+                        spacing: gridSpacing,
+                        length: 5,
+                        colour: '#8888886e',
+                        snap: snapToGrid,
+                      }
                       : false,
                     zoom: {
                       controls: true,
@@ -190,8 +190,8 @@ export default function Workspace() {
                 Blockly.svgResize(workspace);
 
                 document.querySelector(
-                  '.workspace-navbar .projectName'
-                ).innerHTML = project.name;
+                  '.workspace-navbar .projectName p'
+                ).innerText = project.name;
 
                 [
                   'Discord',
@@ -393,7 +393,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem('dfWorkspaceBackpack'))
                   );
-                } catch (_) {}
+                } catch (_) { }
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -560,11 +560,11 @@ export default function Workspace() {
                           <p>You are missing the following blocks:</p>
                           <br />
                           ${missingBlocks
-                            .map(
-                              (block) =>
-                                `<p class="missingBlock">${block.message}</p>`
-                            )
-                            .join('<br />')}
+                              .map(
+                                (block) =>
+                                  `<p class="missingBlock">${block.message}</p>`
+                              )
+                              .join('<br />')}
                           `,
                           ...modalColors,
                         });
@@ -651,7 +651,7 @@ export default function Workspace() {
                 if (
                   window.location.hostname === 'localhost' &&
                   String(e) ===
-                    'Error: Shortcut named "startSearch" already exists.'
+                  'Error: Shortcut named "startSearch" already exists.'
                 ) {
                   return window.location.reload();
                 } else throw new Error(e);

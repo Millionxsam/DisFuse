@@ -43,7 +43,7 @@ export default function WorkspaceBar({ workspace }) {
             <img src="/media/disfuse-clear.png" alt="" />
           </Link>
         </div>
-        <div className="projectName"></div>
+        <div className="projectName"><p></p></div>
         <div id="workspace-tabs-open-container">
           <i
             onClick={() => openWorkspaceTabs(workspace)}

@@ -1795,6 +1795,10 @@ export const toolbox = {
             },
             {
               kind: 'block',
+              type: 'channel_createdChannel',
+            },
+            {
+              kind: 'block',
               type: 'channel_del',
             },
             {
@@ -3266,7 +3270,7 @@ export const toolbox = {
         },
       ],
     },
-    {
+    /*{
       kind: 'category',
       name: 'Games',
       colour: '#4fb88a',
@@ -3328,6 +3332,6 @@ export const toolbox = {
           type: 'game_trivia',
         },
       ],
-    },
+    },*/
   ],
 };
