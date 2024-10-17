@@ -231,8 +231,8 @@ javascript.javascriptGenerator.forBlock['misc_addrow'] = function (
 ) {
   var statements_components = generator.statementToCode(block, 'components');
 
-  var code = `new Discord.ActionRowBuilder().addComponents([
-  ${statements_components}]),\n`;
+  var code = `new Discord.ActionRowBuilder().addComponents(
+  ${statements_components}),\n`;
   return code;
 };
 

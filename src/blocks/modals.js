@@ -28,8 +28,8 @@ javascriptGenerator.forBlock['modal_create'] = function (block, generator) {
   const code = `new Discord.ModalBuilder()
   .setTitle(${title})
   .setCustomId(${customId})
-  .addComponents([
-  ${components}])`;
+  .addComponents(
+  ${components})`;
   return [code, Order.NEW];
 };
 
@@ -71,11 +71,13 @@ javascriptGenerator.forBlock['modal_add_text_input'] = function (
   var customId = generator.valueToCode(block, 'customId', Order.ATOMIC);
   var style = block.getFieldValue('style');
 
-  const code = `new Discord.TextInputBuilder()
+  const code = `new Discord.ActionRowBuilder().addComponents(
+  new Discord.TextInputBuilder()
     .setCustomId(${customId})
     .setLabel(${label})
     .setRequired(${required})
-    .setStyle('${style}'),\n`;
+    .setStyle('${style}')
+),\n`;
   return code;
 };
 
@@ -154,7 +156,9 @@ Blockly.Blocks['modal_show'] = {
 javascriptGenerator.forBlock['modal_show'] = function (block, generator) {
   var modal = generator.valueToCode(block, 'modal', Order.ATOMIC);
 
-  var code = `interaction.showModal(${modal});\n`;
+  var code = `interaction.showModal(
+  ${modal}
+);\n`;
   return code;
 };
 
