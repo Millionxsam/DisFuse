@@ -732,10 +732,11 @@ javascriptGenerator.forBlock['channel_send_rows'] = function (
   var rows = generator.statementToCode(block, 'rows');
 
   var code = `${value_channel}.send({
-        content: ${value_content || "''"},
-        embeds: [${value_embeds.replaceAll("'", '')}],
-        components: [${rows}]
-    });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", '')}],
+  components: [
+  ${rows}]
+});`;
   return code;
 };
 

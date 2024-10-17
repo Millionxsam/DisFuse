@@ -229,11 +229,11 @@ javascript.javascriptGenerator.forBlock['buttons_add'] = function (
   );
   var url = generator.valueToCode(block, 'url', javascript.Order.ATOMIC);
 
-  var code = `new Discord.ButtonBuilder().setLabel(${
-    label || "''"
-  }).setStyle(${style}).setDisabled(${disabled || 'false'})${
-    url ? `.setURL(${url})` : ''
-  }${id ? `.setCustomId(${id})` : ''}${emoji ? `.setEmoji(${emoji})` : ''},`;
+  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"
+    })
+  .setStyle(${style})
+  .setDisabled(${disabled || 'false'})${url ? `\n.setURL(${url})` : ''
+    }${id ? `\n.setCustomId(${id})` : ''}${emoji ? `\n.setEmoji(${emoji})` : ''},\n`;
   return code;
 };
 

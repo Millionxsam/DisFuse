@@ -212,7 +212,8 @@ javascript.javascriptGenerator.forBlock['menus_update'] = function (
   var code = `interaction.update({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '')}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });`;
   return code;
 };
@@ -312,12 +313,11 @@ javascript.javascriptGenerator.forBlock['menus_add'] = function (
   );
   var statements_options = generator.statementToCode(block, 'options');
 
-  var code = `new Discord.StringSelectMenuBuilder().setPlaceholder(${
-    value_placeholder || "''"
-  }).setCustomId(${value_id || "''"}).setDisabled(${
-    value_disabled || 'false'
-  }).addOptions([${statements_options}]),`;
-  return code;
+  return `new Discord.StringSelectMenuBuilder()
+  .setPlaceholder(${value_placeholder || "''"})
+  .setCustomId(${value_id || "''"})
+  .setDisabled(${value_disabled || 'false'})
+  .addOptions([\n${statements_options}]),\n`;
 };
 
 javascript.javascriptGenerator.forBlock['menus_addoption'] = function (
@@ -340,7 +340,7 @@ javascript.javascriptGenerator.forBlock['menus_addoption'] = function (
     emoji: ${emoji || "''"},
     default: ${selected || 'false'},
     value: ${value || "''"}
-  },`;
+  },\n`;
   return code;
 };
 

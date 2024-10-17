@@ -26,9 +26,10 @@ javascriptGenerator.forBlock['modal_create'] = function (block, generator) {
   var components = generator.statementToCode(block, 'components');
 
   const code = `new Discord.ModalBuilder()
-    .setTitle(${title})
-    .setCustomId(${customId})
-    .addComponents(${components})`;
+  .setTitle(${title})
+  .setCustomId(${customId})
+  .addComponents([
+  ${components}])`;
   return [code, Order.NEW];
 };
 
@@ -153,7 +154,7 @@ Blockly.Blocks['modal_show'] = {
 javascriptGenerator.forBlock['modal_show'] = function (block, generator) {
   var modal = generator.valueToCode(block, 'modal', Order.ATOMIC);
 
-  const code = `interaction.showModal(${modal});\n`;
+  var code = `interaction.showModal(${modal});\n`;
   return code;
 };
 
@@ -175,7 +176,7 @@ javascriptGenerator.forBlock['modal_handle_interaction'] = function (
 
   const code = `client.on('interactionCreate', async (interaction) => {
   if (!interaction.isModalSubmit()) return;
-${statements_code}});\n`;
+  ${statements_code}});\n`;
   return code;
 };
 
@@ -308,13 +309,13 @@ createRestrictions(
     {
       type: 'surroundParent',
       blockTypes: [
-        'msg_reply_rows',
-        'misc_reply_rows',
-        'channel_send_rows',
-        'member_dm_rows',
-        'misc_int_reply_rows',
+        'modal_handle_interaction',
+        'slash_received',
+        'contextMenu_received',
+        'buttons_event',
+        'menus_event'
       ],
-      message: "This block must be under a block that has a 'rows' section",
+      message: "This block must be under an interaction block",
     },
   ]
 );

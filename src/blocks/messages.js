@@ -168,7 +168,8 @@ javascriptGenerator.forBlock['msg_reply_rows'] = function (block, generator) {
   var code = `message.reply({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
   return code;
 };
@@ -278,7 +279,8 @@ javascriptGenerator.forBlock['msg_edit'] = function (block, generator) {
   return `${message}.edit({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
 };
 
@@ -311,7 +313,8 @@ javascriptGenerator.forBlock['captcha_reply'] = function (block, generator) {
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
 };
 

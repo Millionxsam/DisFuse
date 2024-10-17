@@ -196,7 +196,8 @@ javascriptGenerator.forBlock['fs_sendFile'] = function (block, generator) {
   files: [new Discord.AttachmentBuilder(${path})],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
 
   return code;

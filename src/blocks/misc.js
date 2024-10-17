@@ -69,7 +69,8 @@ javascript.javascriptGenerator.forBlock['misc_int_edit'] = function (
   var code = `interaction.editReply({
     content: ${value_content || "''"},
     embeds: [${value_embeds.replaceAll("'", '')}],
-    components: [${rows}]
+    components: [
+    ${rows}]
   });`;
   return code;
 };
@@ -100,10 +101,11 @@ javascript.javascriptGenerator.forBlock['misc_int_reply_rows'] = function (
   var rows = generator.statementToCode(block, 'rows');
 
   var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", '')}],
-    ephemeral: ${value_ephemeral || 'false'},
-    components: [${rows}]
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", '')}],
+  ephemeral: ${value_ephemeral || 'false'},
+  components: [
+  ${rows}]
   });`;
   return code;
 };
@@ -144,9 +146,8 @@ javascript.javascriptGenerator.forBlock['misc_int_deferReply'] = function (
 ) {
   var ephemeral = generator.valueToCode(block, 'ephemeral', Order.ATOMIC);
 
-  var code = `await interaction.deferReply({ ephemeral: ${
-    ephemeral || 'false'
-  } });`;
+  var code = `await interaction.deferReply({ ephemeral: ${ephemeral || 'false'
+    } });`;
   return code;
 };
 
@@ -230,7 +231,8 @@ javascript.javascriptGenerator.forBlock['misc_addrow'] = function (
 ) {
   var statements_components = generator.statementToCode(block, 'components');
 
-  var code = `new Discord.ActionRowBuilder().addComponents([${statements_components}]),`;
+  var code = `new Discord.ActionRowBuilder().addComponents([
+  ${statements_components}]),\n`;
   return code;
 };
 

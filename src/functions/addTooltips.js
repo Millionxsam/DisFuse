@@ -5,7 +5,8 @@ export default function addTooltips(workspace) {
 
     if (
       block?.getTooltip()?.includes("Input 1") ||
-      block?.getTooltip()?.includes("Output(s):")
+      block?.getTooltip()?.includes("Output(s):") ||
+      block?.getTooltip()?.includes("ID:")
     )
       return;
 
@@ -33,5 +34,12 @@ export default function addTooltips(workspace) {
         outputs.map((output) => output ?? "Any").join(", ")
       );
     }
+
+    let beforeOutputTooltip =
+      block?.getTooltip().split("ID:")[0] || "";
+    block.setTooltip(
+      beforeOutputTooltip +
+      "\nID: " + block.type
+    );
   });
 }

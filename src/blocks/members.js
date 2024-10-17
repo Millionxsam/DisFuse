@@ -583,7 +583,8 @@ javascriptGenerator.forBlock["member_dm"] = function (
   var code = `${user}.send({
     content: ${content || "''"},
     embeds: [${embeds.replaceAll("'", "")}],
-    components: [${rows}]
+    components: [
+    ${rows}]
   });`;
   return code;
 };

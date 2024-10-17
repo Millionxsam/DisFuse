@@ -44,7 +44,8 @@ javascriptGenerator.forBlock['captcha_send'] = function (block, generator) {
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
 
   return code;
@@ -79,7 +80,8 @@ javascriptGenerator.forBlock['captcha_reply'] = function (block, generator) {
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
-  components: [${rows || ''}]
+  components: [
+  ${rows}]
 });\n`;
 };
 
