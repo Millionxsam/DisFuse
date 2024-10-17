@@ -60,8 +60,9 @@ export default function MyProjects() {
         inputPlaceholder: "DisFuse Project",
         showCancelButton: true,
         inputValidator: (i) => {
-          if (i.length >= 3) return false;
-          else return "The name must be at least 3 characters";
+          if (i.length < 3) return "The name must be at least 2 characters";
+          if (i.length > 12) return "The name must be below 12 characters";
+          return false;
         },
         animation: true,
         currentProgressStep: 0,
@@ -78,6 +79,10 @@ export default function MyProjects() {
         input: "text",
         showCancelButton: true,
         inputPlaceholder: "Some description",
+        inputValidator: (i) => {
+          if (i.length > 500) return "The description must be below 500 characters";
+          else return false;
+        },
       }).then((result) => {
         if (result.isConfirmed) dsc = result.value;
         else cancelled = true;
@@ -367,8 +372,8 @@ export default function MyProjects() {
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-            ? "No projects"
-            : ""}
+              ? "No projects"
+              : ""}
         </div>
       </div>
     </>

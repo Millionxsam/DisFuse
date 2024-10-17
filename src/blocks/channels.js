@@ -563,6 +563,13 @@ javascriptGenerator.forBlock['channel_id'] = function (block, generator) {
   return [code, Order.NONE];
 };
 
+javascriptGenerator.forBlock['channel_name'] = function (block, generator) {
+  var channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
+
+  var code = `${channel}.name`;
+  return [code, Order.NONE];
+};
+
 javascriptGenerator.forBlock['channel_manageable'] = function (
   block,
   generator

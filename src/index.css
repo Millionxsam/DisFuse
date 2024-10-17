@@ -395,18 +395,15 @@ i.workspacesMenuBtn:hover {
   background-color: var(--border-color);
   border-radius: 10px;
   padding: 0.5rem;
-  max-width: 200px !important;
-  min-width: min-content;
   overflow: hidden;
+  min-width: fit-content;
 }
 
 .projectName p {
-  max-width: 100%;
   font-family: 'Poetsen One';
-  font-size: 27px;
+  font-size: 22px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: fit-content;
 }
 
 .workspace-navbar .left {
