@@ -311,7 +311,7 @@ createRestrictions(
       message: 'You must specify the modal to show',
     },
     {
-      type: 'surroundParent',
+      type: 'hasHat',
       blockTypes: [
         'modal_handle_interaction',
         'slash_received',
@@ -319,7 +319,7 @@ createRestrictions(
         'buttons_event',
         'menus_event'
       ],
-      message: "This block must be under an interaction block",
+      message: "This block must be under an interaction event",
     },
   ]
 );

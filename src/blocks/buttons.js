@@ -248,7 +248,7 @@ createRestrictions(
   ],
   [
     {
-      type: 'hasParent',
+      type: 'hasHat',
       blockTypes: ['buttons_event'],
       message: 'This block must be in a "When a button is clicked" event',
     },
