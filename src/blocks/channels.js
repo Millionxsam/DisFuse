@@ -535,11 +535,8 @@ javascriptGenerator.forBlock['channel_clone'] = function (block, generator) {
   var name = generator.valueToCode(block, 'name', Order.NONE);
   var then = generator.statementToCode(block, 'then');
 
-  var code = `${channel}.clone({ name: ${name || `${channel}.name`} })`
-
-  if (then) code += `.then(async (createdChannel) => {
-  ${then}});`;
-  else code += ';';
+  var code = `${channel}.clone({ name: ${name || `${channel}.name`} }).then(async (createdChannel) => {
+    ${then}});\n`
 
   return code;
 };
