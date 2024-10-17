@@ -474,6 +474,7 @@ export default function Workspace() {
                         slashCommand: 'Slash Commands',
                         pingCommand: 'Ping Command',
                         economyCommand: 'Economy Commands',
+                        ticketCommands: 'Ticket Commands',
                       },
                       ...modalColors,
                     }).then((result) => {
