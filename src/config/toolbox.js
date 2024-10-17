@@ -23,31 +23,31 @@ export const toolbox = {
           type: 'controls_if',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_compare',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_operation',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_negate',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_boolean',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_null',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_ternary',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_nullishOperator',
         },
         {
@@ -55,15 +55,15 @@ export const toolbox = {
           text: '--------------------------------',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_switch',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_case',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'logic_default',
         },
         {
@@ -78,7 +78,7 @@ export const toolbox = {
       categorystyle: 'loop_category',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'controls_repeat_ext',
           inputs: {
             TIMES: {
@@ -92,11 +92,11 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'controls_whileUntil',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'controls_for',
           inputs: {
             FROM: {
@@ -126,11 +126,11 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'controls_forEach',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'controls_flow_statements',
         },
       ],
@@ -141,23 +141,23 @@ export const toolbox = {
       colour: '#59c059',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'text',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_multiline',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_join',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_newline',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_append',
           inputs: {
             TEXT: {
@@ -171,7 +171,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_length',
           inputs: {
             VALUE: {
@@ -185,7 +185,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_isEmpty',
           inputs: {
             VALUE: {
@@ -199,7 +199,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_startOrEndWith',
           inputs: {
             text: {
@@ -221,7 +221,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_indexOf',
           inputs: {
             VALUE: {
@@ -240,7 +240,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_charAt',
           inputs: {
             VALUE: {
@@ -251,7 +251,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_getSubstring',
           inputs: {
             STRING: {
@@ -262,7 +262,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_changeCase',
           inputs: {
             TEXT: {
@@ -276,7 +276,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_trim',
           inputs: {
             TEXT: {
@@ -290,7 +290,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_count',
           inputs: {
             SUB: {
@@ -306,7 +306,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_repeat',
           inputs: {
             text: {
@@ -328,7 +328,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_replace',
           inputs: {
             FROM: {
@@ -349,7 +349,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'text_reverse',
           inputs: {
             TEXT: {
@@ -391,7 +391,7 @@ export const toolbox = {
       colour: '#cfa23a',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'math_number',
           fields: {
             NUM: 123,
@@ -402,7 +402,7 @@ export const toolbox = {
           type: 'math_toNumber',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_arithmetic',
           inputs: {
             A: {
@@ -424,7 +424,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_single',
           inputs: {
             NUM: {
@@ -438,7 +438,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_trig',
           inputs: {
             NUM: {
@@ -452,11 +452,11 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_constant',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_number_property',
           inputs: {
             NUMBER_TO_CHECK: {
@@ -470,7 +470,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_round',
           fields: {
             OP: 'ROUND',
@@ -487,14 +487,14 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_on_list',
           fields: {
             OP: 'SUM',
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_modulo',
           inputs: {
             DIVIDEND: {
@@ -516,7 +516,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_constrain',
           inputs: {
             VALUE: {
@@ -546,7 +546,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_random_int',
           inputs: {
             FROM: {
@@ -568,11 +568,11 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_random_float',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'math_atan2',
           inputs: {
             X: {
@@ -601,11 +601,11 @@ export const toolbox = {
       categorystyle: 'list_category',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_create_with',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_repeat',
           inputs: {
             NUM: {
@@ -619,15 +619,15 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_length',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_isEmpty',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_indexOf',
           inputs: {
             VALUE: {
@@ -638,7 +638,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_getIndex',
           inputs: {
             VALUE: {
@@ -649,7 +649,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_setIndex',
           inputs: {
             LIST: {
@@ -660,7 +660,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_getSublist',
           inputs: {
             LIST: {
@@ -671,7 +671,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_split',
           inputs: {
             DELIM: {
@@ -685,15 +685,15 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_sort',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'lists_reverse',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'list_merge',
           inputs: {
             list: {
@@ -704,7 +704,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'list_filter',
           inputs: {
             list: {
@@ -742,11 +742,11 @@ export const toolbox = {
           text: 'Create an object ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_new',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_addkey',
         },
         {
@@ -754,7 +754,7 @@ export const toolbox = {
           text: 'Object actions ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_setkey',
           inputs: {
             key: {
@@ -768,7 +768,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_deletekey',
           inputs: {
             key: {
@@ -782,11 +782,11 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_stringify',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'object_parse',
           inputs: {
             string: {
@@ -851,25 +851,53 @@ export const toolbox = {
       colour: '#db4b9c',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'time_date_now',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'time_date',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'time_between',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'time_createdate',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'time_timestampFromDate',
         },
+        {
+          kind: block,
+          type: 'time_convert',
+          inputs: {
+            NUMBER: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 10,
+                },
+              },
+            },
+          }
+        },
+        {
+          kind: block,
+          type: 'time_operation',
+          inputs: {
+            NUMBER: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 10,
+                },
+              },
+            },
+          }
+        }
       ],
     },
     {
@@ -878,15 +906,15 @@ export const toolbox = {
       colour: '#ad794c',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'colour_picker',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'colour_random',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'colour_rgb',
           inputs: {
             RED: {
@@ -916,7 +944,7 @@ export const toolbox = {
           },
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'colour_blend',
           inputs: {
             COLOUR1: {
@@ -975,11 +1003,11 @@ export const toolbox = {
               text: 'Except you can only use them on the same block/event they were defined on',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'localVars_set',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'localVars_change',
               inputs: {
                 value: {
@@ -993,7 +1021,7 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'localVars_get',
             },
           ],
@@ -1016,7 +1044,7 @@ export const toolbox = {
           text: 'Run raw javascript ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_raw',
         },
         {
@@ -1024,7 +1052,7 @@ export const toolbox = {
           type: 'javascript_raw_float',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_raw_value',
         },
         {
@@ -1032,7 +1060,7 @@ export const toolbox = {
           text: 'Wait before running code ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_wait',
         },
         {
@@ -1040,7 +1068,7 @@ export const toolbox = {
           text: 'Log to the console ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_consolelog',
         },
         {
@@ -1056,11 +1084,11 @@ export const toolbox = {
           text: 'Try catch ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_trycatch',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'javascript_trycatch_error',
         },
       ],
@@ -1078,7 +1106,7 @@ export const toolbox = {
           text: 'Required ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_token',
         },
         {
@@ -1086,7 +1114,7 @@ export const toolbox = {
           text: 'The bot itself, represented as a Discord user ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_bot',
         },
         {
@@ -1094,15 +1122,15 @@ export const toolbox = {
           text: 'Properties of the bot ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_ping',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_numberof',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_readyAt',
         },
         {
@@ -1110,7 +1138,7 @@ export const toolbox = {
           text: 'Events ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_ready',
         },
         {
@@ -1118,11 +1146,11 @@ export const toolbox = {
           text: 'Actions ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_presence',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_destroy',
         },
         {
@@ -1130,7 +1158,7 @@ export const toolbox = {
           text: 'Advanced ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'main_env',
         },
       ],
@@ -1145,7 +1173,7 @@ export const toolbox = {
           text: 'Create the embed first ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_create',
         },
         {
@@ -1153,43 +1181,43 @@ export const toolbox = {
           text: "Put all of these blocks INSIDE of the 'create embed' block above ↓",
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_settitle',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setdsc',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setcolor',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_seturl',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setauthor',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setfooter',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setimage',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_setthumb',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_addfield',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'embed_settimestamp',
         },
       ],
@@ -1217,7 +1245,7 @@ export const toolbox = {
               text: 'Events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_received',
             },
             {
@@ -1225,11 +1253,11 @@ export const toolbox = {
               text: 'Actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_reply_rows',
             },
             {
@@ -1237,7 +1265,7 @@ export const toolbox = {
               type: 'misc_messageSent'
             },
             //{
-            //  kind: 'block',
+            //  kind: block,
             //  type: 'msg_delete',
             //},
             {
@@ -1263,7 +1291,7 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_react',
               inputs: {
                 message: {
@@ -1290,23 +1318,23 @@ export const toolbox = {
               type: 'msg_msg',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_content',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_user',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_channel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'msg_server',
             },
             {
@@ -1314,7 +1342,7 @@ export const toolbox = {
               text: 'Information about a message ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'message_property',
             },
           ],
@@ -1361,35 +1389,35 @@ export const toolbox = {
               text: 'Information about a thread ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_name',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_createdAt',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_lastMessage',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_author',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_authorMember',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_memberCount',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'threads_parentChannel',
             },
             {
@@ -1498,7 +1526,7 @@ export const toolbox = {
               text: 'Get a server ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_getone',
             },
             {
@@ -1506,11 +1534,11 @@ export const toolbox = {
               text: 'Get all servers ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_getall',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_guild',
             },
             {
@@ -1518,55 +1546,55 @@ export const toolbox = {
               text: 'Information about a server ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_name',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_membercount',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_banner',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_icon',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_ownerid',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_dsc',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_afkchannel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_creationdate',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_vanityurl',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_systemchannel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_ruleschannel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_verified',
             },
             {
@@ -1574,11 +1602,11 @@ export const toolbox = {
               text: 'Actions on a server ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_disableinvites',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'server_leave',
             },
           ],
@@ -1601,11 +1629,11 @@ export const toolbox = {
               text: 'Create a webhook ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'webhooks_create',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'webhooks_createdWebhook',
             },
             {
@@ -1617,7 +1645,7 @@ export const toolbox = {
               text: 'WARNING: This should be kept private!',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'webhooks_token',
             },
             {
@@ -1625,7 +1653,7 @@ export const toolbox = {
               text: 'Actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'webhooks_send',
             },
             {
@@ -1668,7 +1696,7 @@ export const toolbox = {
               text: 'Get a channel ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_getone',
             },
             {
@@ -1676,11 +1704,11 @@ export const toolbox = {
               text: 'Get all channels ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_foreach',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_channel',
             },
             {
@@ -1688,11 +1716,11 @@ export const toolbox = {
               text: 'Create a channel ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_create',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_createdChannel',
             },
             {
@@ -1700,43 +1728,43 @@ export const toolbox = {
               text: 'Information about a channel ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_getslowmode',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_getnsfw',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_gettopic',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_gettype',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_deletable',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_manageable',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_name',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_url',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_created',
             },
             {
@@ -1748,11 +1776,11 @@ export const toolbox = {
               text: '------------------------------------',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_send',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_send_rows',
             },
             {
@@ -1764,11 +1792,11 @@ export const toolbox = {
               text: '------------------------------------',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setParent',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setPosition',
               inputs: {
                 position: {
@@ -1782,43 +1810,43 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setnsfw',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setslowmode',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_settopic',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_starttyping',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_bulkdelete',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setautoarchive',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_clone',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_createdChannel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_del',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'channel_setname',
             },
             {
@@ -1972,7 +2000,7 @@ export const toolbox = {
               text: 'Get an emoji ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getemojiwith',
             },
             {
@@ -1980,11 +2008,11 @@ export const toolbox = {
               text: 'Get all emojis ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getallinserver',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getallinserver_value',
             },
             {
@@ -1992,27 +2020,27 @@ export const toolbox = {
               text: 'Information about an emoji ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getname',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getid',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_getimageurl',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_isanimated',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_created',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_author',
             },
             {
@@ -2020,15 +2048,15 @@ export const toolbox = {
               text: 'Emoji actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_create',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_delete',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'emoji_setname',
             },
           ],
@@ -2071,11 +2099,11 @@ export const toolbox = {
               text: 'Get a member or user ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_getone',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_getuser',
             },
             {
@@ -2083,11 +2111,11 @@ export const toolbox = {
               text: 'Do something for every member in a server ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_foreach',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_member',
             },
             {
@@ -2095,27 +2123,27 @@ export const toolbox = {
               text: 'Information about members/users ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_status',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_userFlags',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_bannable',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_kickable',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_timedout',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_hasPermission',
               inputs: {
                 permission: {
@@ -2126,43 +2154,43 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_color',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_joined',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_nickname',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_username',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_bot',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_system',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_accent',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_created',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_user',
             },
             {
@@ -2170,31 +2198,31 @@ export const toolbox = {
               text: 'Actions on users/members ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_ban',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_timeout',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_kick',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_dm',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_dm_rows',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_setnick',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'member_removetimeout',
             },
           ],
@@ -2209,11 +2237,11 @@ export const toolbox = {
               text: 'Create/delete invites ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_create',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_delete',
             },
             {
@@ -2221,7 +2249,7 @@ export const toolbox = {
               text: 'Get an invite ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_get',
             },
             {
@@ -2229,15 +2257,15 @@ export const toolbox = {
               text: 'Information about an invite ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_url',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_channel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_author',
             },
             {
@@ -2245,15 +2273,15 @@ export const toolbox = {
               text: 'Loops ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_foreach',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_channel_foreach',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_foreach_var',
             },
             {
@@ -2261,15 +2289,15 @@ export const toolbox = {
               text: 'Events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_invitecreated',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_invitedeleted',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'invite_event_var',
             },
           ],
@@ -2295,11 +2323,11 @@ export const toolbox = {
               text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_createcontainer',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_create',
               inputs: {
                 nsfw: {
@@ -2328,15 +2356,15 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_permission',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_addoption',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_addchoice',
             },
             {
@@ -2344,11 +2372,11 @@ export const toolbox = {
               text: 'Subcommands (advanced) ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_addsubcommand',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_addsubcommandgroup',
             },
             {
@@ -2356,7 +2384,7 @@ export const toolbox = {
               text: 'Events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_received',
             },
             {
@@ -2364,7 +2392,7 @@ export const toolbox = {
               text: 'Actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply',
             },
             {
@@ -2376,19 +2404,19 @@ export const toolbox = {
               text: 'If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_deferReply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply_rows',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_addrow',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_edit',
             },
             {
@@ -2396,27 +2424,27 @@ export const toolbox = {
               text: 'Information about the command ran ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_getoption',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_name',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_user',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_channel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'slash_server',
             },
           ],
@@ -2435,7 +2463,7 @@ export const toolbox = {
               text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_createcontainer',
             },
             {
@@ -2467,7 +2495,7 @@ export const toolbox = {
               text: 'Actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply',
             },
             {
@@ -2479,15 +2507,15 @@ export const toolbox = {
               text: 'If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_deferReply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply_rows',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_edit',
             },
             {
@@ -2550,11 +2578,11 @@ export const toolbox = {
               text: 'Put this inside a block to send a row ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_addrow',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_add',
             },
             {
@@ -2562,7 +2590,7 @@ export const toolbox = {
               text: 'Button events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_event',
             },
             {
@@ -2574,23 +2602,23 @@ export const toolbox = {
               type: 'buttons_message',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_user',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_channel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_server',
             },
             {
@@ -2598,7 +2626,7 @@ export const toolbox = {
               text: 'Button actions ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply',
             },
             {
@@ -2610,15 +2638,15 @@ export const toolbox = {
               text: 'If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_deferReply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_edit',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'buttons_del',
             },
           ],
@@ -2633,15 +2661,15 @@ export const toolbox = {
               text: 'Put this inside a block to send a row ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_addrow',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_add',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_addoption',
             },
             {
@@ -2649,7 +2677,7 @@ export const toolbox = {
               text: 'Menu events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_event',
             },
             {
@@ -2657,27 +2685,27 @@ export const toolbox = {
               text: 'Info about the clicked menu ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_id',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_value',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_user',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_channel',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_server',
             },
             {
@@ -2693,23 +2721,23 @@ export const toolbox = {
               text: 'If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_deferReply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_edit',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_update',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'menus_del',
             },
           ],
@@ -2728,7 +2756,7 @@ export const toolbox = {
               text: 'Show a modal to the user ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_show',
             },
             {
@@ -2736,7 +2764,7 @@ export const toolbox = {
               text: 'Create a modal (put this in the block above) ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_create',
             },
             {
@@ -2744,11 +2772,11 @@ export const toolbox = {
               text: "Put text input(s) inside the 'create modal' block ↓",
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_add_text_input',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_add_text_input_advanced',
             },
             {
@@ -2756,7 +2784,7 @@ export const toolbox = {
               text: 'Events ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_handle_interaction',
             },
             {
@@ -2764,15 +2792,15 @@ export const toolbox = {
               text: 'Information about the submitted modal ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_get_input_value',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_get_author',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'modal_get_customId',
             },
             {
@@ -2780,7 +2808,7 @@ export const toolbox = {
               text: 'Reply to the modal after submitted ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply',
             },
             {
@@ -2792,15 +2820,15 @@ export const toolbox = {
               text: 'If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_deferReply',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_reply_rows',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'misc_int_edit',
             },
           ],
@@ -2818,15 +2846,15 @@ export const toolbox = {
           colour: 'FF4F4F',
           contents: [
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_memberAdd',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_memberAdd_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_memberAdd_server',
             },
             {
@@ -2834,15 +2862,15 @@ export const toolbox = {
               gap: '50',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_remove_guildmemberremove',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_remove_guildmemberremove_member',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_remove_guildmemberremove_server',
             },
             {
@@ -2850,19 +2878,19 @@ export const toolbox = {
               gap: '50',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_created',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_created_guild',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_deleted',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'events_guild_deleted_guild',
             },
           ],
@@ -2959,7 +2987,7 @@ export const toolbox = {
           text: 'Create a database first ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_create',
         },
         {
@@ -2967,15 +2995,15 @@ export const toolbox = {
           text: 'Get information from the database ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_get',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_has',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_all',
         },
         {
@@ -2983,27 +3011,27 @@ export const toolbox = {
           text: 'Actions in the database ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_set',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_del',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_add',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_sub',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_push',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'db_clear',
         },
       ],
@@ -3019,15 +3047,15 @@ export const toolbox = {
           colour: '#0fbd8c',
           contents: [
             {
-              kind: 'block',
+              kind: block,
               type: 'scratch_getprofile',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'scratch_getprofileinfo',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'scratch_getmessages',
             },
           ],
@@ -3073,7 +3101,7 @@ export const toolbox = {
               text: 'Send a request to a url ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_send',
             },
             {
@@ -3085,7 +3113,7 @@ export const toolbox = {
               text: 'Advanced request ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_sendAdvanced',
               inputs: {
                 config: {
@@ -3128,7 +3156,7 @@ export const toolbox = {
               },
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_configSection',
             },
             {
@@ -3140,15 +3168,15 @@ export const toolbox = {
               text: 'Information about the response ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_responseData',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_responseStatus',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'fetch_responseHeaders',
             },
             {
@@ -3156,7 +3184,7 @@ export const toolbox = {
               text: 'Get a key from the response data (from the objects category) ↓',
             },
             {
-              kind: 'block',
+              kind: block,
               type: 'object_getkey',
               inputs: {
                 key: {
@@ -3191,19 +3219,19 @@ export const toolbox = {
           text: 'These blocks will also be visible on your code!',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'comment_stack',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'comment_statement',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'comment_float',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'comment_stackImage',
         },
       ],
@@ -3218,11 +3246,11 @@ export const toolbox = {
           text: 'Get lyrics ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'music_findLyrics',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'music_findLyrics_lyrics',
         },
       ],
@@ -3241,23 +3269,23 @@ export const toolbox = {
           text: 'Read data from files ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_readFile',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_readFile_data',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_readdir',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_readdir_name',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_readdir_path',
         },
         {
@@ -3265,7 +3293,7 @@ export const toolbox = {
           text: 'Write a file ↓',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'fs_writeFile',
         },
         {
@@ -3292,59 +3320,59 @@ export const toolbox = {
       colour: '#4fb88a',
       contents: [
         {
-          kind: 'block',
+          kind: block,
           type: 'game_2048',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_connect4',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_fasttype',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_findemoji',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_flood',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_hangman',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_matchpairs',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_minesweeper',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_rps',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_slots',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_snake',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_tictactoe',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_wordle',
         },
         {
-          kind: 'block',
+          kind: block,
           type: 'game_trivia',
         },
       ],
