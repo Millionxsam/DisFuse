@@ -352,3 +352,28 @@ createRestrictions(
     },
   ]
 );
+
+Blockly.Blocks['misc_messageSent'] = {
+  init: function () {
+    this.appendDummyInput().appendField('message sent by the bot');
+    this.setOutput(true, 'message');
+    this.setColour('4192E9');
+  },
+};
+
+javascript.javascriptGenerator.forBlock['misc_messageSent'] = () => [
+  'messageSent',
+  Order.NONE,
+];
+
+createRestrictions(
+  ['misc_messageSent'],
+  [
+    {
+      type: 'hasParent',
+      blockTypes: ['msg_reply', 'msg_reply_rows', 'channel_send', 'channel_send_rows'],
+      message:
+        "This block must be be in a 'reply to message' or 'send in channel' block",
+    },
+  ]
+)

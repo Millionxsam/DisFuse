@@ -12,6 +12,7 @@ Blockly.Blocks['channel_send'] = {
     this.appendValueInput('embeds')
       .setCheck('String')
       .appendField('embed name(s):');
+    this.appendStatementInput('then').appendField('then:');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
     this.setColour('D39600');
@@ -31,6 +32,7 @@ Blockly.Blocks['channel_send_rows'] = {
       .setCheck('String')
       .appendField('embed name(s):');
     this.appendStatementInput('rows').setCheck('rows').appendField('rows:');
+    this.appendStatementInput('then').appendField('then:');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
     this.setColour('D39600');
@@ -714,11 +716,13 @@ javascriptGenerator.forBlock['channel_send'] = function (block, generator) {
   var value_channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
   var value_content = generator.valueToCode(block, 'content', Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
+  var then = generator.statementToCode(block, 'then');
 
   var code = `${value_channel}.send({
-        content: ${value_content || "''"},
-        embeds: [${value_embeds.replaceAll("'", '')}]
-    });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", '')}]
+}).then((messageSent) => {
+  ${then}});\n`;
   return code;
 };
 
@@ -730,13 +734,16 @@ javascriptGenerator.forBlock['channel_send_rows'] = function (
   var value_content = generator.valueToCode(block, 'content', Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
   var rows = generator.statementToCode(block, 'rows');
+  var then = generator.statementToCode(block, 'then');
 
   var code = `${value_channel}.send({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", '')}],
   components: [
   ${rows}]
-});`;
+}).then((messageSent) => {
+  ${then}});\n`;
+
   return code;
 };
 

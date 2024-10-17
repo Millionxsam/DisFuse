@@ -1232,6 +1232,10 @@ export const toolbox = {
               kind: 'block',
               type: 'msg_reply_rows',
             },
+            {
+              kind: block,
+              type: 'misc_messageSent'
+            },
             //{
             //  kind: 'block',
             //  type: 'msg_delete',
@@ -1740,12 +1744,24 @@ export const toolbox = {
               text: 'Channel actions ↓',
             },
             {
+              kind: 'label',
+              text: '------------------------------------',
+            },
+            {
               kind: 'block',
               type: 'channel_send',
             },
             {
               kind: 'block',
               type: 'channel_send_rows',
+            },
+            {
+              kind: block,
+              type: 'misc_messageSent'
+            },
+            {
+              kind: 'label',
+              text: '------------------------------------',
             },
             {
               kind: 'block',

@@ -43,6 +43,7 @@ Blockly.Blocks['msg_reply'] = {
     this.appendValueInput('embeds')
       .setCheck('String')
       .appendField('embed name(s):');
+    this.appendStatementInput('then').appendField('then:');
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
@@ -60,6 +61,7 @@ Blockly.Blocks['msg_reply_rows'] = {
       .setCheck('String')
       .appendField('embed name(s):');
     this.appendStatementInput('rows').setCheck('rows').appendField('rows:');
+    this.appendStatementInput('then').appendField('then:');
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
@@ -164,24 +166,28 @@ javascriptGenerator.forBlock['msg_reply_rows'] = function (block, generator) {
   var content = generator.valueToCode(block, 'content', Order.ATOMIC);
   var embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
   var rows = generator.statementToCode(block, 'rows');
+  var then = generator.statementToCode(block, 'then');
 
   var code = `message.reply({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '') || ''}],
   components: [
   ${rows}]
-});\n`;
+}).then((messageSent) => {
+  ${then}});\n`;
   return code;
 };
 
 javascriptGenerator.forBlock['msg_reply'] = function (block, generator) {
   var content = generator.valueToCode(block, 'content', Order.ATOMIC);
   var embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
+  var then = generator.statementToCode(block, 'then');
 
   var code = `message.reply({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", '')}]
-});\n`;
+}).then((messageSent) => {
+  ${then}});\n`;
   return code;
 };
 
