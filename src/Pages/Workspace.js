@@ -28,6 +28,7 @@ import autosave from '../functions/autosave';
 import addTooltips from '../functions/addTooltips';
 import { getWholeProjectWorkspace, updateCode } from '../functions/updateCode';
 import modalThemeColor from '../functions/modalThemeColor';
+
 import WorkspaceTabs from '../components/WorkspaceTabs';
 import WorkspaceBar from '../components/WorkspaceBar';
 
@@ -459,6 +460,62 @@ export default function Workspace() {
                     });
                   });
 
+                // Load from file event
+                document
+                  .querySelector('button#load')
+                  .addEventListener('click', () => {
+                    const fileInput = document.createElement("input");
+                    fileInput.type = "file";
+                    fileInput.accept = ".df";
+
+                    fileInput.addEventListener("change", (e) => {
+                      let file = e.target.files[0];
+                      if (!file) return;
+
+                      let reader = new FileReader();
+
+                      reader.onload = async (event) => {
+                        let data = event.target.result;
+
+                        let json;
+                        try {
+                          json = JSON.parse(data);
+                        } catch (_) { return };
+
+                        Swal.fire({
+                          title: 'Load Blocks from File',
+                          text: 'Do you want to replace the current blocks in the workspace?',
+                          showCancelButton: true,
+                          showDenyButton: true,
+                          cancelButtonText: 'Cancel',
+                          confirmButtonText: 'Replace',
+                          denyButtonText: 'Combine',
+                          icon: 'question',
+                          animation: true,
+                          ...modalColors,
+                        }).then((result) => {
+                          if (result.isDismissed) return;
+
+                          if (result.isConfirmed) {
+                            Blockly.serialization.workspaces.load(json, workspace);
+                          } else {
+                            json.blocks.blocks = json.blocks.blocks.concat(
+                              Blockly.serialization.workspaces.save(workspace)?.blocks
+                                ?.blocks || []
+                            );
+
+                            Blockly.serialization.workspaces.load(json, workspace);
+                          }
+                        });
+                      };
+
+                      reader.readAsText(file);
+                    });
+
+                    fileInput.click();
+                    fileInput.remove();
+                  });
+
                 // Templates button event
                 document
                   .querySelector('button#templates')
@@ -475,6 +532,7 @@ export default function Workspace() {
                         pingCommand: 'Ping Command',
                         economyCommand: 'Economy Commands',
                         ticketCommands: 'Ticket Commands',
+                        contextMenu: 'Context Menu',
                       },
                       ...modalColors,
                     }).then((result) => {

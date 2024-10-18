@@ -55,7 +55,11 @@ export default function WorkspaceBar({ workspace }) {
             <ul>
               <button id="save" style={{ height: '3rem' }}>
                 <i class="fa-solid fa-floppy-disk"></i>
-                <div>Save to File</div>
+                <div>Save File</div>
+              </button>
+              <button id="load" style={{ height: '3rem' }}>
+                <i class="fa-solid fa-upload"></i>
+                <div>Load File</div>
               </button>
               <button onClick={showCode} style={{ height: '3rem' }}>
                 <i class="fa-brands fa-square-js"></i>
