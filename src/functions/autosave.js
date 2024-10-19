@@ -31,17 +31,16 @@ export default async function autosave(workspace, projectId, currentWorkspace) {
       .catch((e) => {
         console.error(e);
         if (autosaveIndicator) {
-          autosaveIndicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error while saving</div>`;
+          autosaveIndicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
         }
       })
   ).data;
 
   if (autosaveIndicator) {
     autosaveIndicator.innerHTML = `<i class="fa-solid fa-cloud"></i><div>
-    Autosaved at ${new Date().toLocaleTimeString([], {
+    ${new Date().toLocaleTimeString([], {
       timeStyle: "short",
-    })}
-    </div>`;
+    })}</div>`;
   }
 
   return newProject;

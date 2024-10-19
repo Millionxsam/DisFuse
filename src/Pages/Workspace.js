@@ -84,7 +84,13 @@ export default function Workspace() {
               .then(async ({ data: project }) => {
                 setProject(project);
 
-                let theme = user.settings.workspace.theme || 'DFTheme';
+                if (localStorage.getItem('showTokenAlert') === 'false') {
+                  window.tokenAlertPopupAppeared = true;
+                } else {
+                  window.tokenAlertPopupAppeared = project?.private ?? false;
+                }
+
+                let theme = user.settings?.workspace.theme || 'DFTheme';
 
                 if (theme === 'DFTheme') theme = DFTheme;
                 else if (theme === 'DarkerTheme') theme = DarkerTheme;
@@ -126,20 +132,36 @@ export default function Workspace() {
                   },
                 };
 
-                let renderer = user.settings.workspace.renderer ?? 'zelos';
-                let sounds = user.settings.workspace.sounds ?? true;
-                let showGrid = user.settings.workspace.grid.enabled ?? true;
-                let snapToGrid = user.settings.workspace.grid.snap ?? false;
-                let gridSpacing = user.settings.workspace.grid.spacing ?? 35;
+                let renderer = user.settings?.workspace.renderer ?? 'zelos';
+                let sounds = user.settings?.workspace.sounds ?? true;
+                let showGrid = user.settings?.workspace.grid.enabled ?? true;
+                let snapToGrid = user.settings?.workspace.grid.snap ?? false;
+                let gridSpacing = user.settings?.workspace.grid.spacing ?? 35;
 
                 let toolboxBtIcons =
-                  user.settings.workspace.toolboxBtIcons ?? true;
+                  user.settings?.workspace.toolboxBtIcons ?? true;
 
                 if (!toolboxBtIcons) {
                   let styleEle = document.createElement('style');
                   styleEle.innerHTML = `
                     .workspace-navbar * button i:not(.fa-discord) {
                       display: none !important;
+                    }
+                  `;
+                  document.head.appendChild(styleEle);
+                }
+
+                let fastRenderMode =
+                  user.settings?.optimization.fastRenderMode ?? false;
+
+                if (fastRenderMode === true) {
+                  let styleEle = document.createElement('style');
+                  styleEle.innerHTML = `
+                    div#workspace {
+                      text-rendering: optimizeSpeed !important;
+                      image-rendering: optimizeSpeed !important;
+                      shape-rendering: optimizeSpeed !important;
+                      font-smooth: none;
                     }
                   `;
                   document.head.appendChild(styleEle);
@@ -422,9 +444,10 @@ export default function Workspace() {
                     currentWorkspace.current
                   );
 
-                  updateCode(workspace, project, currentWorkspace.current._id);
+                  updateCode(workspace, project, currentWorkspace.current._id, true);
                 });
 
+                // New tab event
                 document
                   .querySelector('.workspace-tabs .newTab')
                   .addEventListener('click', () => {
@@ -460,6 +483,14 @@ export default function Workspace() {
                     });
                   });
 
+                // Show code event
+                document
+                  .querySelector('button#showCode')
+                  .addEventListener('click', () => {
+                    updateCode(workspace, project, currentWorkspace.current._id, false);
+                    document.querySelector('.code-view').style.display = 'flex';
+                  });
+
                 // Load from file event
                 document
                   .querySelector('button#load')
@@ -480,7 +511,13 @@ export default function Workspace() {
                         let json;
                         try {
                           json = JSON.parse(data);
-                        } catch (_) { return };
+                        } catch (error) {
+                          return Swal.fire('Error', String(error), 'error');
+                        };
+
+                        if (!json.blocks || !json.blocks.blocks) {
+                          return Swal.fire('Error', "The selected file doesn't contain any blocks.", 'error');
+                        }
 
                         Swal.fire({
                           title: 'Load Blocks from File',
@@ -679,7 +716,7 @@ export default function Workspace() {
 
                 // Save file event
                 document.querySelector(
-                  '.workspace-navbar .left #save'
+                  'button#save'
                 ).onclick = async () => {
                   const data = JSON.stringify(
                     Blockly.serialization.workspaces.save(workspace)
@@ -705,6 +742,18 @@ export default function Workspace() {
                     showConfirmButton: false,
                   });
                 };
+
+                let projectNameDiv = document.querySelector('.projectName p');
+
+                projectNameDiv.addEventListener('click', () => {
+                  if (projectNameDiv.dataset.collapsed == 'false') {
+                    projectNameDiv.dataset.collapsed = 'true';
+                    projectNameDiv.innerText = '...';
+                  } else {
+                    projectNameDiv.dataset.collapsed = 'false';
+                    projectNameDiv.innerText = project.name;
+                  }
+                });
               })
               .catch((e) => {
                 if (

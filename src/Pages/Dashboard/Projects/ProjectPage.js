@@ -201,7 +201,7 @@ export default function ProjectPage() {
       .querySelector('textarea.commentInput')
       .value.trim();
 
-    if (content == '') return;
+    if (content === '' || !content) return;
 
     document.querySelector('textarea.commentInput').value = '';
 
@@ -238,9 +238,8 @@ export default function ProjectPage() {
           </Link>
           <div
             onClick={toggleLike}
-            className={`darkBtn like${
-              project.likes?.includes(user.id) ? ' active' : ''
-            }${newLike ? ' newLike' : ''}`}
+            className={`darkBtn like${project.likes?.includes(user.id) ? ' active' : ''
+              }${newLike ? ' newLike' : ''}`}
           >
             <i class="fa-solid fa-heart"></i>
             <div>{project.likes?.length} Likes</div>
@@ -251,9 +250,8 @@ export default function ProjectPage() {
           </div>
           <div
             onClick={() => toggleFav(projectId)}
-            className={`darkBtn fav${
-              user.favorites?.includes(projectId) ? ' active' : ''
-            }${newFav ? ' newFav' : ''}`}
+            className={`darkBtn fav${user.favorites?.includes(projectId) ? ' active' : ''
+              }${newFav ? ' newFav' : ''}`}
           >
             <i class="fa-solid fa-star"></i>
             <div>

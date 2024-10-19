@@ -8,7 +8,7 @@ import '../hljs.css';
 
 hljs.registerLanguage('javascript', javascript);
 
-export function updateCode(workspace, project, workspaceId) {
+export function updateCode(workspace, project, workspaceId, onlyWarning = false) {
   const workspaceCodeEle = document.querySelector('.workspace.code code');
   const projectCodeEle = document.querySelector('.project.code code');
 
@@ -18,24 +18,67 @@ export function updateCode(workspace, project, workspaceId) {
     workspaceId
   );
 
-  const currentBlocks = workspace.getAllBlocks(true);
-  const projectBlocks = tempWorkspace.getAllBlocks(true);
+  var workspaceCode, projectCode;
 
-  let workspaceCode = setUpCode(workspace, currentBlocks);
-  let projectCode = setUpCode(tempWorkspace, projectBlocks);
+  if (!onlyWarning) {
+    let projectBlocks = tempWorkspace.getAllBlocks(true);
+    projectCode = setUpCode(tempWorkspace, projectBlocks);
+  }
 
-  workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
-    language: 'javascript',
-  }).value;
+  let currentBlocks = workspace.getAllBlocks(true);
+  workspaceCode = setUpCode(workspace, currentBlocks, onlyWarning);
 
-  projectCodeEle.innerHTML = hljs.highlight(projectCode, {
-    language: 'javascript',
-  }).value;
+  if (!onlyWarning) {
+    workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
+      language: 'javascript',
+    }).value;
+
+    projectCodeEle.innerHTML = hljs.highlight(projectCode, {
+      language: 'javascript',
+    }).value;
+  }
 
   tempWorkspace.dispose();
 }
 
-function setUpCode(workspace, blocks) {
+function setUpCode(workspace, blocks, onlyWarning = false) {
+  function tokenAlertCheck() {
+    let mainToken = blocks.find((b) => b.type === 'main_token');
+
+    if (!mainToken || window.tokenAlertPopupAppeared === true) return;
+
+    let tokenCode = javascriptGenerator.blockToCode(mainToken);
+
+    if (/[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
+      tokenCode
+    )) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Security Warning',
+        text: "It appears there's a Discord token in your project. To prevent potential security risks when your project is public, ensure to remove and securely manage any Discord tokens using secrets or other ways.",
+        confirmButtonText: 'Continue',
+        denyButtonText: "Don't show again",
+        animation: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: true,
+        showDenyButton: true,
+      }).then(alert => {
+        window.tokenAlertPopupAppeared = true;
+
+        if (alert.isDenied) {
+          localStorage.setItem('showTokenAlert', 'false');
+        }
+      });
+    }
+  }
+
+  if (onlyWarning) {
+    tokenAlertCheck();
+    return;
+  }
+
   const blockImports = {
     fs_: ['fs', 'path'],
     music_: 'lyrics-finder',
@@ -92,20 +135,7 @@ function setUpCode(workspace, blocks) {
     }
   });
 
-  if (hasToken(code) && !workspace.tokenAlertPopupAppeared) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Warning',
-      text: "It appears there's a Discord token in your project. To prevent potential security risks when your project is public, ensure to remove and securely manage any Discord tokens using secrets or other ways.\nThe token has been removed from your project.",
-      confirmButtonText: 'Continue',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showConfirmButton: true,
-    });
-
-    workspace.tokenAlertPopupAppeared = true;
-  }
+  tokenAlertCheck();
 
   let mobilePresenceBot = false;
   let mainTokenBlock = blocks.find((b) => b.type === 'main_token');
@@ -118,10 +148,9 @@ function setUpCode(workspace, blocks) {
     const client = new Discord.Client({
       intents: 3276799
     });
-    ${
-      mobilePresenceBot
-        ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
-        : ''
+    ${mobilePresenceBot
+      ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
+      : ''
     }
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -130,9 +159,8 @@ function setUpCode(workspace, blocks) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode !== '' ? '\n' + blockImportCode : ''} ${
-    topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''
-  }
+    ${blockImportCode !== '' ? '\n' + blockImportCode : ''} ${topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''
+    }
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
@@ -142,12 +170,6 @@ function setUpCode(workspace, blocks) {
     ${code}`;
 
   return beautify(js, { format: 'js' });
-}
-
-function hasToken(input) {
-  return /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
-    input
-  );
 }
 
 export function getWholeProjectWorkspace(

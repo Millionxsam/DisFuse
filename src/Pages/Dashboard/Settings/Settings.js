@@ -29,6 +29,14 @@ export default function Settings() {
               Notifications
             </li>
           </Link>
+          <Link to="/settings/optimization">
+            <li
+              onClick={() => setCategory("optimization")}
+              className={category === "optimization" ? "active" : ""}
+            >
+              Optimization
+            </li>
+          </Link>
         </ul>
         <Outlet />
       </div>

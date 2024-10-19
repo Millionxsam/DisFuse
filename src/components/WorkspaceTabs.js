@@ -52,14 +52,20 @@ function closeTabs(workspace) {
   document.querySelector('.workspace-tabs').style.height = '0vh';
   document.querySelector('#workspace').style.height = '92.5vh';
 
-  document.querySelector(
-    '.workspace-navbar .workspace-tabs-open'
-  ).style.opacity = '1';
-
   document.getElementById('workspace-tabs-open-container').style.width =
-    '2.5rem';
+    '1.8rem';
 
   Blockly.svgResize(workspace);
+
+  setTimeout(() => {
+    document.querySelector(
+      '.workspace-navbar .workspace-tabs-open'
+    ).style.opacity = '1';
+
+    Blockly.svgResize(workspace);
+
+    setTimeout(() => { Blockly.svgResize(workspace); }, 310);
+  }, 310);
 }
 
 function editWorkspaceName(e, workspace, project, modalColors) {
