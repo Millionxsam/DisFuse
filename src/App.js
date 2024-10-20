@@ -1,7 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import Workspace from "./Pages/Workspace";
 import Home from "./Pages/Home";
-import WorkspaceBar from "./components/WorkspaceBar";
 import Navbar from "./components/Navbar";
 import Auth from "./Auth";
 import Sidebar from "./Pages/Dashboard/Sidebar";
@@ -9,13 +8,14 @@ import Explore from "./Pages/Dashboard/Explore";
 import Favorites from "./Pages/Dashboard/Favorites";
 import Staff from "./Pages/Staff";
 import Settings from "./Pages/Dashboard/Settings/Settings";
-import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
 import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
 import ViewProject from "./Pages/Dashboard/Projects/ViewProject";
-import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
 import Inbox from "./Pages/Dashboard/Inbox";
+import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
+import NotificationSettings from './Pages/Dashboard/Settings/NotificationSettings';
+import OptimizationSettings from './Pages/Dashboard/Settings/OptimizationSettings';
 
 import "./index.css";
 
@@ -68,6 +68,7 @@ export default function App() {
             <Route index element={<Navigate to={"/settings/workspace"} />} />
             <Route path="workspace" element={<WorkspaceSettings />} />
             <Route path="notifications" element={<NotificationSettings />} />
+            <Route path="optimization" element={<OptimizationSettings />} />
           </Route>
         </Route>
 

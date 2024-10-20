@@ -183,7 +183,7 @@ javascriptGenerator.forBlock['emoji_create'] = function (block, generator) {
   var url = generator.valueToCode(block, 'url', Order.ATOMIC) || '';
   var server = generator.valueToCode(block, 'server', Order.ATOMIC) || '()';
 
-  const code = `${server}.emojis.create(${url}, ${name}).then(emoji => console.log(\`Created new emoji with name \${emoji.name}\`)).catch(console.error);\n`;
+  const code = `${server}.emojis.create(${url}, ${name});\n`;
   return code;
 };
 

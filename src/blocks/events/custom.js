@@ -18,7 +18,7 @@ javascriptGenerator.forBlock['events_custom'] = function (block, generator) {
   var field_event = block.getFieldValue('event');
   var field_parameters = block.getFieldValue('parameters');
 
-  var code = `client.on("${field_event}", (${field_parameters}) => {
+  var code = `client.on("${field_event}", async (${field_parameters}) => {
 ${code_code}});`;
 
   return code;

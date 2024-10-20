@@ -28,6 +28,7 @@ import autosave from '../functions/autosave';
 import addTooltips from '../functions/addTooltips';
 import { getWholeProjectWorkspace, updateCode } from '../functions/updateCode';
 import modalThemeColor from '../functions/modalThemeColor';
+
 import WorkspaceTabs from '../components/WorkspaceTabs';
 import WorkspaceBar from '../components/WorkspaceBar';
 
@@ -83,7 +84,13 @@ export default function Workspace() {
               .then(async ({ data: project }) => {
                 setProject(project);
 
-                let theme = user.settings.workspace.theme || 'DFTheme';
+                if (localStorage.getItem('showTokenAlert') === 'false') {
+                  window.tokenAlertPopupAppeared = true;
+                } else {
+                  window.tokenAlertPopupAppeared = project?.private ?? false;
+                }
+
+                let theme = user.settings?.workspace.theme || 'DFTheme';
 
                 if (theme === 'DFTheme') theme = DFTheme;
                 else if (theme === 'DarkerTheme') theme = DarkerTheme;
@@ -119,26 +126,42 @@ export default function Workspace() {
                       Blockly.Themes.Zelos.blockStyles['variable_blocks'],
                     variable_dynamic_blocks:
                       Blockly.Themes.Zelos.blockStyles[
-                        'variable_dynamic_blocks'
+                      'variable_dynamic_blocks'
                       ],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles['hat_blocks'],
                   },
                 };
 
-                let renderer = user.settings.workspace.renderer ?? 'zelos';
-                let sounds = user.settings.workspace.sounds ?? true;
-                let showGrid = user.settings.workspace.grid.enabled ?? true;
-                let snapToGrid = user.settings.workspace.grid.snap ?? false;
-                let gridSpacing = user.settings.workspace.grid.spacing ?? 35;
+                let renderer = user.settings?.workspace.renderer ?? 'zelos';
+                let sounds = user.settings?.workspace.sounds ?? true;
+                let showGrid = user.settings?.workspace.grid.enabled ?? true;
+                let snapToGrid = user.settings?.workspace.grid.snap ?? false;
+                let gridSpacing = user.settings?.workspace.grid.spacing ?? 35;
 
                 let toolboxBtIcons =
-                  user.settings.workspace.toolboxBtIcons ?? true;
+                  user.settings?.workspace.toolboxBtIcons ?? true;
 
                 if (!toolboxBtIcons) {
                   let styleEle = document.createElement('style');
                   styleEle.innerHTML = `
                     .workspace-navbar * button i:not(.fa-discord) {
                       display: none !important;
+                    }
+                  `;
+                  document.head.appendChild(styleEle);
+                }
+
+                let fastRenderMode =
+                  user.settings?.optimization.fastRenderMode ?? false;
+
+                if (fastRenderMode === true) {
+                  let styleEle = document.createElement('style');
+                  styleEle.innerHTML = `
+                    div#workspace {
+                      text-rendering: optimizeSpeed !important;
+                      image-rendering: optimizeSpeed !important;
+                      shape-rendering: optimizeSpeed !important;
+                      font-smooth: none;
                     }
                   `;
                   document.head.appendChild(styleEle);
@@ -169,11 +192,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                          spacing: gridSpacing,
-                          length: 5,
-                          colour: '#8888886e',
-                          snap: snapToGrid,
-                        }
+                        spacing: gridSpacing,
+                        length: 5,
+                        colour: '#8888886e',
+                        snap: snapToGrid,
+                      }
                       : false,
                     zoom: {
                       controls: true,
@@ -190,8 +213,8 @@ export default function Workspace() {
                 Blockly.svgResize(workspace);
 
                 document.querySelector(
-                  '.workspace-navbar .projectName'
-                ).innerHTML = project.name;
+                  '.workspace-navbar .projectName p'
+                ).innerText = project.name;
 
                 [
                   'Discord',
@@ -243,6 +266,7 @@ export default function Workspace() {
                   'newWebhook',
                   'captcha',
                   'Captcha',
+                  'permsChannel',
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
@@ -392,7 +416,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem('dfWorkspaceBackpack'))
                   );
-                } catch (_) {}
+                } catch (_) { }
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -420,9 +444,10 @@ export default function Workspace() {
                     currentWorkspace.current
                   );
 
-                  updateCode(workspace, project, currentWorkspace.current._id);
+                  updateCode(workspace, project, currentWorkspace.current._id, true);
                 });
 
+                // New tab event
                 document
                   .querySelector('.workspace-tabs .newTab')
                   .addEventListener('click', () => {
@@ -458,6 +483,76 @@ export default function Workspace() {
                     });
                   });
 
+                // Show code event
+                document
+                  .querySelector('button#showCode')
+                  .addEventListener('click', () => {
+                    updateCode(workspace, project, currentWorkspace.current._id, false);
+                    document.querySelector('.code-view').style.display = 'flex';
+                  });
+
+                // Load from file event
+                document
+                  .querySelector('button#load')
+                  .addEventListener('click', () => {
+                    const fileInput = document.createElement("input");
+                    fileInput.type = "file";
+                    fileInput.accept = ".df";
+
+                    fileInput.addEventListener("change", (e) => {
+                      let file = e.target.files[0];
+                      if (!file) return;
+
+                      let reader = new FileReader();
+
+                      reader.onload = async (event) => {
+                        let data = event.target.result;
+
+                        let json;
+                        try {
+                          json = JSON.parse(data);
+                        } catch (error) {
+                          return Swal.fire('Error', String(error), 'error');
+                        };
+
+                        if (!json.blocks || !json.blocks.blocks) {
+                          return Swal.fire('Error', "The selected file doesn't contain any blocks.", 'error');
+                        }
+
+                        Swal.fire({
+                          title: 'Load Blocks from File',
+                          text: 'Do you want to replace the current blocks in the workspace?',
+                          showCancelButton: true,
+                          showDenyButton: true,
+                          cancelButtonText: 'Cancel',
+                          confirmButtonText: 'Replace',
+                          denyButtonText: 'Combine',
+                          icon: 'question',
+                          animation: true,
+                          ...modalColors,
+                        }).then((result) => {
+                          if (result.isDismissed) return;
+
+                          if (result.isConfirmed) {
+                            Blockly.serialization.workspaces.load(json, workspace);
+                          } else {
+                            json.blocks.blocks = json.blocks.blocks.concat(
+                              Blockly.serialization.workspaces.save(workspace)?.blocks
+                                ?.blocks || []
+                            );
+
+                            Blockly.serialization.workspaces.load(json, workspace);
+                          }
+                        });
+                      };
+
+                      reader.readAsText(file);
+                    });
+
+                    fileInput.click();
+                    fileInput.remove();
+                  });
+
                 // Templates button event
                 document
                   .querySelector('button#templates')
@@ -473,6 +568,8 @@ export default function Workspace() {
                         slashCommand: 'Slash Commands',
                         pingCommand: 'Ping Command',
                         economyCommand: 'Economy Commands',
+                        ticketCommands: 'Ticket Commands',
+                        contextMenu: 'Context Menu',
                       },
                       ...modalColors,
                     }).then((result) => {
@@ -559,11 +656,11 @@ export default function Workspace() {
                           <p>You are missing the following blocks:</p>
                           <br />
                           ${missingBlocks
-                            .map(
-                              (block) =>
-                                `<p class="missingBlock">${block.message}</p>`
-                            )
-                            .join('<br />')}
+                              .map(
+                                (block) =>
+                                  `<p class="missingBlock">${block.message}</p>`
+                              )
+                              .join('<br />')}
                           `,
                           ...modalColors,
                         });
@@ -619,7 +716,7 @@ export default function Workspace() {
 
                 // Save file event
                 document.querySelector(
-                  '.workspace-navbar .left #save'
+                  'button#save'
                 ).onclick = async () => {
                   const data = JSON.stringify(
                     Blockly.serialization.workspaces.save(workspace)
@@ -645,12 +742,24 @@ export default function Workspace() {
                     showConfirmButton: false,
                   });
                 };
+
+                let projectNameDiv = document.querySelector('.projectName p');
+
+                projectNameDiv.addEventListener('click', () => {
+                  if (projectNameDiv.dataset.collapsed == 'false') {
+                    projectNameDiv.dataset.collapsed = 'true';
+                    projectNameDiv.innerText = '...';
+                  } else {
+                    projectNameDiv.dataset.collapsed = 'false';
+                    projectNameDiv.innerText = project.name;
+                  }
+                });
               })
               .catch((e) => {
                 if (
                   window.location.hostname === 'localhost' &&
                   String(e) ===
-                    'Error: Shortcut named "startSearch" already exists.'
+                  'Error: Shortcut named "startSearch" already exists.'
                 ) {
                   return window.location.reload();
                 } else throw new Error(e);

@@ -75,10 +75,11 @@ javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `interaction.editReply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    components: [${rows}]
-  });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  components: [
+  ${rows}]
+});`;
   return code;
 };
 
@@ -102,11 +103,12 @@ javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"},
-    components: [${rows}]
-  });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  ephemeral: ${value_ephemeral || "false"},
+  components: [
+  ${rows}]
+});\n`;
   return code;
 };
 
@@ -379,9 +381,8 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       description: ${dsc},
       nsfw: ${nsfw || false},
       dmPermission: ${dm || true},
-      defaultMemberPermissions: ${
-        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-      },
+      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+    },
       options: [${options}]
     },`;
 

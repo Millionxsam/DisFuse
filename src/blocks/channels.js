@@ -12,6 +12,7 @@ Blockly.Blocks["channel_send"] = {
     this.appendValueInput("embeds")
       .setCheck("String")
       .appendField("embed name(s):");
+    this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("D39600");
@@ -31,6 +32,7 @@ Blockly.Blocks["channel_send_rows"] = {
       .setCheck("String")
       .appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
+    this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("D39600");
@@ -365,6 +367,7 @@ Blockly.Blocks["channel_clone"] = {
       .appendField("Clone the channel:")
       .setCheck("channel");
     this.appendValueInput("name").appendField("new name:").setCheck("String");
+    this.appendStatementInput("then").appendField("then:");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
     this.setColour("D39600");
@@ -505,9 +508,8 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
     type: Discord.ChannelType.${type}
   })${
     then
-      ? `.then(createdChannel => {
-    ${then}
-  });`
+      ? `.then(async (createdChannel) => {
+  ${then}});`
       : ";"
   }`;
 };
@@ -559,8 +561,13 @@ javascriptGenerator.forBlock["channel_del"] = function (block, generator) {
 javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var name = generator.valueToCode(block, "name", Order.NONE);
+  var then = generator.statementToCode(block, "then");
 
-  var code = `${channel}.clone({ name: ${name || `${channel}.name`} });`;
+  var code = `${channel}.clone({ name: ${
+    name || `${channel}.name`
+  } }).then(async (createdChannel) => {
+    ${then}});\n`;
+
   return code;
 };
 
@@ -583,6 +590,13 @@ javascriptGenerator.forBlock["channel_id"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
   var code = `${channel}.id`;
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["channel_name"] = function (block, generator) {
+  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+
+  var code = `${channel}.name`;
   return [code, Order.NONE];
 };
 
@@ -710,6 +724,15 @@ javascriptGenerator.forBlock["channel_channel"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
+javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
+  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var codeVal = generator.statementToCode(block, "code");
+
+  var code = `${value_server}.channels.cache.forEach(channel => {
+    ${codeVal}});\n`;
+  return code;
+};
+
 javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
   block,
   generator
@@ -748,11 +771,13 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
   var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var then = generator.statementToCode(block, "then");
 
   var code = `${value_channel}.send({
-        content: ${value_content || "''"},
-        embeds: [${value_embeds.replaceAll("'", "")}]
-    });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}]
+}).then((messageSent) => {
+  ${then}});\n`;
   return code;
 };
 
@@ -764,12 +789,16 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
+  var then = generator.statementToCode(block, "then");
 
   var code = `${value_channel}.send({
-        content: ${value_content || "''"},
-        embeds: [${value_embeds.replaceAll("'", "")}],
-        components: [${rows}]
-    });`;
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  components: [
+  ${rows}]
+}).then((messageSent) => {
+  ${then}});\n`;
+
   return code;
 };
 
@@ -842,8 +871,9 @@ createRestrictions(
   [
     {
       type: "hasParent",
-      blockTypes: ["channel_create"],
-      message: "This block must be under a 'create a channel' block",
+      blockTypes: ["channel_create", "channel_clone"],
+      message:
+        "This block must be under a 'create channel' or 'clone channel' block",
     },
   ]
 );
@@ -905,14 +935,14 @@ javascriptGenerator.forBlock["channel_set_permission"] = function (
   block,
   generator
 ) {
-  const permission = generator.valueToCode(block, "permission", Order.ATOMIC);
+  const permission = generator.valueToCode(block, "permission", Order.NONE);
   const action = block.getFieldValue("action");
   const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   const role = generator.valueToCode(block, "role", Order.ATOMIC);
 
-  const allow = action === "allow" ? "true" : "null";
+  const allow = action === "allow" ? "true" : "false";
 
-  if (role == "everyone") {
+  if (role === "(everyone)") {
     return `let permsChannel = ${channel};
 permsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone, { ${permission}: ${allow} });\n`;
   } else {

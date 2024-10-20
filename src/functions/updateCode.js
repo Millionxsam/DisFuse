@@ -1,16 +1,16 @@
-import * as Blockly from "blockly";
-import beautify from "beautify";
-import { javascriptGenerator } from "blockly/javascript";
-import Swal from "sweetalert2";
-import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
-import "../hljs.css";
+import * as Blockly from 'blockly';
+import beautify from 'beautify';
+import { javascriptGenerator } from 'blockly/javascript';
+import Swal from 'sweetalert2';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import '../hljs.css';
 
-hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage('javascript', javascript);
 
-export function updateCode(workspace, project, workspaceId) {
-  const workspaceCodeEle = document.querySelector(".workspace.code code");
-  const projectCodeEle = document.querySelector(".project.code code");
+export function updateCode(workspace, project, workspaceId, onlyWarning = false) {
+  const workspaceCodeEle = document.querySelector('.workspace.code code');
+  const projectCodeEle = document.querySelector('.project.code code');
 
   const tempWorkspace = getWholeProjectWorkspace(
     project,
@@ -18,40 +18,83 @@ export function updateCode(workspace, project, workspaceId) {
     workspaceId
   );
 
-  const currentBlocks = workspace.getAllBlocks(true);
-  const projectBlocks = tempWorkspace.getAllBlocks(true);
+  var workspaceCode, projectCode;
 
-  let workspaceCode = setUpCode(workspace, currentBlocks);
-  let projectCode = setUpCode(tempWorkspace, projectBlocks);
+  if (!onlyWarning) {
+    let projectBlocks = tempWorkspace.getAllBlocks(true);
+    projectCode = setUpCode(tempWorkspace, projectBlocks);
+  }
 
-  workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
-    language: "javascript",
-  }).value;
+  let currentBlocks = workspace.getAllBlocks(true);
+  workspaceCode = setUpCode(workspace, currentBlocks, onlyWarning);
 
-  projectCodeEle.innerHTML = hljs.highlight(projectCode, {
-    language: "javascript",
-  }).value;
+  if (!onlyWarning) {
+    workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
+      language: 'javascript',
+    }).value;
+
+    projectCodeEle.innerHTML = hljs.highlight(projectCode, {
+      language: 'javascript',
+    }).value;
+  }
 
   tempWorkspace.dispose();
 }
 
-function setUpCode(workspace, blocks) {
+function setUpCode(workspace, blocks, onlyWarning = false) {
+  function tokenAlertCheck() {
+    let mainToken = blocks.find((b) => b.type === 'main_token');
+
+    if (!mainToken || window.tokenAlertPopupAppeared === true) return;
+
+    let tokenCode = javascriptGenerator.blockToCode(mainToken);
+
+    if (/[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
+      tokenCode
+    )) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Security Warning',
+        text: "It appears there's a Discord token in your project. To prevent potential security risks when your project is public, ensure to remove and securely manage any Discord tokens using secrets or other ways.",
+        confirmButtonText: 'Continue',
+        denyButtonText: "Don't show again",
+        animation: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: true,
+        showDenyButton: true,
+      }).then(alert => {
+        window.tokenAlertPopupAppeared = true;
+
+        if (alert.isDenied) {
+          localStorage.setItem('showTokenAlert', 'false');
+        }
+      });
+    }
+  }
+
+  if (onlyWarning) {
+    tokenAlertCheck();
+    return;
+  }
+
   const blockImports = {
-    fs_: ["fs", "path"],
-    music_: "lyrics-finder",
-    db_: "easy-json-database",
-    game_: "discord-gamecord",
-    events_: { type: "code", value: 'require("discord-logs")(client);\n' },
+    fs_: ['fs', 'path'],
+    music_: 'lyrics-finder',
+    db_: 'easy-json-database',
+    game_: 'discord-gamecord',
+    events_: { type: 'code', value: 'require("discord-logs")(client);\n' },
     captcha_: {
-      type: "code",
+      type: 'code',
       value: 'const Captcha = require("@haileybot/captcha-generator")',
     },
-    fetch_: "axios",
+    fetch_: 'axios',
   };
 
-  let blockImportCode = "";
+  let blockImportCode = '';
 
-  const topBlocks = ["db_create"];
+  const topBlocks = ['db_create'];
 
   let code = javascriptGenerator.workspaceToCode(workspace);
 
@@ -60,31 +103,31 @@ function setUpCode(workspace, blocks) {
     if (!existingBlocks?.length) return;
 
     existingBlocks.forEach((block) => {
-      code = code.replace(javascriptGenerator.blockToCode(block), "");
+      code = code.replace(javascriptGenerator.blockToCode(block), '');
     });
   });
 
   let topBlocksCode = blocks
     .filter((b) => topBlocks.includes(b.type))
     .map((b) => javascriptGenerator.blockToCode(b))
-    .join("\n");
+    .join('\n');
 
   Object.keys(blockImports).forEach((importBlock) => {
     let c = blocks.find((b) => b.type.startsWith(importBlock));
     if (!c) return;
 
-    function fixImport(module = "") {
-      return module.replaceAll("-", "");
+    function fixImport(module = '') {
+      return module.replaceAll('-', '');
     }
 
     const importName = blockImports[importBlock];
 
-    if (typeof importName === "object") {
-      if (importName["type"] === "code") blockImportCode += importName["value"];
-    } else if (Array.isArray(importName)) {
+    if (Array.isArray(importName)) {
       importName.forEach((i) => {
         blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
       });
+    } else if (typeof importName === 'object') {
+      if (importName['type'] === 'code') blockImportCode += importName['value'];
     } else {
       blockImportCode += `const ${fixImport(
         importName
@@ -92,24 +135,23 @@ function setUpCode(workspace, blocks) {
     }
   });
 
-  if (hasToken(code) && !workspace.tokenAlertPopupAppeared) {
-    Swal.fire({
-      icon: "warning",
-      title: "Warning",
-      text: "It appears there's a Discord token in your project. To prevent potential security risks when your project is public, ensure to remove and securely manage any Discord tokens using secrets or other ways.\nThe token has been removed from your project.",
-      confirmButtonText: "Continue",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showConfirmButton: true,
-    });
+  tokenAlertCheck();
 
-    workspace.tokenAlertPopupAppeared = true;
+  let mobilePresenceBot = false;
+  let mainTokenBlock = blocks.find((b) => b.type === 'main_token');
+  if (mainTokenBlock) {
+    mobilePresenceBot = mainTokenBlock.getField('mobile').getValue() === 'TRUE';
   }
 
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
-    const client = new Discord.Client({ intents: 3276799 });
+    const client = new Discord.Client({
+      intents: 3276799
+    });
+    ${mobilePresenceBot
+      ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
+      : ''
+    }
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -117,24 +159,17 @@ function setUpCode(workspace, blocks) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${
-    topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
-  }
+    ${blockImportCode !== '' ? '\n' + blockImportCode : ''} ${topBlocksCode !== '' ? '\n' + topBlocksCode + '\n' : ''
+    }
     client.setMaxListeners(0);
         
-    client.on("ready", () => {
+    client.on("ready", async () => {
       console.log(client.user.tag + " is logged in!");
     });
         
     ${code}`;
 
-  return beautify(js, { format: "js" });
-}
-
-function hasToken(input) {
-  return /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
-    input
-  );
+  return beautify(js, { format: 'js' });
 }
 
 export function getWholeProjectWorkspace(
@@ -142,7 +177,7 @@ export function getWholeProjectWorkspace(
   currentWorkspace,
   workspaceId
 ) {
-  const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
+  const tempWorkspace = Blockly.inject(document.querySelector('.invisibleWs'));
 
   const tempData = Blockly.serialization.workspaces.save(currentWorkspace);
 

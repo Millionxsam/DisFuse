@@ -111,3 +111,102 @@ javascriptGenerator.forBlock['time_timestampFromDate'] = function (
     Order.NONE,
   ];
 };
+
+Blockly.Blocks['time_convert'] = {
+  init: function () {
+    this.appendValueInput('NUMBER')
+      .setCheck('Number')
+      .appendField('convert')
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldDropdown([
+        ['milliseconds', 'milliseconds'],
+        ['seconds', 'seconds'],
+        ['minutes', 'minutes'],
+        ['hours', 'hours'],
+        ['days', 'days'],
+        ['months', 'months'],
+        ['years', 'years'],
+      ]), 'FROM')
+      .appendField('to')
+      .appendField(new Blockly.FieldDropdown([
+        ['milliseconds', 'milliseconds'],
+        ['seconds', 'seconds'],
+        ['minutes', 'minutes'],
+        ['hours', 'hours'],
+        ['days', 'days'],
+        ['months', 'months'],
+        ['years', 'years'],
+      ]), 'TO');
+    this.setOutput(true, 'Number');
+    this.setColour('#db4b9c');
+    this.setTooltip('Converts a number from one time unit to another.');
+  },
+};
+
+javascriptGenerator.forBlock['time_convert'] = function (block, generator) {
+  var number = generator.valueToCode(block, 'NUMBER', Order.ATOMIC);
+  var fromUnit = block.getFieldValue('FROM');
+  var toUnit = block.getFieldValue('TO');
+
+  var timeRates = {
+    milliseconds: 1,
+    seconds: 1000,
+    minutes: 60000,
+    hours: 3600000,
+    days: 86400000,
+    months: 2628000000,
+    years: 31536000000,
+  };
+
+  var code = `Math.round(${number} * ${timeRates[fromUnit] / timeRates[toUnit]})`;
+  return [code, Order.NONE];
+};
+
+Blockly.Blocks['time_operation'] = {
+  init: function () {
+    this.appendValueInput('NUMBER')
+      .setCheck('Number')
+      .appendField(new Blockly.FieldDropdown([
+        ['add', 'ADD'],
+        ['subtract', 'SUBTRACT']
+      ]), 'OPERATION');
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldDropdown([
+        ['milliseconds', 'milliseconds'],
+        ['seconds', 'seconds'],
+        ['minutes', 'minutes'],
+        ['hours', 'hours'],
+        ['days', 'days'],
+        ['months', 'months'],
+        ['years', 'years'],
+      ]), 'UNIT')
+      .appendField('to/from date');
+    this.appendValueInput('DATE')
+      .setCheck('date')
+    this.setOutput(true, 'date');
+    this.setColour('#db4b9c');
+    this.setTooltip('Adds or subtracts a specific time amount to/from the date.');
+  },
+};
+
+javascriptGenerator.forBlock['time_operation'] = function (block, generator) {
+  var date = generator.valueToCode(block, 'DATE', Order.ATOMIC);
+  var number = generator.valueToCode(block, 'NUMBER', Order.ATOMIC);
+  var operation = block.getFieldValue('OPERATION');
+  var unit = block.getFieldValue('UNIT');
+
+  var timeRates = {
+    milliseconds: 1,
+    seconds: 1000,
+    minutes: 60000,
+    hours: 3600000,
+    days: 86400000,
+    months: 2628000000,
+    years: 31536000000,
+  };
+
+  var sign = operation === 'ADD' ? '+' : '-';
+  var code = `new Date(${date}.getTime() ${sign} (${number} * ${timeRates[unit]}))`;
+
+  return [code, Order.NONE];
+};

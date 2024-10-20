@@ -233,6 +233,7 @@ Blockly.Blocks['game_rps'] = {
         ]),
         'slash'
       );
+    this.appendValueInput('opponent').setCheck('user').appendField('opponent:');
     this.appendDummyInput().appendField('Configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
@@ -314,6 +315,7 @@ Blockly.Blocks['game_tictactoe'] = {
         ]),
         'slash'
       );
+    this.appendValueInput('opponent').setCheck('user').appendField('opponent:');
     this.appendDummyInput().appendField('Configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('overtitle')
