@@ -360,6 +360,10 @@ export const toolbox = {
           },
         },
         {
+          kind: "block",
+          type: "text_contains",
+        },
+        {
           kind: "label",
           text: "Advanced | RegExp Blocks ↓",
         },
