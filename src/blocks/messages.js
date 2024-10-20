@@ -11,14 +11,14 @@ Blockly.Blocks["msg_getone"] = {
       .setCheck("channel")
       .appendField("on the channel");
     this.setInputsInline(false);
-    this.setOutput(true, 'message')
+    this.setOutput(true, "message");
     this.setColour("#336EFF");
   },
 };
 
 javascriptGenerator.forBlock["msg_getone"] = function (block, generator) {
-  var id = block.getFieldValue('id');
-  var channel = block.getFieldValue('channel');
+  var id = generator.valueToCode(block, "id", Order.NONE);
+  var channel = generator.valueToCode(block, "channel", Order.NONE);
 
   var code = `await ${channel}.messages.fetch(${id})`;
 
@@ -214,10 +214,7 @@ javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["msg_delete"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["msg_delete"] = function (block, generator) {
   var code = "message.delete()";
   return code;
 };
@@ -233,58 +230,63 @@ Blockly.Blocks["msg_delete"] = {
   },
 };
 
-Blockly.Blocks['message_property'] = {
+Blockly.Blocks["message_property"] = {
   init: function () {
-    this.appendValueInput('message')
-      .setCheck('message').appendField('get')
-      .appendField(new Blockly.FieldDropdown([
-        ['content', 'content'],
-        ['ID', 'id'],
-        ['author as member', 'member'],
-        ['author as user', 'author'],
-        ['channel', 'channel'],
-        ['server', 'guild'],
-        ['creation date', 'createdAt'],
-        ['URL', 'url'],
-      ]), 'property').appendField('of message');
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("get")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["content", "content"],
+          ["ID", "id"],
+          ["author as member", "member"],
+          ["author as user", "author"],
+          ["channel", "channel"],
+          ["server", "guild"],
+          ["creation date", "createdAt"],
+          ["URL", "url"],
+        ]),
+        "property"
+      )
+      .appendField("of message");
     this.setColour("336EFF");
     this.setOutput(true, null);
     this.setOnChange(function () {
-      let type = this.getFieldValue('property');
+      let type = this.getFieldValue("property");
 
       switch (type) {
-        case 'content':
-          this.setOutput(true, 'String');
+        case "content":
+          this.setOutput(true, "String");
           break;
-        case 'id':
-          this.setOutput(true, 'String');
+        case "id":
+          this.setOutput(true, "String");
           break;
-        case 'member':
-          this.setOutput(true, 'member');
+        case "member":
+          this.setOutput(true, "member");
           break;
-        case 'author':
-          this.setOutput(true, 'user');
+        case "author":
+          this.setOutput(true, "user");
           break;
-        case 'channel':
-          this.setOutput(true, 'channel');
+        case "channel":
+          this.setOutput(true, "channel");
           break;
-        case 'guild':
-          this.setOutput(true, 'server');
+        case "guild":
+          this.setOutput(true, "server");
           break;
-        case 'createdAt':
-          this.setOutput(true, 'date');
+        case "createdAt":
+          this.setOutput(true, "date");
           break;
-        case 'url':
-          this.setOutput(true, 'String');
+        case "url":
+          this.setOutput(true, "String");
           break;
       }
     });
-  }
+  },
 };
 
-javascriptGenerator.forBlock['message_property'] = function (block, generator) {
-  var val_message = generator.valueToCode(block, 'message', Order.ATOMIC);
-  var field_property = block.getFieldValue('property');
+javascriptGenerator.forBlock["message_property"] = function (block, generator) {
+  var val_message = generator.valueToCode(block, "message", Order.ATOMIC);
+  var field_property = block.getFieldValue("property");
   var code = `${val_message}.${field_property}`;
   return [code, Order.NONE];
 };
@@ -297,7 +299,7 @@ createRestrictions(
     "msg_channel",
     "msg_server",
     "msg_delete",
-    "msg_msg"
+    "msg_msg",
   ],
   [
     {
@@ -330,7 +332,7 @@ createRestrictions(
     {
       type: "notEmpty",
       blockTypes: ["message"],
-      message: 'You must specify the message to get the properties from',
+      message: "You must specify the message to get the properties from",
     },
   ]
-)
+);

@@ -1,54 +1,54 @@
-import * as Blockly from 'blockly/core';
-import { Order, javascriptGenerator } from 'blockly/javascript';
-import { createRestrictions } from '../functions/restrictions';
+import * as Blockly from "blockly/core";
+import { Order, javascriptGenerator } from "blockly/javascript";
+import { createRestrictions } from "../functions/restrictions";
 
-Blockly.Blocks['webhooks_create'] = {
+Blockly.Blocks["webhooks_create"] = {
   init: function () {
-    this.appendDummyInput()
-      .appendField('Create a webhook with the name:')
-      .appendField(new Blockly.FieldTextInput('name'), 'NAME');
-    this.appendValueInput('avatar')
-      .setCheck('String')
-      .appendField('and avatar URL:');
-    this.appendValueInput('channel')
-      .setCheck('channel')
-      .appendField('in channel:');
-    this.appendStatementInput('code').setCheck('default').appendField('then');
-    this.setPreviousStatement(true, 'default');
-    this.setNextStatement(true, 'default');
-    this.setColour('#2d39a6');
+    this.appendValueInput("name")
+      .appendField("Create a webhook with the name:")
+      .setCheck("String");
+    this.appendValueInput("avatar")
+      .setCheck("String")
+      .appendField("and avatar URL:");
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("in channel:");
+    this.appendStatementInput("code").setCheck("default").appendField("then");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#2d39a6");
   },
 };
 
-Blockly.Blocks['webhooks_createdWebhook'] = {
+Blockly.Blocks["webhooks_createdWebhook"] = {
   init: function () {
-    this.appendDummyInput().appendField('created webhook');
-    this.setOutput(true, 'webhook');
-    this.setColour('#2d39a6');
+    this.appendDummyInput().appendField("created webhook");
+    this.setOutput(true, "webhook");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_createdWebhook'] = () => [
-  'newWebhook',
+javascriptGenerator.forBlock["webhooks_createdWebhook"] = () => [
+  "newWebhook",
   Order.NONE,
 ];
 
-Blockly.Blocks['webhooks_send'] = {
+Blockly.Blocks["webhooks_send"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('Send a message as webhook:');
-    this.appendValueInput('content').setCheck('String').appendField('content:');
-    this.setPreviousStatement(true, 'default');
-    this.setNextStatement(true, 'default');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("Send a message as webhook:");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_send'] = function (block, generator) {
-  var content = generator.valueToCode(block, 'content', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_send"] = function (block, generator) {
+  var content = generator.valueToCode(block, "content", Order.ATOMIC);
 
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
   var code = `${webhook}.send({
   content: ${content || "''"}
@@ -56,16 +56,16 @@ javascriptGenerator.forBlock['webhooks_send'] = function (block, generator) {
   return code;
 };
 
-javascriptGenerator.forBlock['webhooks_create'] = function (block, generator) {
-  var name = block.getFieldValue('NAME');
-  var avatar = generator.valueToCode(block, 'avatar', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_create"] = function (block, generator) {
+  var name = generator.valueToCode(block, "name", Order.NONE);
+  var avatar = generator.valueToCode(block, "avatar", Order.ATOMIC);
 
-  var channel = generator.valueToCode(block, 'channel', Order.ATOMIC);
+  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
-  var statements_code = generator.statementToCode(block, 'code');
+  var statements_code = generator.statementToCode(block, "code");
 
   var code = `${channel}.createWebhook({
-  name: "${name}",
+  name: ${name},
   avatar: ${avatar || '""'}
 }).then((newWebhook) => {
   ${statements_code}});`;
@@ -73,200 +73,200 @@ javascriptGenerator.forBlock['webhooks_create'] = function (block, generator) {
   return code;
 };
 
-Blockly.Blocks['webhooks_delete'] = {
+Blockly.Blocks["webhooks_delete"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('Delete the webhook:');
-    this.setPreviousStatement(true, 'default');
-    this.setNextStatement(true, 'default');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("Delete the webhook:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_delete'] = function (block, generator) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_delete"] = function (block, generator) {
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
   var code = `${webhook}.delete();`;
   return code;
 };
 
-Blockly.Blocks['webhooks_edit'] = {
+Blockly.Blocks["webhooks_edit"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('Edit the webhook:');
-    this.appendDummyInput()
-      .appendField('with new name:')
-      .appendField(new Blockly.FieldTextInput('name'), 'NAME');
-    this.appendValueInput('avatar')
-      .setCheck('String')
-      .appendField('and new avatar URL:');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("Edit the webhook:");
+    this.appendValueInput("name")
+      .appendField("with new name:")
+      .setCheck("String");
+    this.appendValueInput("avatar")
+      .setCheck("String")
+      .appendField("and new avatar URL:");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, 'default');
-    this.setNextStatement(true, 'default');
-    this.setColour('#2d39a6');
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_edit'] = function (block, generator) {
-  var name = block.getFieldValue('NAME');
-  var avatar = generator.valueToCode(block, 'avatar', Order.ATOMIC);
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_edit"] = function (block, generator) {
+  var name = generator.valueToCode(block, "name", Order.NONE);
+  var avatar = generator.valueToCode(block, "avatar", Order.ATOMIC);
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
   var code = `${webhook}.edit({
-  name: "${name}", ${avatar ? `\navatar: ${avatar}` : ''}
+  name: ${name}, ${avatar ? `\navatar: ${avatar}` : ""}
 });`;
   return code;
 };
 
-Blockly.Blocks['webhooks_fetch'] = {
+Blockly.Blocks["webhooks_fetch"] = {
   init: function () {
-    this.appendValueInput('id')
-      .setCheck('String')
-      .appendField('get webhook with ID:');
-    this.appendValueInput('token').setCheck('String').appendField('and token:');
-    this.setOutput(true, 'webhook');
-    this.setColour('#2d39a6');
+    this.appendValueInput("id")
+      .setCheck("String")
+      .appendField("get webhook with ID:");
+    this.appendValueInput("token").setCheck("String").appendField("and token:");
+    this.setOutput(true, "webhook");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_fetch'] = function (block, generator) {
-  var id = generator.valueToCode(block, 'id', Order.ATOMIC);
-  var token = generator.valueToCode(block, 'token', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_fetch"] = function (block, generator) {
+  var id = generator.valueToCode(block, "id", Order.ATOMIC);
+  var token = generator.valueToCode(block, "token", Order.ATOMIC);
 
   var code = `client.fetchWebhook(${id}, ${token}).then((webhook) => { return webhook })`;
 
   return [code, Order.NONE];
 };
 
-Blockly.Blocks['webhooks_token'] = {
+Blockly.Blocks["webhooks_token"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('token of webhook:');
-    this.setOutput(true, 'String');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("token of webhook:");
+    this.setOutput(true, "String");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_token'] = function (block, generator) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_token"] = function (block, generator) {
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.token`;
   return [code, Order.NONE];
 };
 
-Blockly.Blocks['webhooks_name'] = {
+Blockly.Blocks["webhooks_name"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('name of webhook:');
-    this.setOutput(true, 'String');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("name of webhook:");
+    this.setOutput(true, "String");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_name'] = function (block, generator) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_name"] = function (block, generator) {
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.name`;
   return [code, Order.NONE];
 };
 
-Blockly.Blocks['webhooks_owner'] = {
+Blockly.Blocks["webhooks_owner"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('user owner of webhook:');
-    this.setOutput(true, 'user');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("user owner of webhook:");
+    this.setOutput(true, "user");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_owner'] = function (block, generator) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_owner"] = function (block, generator) {
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.owner`;
   return [code, Order.NONE];
 };
 
-Blockly.Blocks['webhooks_id'] = {
+Blockly.Blocks["webhooks_id"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('id of webhook:');
-    this.setOutput(true, 'String');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("id of webhook:");
+    this.setOutput(true, "String");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_id'] = function (block, generator) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+javascriptGenerator.forBlock["webhooks_id"] = function (block, generator) {
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.id`;
   return [code, Order.NONE];
 };
 
-Blockly.Blocks['webhooks_createdAt'] = {
+Blockly.Blocks["webhooks_createdAt"] = {
   init: function () {
-    this.appendValueInput('webhook')
-      .setCheck('webhook')
-      .appendField('creation date of webhook:');
-    this.setOutput(true, 'date');
-    this.setColour('#2d39a6');
+    this.appendValueInput("webhook")
+      .setCheck("webhook")
+      .appendField("creation date of webhook:");
+    this.setOutput(true, "date");
+    this.setColour("#2d39a6");
   },
 };
 
-javascriptGenerator.forBlock['webhooks_createdAt'] = function (
+javascriptGenerator.forBlock["webhooks_createdAt"] = function (
   block,
   generator
 ) {
-  var webhook = generator.valueToCode(block, 'webhook', Order.ATOMIC);
+  var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.createdAt`;
   return [code, Order.NONE];
 };
 
 createRestrictions(
-  ['webhooks_fetch'],
+  ["webhooks_fetch"],
   [
     {
-      type: 'notEmpty',
-      blockTypes: ['id'],
-      message: 'You must specify the ID of the webhook ',
+      type: "notEmpty",
+      blockTypes: ["id"],
+      message: "You must specify the ID of the webhook ",
     },
     {
-      type: 'notEmpty',
-      blockTypes: ['token'],
-      message: 'You must specify the token of the webhook ',
-    },
-  ]
-);
-
-createRestrictions(
-  ['webhooks_create'],
-  [
-    {
-      type: 'notEmpty',
-      blockTypes: ['channel'],
-      message: 'You must specify the channel to create the webhook in',
+      type: "notEmpty",
+      blockTypes: ["token"],
+      message: "You must specify the token of the webhook ",
     },
   ]
 );
 
 createRestrictions(
-  ['webhooks_send'],
+  ["webhooks_create"],
   [
     {
-      type: 'notEmpty',
-      blockTypes: ['content'],
-      message: 'You must specify the content to send',
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to create the webhook in",
     },
   ]
 );
 
 createRestrictions(
-  ['webhooks_createdWebhook'],
+  ["webhooks_send"],
   [
     {
-      type: 'hasParent',
-      blockTypes: ['webhooks_create'],
+      type: "notEmpty",
+      blockTypes: ["content"],
+      message: "You must specify the content to send",
+    },
+  ]
+);
+
+createRestrictions(
+  ["webhooks_createdWebhook"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["webhooks_create"],
       message: "This block must be under the 'Create a webhook' block",
     },
   ]
@@ -274,20 +274,20 @@ createRestrictions(
 
 createRestrictions(
   [
-    'webhooks_send',
-    'webhooks_delete',
-    'webhooks_edit',
-    'webhooks_token',
-    'webhooks_name',
-    'webhooks_owner',
-    'webhooks_id',
-    'webhooks_createdAt',
+    "webhooks_send",
+    "webhooks_delete",
+    "webhooks_edit",
+    "webhooks_token",
+    "webhooks_name",
+    "webhooks_owner",
+    "webhooks_id",
+    "webhooks_createdAt",
   ],
   [
     {
-      type: 'notEmpty',
-      blockTypes: ['webhook'],
-      message: 'You must specify the webhook',
+      type: "notEmpty",
+      blockTypes: ["webhook"],
+      message: "You must specify the webhook",
     },
   ]
 );

@@ -149,6 +149,27 @@ Blockly.Blocks["member_dm_rows"] = {
   },
 };
 
+javascript.javascriptGenerator.forBlock["member_dm_rows"] = function (
+  block,
+  generator
+) {
+  var user = generator.valueToCode(block, "member", javascript.Order.ATOMIC);
+  var content = generator.valueToCode(
+    block,
+    "content",
+    javascript.Order.ATOMIC
+  );
+  var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `${user}.send({
+    content: ${content || "''"},
+    embeds: [${embeds.replaceAll("'", "")}],
+    components: [${rows}]
+  });`;
+  return code;
+};
+
 Blockly.Blocks["member_setnick"] = {
   init: function () {
     this.appendValueInput("member")
@@ -578,12 +599,10 @@ javascript.javascriptGenerator.forBlock["member_dm"] = function (
     javascript.Order.ATOMIC
   );
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
 
   var code = `${user}.send({
     content: ${content || "''"},
-    embeds: [${embeds.replaceAll("'", "")}],
-    components: [${rows}]
+    embeds: [${embeds.replaceAll("'", "")}]
   });`;
   return code;
 };
@@ -746,6 +765,7 @@ createRestrictions(
   [
     "member_bot",
     "member_dm",
+    "member_dm_rows",
     "member_kick",
     "member_timeout",
     "member_ban",

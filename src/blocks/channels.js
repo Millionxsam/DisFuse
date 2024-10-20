@@ -69,6 +69,31 @@ Blockly.Blocks["channel_foreach"] = {
   },
 };
 
+Blockly.Blocks["channel_fetchLastMessages"] = {
+  init: function () {
+    this.appendValueInput("amount").setCheck("Number").appendField("Get last");
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("messages of channel:");
+    this.appendStatementInput("code").appendField("then:").setCheck("default");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("D39600");
+    this.setInputsInline(true);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["channel_fetchedLastMessages"] = {
+  init: function () {
+    this.appendValueInput("number").appendField("message #").setCheck("Number");
+    this.setOutput(true, "message");
+    this.setColour("D39600");
+    this.setHelpUrl("");
+  },
+};
+
 Blockly.Blocks["channel_channel"] = {
   init: function () {
     this.appendDummyInput().appendField("current channel on the loop");
@@ -685,13 +710,30 @@ javascriptGenerator.forBlock["channel_channel"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var codeVal = generator.statementToCode(block, "code");
+javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
+  block,
+  generator
+) {
+  var amount = generator.valueToCode(block, "amount", Order.ATOMIC);
+  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+  var statement = generator.statementToCode(block, "code");
 
-  var code = `${value_server}.channels.cache.forEach(channel => {
-    ${codeVal}});\n`;
+  var code = `${channel}.messages.fetch({
+    limit: ${amount}
+  }).then(fetchedMessages => {
+    ${statement}
+  });`;
   return code;
+};
+
+javascriptGenerator.forBlock["channel_fetchedLastMessages"] = function (
+  block,
+  generator
+) {
+  var number = generator.valueToCode(block, "number", Order.ATOMIC);
+
+  var code = `fetchedMessages.at(${number} - 1)`;
+  return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_setnsfw"] = function (block, generator) {
@@ -807,6 +849,18 @@ createRestrictions(
 );
 
 createRestrictions(
+  ["channel_fetchedLastMessages"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["channel_fetchLastMessages"],
+      message:
+        "This block must be under a 'get last messages of channel' block",
+    },
+  ]
+);
+
+createRestrictions(
   ["channel_foreach"],
   [
     {
@@ -821,7 +875,7 @@ Blockly.Blocks["channel_set_permission"] = {
   init: function () {
     this.appendValueInput("permission")
       .setCheck("permissionChannel")
-      .appendField("Set permission:");
+      .appendField("Set");
     this.appendDummyInput()
       .appendField("to")
       .appendField(

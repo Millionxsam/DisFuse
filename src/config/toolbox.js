@@ -1776,16 +1776,67 @@ export const toolbox = {
               type: "channel_setname",
             },
             {
-              kind: block,
-              type: "channel_set_permission",
+              kind: "label",
+              text: "----------------------------------------------------",
+            },
+            {
+              kind: "label",
+              text: "Set a permission on a certain channel ↓",
             },
             {
               kind: block,
-              type: "misc_permissionChannel",
+              type: "channel_set_permission",
+              inputs: {
+                permission: {
+                  shadow: {
+                    type: "misc_permissionChannel",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_everyone",
+            },
+            {
+              kind: "label",
+              text: "----------------------------------------------------",
+            },
+            {
+              kind: "label",
+              text: "Get the latest messages of a channel ↓",
+            },
+            {
+              kind: "block",
+              type: "channel_fetchLastMessages",
+              inputs: {
+                amount: {
+                  shadow: {
+                    type: "math_number",
+                    fields: {
+                      NUM: 5,
+                    },
+                  },
+                },
+              },
+            },
+            {
+              kind: "block",
+              type: "channel_fetchedLastMessages",
+              inputs: {
+                number: {
+                  shadow: {
+                    type: "math_number",
+                    fields: {
+                      NUM: 1,
+                    },
+                  },
+                },
+              },
+            },
+            {
+              kind: "label",
+              text: "----------------------------------------------------",
             },
           ],
         },
