@@ -2238,6 +2238,14 @@ export const toolbox = {
             },
             {
               kind: block,
+              type: "member_avatarURL",
+            },
+            {
+              kind: block,
+              type: "member_bannerURL",
+            },
+            {
+              kind: block,
               type: "member_bot",
             },
             {

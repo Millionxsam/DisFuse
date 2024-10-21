@@ -142,12 +142,9 @@ javascriptGenerator.forBlock["slash_createcontainer"] = function (
 
   var code;
 
-  if (value_guild)
-    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}
-]);`;
-  else
-    code = `client.application.commands.set([${statements_code}
-]);`;
+  if (value_guild?.length > 15)
+    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}]);`;
+  else code = `client.application.commands.set([${statements_code}]);`;
 
   return code;
 };
@@ -381,8 +378,9 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       description: ${dsc},
       nsfw: ${nsfw || false},
       dmPermission: ${dm || true},
-      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-    },
+      defaultMemberPermissions: ${
+        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+      },
       options: [${options}]
     },`;
 

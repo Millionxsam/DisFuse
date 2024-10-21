@@ -358,6 +358,32 @@ Blockly.Blocks["member_username"] = {
   },
 };
 
+Blockly.Blocks["member_avatarURL"] = {
+  init: function () {
+    this.appendValueInput("user")
+      .setCheck(["user", "member"])
+      .appendField("avatar URL of user/member:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["member_bannerURL"] = {
+  init: function () {
+    this.appendValueInput("user")
+      .setCheck("user")
+      .appendField("banner URL of user:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#00A018");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
 Blockly.Blocks["member_bot"] = {
   init: function () {
     this.appendValueInput("member").setCheck("user").appendField("user");
@@ -449,6 +475,20 @@ javascriptGenerator.forBlock["member_username"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
 
   var code = `${member}.username`;
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["member_avatarURL"] = function (block, generator) {
+  var user = generator.valueToCode(block, "user", Order.ATOMIC);
+
+  var code = `${user}.displayAvatarURL()`;
+  return [code, Order.NONE];
+};
+
+javascriptGenerator.forBlock["member_bannerURL"] = function (block, generator) {
+  var user = generator.valueToCode(block, "user", Order.ATOMIC);
+
+  var code = `${user}.bannerURL()`;
   return [code, Order.NONE];
 };
 
