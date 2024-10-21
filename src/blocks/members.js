@@ -673,6 +673,17 @@ javascriptGenerator.forBlock["member_hasPermission"] = function (
 };
 
 createRestrictions(
+  ["member_avatarURL", "member_bannerURL"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["user"],
+      message: "You must specify a user or member",
+    },
+  ]
+);
+
+createRestrictions(
   ["member_member"],
   [
     {

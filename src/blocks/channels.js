@@ -137,6 +137,20 @@ Blockly.Blocks["channel_settopic"] = {
   },
 };
 
+Blockly.Blocks["channel_syncPerms"] = {
+  init: function () {
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("Sync permissions of channel:");
+    this.appendDummyInput().appendField("to its category");
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("D39600");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
 Blockly.Blocks["channel_starttyping"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -212,6 +226,18 @@ Blockly.Blocks["channel_getnsfw"] = {
     this.appendValueInput("channel").setCheck("channel").appendField("channel");
     this.appendDummyInput().appendField("is NSFW?");
     this.setOutput(true, "Boolean");
+    this.setColour("D39600");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["channel_getParent"] = {
+  init: function () {
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("category of channel:");
+    this.setOutput(true, "channel");
     this.setColour("D39600");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -655,6 +681,16 @@ javascriptGenerator.forBlock["channel_getnsfw"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
+javascriptGenerator.forBlock["channel_getParent"] = function (
+  block,
+  generator
+) {
+  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+
+  var code = `${channel}.parent`;
+  return [code, Order.NONE];
+};
+
 javascriptGenerator.forBlock["channel_getslowmode"] = function (
   block,
   generator
@@ -704,6 +740,16 @@ javascriptGenerator.forBlock["channel_settopic"] = function (block, generator) {
   var topic = generator.valueToCode(block, "topic", Order.ATOMIC);
 
   var code = `${channel}.setTopic(${topic});`;
+  return code;
+};
+
+javascriptGenerator.forBlock["channel_syncPerms"] = function (
+  block,
+  generator
+) {
+  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+
+  var code = `${channel}.lockPermissions();`;
   return code;
 };
 
@@ -949,6 +995,17 @@ permsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone, { ${pe
     return `${channel}.permissionOverwrites.edit(${role}, { ${permission}: ${allow} });\n`;
   }
 };
+
+createRestrictions(
+  ["channel_getParent", "channel_syncPerms"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel",
+    },
+  ]
+);
 
 createRestrictions(
   ["channel_set_permission"],

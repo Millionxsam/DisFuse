@@ -1741,6 +1741,10 @@ export const toolbox = {
             },
             {
               kind: block,
+              type: "channel_getParent",
+            },
+            {
+              kind: block,
               type: "channel_gettopic",
             },
             {
@@ -1798,6 +1802,10 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_setParent",
+            },
+            {
+              kind: block,
+              type: "channel_syncPerms",
             },
             {
               kind: block,
