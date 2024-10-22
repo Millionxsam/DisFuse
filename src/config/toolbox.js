@@ -362,6 +362,24 @@ export const toolbox = {
         {
           kind: "block",
           type: "text_contains",
+          inputs: {
+            text: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "abc",
+                },
+              },
+            },
+            query: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "def",
+                },
+              },
+            },
+          }
         },
         {
           kind: "label",
@@ -1333,7 +1351,7 @@ export const toolbox = {
               inputs: {
                 message: {
                   shadow: {
-                    type: "msg_msg",
+                    type: "misc_messageSent",
                   },
                 },
               },
@@ -1562,12 +1580,12 @@ export const toolbox = {
     {
       kind: "category",
       name: "Servers",
-      colour: "#521FD6",
+      colour: "#8734BE",
       contents: [
         {
           kind: "category",
           name: "Server",
-          colour: "A33DAC",
+          colour: "#A33DAC",
           contents: [
             {
               kind: "label",
@@ -1661,83 +1679,8 @@ export const toolbox = {
         },
         {
           kind: "category",
-          name: "Webhooks",
-          colour: "#2d39a6",
-          contents: [
-            {
-              kind: "label",
-              text: "Get a webhook ↓",
-            },
-            {
-              kind: block,
-              type: "webhooks_fetch",
-            },
-            {
-              kind: "label",
-              text: "Create a webhook ↓",
-            },
-            {
-              kind: block,
-              type: "webhooks_create",
-            },
-            {
-              kind: block,
-              type: "webhooks_createdWebhook",
-            },
-            {
-              kind: "label",
-              text: "Get token of a webhook ↓",
-            },
-            {
-              kind: "label",
-              text: "WARNING: This should be kept private!",
-            },
-            {
-              kind: block,
-              type: "webhooks_token",
-            },
-            {
-              kind: "label",
-              text: "Actions ↓",
-            },
-            {
-              kind: block,
-              type: "webhooks_send",
-            },
-            {
-              kind: block,
-              type: "webhooks_delete",
-            },
-            {
-              kind: block,
-              type: "webhooks_edit",
-            },
-            {
-              kind: "label",
-              text: "Information about a webhook ↓",
-            },
-            {
-              kind: block,
-              type: "webhooks_name",
-            },
-            {
-              kind: block,
-              type: "webhooks_id",
-            },
-            {
-              kind: block,
-              type: "webhooks_owner",
-            },
-            {
-              kind: block,
-              type: "webhooks_createdAt",
-            },
-          ],
-        },
-        {
-          kind: "category",
           name: "Channels",
-          colour: "D39600",
+          colour: "#AD509B",
           contents: [
             {
               kind: "label",
@@ -1981,7 +1924,7 @@ export const toolbox = {
         {
           kind: category,
           name: "Roles",
-          colour: "#32a87d",
+          colour: "#B76489",
           contents: [
             {
               kind: "label",
@@ -2107,79 +2050,8 @@ export const toolbox = {
         },
         {
           kind: "category",
-          name: "Emojis",
-          colour: "DEB144",
-          contents: [
-            {
-              kind: "label",
-              text: "Get an emoji ↓",
-            },
-            {
-              kind: block,
-              type: "emoji_getemojiwith",
-            },
-            {
-              kind: "label",
-              text: "Get all emojis ↓",
-            },
-            {
-              kind: block,
-              type: "emoji_getallinserver",
-            },
-            {
-              kind: block,
-              type: "emoji_getallinserver_value",
-            },
-            {
-              kind: "label",
-              text: "Information about an emoji ↓",
-            },
-            {
-              kind: block,
-              type: "emoji_getname",
-            },
-            {
-              kind: block,
-              type: "emoji_getid",
-            },
-            {
-              kind: block,
-              type: "emoji_getimageurl",
-            },
-            {
-              kind: block,
-              type: "emoji_isanimated",
-            },
-            {
-              kind: block,
-              type: "emoji_created",
-            },
-            {
-              kind: block,
-              type: "emoji_author",
-            },
-            {
-              kind: "label",
-              text: "Emoji actions ↓",
-            },
-            {
-              kind: block,
-              type: "emoji_create",
-            },
-            {
-              kind: block,
-              type: "emoji_delete",
-            },
-            {
-              kind: block,
-              type: "emoji_setname",
-            },
-          ],
-        },
-        {
-          kind: "category",
           name: "Members",
-          colour: "00A018",
+          colour: "#C17778",
           contents: [
             {
               kind: "label",
@@ -2353,7 +2225,7 @@ export const toolbox = {
         {
           kind: "Category",
           name: "Invites",
-          colour: "#9d51b0",
+          colour: "#CA8A67",
           contents: [
             {
               kind: "label",
@@ -2425,17 +2297,163 @@ export const toolbox = {
             },
           ],
         },
+        {
+          kind: "category",
+          name: "Webhooks",
+          colour: "#D49E55",
+          contents: [
+            {
+              kind: "label",
+              text: "Get a webhook ↓",
+            },
+            {
+              kind: block,
+              type: "webhooks_fetch",
+            },
+            {
+              kind: "label",
+              text: "Create a webhook ↓",
+            },
+            {
+              kind: block,
+              type: "webhooks_create",
+            },
+            {
+              kind: block,
+              type: "webhooks_createdWebhook",
+            },
+            {
+              kind: "label",
+              text: "Get token of a webhook ↓",
+            },
+            {
+              kind: "label",
+              text: "WARNING: This should be kept private!",
+            },
+            {
+              kind: block,
+              type: "webhooks_token",
+            },
+            {
+              kind: "label",
+              text: "Actions ↓",
+            },
+            {
+              kind: block,
+              type: "webhooks_send",
+            },
+            {
+              kind: block,
+              type: "webhooks_delete",
+            },
+            {
+              kind: block,
+              type: "webhooks_edit",
+            },
+            {
+              kind: "label",
+              text: "Information about a webhook ↓",
+            },
+            {
+              kind: block,
+              type: "webhooks_name",
+            },
+            {
+              kind: block,
+              type: "webhooks_id",
+            },
+            {
+              kind: block,
+              type: "webhooks_owner",
+            },
+            {
+              kind: block,
+              type: "webhooks_createdAt",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Emojis",
+          colour: "#DEB144",
+          contents: [
+            {
+              kind: "label",
+              text: "Get an emoji ↓",
+            },
+            {
+              kind: block,
+              type: "emoji_getemojiwith",
+            },
+            {
+              kind: "label",
+              text: "Get all emojis ↓",
+            },
+            {
+              kind: block,
+              type: "emoji_getallinserver",
+            },
+            {
+              kind: block,
+              type: "emoji_getallinserver_value",
+            },
+            {
+              kind: "label",
+              text: "Information about an emoji ↓",
+            },
+            {
+              kind: block,
+              type: "emoji_getname",
+            },
+            {
+              kind: block,
+              type: "emoji_getid",
+            },
+            {
+              kind: block,
+              type: "emoji_getimageurl",
+            },
+            {
+              kind: block,
+              type: "emoji_isanimated",
+            },
+            {
+              kind: block,
+              type: "emoji_created",
+            },
+            {
+              kind: block,
+              type: "emoji_author",
+            },
+            {
+              kind: "label",
+              text: "Emoji actions ↓",
+            },
+            {
+              kind: block,
+              type: "emoji_create",
+            },
+            {
+              kind: block,
+              type: "emoji_delete",
+            },
+            {
+              kind: block,
+              type: "emoji_setname",
+            },
+          ],
+        },
       ],
     },
     {
       kind: "category",
       name: "Interactions",
-      colour: "#d941e9",
+      colour: "#334DBF",
       contents: [
         {
           kind: "category",
           name: "Slash",
-          colour: "#00A859",
+          colour: "#3366CC",
           contents: [
             {
               kind: "label",
@@ -2573,9 +2591,274 @@ export const toolbox = {
           ],
         },
         {
+          kind: "category",
+          name: "Buttons",
+          colour: "#2677AF",
+          contents: [
+            {
+              kind: "label",
+              text: "Put this inside a block to send a row ↓",
+            },
+            {
+              kind: block,
+              type: "misc_addrow",
+            },
+            {
+              kind: block,
+              type: "buttons_add",
+            },
+            {
+              kind: "label",
+              text: "Button events ↓",
+            },
+            {
+              kind: block,
+              type: "buttons_event",
+            },
+            {
+              kind: "label",
+              text: "Info about the clicked button ↓",
+            },
+            {
+              kind: block,
+              type: "buttons_message",
+            },
+            {
+              kind: block,
+              type: "buttons_id",
+            },
+            {
+              kind: block,
+              type: "buttons_member",
+            },
+            {
+              kind: block,
+              type: "buttons_user",
+            },
+            {
+              kind: block,
+              type: "buttons_channel",
+            },
+            {
+              kind: block,
+              type: "buttons_server",
+            },
+            {
+              kind: "label",
+              text: "Button actions ↓",
+            },
+            {
+              kind: block,
+              type: "misc_int_reply",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: block,
+              type: "misc_int_deferReply",
+            },
+            {
+              kind: block,
+              type: "misc_int_edit",
+            },
+            {
+              kind: block,
+              type: "buttons_del",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Modals",
+          colour: "1A8793",
+          contents: [
+            {
+              kind: "label",
+              text: "Keep in mind that you can only show modals in slash commands!",
+            },
+            {
+              kind: "label",
+              text: "Show a modal to the user ↓",
+            },
+            {
+              kind: block,
+              type: "modal_show",
+            },
+            {
+              kind: "label",
+              text: "Create a modal (put this in the block above) ↓",
+            },
+            {
+              kind: block,
+              type: "modal_create",
+            },
+            {
+              kind: "label",
+              text: "Put text input(s) inside the 'create modal' block ↓",
+            },
+            {
+              kind: block,
+              type: "modal_add_text_input",
+            },
+            {
+              kind: block,
+              type: "modal_add_text_input_advanced",
+            },
+            {
+              kind: "label",
+              text: "Events ↓",
+            },
+            {
+              kind: block,
+              type: "modal_handle_interaction",
+            },
+            {
+              kind: "label",
+              text: "Information about the submitted modal ↓",
+            },
+            {
+              kind: block,
+              type: "modal_get_input_value",
+            },
+            {
+              kind: block,
+              type: "modal_get_author",
+            },
+            {
+              kind: block,
+              type: "modal_get_customId",
+            },
+            {
+              kind: "label",
+              text: "Reply to the modal after submitted ↓",
+            },
+            {
+              kind: block,
+              type: "misc_int_reply",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: block,
+              type: "misc_int_deferReply",
+            },
+            {
+              kind: block,
+              type: "misc_int_reply_rows",
+            },
+            {
+              kind: block,
+              type: "misc_int_edit",
+            },
+          ],
+        },
+        {
+          kind: "category",
+          name: "Select Menus",
+          colour: "#26A483",
+          contents: [
+            {
+              kind: "label",
+              text: "Put this inside a block to send a row ↓",
+            },
+            {
+              kind: block,
+              type: "misc_addrow",
+            },
+            {
+              kind: block,
+              type: "menus_add",
+            },
+            {
+              kind: block,
+              type: "menus_addoption",
+            },
+            {
+              kind: "label",
+              text: "Menu events ↓",
+            },
+            {
+              kind: block,
+              type: "menus_event",
+            },
+            {
+              kind: "label",
+              text: "Info about the clicked menu ↓",
+            },
+            {
+              kind: block,
+              type: "menus_id",
+            },
+            {
+              kind: block,
+              type: "menus_value",
+            },
+            {
+              kind: block,
+              type: "menus_member",
+            },
+            {
+              kind: block,
+              type: "menus_user",
+            },
+            {
+              kind: block,
+              type: "menus_channel",
+            },
+            {
+              kind: block,
+              type: "menus_server",
+            },
+            {
+              kind: "label",
+              text: "Menu actions ↓",
+            },
+            {
+              kind: label,
+              text: "Use 'defer reply' to show 'bot is thinking...' message",
+            },
+            {
+              kind: label,
+              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+            },
+            {
+              kind: block,
+              type: "misc_int_deferReply",
+            },
+            {
+              kind: block,
+              type: "misc_int_reply",
+            },
+            {
+              kind: block,
+              type: "misc_int_edit",
+            },
+            {
+              kind: block,
+              type: "menus_update",
+            },
+            {
+              kind: block,
+              type: "menus_del",
+            },
+          ],
+        },
+        {
           kind: category,
           name: "Context Menus",
-          colour: "#5675A1",
+          colour: "#00A859",
           contents: [
             {
               kind: "label",
@@ -2688,271 +2971,6 @@ export const toolbox = {
             {
               kind: block,
               type: "contextMenu_targetMessage",
-            },
-          ],
-        },
-        {
-          kind: "category",
-          name: "Buttons",
-          colour: "#AC41E9",
-          contents: [
-            {
-              kind: "label",
-              text: "Put this inside a block to send a row ↓",
-            },
-            {
-              kind: block,
-              type: "misc_addrow",
-            },
-            {
-              kind: block,
-              type: "buttons_add",
-            },
-            {
-              kind: "label",
-              text: "Button events ↓",
-            },
-            {
-              kind: block,
-              type: "buttons_event",
-            },
-            {
-              kind: "label",
-              text: "Info about the clicked button ↓",
-            },
-            {
-              kind: block,
-              type: "buttons_message",
-            },
-            {
-              kind: block,
-              type: "buttons_id",
-            },
-            {
-              kind: block,
-              type: "buttons_member",
-            },
-            {
-              kind: block,
-              type: "buttons_user",
-            },
-            {
-              kind: block,
-              type: "buttons_channel",
-            },
-            {
-              kind: block,
-              type: "buttons_server",
-            },
-            {
-              kind: "label",
-              text: "Button actions ↓",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply",
-            },
-            {
-              kind: label,
-              text: "Use 'defer reply' to show 'bot is thinking...' message",
-            },
-            {
-              kind: label,
-              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-            },
-            {
-              kind: block,
-              type: "misc_int_deferReply",
-            },
-            {
-              kind: block,
-              type: "misc_int_edit",
-            },
-            {
-              kind: block,
-              type: "buttons_del",
-            },
-          ],
-        },
-        {
-          kind: "category",
-          name: "Select Menus",
-          colour: "#51B800",
-          contents: [
-            {
-              kind: "label",
-              text: "Put this inside a block to send a row ↓",
-            },
-            {
-              kind: block,
-              type: "misc_addrow",
-            },
-            {
-              kind: block,
-              type: "menus_add",
-            },
-            {
-              kind: block,
-              type: "menus_addoption",
-            },
-            {
-              kind: "label",
-              text: "Menu events ↓",
-            },
-            {
-              kind: block,
-              type: "menus_event",
-            },
-            {
-              kind: "label",
-              text: "Info about the clicked menu ↓",
-            },
-            {
-              kind: block,
-              type: "menus_id",
-            },
-            {
-              kind: block,
-              type: "menus_value",
-            },
-            {
-              kind: block,
-              type: "menus_member",
-            },
-            {
-              kind: block,
-              type: "menus_user",
-            },
-            {
-              kind: block,
-              type: "menus_channel",
-            },
-            {
-              kind: block,
-              type: "menus_server",
-            },
-            {
-              kind: "label",
-              text: "Menu actions ↓",
-            },
-            {
-              kind: label,
-              text: "Use 'defer reply' to show 'bot is thinking...' message",
-            },
-            {
-              kind: label,
-              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-            },
-            {
-              kind: block,
-              type: "misc_int_deferReply",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply",
-            },
-            {
-              kind: block,
-              type: "misc_int_edit",
-            },
-            {
-              kind: block,
-              type: "menus_update",
-            },
-            {
-              kind: block,
-              type: "menus_del",
-            },
-          ],
-        },
-        {
-          kind: "category",
-          name: "Modals",
-          colour: "#e38d40",
-          contents: [
-            {
-              kind: "label",
-              text: "Keep in mind that you can only show modals in slash commands!",
-            },
-            {
-              kind: "label",
-              text: "Show a modal to the user ↓",
-            },
-            {
-              kind: block,
-              type: "modal_show",
-            },
-            {
-              kind: "label",
-              text: "Create a modal (put this in the block above) ↓",
-            },
-            {
-              kind: block,
-              type: "modal_create",
-            },
-            {
-              kind: "label",
-              text: "Put text input(s) inside the 'create modal' block ↓",
-            },
-            {
-              kind: block,
-              type: "modal_add_text_input",
-            },
-            {
-              kind: block,
-              type: "modal_add_text_input_advanced",
-            },
-            {
-              kind: "label",
-              text: "Events ↓",
-            },
-            {
-              kind: block,
-              type: "modal_handle_interaction",
-            },
-            {
-              kind: "label",
-              text: "Information about the submitted modal ↓",
-            },
-            {
-              kind: block,
-              type: "modal_get_input_value",
-            },
-            {
-              kind: block,
-              type: "modal_get_author",
-            },
-            {
-              kind: block,
-              type: "modal_get_customId",
-            },
-            {
-              kind: "label",
-              text: "Reply to the modal after submitted ↓",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply",
-            },
-            {
-              kind: label,
-              text: "Use 'defer reply' to show 'bot is thinking...' message",
-            },
-            {
-              kind: label,
-              text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-            },
-            {
-              kind: block,
-              type: "misc_int_deferReply",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply_rows",
-            },
-            {
-              kind: block,
-              type: "misc_int_edit",
             },
           ],
         },

@@ -39,7 +39,7 @@ export default function Inbox() {
                   Authorization: localStorage.getItem('disfuse-token'),
                 },
               });
-            }, 1000);
+            }, 700);
           });
       });
   }, []);

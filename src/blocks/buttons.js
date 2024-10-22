@@ -28,7 +28,7 @@ Blockly.Blocks['buttons_add'] = {
       .appendField('URL (only with link style):');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('AC41E9');
+    this.setColour('2677AF');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -40,7 +40,7 @@ Blockly.Blocks['buttons_event'] = {
     this.appendDummyInput().appendField('When a button is clicked');
     this.appendStatementInput('event').setCheck('default');
     this.setInputsInline(false);
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setTooltip('');
     this.setHelpUrl('');
   },
@@ -49,7 +49,7 @@ Blockly.Blocks['buttons_event'] = {
 Blockly.Blocks['buttons_message'] = {
   init: function () {
     this.appendDummyInput().appendField('message of the clicked button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'message');
   },
 };
@@ -57,7 +57,7 @@ Blockly.Blocks['buttons_message'] = {
 Blockly.Blocks['buttons_id'] = {
   init: function () {
     this.appendDummyInput().appendField('ID of the clicked button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'String');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -67,7 +67,7 @@ Blockly.Blocks['buttons_id'] = {
 Blockly.Blocks['buttons_member'] = {
   init: function () {
     this.appendDummyInput().appendField('member who clicked the button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'member');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -77,7 +77,7 @@ Blockly.Blocks['buttons_member'] = {
 Blockly.Blocks['buttons_user'] = {
   init: function () {
     this.appendDummyInput().appendField('user who clicked the button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'user');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -87,7 +87,7 @@ Blockly.Blocks['buttons_user'] = {
 Blockly.Blocks['buttons_channel'] = {
   init: function () {
     this.appendDummyInput().appendField('channel of the button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'channel');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -97,7 +97,7 @@ Blockly.Blocks['buttons_channel'] = {
 Blockly.Blocks['buttons_server'] = {
   init: function () {
     this.appendDummyInput().appendField('server of the button');
-    this.setColour('#AC41E9');
+    this.setColour('#2677AF');
     this.setOutput(true, 'server');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -113,7 +113,7 @@ Blockly.Blocks['slash_reply'] = {
       .appendField(new Blockly.FieldTextInput('name'), 'embeds');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('AC41E9');
+    this.setColour('2677AF');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -129,7 +129,7 @@ Blockly.Blocks['slash_edit'] = {
       .appendField(new Blockly.FieldTextInput('name'), 'embeds');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('AC41E9');
+    this.setColour('2677AF');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -141,7 +141,7 @@ Blockly.Blocks['buttons_del'] = {
     this.appendDummyInput().appendField('Delete the reply by the bot');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('AC41E9');
+    this.setColour('2677AF');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);

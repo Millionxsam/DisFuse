@@ -18,7 +18,7 @@ Blockly.Blocks['menus_add'] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('This represents the whole menu');
     this.setHelpUrl('');
   },
@@ -39,7 +39,7 @@ Blockly.Blocks['menus_addoption'] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('This represents one clickable option inside the menu');
     this.setHelpUrl('');
   },
@@ -50,7 +50,7 @@ Blockly.Blocks['menus_event'] = {
     this.appendDummyInput().appendField('When a menu is clicked');
     this.appendStatementInput('event').setCheck('default');
     this.setInputsInline(false);
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setTooltip('');
     this.setHelpUrl('');
   },
@@ -59,7 +59,7 @@ Blockly.Blocks['menus_event'] = {
 Blockly.Blocks['menus_id'] = {
   init: function () {
     this.appendDummyInput().appendField('ID of the clicked menu');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'String');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -69,7 +69,7 @@ Blockly.Blocks['menus_id'] = {
 Blockly.Blocks['menus_value'] = {
   init: function () {
     this.appendDummyInput().appendField('the value of the selected option');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'String');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -79,7 +79,7 @@ Blockly.Blocks['menus_value'] = {
 Blockly.Blocks['menus_member'] = {
   init: function () {
     this.appendDummyInput().appendField('member who clicked the menu');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'member');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -89,7 +89,7 @@ Blockly.Blocks['menus_member'] = {
 Blockly.Blocks['menus_user'] = {
   init: function () {
     this.appendDummyInput().appendField('user who clicked the menu');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'user');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -99,7 +99,7 @@ Blockly.Blocks['menus_user'] = {
 Blockly.Blocks['menus_channel'] = {
   init: function () {
     this.appendDummyInput().appendField('channel of the menu');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'channel');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -109,7 +109,7 @@ Blockly.Blocks['menus_channel'] = {
 Blockly.Blocks['menus_server'] = {
   init: function () {
     this.appendDummyInput().appendField('server of the menu');
-    this.setColour('#51B800');
+    this.setColour('#26A483');
     this.setOutput(true, 'server');
     this.setTooltip('');
     this.setHelpUrl('');
@@ -123,7 +123,7 @@ Blockly.Blocks['menus_reply'] = {
     this.appendValueInput('embeds').setCheck('String').appendField('embed(s):');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -137,7 +137,7 @@ Blockly.Blocks['menus_edit'] = {
     this.appendValueInput('embeds').setCheck('String').appendField('embed(s):');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -152,7 +152,7 @@ Blockly.Blocks['menus_update'] = {
     this.appendStatementInput('rows').setCheck('rows').appendField('rows:');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);
@@ -164,7 +164,7 @@ Blockly.Blocks['menus_del'] = {
     this.appendDummyInput().appendField('Delete the reply by the bot');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('51B800');
+    this.setColour('26A483');
     this.setTooltip('');
     this.setHelpUrl('');
     this.setInputsInline(false);

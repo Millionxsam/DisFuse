@@ -10,7 +10,7 @@ Blockly.Blocks["roles_foreach"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -24,7 +24,7 @@ Blockly.Blocks["roles_foreachMember"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -33,7 +33,7 @@ Blockly.Blocks["roles_foreachMember"] = {
 Blockly.Blocks["roles_currentLoopMember"] = {
   init: function () {
     this.appendDummyInput().appendField("current member in loop");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setOutput("member");
     this.setTooltip("");
     this.setHelpUrl("");
@@ -72,7 +72,7 @@ Blockly.Blocks["roles_foreach_role"] = {
   init: function () {
     this.appendDummyInput().appendField("current role in loop");
     this.setOutput("role");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("The current role on the server of the loop.");
   },
 };
@@ -85,7 +85,7 @@ Blockly.Blocks["roles_highest"] = {
       .setCheck("server")
       .appendField("role with highest position on the server:");
     this.setOutput("role");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("The role with the highest position on the server.");
   },
 };
@@ -100,7 +100,7 @@ javascriptGenerator.forBlock["roles_highest"] = function (block, generator) {
 Blockly.Blocks["roles_name"] = {
   init: function () {
     this.appendValueInput("role").setCheck("role").appendField("name of role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setOutput(true, "String");
@@ -118,7 +118,7 @@ Blockly.Blocks["roles_position"] = {
     this.appendValueInput("role")
       .setCheck("role")
       .appendField("position of role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setOutput(true, "Number");
@@ -136,7 +136,7 @@ Blockly.Blocks["roles_hexColor"] = {
     this.appendValueInput("role")
       .setCheck("role")
       .appendField("hex color of role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setOutput(true, "String");
@@ -152,7 +152,7 @@ javascriptGenerator.forBlock["roles_hexColor"] = function (block, generator) {
 Blockly.Blocks["roles_id"] = {
   init: function () {
     this.appendValueInput("role").setCheck("role").appendField("ID of role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setOutput(true, "String");
   },
 };
@@ -168,7 +168,7 @@ Blockly.Blocks["roles_createdAt"] = {
     this.appendValueInput("role")
       .setCheck("role")
       .appendField("creation date of role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setOutput(true, "date");
@@ -199,7 +199,7 @@ Blockly.Blocks["roles_create"] = {
     this.appendValueInput("permissions")
       .setCheck(["Array", "permission"])
       .appendField("permissions:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -224,9 +224,8 @@ javascriptGenerator.forBlock["roles_create"] = function (block, generator) {
   name: ${val_name},
   color: ${val_color || "Default"},
   position: ${val_position || 1},
-  mentionable: ${val_mentionable || false}${
-    val_permissions ? `,\npermissions: ${val_permissions}` : ""
-  }
+  mentionable: ${val_mentionable || false}${val_permissions ? `,\npermissions: ${val_permissions}` : ""
+    }
 });\n`;
 
   return code;
@@ -249,7 +248,7 @@ Blockly.Blocks["roles_getone"] = {
       .setCheck("server")
       .appendField("on the server");
     this.setOutput(true, "role");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -260,11 +259,10 @@ javascriptGenerator.forBlock["roles_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.roles.cache${
-    dropdown_type === "id"
+  var code = `${value_server}.roles.cache${dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(r => r.name == ${value_value})`
-  }`;
+    }`;
   return [code, Order.NONE];
 };
 
@@ -274,7 +272,7 @@ Blockly.Blocks["roles_delete"] = {
       .setCheck("role")
       .appendField("Delete the role:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -291,7 +289,7 @@ Blockly.Blocks["roles_rename"] = {
   init: function () {
     this.appendValueInput("role").setCheck("role").appendField("Rename role:");
     this.appendValueInput("name").setCheck("String").appendField("new name:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -312,7 +310,7 @@ Blockly.Blocks["roles_addToMember"] = {
     this.appendValueInput("member")
       .setCheck("member")
       .appendField("to member:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -336,7 +334,7 @@ Blockly.Blocks["roles_removeFromMember"] = {
     this.appendValueInput("member")
       .setCheck("member")
       .appendField("from member:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -358,7 +356,7 @@ Blockly.Blocks["roles_setPermissions"] = {
       .setCheck(["permission", "Array"])
       .appendField("Set permissions:");
     this.appendValueInput("role").setCheck("role").appendField("to role:");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
@@ -386,7 +384,7 @@ Blockly.Blocks["roles_hasRole"] = {
     this.appendValueInput("role").setCheck("role").appendField("have the role");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -408,7 +406,7 @@ Blockly.Blocks["roles_hasPermission"] = {
       .appendField("have the");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
-    this.setColour("#32a87d");
+    this.setColour("#B76489");
   },
 };
 
