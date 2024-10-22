@@ -210,3 +210,35 @@ javascriptGenerator.forBlock['time_operation'] = function (block, generator) {
 
   return [code, Order.NONE];
 };
+
+Blockly.Blocks['time_stringToMS'] = {
+  init: function () {
+    this.appendValueInput('TIME')
+      .setCheck('String')
+      .appendField('turn time string');
+    this.appendDummyInput().appendField('to milliseconds');
+    this.setOutput(true, 'Number');
+    this.setColour('#db4b9c');
+  },
+};
+
+javascriptGenerator.forBlock['time_stringToMS'] = function (block, generator) {
+  var time = generator.valueToCode(block, 'TIME', Order.ATOMIC);
+  return [`ms(${time})`, Order.NONE];
+};
+
+Blockly.Blocks['time_msToString'] = {
+  init: function () {
+    this.appendValueInput('TIME')
+      .setCheck('Number')
+      .appendField('turn milliseconds');
+    this.appendDummyInput().appendField('to time string');
+    this.setOutput(true, 'String');
+    this.setColour('#db4b9c');
+  },
+};
+
+javascriptGenerator.forBlock['time_msToString'] = function (block, generator) {
+  var time = generator.valueToCode(block, 'TIME', Order.ATOMIC);
+  return [`ms(${time}, { long: true })`, Order.NONE];
+};

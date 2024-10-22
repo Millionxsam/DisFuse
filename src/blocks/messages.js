@@ -372,6 +372,9 @@ Blockly.Blocks["message_property"] = {
         case "url":
           this.setOutput(true, "String");
           break;
+        default:
+          this.setOutput(true, null);
+          break;
       }
     });
   },

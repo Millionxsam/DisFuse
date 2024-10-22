@@ -855,6 +855,10 @@ export const toolbox = {
       colour: "#db4b9c",
       contents: [
         {
+          kind: "label",
+          text: "Get a date ↓",
+        },
+        {
           kind: block,
           type: "time_date_now",
         },
@@ -864,15 +868,19 @@ export const toolbox = {
         },
         {
           kind: block,
-          type: "time_between",
+          type: "time_createdate",
         },
         {
-          kind: block,
-          type: "time_createdate",
+          kind: "label",
+          text: "Timestamp creation ↓",
         },
         {
           kind: block,
           type: "time_timestampFromDate",
+        },
+        {
+          kind: "label",
+          text: "Convertion / Operations ↓",
         },
         {
           kind: block,
@@ -902,6 +910,42 @@ export const toolbox = {
             },
           },
         },
+        {
+          kind: block,
+          type: "time_between",
+        },
+        {
+          kind: "label",
+          text: "String convertion ↓",
+        },
+        {
+          kind: block,
+          type: "time_stringToMS",
+          inputs: {
+            TIME: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "10m",
+                },
+              },
+            },
+          }
+        },
+        {
+          kind: block,
+          type: "time_msToString",
+          inputs: {
+            TIME: {
+              shadow: {
+                type: "math_number",
+                fields: {
+                  NUM: 1000,
+                },
+              },
+            },
+          }
+        }
       ],
     },
     {

@@ -191,7 +191,8 @@ module.exports = [
         "whatwg-url": "^5.0.0",
         "ws": "^8.17.0",
         "dotenv": "^16.0.3",
-        "lyrics-finder": "^21.7.0"
+        "lyrics-finder": "^21.7.0",
+        "ms": "^2.1.3"
       },
       "scripts": {
         "start": "node index.js",
