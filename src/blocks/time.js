@@ -231,8 +231,12 @@ Blockly.Blocks['time_msToString'] = {
   init: function () {
     this.appendValueInput('TIME')
       .setCheck('Number')
-      .appendField('turn milliseconds');
+      .appendField('turn milliseconds:');
     this.appendDummyInput().appendField('to time string');
+    this.appendValueInput('LONG')
+      .setCheck('Boolean')
+      .appendField('long display:');
+    this.setInputsInline(false);
     this.setOutput(true, 'String');
     this.setColour('#db4b9c');
   },
@@ -240,5 +244,7 @@ Blockly.Blocks['time_msToString'] = {
 
 javascriptGenerator.forBlock['time_msToString'] = function (block, generator) {
   var time = generator.valueToCode(block, 'TIME', Order.ATOMIC);
-  return [`ms(${time}, { long: true })`, Order.NONE];
+  var long = generator.valueToCode(block, 'LONG', Order.ATOMIC);
+
+  return [`ms(${time}, { long: ${long ?? true} })`, Order.NONE];
 };

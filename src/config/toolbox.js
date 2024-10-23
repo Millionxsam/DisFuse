@@ -962,6 +962,14 @@ export const toolbox = {
                 },
               },
             },
+            LONG: {
+              shadow: {
+                type: "logic_boolean",
+                fields: {
+                  BOOL: "FALSE",
+                },
+              },
+            },
           }
         }
       ],

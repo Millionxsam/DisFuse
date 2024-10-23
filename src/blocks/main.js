@@ -112,17 +112,7 @@ Blockly.Blocks['main_ping'] = {
 // deprecated
 Blockly.Blocks['main_amountservers'] = {
   init: function () {
-    this.appendDummyInput()
-      .appendField('number of')
-      .appendField(
-        new Blockly.FieldDropdown([
-          ['servers', 'guilds'],
-          ['users', 'users'],
-          ['channels', 'channels'],
-        ]),
-        'property'
-      );
-    this.appendDummyInput().appendField('of the bot');
+    this.appendDummyInput().appendField('number of servers of the bot');
     this.setOutput(true, 'Number');
     this.setColour('#FF6E33');
     this.setInputsInline(true);
@@ -140,6 +130,7 @@ Blockly.Blocks['main_numberof'] = {
           ['servers', 'guilds'],
           ['users', 'users'],
           ['channels', 'channels'],
+          ['commands', 'application.commands']
         ]),
         'property'
       );
