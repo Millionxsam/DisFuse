@@ -8,11 +8,7 @@ export default async function autosave(workspace, projectId, currentWorkspace) {
     ".workspace-navbar #autosave-indicator"
   );
 
-  var data = JSON.stringify(Blockly.serialization.workspaces.save(workspace));
-  data = data.replace(
-    /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/g,
-    "[TOKEN]"
-  );
+  const data = JSON.stringify(Blockly.serialization.workspaces.save(workspace));
 
   const newProject = (
     await axios
@@ -30,6 +26,7 @@ export default async function autosave(workspace, projectId, currentWorkspace) {
       )
       .catch((e) => {
         console.error(e);
+
         if (autosaveIndicator) {
           autosaveIndicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
         }

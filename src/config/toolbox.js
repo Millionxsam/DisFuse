@@ -1163,6 +1163,10 @@ export const toolbox = {
         },
         {
           kind: block,
+          type: "javascript_trycatchfinally",
+        },
+        {
+          kind: block,
           type: "javascript_trycatch_error",
         },
       ],
@@ -1182,6 +1186,14 @@ export const toolbox = {
         {
           kind: block,
           type: "main_token",
+        },
+        {
+          kind: "label",
+          text: "Get the value of a secret ↓",
+        },
+        {
+          kind: block,
+          type: "main_env",
         },
         {
           kind: "label",
@@ -1226,14 +1238,6 @@ export const toolbox = {
         {
           kind: block,
           type: "main_destroy",
-        },
-        {
-          kind: "label",
-          text: "Advanced ↓",
-        },
-        {
-          kind: block,
-          type: "main_env",
         },
       ],
     },

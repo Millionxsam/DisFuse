@@ -16,6 +16,9 @@ export function updateCode(
 ) {
   const workspaceCodeEle = document.querySelector(".workspace.code code");
   const projectCodeEle = document.querySelector(".project.code code");
+  const blocksIndicator = document.querySelector(
+    ".workspace-navbar #blocks-indicator"
+  );
 
   const tempWorkspace = getWholeProjectWorkspace(
     project,
@@ -23,14 +26,18 @@ export function updateCode(
     workspaceId
   );
 
+  var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
+  if (blocksIndicator) blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+  ${projectBlocks?.length ?? '??'}
+  </div>`
+
   if (!onlyWarning) {
-    let projectBlocks = tempWorkspace.getAllBlocks(true);
     projectCode = setUpCode(project, tempWorkspace, projectBlocks);
   }
 
-  let currentBlocks = workspace.getAllBlocks(true);
+  var currentBlocks = workspace.getAllBlocks(true);
   workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);
 
   if (!onlyWarning) {
@@ -188,7 +195,6 @@ export function getWholeProjectWorkspace(
   workspaceId
 ) {
   const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
-
   const tempData = Blockly.serialization.workspaces.save(currentWorkspace);
 
   project.workspaces

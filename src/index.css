@@ -433,7 +433,7 @@ i.workspacesMenuBtn:hover {
 
 .workspace-navbar .left ul {
   display: flex;
-  gap: 0.7vw;
+  gap: 0.6vw;
   align-items: center;
   list-style: none;
 }
@@ -448,7 +448,7 @@ i.workspacesMenuBtn:hover {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 0.7vw;
+  gap: 0.6vw;
 }
 
 .workspace-navbar .right ul i {
@@ -459,7 +459,7 @@ i.workspacesMenuBtn:hover {
   color: rgb(0, 46, 197);
 }
 
-.workspace-navbar .right #autosave-indicator {
+.workspace-navbar .right .indicator {
   align-items: center;
   align-content: center;
   text-align: center;
@@ -472,6 +472,7 @@ i.workspacesMenuBtn:hover {
   padding: 4px;
   background-color: var(--border-color);
   border-radius: 5px;
+  height: 2rem;
   width: fit-content;
 }
 
@@ -1722,10 +1723,10 @@ select option {
     text-overflow: ellipsis;
   }
 
-  .workspace-navbar .right #autosave-indicator {
+  .workspace-navbar .right .indicator {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.2rem;
   }
 }
 

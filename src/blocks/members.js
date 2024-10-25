@@ -196,8 +196,8 @@ Blockly.Blocks["member_removetimeout"] = {
 
 Blockly.Blocks["member_bannable"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is bannable by the bot?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("bannable by the bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#C17778");
@@ -208,8 +208,8 @@ Blockly.Blocks["member_bannable"] = {
 
 Blockly.Blocks["member_kickable"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is kickable by the bot?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("kickable by the bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#C17778");
@@ -220,8 +220,8 @@ Blockly.Blocks["member_kickable"] = {
 
 Blockly.Blocks["member_timedout"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is timed out?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("timed out?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#C17778");
@@ -386,8 +386,8 @@ Blockly.Blocks["member_bannerURL"] = {
 
 Blockly.Blocks["member_bot"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("user");
-    this.appendDummyInput().appendField("is a bot?");
+    this.appendValueInput("member").setCheck("user").appendField("is user");
+    this.appendDummyInput().appendField("a bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#C17778");
@@ -398,8 +398,8 @@ Blockly.Blocks["member_bot"] = {
 
 Blockly.Blocks["member_system"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("user");
-    this.appendDummyInput().appendField("is official Discord?");
+    this.appendValueInput("member").setCheck("user").appendField("is user");
+    this.appendDummyInput().appendField("official Discord?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#C17778");
@@ -625,8 +625,8 @@ javascriptGenerator.forBlock["member_getuser"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
   var code = `client.users.cache${dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(u => u.username == ${value_value})`
+    ? `.get(${value_value})`
+    : `.find(u => u.username == ${value_value})`
     }`;
   return [code, Order.NONE];
 };
@@ -637,8 +637,8 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
   var code = `${value_server}.members.cache${dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(m => m.username == ${value_value})`
+    ? `.get(${value_value})`
+    : `.find(m => m.username == ${value_value})`
     }`;
   return [code, Order.NONE];
 };

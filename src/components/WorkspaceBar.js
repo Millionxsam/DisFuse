@@ -65,9 +65,8 @@ export default function WorkspaceBar({ workspace }) {
                   <i className="fa-solid fa-file"></i>
                   <div>File</div>
                   <i
-                    className={`fa-solid fa-chevron-${
-                      dropdownOpen ? "up" : "down"
-                    } noRotate`}
+                    className={`fa-solid fa-chevron-${dropdownOpen ? "up" : "down"
+                      } noRotate`}
                   ></i>
                 </button>
                 <div
@@ -116,7 +115,8 @@ export default function WorkspaceBar({ workspace }) {
           </div>
           <div className="right">
             <ul>
-              <i id="autosave-indicator"></i>
+              <i className="indicator" id="blocks-indicator"></i>
+              <i className="indicator" id="autosave-indicator"></i>
               <a rel="noreferrer" target="_blank" href="https://dsc.gg/disfuse">
                 <button style={{ height: "3rem" }}>
                   <i className="fa-brands fa-discord"></i>
