@@ -433,7 +433,7 @@ i.workspacesMenuBtn:hover {
 
 .workspace-navbar .left ul {
   display: flex;
-  gap: 0.7vw;
+  gap: 0.6vw;
   align-items: center;
   list-style: none;
 }
@@ -448,7 +448,7 @@ i.workspacesMenuBtn:hover {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 0.7vw;
+  gap: 0.6vw;
 }
 
 .workspace-navbar .right ul i {
@@ -459,7 +459,7 @@ i.workspacesMenuBtn:hover {
   color: rgb(0, 46, 197);
 }
 
-.workspace-navbar .right #autosave-indicator {
+.workspace-navbar .right .indicator {
   align-items: center;
   align-content: center;
   text-align: center;
@@ -472,6 +472,7 @@ i.workspacesMenuBtn:hover {
   padding: 4px;
   background-color: var(--border-color);
   border-radius: 5px;
+  height: 2rem;
   width: fit-content;
 }
 
@@ -1132,7 +1133,18 @@ i.workspacesMenuBtn:hover {
 
 .priProject .name-container i,
 .pubProject .name-container i {
-  font-size: 30px;
+  font-size: 20px;
+  transition: scale 0.2s ease;
+}
+
+.priProject .name-container i:nth-of-type(1):hover {
+  animation: spin 0.5s ease;
+  scale: 1.05;
+}
+
+.priProject .name-container i:nth-of-type(1):active {
+  animation: spin 0.5s ease;
+  scale: 0.9;
 }
 
 .priProject .buttons button {
@@ -1269,7 +1281,7 @@ input[type='search']::-webkit-search-results-decoration {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .pubProject .buttons {
@@ -1722,10 +1734,10 @@ select option {
     text-overflow: ellipsis;
   }
 
-  .workspace-navbar .right #autosave-indicator {
+  .workspace-navbar .right .indicator {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.2rem;
   }
 }
 

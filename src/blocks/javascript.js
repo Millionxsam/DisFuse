@@ -157,12 +157,43 @@ javascriptGenerator.forBlock["javascript_trycatch"] = function (
   block,
   generator
 ) {
-  var code_statement = generator.statementToCode(block, "code");
-  var error_statement = generator.statementToCode(block, "error");
+  var codeVar = generator.statementToCode(block, "code");
+  var errorVar = generator.statementToCode(block, "error");
 
   return `try {
-  ${code_statement}} catch (errorButWithLengthyName) {
-  ${error_statement}};\n`;
+  ${codeVar}} catch (errorButWithLengthyName) {
+  ${errorVar}};\n`;
+};
+
+Blockly.Blocks["javascript_trycatchfinally"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Try to run code");
+    this.appendStatementInput("code").setCheck("default");
+    this.appendDummyInput().appendField("If error");
+    this.appendStatementInput("error").setCheck("default");
+    this.appendDummyInput().appendField("Then finally");
+    this.appendStatementInput("finally").setCheck("default");
+    this.setInputsInline(false);
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("#c93a5e");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_trycatchfinally"] = function (
+  block,
+  generator
+) {
+  var codeVar = generator.statementToCode(block, "code");
+  var errorVar = generator.statementToCode(block, "error");
+  var finallyVar = generator.statementToCode(block, "finally");
+
+  return `try {
+  ${codeVar}} catch (errorButWithLengthyName) {
+  ${errorVar}} finally {
+  ${finallyVar}};\n`;
 };
 
 Blockly.Blocks["javascript_trycatch_error"] = {
@@ -176,3 +207,14 @@ Blockly.Blocks["javascript_trycatch_error"] = {
 };
 
 javascriptGenerator.forBlock["javascript_trycatch_error"] = () => ["errorButWithLengthyName", Order.NONE,];
+
+createRestrictions(
+  ['emoji_getallinserver_value'],
+  [
+    {
+      type: 'hasParent',
+      blockTypes: ['emoji_getallinserver'],
+      message: 'This block must be in a "for each emoji in the server" block',
+    },
+  ]
+);

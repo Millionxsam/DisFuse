@@ -7,7 +7,7 @@ Blockly.Blocks["slash_received"] = {
     this.appendDummyInput().appendField("When a slash command is received");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -26,7 +26,7 @@ Blockly.Blocks["slash_reply"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -46,7 +46,7 @@ Blockly.Blocks["slash_reply_rows"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -63,7 +63,7 @@ Blockly.Blocks["slash_editreply"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -124,7 +124,7 @@ Blockly.Blocks["slash_createcontainer"] = {
       "slashCreate",
     ]);
     this.setInputsInline(false);
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setPreviousStatement(true, "default");
@@ -165,7 +165,7 @@ Blockly.Blocks["slash_create"] = {
       .setCheck("default")
       .appendField("option(s):");
     this.setInputsInline(false);
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
     this.setPreviousStatement(true, ["slashCreate", "contextMenuCreate"]);
@@ -203,7 +203,7 @@ Blockly.Blocks["slash_addoption"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -221,7 +221,7 @@ Blockly.Blocks["slash_addchoice"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -238,7 +238,7 @@ Blockly.Blocks["slash_addsubcommandgroup"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -248,7 +248,7 @@ Blockly.Blocks["slash_name"] = {
   init: function () {
     this.appendDummyInput().appendField("name of the command");
     this.setOutput(true, "String");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -265,7 +265,7 @@ Blockly.Blocks["slash_addsubcommand"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -276,7 +276,7 @@ Blockly.Blocks["slash_member"] = {
     this.appendDummyInput().appendField("member who ran the command");
     this.setInputsInline(false);
     this.setOutput(true, "member");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -287,7 +287,7 @@ Blockly.Blocks["slash_user"] = {
     this.appendDummyInput().appendField("user who ran the command");
     this.setInputsInline(false);
     this.setOutput(true, "user");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -298,7 +298,7 @@ Blockly.Blocks["slash_channel"] = {
     this.appendDummyInput().appendField("channel the command was run in");
     this.setInputsInline(false);
     this.setOutput(true, "channel");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -309,7 +309,7 @@ Blockly.Blocks["slash_server"] = {
     this.appendDummyInput().appendField("server the command was run in");
     this.setInputsInline(false);
     this.setOutput(true, "server");
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -341,7 +341,7 @@ Blockly.Blocks["slash_getoption"] = {
       .appendField("option value with name:");
     this.setInputsInline(true);
     this.setOutput(true, null);
-    this.setColour("#00A859");
+    this.setColour("#3366CC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -378,9 +378,8 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       description: ${dsc},
       nsfw: ${nsfw || false},
       dmPermission: ${dm || true},
-      defaultMemberPermissions: ${
-        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-      },
+      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+    },
       options: [${options}]
     },`;
 

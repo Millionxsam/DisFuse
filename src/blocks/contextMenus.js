@@ -15,7 +15,7 @@ Blockly.Blocks['contextMenu_create'] = {
         this.appendValueInput('dms')
             .setCheck('Boolean').appendField('usable in DMs:');
         this.setInputsInline(false);
-        this.setColour('#5675A1');
+        this.setColour('#00A859');
         this.setPreviousStatement(true, ["slashCreate", "contextMenuCreate"]);
         this.setNextStatement(true, ["slashCreate", "contextMenuCreate"]);
     }
@@ -38,7 +38,7 @@ Blockly.Blocks["contextMenu_received"] = {
         this.appendDummyInput().appendField("When a context menu is clicked");
         this.appendStatementInput("event").setCheck("default");
         this.setInputsInline(false);
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setTooltip("");
         this.setHelpUrl("");
     },
@@ -56,7 +56,7 @@ ${code_statement}});\n`;
 Blockly.Blocks["contextMenu_name"] = {
     init: function () {
         this.appendDummyInput().appendField("name of the context menu");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'String');
     },
 };
@@ -66,7 +66,7 @@ javascriptGenerator.forBlock["contextMenu_name"] = () => ['interaction.commandNa
 Blockly.Blocks["contextMenu_userMenu"] = {
     init: function () {
         this.appendDummyInput().appendField("is the menu an user menu?");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'Boolean');
     },
 };
@@ -76,7 +76,7 @@ javascriptGenerator.forBlock["contextMenu_userMenu"] = () => ['interaction.isUse
 Blockly.Blocks["contextMenu_messageMenu"] = {
     init: function () {
         this.appendDummyInput().appendField("is the menu a message menu?");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'Boolean');
     },
 };
@@ -86,7 +86,7 @@ javascriptGenerator.forBlock["contextMenu_messageMenu"] = () => ['interaction.is
 Blockly.Blocks["contextMenu_member"] = {
     init: function () {
         this.appendDummyInput().appendField("member who clicked the menu");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'member');
     },
 };
@@ -96,7 +96,7 @@ javascriptGenerator.forBlock["contextMenu_member"] = () => ['interaction.member'
 Blockly.Blocks["contextMenu_user"] = {
     init: function () {
         this.appendDummyInput().appendField("user who clicked the menu");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'user');
     },
 };
@@ -106,7 +106,7 @@ javascriptGenerator.forBlock["contextMenu_user"] = () => ['interaction.user', Or
 Blockly.Blocks["contextMenu_channel"] = {
     init: function () {
         this.appendDummyInput().appendField("channel the menu was clicked in");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'channel');
     },
 };
@@ -116,7 +116,7 @@ javascriptGenerator.forBlock["contextMenu_channel"] = () => ['interaction.channe
 Blockly.Blocks["contextMenu_server"] = {
     init: function () {
         this.appendDummyInput().appendField("server the menu was clicked in");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'server');
     },
 };
@@ -126,7 +126,7 @@ javascriptGenerator.forBlock["contextMenu_server"] = () => ['interaction.guild',
 Blockly.Blocks["contextMenu_targetMessage"] = {
     init: function () {
         this.appendDummyInput().appendField("selected message of the menu");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'message');
     },
 };
@@ -136,7 +136,7 @@ javascriptGenerator.forBlock["contextMenu_targetMessage"] = () => ['interaction.
 Blockly.Blocks["contextMenu_targetUser"] = {
     init: function () {
         this.appendDummyInput().appendField("selected user of the menu");
-        this.setColour("#5675A1");
+        this.setColour("#00A859");
         this.setOutput(true, 'user');
     },
 };

@@ -15,7 +15,7 @@ Blockly.Blocks["channel_send"] = {
     this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -35,7 +35,7 @@ Blockly.Blocks["channel_send_rows"] = {
     this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -51,7 +51,7 @@ Blockly.Blocks["channel_setnsfw"] = {
       .appendField("on channel:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -65,7 +65,7 @@ Blockly.Blocks["channel_foreach"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -80,7 +80,7 @@ Blockly.Blocks["channel_fetchLastMessages"] = {
     this.appendStatementInput("code").appendField("then:").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setInputsInline(true);
     this.setTooltip("");
     this.setHelpUrl("");
@@ -91,7 +91,7 @@ Blockly.Blocks["channel_fetchedLastMessages"] = {
   init: function () {
     this.appendValueInput("number").appendField("message #").setCheck("Number");
     this.setOutput(true, "message");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setHelpUrl("");
   },
 };
@@ -100,7 +100,7 @@ Blockly.Blocks["channel_channel"] = {
   init: function () {
     this.appendDummyInput().appendField("current channel on the loop");
     this.setOutput(true, "channel");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -117,7 +117,7 @@ Blockly.Blocks["channel_setslowmode"] = {
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -131,7 +131,7 @@ Blockly.Blocks["channel_settopic"] = {
     this.appendValueInput("topic").setCheck("String").appendField("to:");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -145,7 +145,7 @@ Blockly.Blocks["channel_syncPerms"] = {
     this.appendDummyInput().appendField("to its category");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -161,7 +161,7 @@ Blockly.Blocks["channel_starttyping"] = {
       .appendField("and wait (seconds):");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -177,7 +177,7 @@ Blockly.Blocks["channel_bulkdelete"] = {
       .setCheck("channel");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setInputsInline(true);
     this.setTooltip("");
     this.setHelpUrl("");
@@ -203,7 +203,7 @@ Blockly.Blocks["channel_setautoarchive"] = {
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -215,7 +215,7 @@ Blockly.Blocks["channel_getslowmode"] = {
       .setCheck("channel")
       .appendField("slowmode (seconds) of channel:");
     this.setOutput(true, "Number");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -226,7 +226,7 @@ Blockly.Blocks["channel_getnsfw"] = {
     this.appendValueInput("channel").setCheck("channel").appendField("channel");
     this.appendDummyInput().appendField("is NSFW?");
     this.setOutput(true, "Boolean");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -238,7 +238,7 @@ Blockly.Blocks["channel_getParent"] = {
       .setCheck("channel")
       .appendField("category of channel:");
     this.setOutput(true, "channel");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -250,7 +250,7 @@ Blockly.Blocks["channel_gettopic"] = {
       .setCheck("channel")
       .appendField("topic of channel:");
     this.setOutput(true, "String");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -279,7 +279,7 @@ Blockly.Blocks["channel_gettype"] = {
       )
       .appendField("?");
     this.setOutput(true, "Boolean");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -302,7 +302,7 @@ Blockly.Blocks["channel_getone"] = {
       .setCheck("server")
       .appendField("on the server");
     this.setOutput(true, "channel");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -313,7 +313,7 @@ Blockly.Blocks["channel_deletable"] = {
     this.appendValueInput("channel").setCheck("channel").appendField("channel");
     this.appendDummyInput().appendField("is deletable by the bot?");
     this.setOutput(true, "Boolean");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -324,7 +324,7 @@ Blockly.Blocks["channel_manageable"] = {
     this.appendValueInput("channel").setCheck("channel").appendField("channel");
     this.appendDummyInput().appendField("is manageable by the bot?");
     this.setOutput(true, "Boolean");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -336,7 +336,7 @@ Blockly.Blocks["channel_name"] = {
       .setCheck("channel")
       .appendField("name of channel:");
     this.setOutput(true, "String");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -348,7 +348,7 @@ Blockly.Blocks["channel_id"] = {
       .setCheck("channel")
       .appendField("ID of channel:");
     this.setOutput(true, "String");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -360,7 +360,7 @@ Blockly.Blocks["channel_url"] = {
       .setCheck("channel")
       .appendField("URL of channel:");
     this.setOutput(true, "String");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -381,7 +381,7 @@ Blockly.Blocks["channel_created"] = {
       .appendField("of channel:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -396,7 +396,7 @@ Blockly.Blocks["channel_clone"] = {
     this.appendStatementInput("then").appendField("then:");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -416,7 +416,7 @@ Blockly.Blocks["channel_setParent"] = {
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -449,7 +449,7 @@ Blockly.Blocks["channel_setPosition"] = {
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -497,7 +497,7 @@ Blockly.Blocks["channel_create"] = {
     this.setInputsInline(false);
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -507,7 +507,7 @@ Blockly.Blocks["channel_createdChannel"] = {
   init: function () {
     this.appendDummyInput().appendField("created channel");
     this.setOutput(true, "channel");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -532,12 +532,11 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
     name: ${name || "''"},
     parent: ${parent || "null"},
     type: Discord.ChannelType.${type}
-  })${
-    then
+  })${then
       ? `.then(async (createdChannel) => {
   ${then}});`
       : ";"
-  }`;
+    }`;
 };
 
 Blockly.Blocks["channel_del"] = {
@@ -548,7 +547,7 @@ Blockly.Blocks["channel_del"] = {
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -562,7 +561,7 @@ Blockly.Blocks["channel_setname"] = {
     this.appendValueInput("name").appendField("new name:").setCheck("String");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -589,9 +588,8 @@ javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
   var name = generator.valueToCode(block, "name", Order.NONE);
   var then = generator.statementToCode(block, "then");
 
-  var code = `${channel}.clone({ name: ${
-    name || `${channel}.name`
-  } }).then(async (createdChannel) => {
+  var code = `${channel}.clone({ name: ${name || `${channel}.name`
+    } }).then(async (createdChannel) => {
     ${then}});\n`;
 
   return code;
@@ -651,11 +649,10 @@ javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(c => c.name == ${value_value})`
-  }`;
+  var code = `${value_server}.channels.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(c => c.name == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 
@@ -970,7 +967,7 @@ Blockly.Blocks["channel_set_permission"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("D39600");
+    this.setColour("#AD509B");
     this.setTooltip(
       "Sets a permission for a role, everyone or a member on a channel."
     );

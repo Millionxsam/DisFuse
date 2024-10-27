@@ -19,7 +19,7 @@ Blockly.Blocks["member_getone"] = {
       .setCheck("server")
       .appendField("on the server");
     this.setOutput(true, "member");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -39,7 +39,7 @@ Blockly.Blocks["member_getuser"] = {
       )
       .appendField("equal to");
     this.setOutput(true, "user");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -53,7 +53,7 @@ Blockly.Blocks["member_foreach"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -63,7 +63,7 @@ Blockly.Blocks["member_member"] = {
   init: function () {
     this.appendDummyInput().appendField("current member in loop");
     this.setOutput(true, "member");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -77,7 +77,7 @@ Blockly.Blocks["member_ban"] = {
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -92,7 +92,7 @@ Blockly.Blocks["member_timeout"] = {
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -106,7 +106,7 @@ Blockly.Blocks["member_kick"] = {
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -124,7 +124,7 @@ Blockly.Blocks["member_dm"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -143,7 +143,7 @@ Blockly.Blocks["member_dm_rows"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -173,7 +173,7 @@ Blockly.Blocks["member_setnick"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -188,7 +188,7 @@ Blockly.Blocks["member_removetimeout"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -196,11 +196,11 @@ Blockly.Blocks["member_removetimeout"] = {
 
 Blockly.Blocks["member_bannable"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is bannable by the bot?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("bannable by the bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -208,11 +208,11 @@ Blockly.Blocks["member_bannable"] = {
 
 Blockly.Blocks["member_kickable"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is kickable by the bot?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("kickable by the bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -220,11 +220,11 @@ Blockly.Blocks["member_kickable"] = {
 
 Blockly.Blocks["member_timedout"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("member");
-    this.appendDummyInput().appendField("is timed out?");
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("timed out?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -237,7 +237,7 @@ Blockly.Blocks["member_color"] = {
       .appendField("display color of member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -249,7 +249,7 @@ Blockly.Blocks["member_status"] = {
       .setCheck("member")
       .appendField("status of member:");
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip('Returns "idle", "online", "dnd", or "offline" as a text');
     this.setHelpUrl("");
   },
@@ -268,7 +268,7 @@ Blockly.Blocks["member_userFlags"] = {
       .setCheck("user")
       .appendField("flags of user:");
     this.setOutput(true, "Array");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip(
       "Returns the flags of a user as a list/array (this includes the user's badges as well as other info"
     );
@@ -292,7 +292,7 @@ Blockly.Blocks["member_id"] = {
       .appendField("ID of user/member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -313,7 +313,7 @@ Blockly.Blocks["member_joined"] = {
       .appendField("of member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -326,7 +326,7 @@ Blockly.Blocks["member_nickname"] = {
       .appendField("nickname of member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -339,7 +339,7 @@ Blockly.Blocks["member_user"] = {
       .appendField("user of member:");
     this.setInputsInline(true);
     this.setOutput(true, "user");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -352,7 +352,7 @@ Blockly.Blocks["member_username"] = {
       .appendField("username of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -365,7 +365,7 @@ Blockly.Blocks["member_avatarURL"] = {
       .appendField("avatar URL of user/member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -378,7 +378,7 @@ Blockly.Blocks["member_bannerURL"] = {
       .appendField("banner URL of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -386,11 +386,11 @@ Blockly.Blocks["member_bannerURL"] = {
 
 Blockly.Blocks["member_bot"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("user");
-    this.appendDummyInput().appendField("is a bot?");
+    this.appendValueInput("member").setCheck("user").appendField("is user");
+    this.appendDummyInput().appendField("a bot?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -398,11 +398,11 @@ Blockly.Blocks["member_bot"] = {
 
 Blockly.Blocks["member_system"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("user");
-    this.appendDummyInput().appendField("is official Discord?");
+    this.appendValueInput("member").setCheck("user").appendField("is user");
+    this.appendDummyInput().appendField("official Discord?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -415,7 +415,7 @@ Blockly.Blocks["member_accent"] = {
       .appendField("accent color of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -436,7 +436,7 @@ Blockly.Blocks["member_created"] = {
       .appendField("of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -624,11 +624,10 @@ javascriptGenerator.forBlock["member_getuser"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.users.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(u => u.username == ${value_value})`
-  }`;
+  var code = `client.users.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(u => u.username == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 
@@ -637,11 +636,10 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.members.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(m => m.username == ${value_value})`
-  }`;
+  var code = `${value_server}.members.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(m => m.username == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 
@@ -655,7 +653,7 @@ Blockly.Blocks["member_hasPermission"] = {
       .appendField("have the");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
-    this.setColour("#00A018");
+    this.setColour("#C17778");
     this.setTooltip("");
     this.setHelpUrl("");
   },
