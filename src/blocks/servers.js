@@ -18,7 +18,7 @@ Blockly.Blocks["server_getone"] = {
     this.appendValueInput("value").setCheck(null);
     this.setInputsInline(true);
     this.setOutput(true, "server");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -30,7 +30,7 @@ Blockly.Blocks["server_getall"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -40,7 +40,7 @@ Blockly.Blocks["server_guild"] = {
   init: function () {
     this.appendDummyInput().appendField("current server in the loop");
     this.setOutput(true, "server");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -53,7 +53,7 @@ Blockly.Blocks["server_name"] = {
       .appendField("name of server:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -66,7 +66,7 @@ Blockly.Blocks["server_membercount"] = {
       .appendField("number of members of server:");
     this.setInputsInline(true);
     this.setOutput(true, "Number");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -79,7 +79,7 @@ Blockly.Blocks["server_id"] = {
       .appendField("ID of server:");
     this.setInputsInline(true);
     this.setOutput(true, ["String", "Number"]);
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -92,7 +92,7 @@ Blockly.Blocks["server_banner"] = {
       .appendField("banner URL of server:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -105,7 +105,7 @@ Blockly.Blocks["server_icon"] = {
       .appendField("icon URL of server:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -118,7 +118,7 @@ Blockly.Blocks["server_ownerid"] = {
       .appendField("owner ID of server:");
     this.setInputsInline(true);
     this.setOutput(true, ["String", "Number"]);
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -131,7 +131,7 @@ Blockly.Blocks["server_dsc"] = {
       .appendField("description of server:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -144,7 +144,7 @@ Blockly.Blocks["server_afkchannel"] = {
       .appendField("AFK channel of server:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -157,7 +157,7 @@ Blockly.Blocks["server_creationdate"] = {
       .appendField("creation date of server:");
     this.setInputsInline(true);
     this.setOutput(true, "date");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -169,7 +169,7 @@ Blockly.Blocks["server_verified"] = {
     this.appendDummyInput().appendField("is verified?");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -182,7 +182,7 @@ Blockly.Blocks["server_vanityurl"] = {
       .appendField("vanity URL of server:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -195,7 +195,7 @@ Blockly.Blocks["server_systemchannel"] = {
       .appendField("system channel of server:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -208,7 +208,7 @@ Blockly.Blocks["server_ruleschannel"] = {
       .appendField("rules channel of server:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -229,7 +229,7 @@ Blockly.Blocks["server_disableinvites"] = {
       .setAlign(Blockly.inputs.Align.LEFT);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -242,7 +242,7 @@ Blockly.Blocks["server_leave"] = {
       .appendField("Leave server:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("A33DAC");
+    this.setColour("#A33DAC");
     this.setTooltip("");
     this.setHelpUrl("");
   },
@@ -392,13 +392,12 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.guilds.cache${
-    dropdown_type === "name"
+  var code = `client.guilds.cache${dropdown_type === "name"
       ? `.find(s => s.name === ${value_value})`
       : dropdown_type === "id"
-      ? `.get(${value_value})`
-      : ""
-  }`;
+        ? `.get(${value_value})`
+        : ""
+    }`;
 
   return [code, Order.NONE];
 };

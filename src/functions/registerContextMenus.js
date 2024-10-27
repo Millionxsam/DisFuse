@@ -12,10 +12,21 @@ export default function registerContextMenus(project, currentWorkspace) {
       `${scope.block.disabled ? "disabled" : "enabled"}`,
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: "copyCode",
-    callback: (scope) =>
+    callback: (scope) => {
       navigator.clipboard.writeText(
         javascriptGenerator.blockToCode(scope.block)
-      ),
+      );
+
+      Swal.fire({
+        toast: true,
+        title: "JavaScript Code Copied!",
+        icon: "success",
+        showConfirmButton: false,
+        position: "top-right",
+        timer: 2500,
+        timerProgressBar: true,
+      });
+    }
   });
 
   const wsOptions = {};
@@ -27,20 +38,11 @@ export default function registerContextMenus(project, currentWorkspace) {
 
   Blockly.ContextMenuRegistry.registry.register({
     displayText: "Move to workspace",
-    preconditionFn: () => "enabled",
+    preconditionFn: () => Object.keys(wsOptions).length ? "enabled" : "disabled",
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: "moveBlock",
     callback: (scope) => {
-      if (!Object.keys(wsOptions).length)
-        return Swal.fire({
-          toast: true,
-          title: "You only have one workspace!",
-          icon: "error",
-          showConfirmButton: false,
-          position: "top-right",
-          timer: 5000,
-          timerProgressBar: true,
-        });
+      if (!Object.keys(wsOptions).length) return
 
       Swal.fire({
         title: "Move block",
@@ -69,7 +71,7 @@ export default function registerContextMenus(project, currentWorkspace) {
         axios
           .patch(
             apiUrl +
-              `/projects/${project._id}/workspaces/${response.value}/data`,
+            `/projects/${project._id}/workspaces/${response.value}/data`,
             { data: JSON.stringify(newData) },
             {
               headers: { Authorization: localStorage.getItem("disfuse-token") },
@@ -78,9 +80,8 @@ export default function registerContextMenus(project, currentWorkspace) {
           .then(() =>
             Swal.fire({
               toast: true,
-              title: `Block moved to ${
-                project.workspaces.find((ws) => ws._id === response.value).name
-              }`,
+              title: `Block moved to ${project.workspaces.find((ws) => ws._id === response.value).name
+                }`,
               icon: "success",
               timer: 5000,
               timerProgressBar: true,
@@ -99,18 +100,9 @@ export default function registerContextMenus(project, currentWorkspace) {
     displayText: "Merge Workspace",
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     preconditionFn: (scope) =>
-      scope.workspace.getAllBlocks(false).length ? "enabled" : "disabled",
+      (scope.workspace.getAllBlocks(false).length && Object.keys(wsOptions).length) ? "enabled" : "disabled",
     callback: (scope) => {
-      if (!Object.keys(wsOptions).length)
-        return Swal.fire({
-          toast: true,
-          title: "You only have one workspace!",
-          icon: "error",
-          showConfirmButton: false,
-          position: "top-right",
-          timer: 5000,
-          timerProgressBar: true,
-        });
+      if (!Object.keys(wsOptions).length) return
 
       Swal.fire({
         title: "Merge Workspace",

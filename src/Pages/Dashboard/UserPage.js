@@ -55,8 +55,6 @@ export default function UserPage() {
   }, [username]);
 
   function toggleBlockUser(user) {
-    if (blocked) return sendPatch();
-
     function sendPatch() {
       axios
         .patch(
@@ -80,6 +78,8 @@ export default function UserPage() {
           console.error("Error blocking user:", error);
         });
     }
+
+    if (blocked) return sendPatch();
 
     Swal.fire({
       title: "Block User",
@@ -150,11 +150,11 @@ export default function UserPage() {
         <div className="body">
           {projects.length > 0
             ? projects.map((project) => (
-                <PubProject key={project.id} project={project} />
-              ))
+              <PubProject key={project.id} project={project} />
+            ))
             : !isLoading
-            ? "No public projects"
-            : null}
+              ? "No public projects"
+              : null}
         </div>
       </div>
     </>

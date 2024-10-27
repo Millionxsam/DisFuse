@@ -16,6 +16,9 @@ export function updateCode(
 ) {
   const workspaceCodeEle = document.querySelector(".workspace.code code");
   const projectCodeEle = document.querySelector(".project.code code");
+  const blocksIndicator = document.querySelector(
+    ".workspace-navbar #blocks-indicator"
+  );
 
   const tempWorkspace = getWholeProjectWorkspace(
     project,
@@ -23,14 +26,18 @@ export function updateCode(
     workspaceId
   );
 
+  var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
+  if (blocksIndicator) blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+  ${projectBlocks?.length ?? '??'}
+  </div>`
+
   if (!onlyWarning) {
-    let projectBlocks = tempWorkspace.getAllBlocks(true);
     projectCode = setUpCode(project, tempWorkspace, projectBlocks);
   }
 
-  let currentBlocks = workspace.getAllBlocks(true);
+  var currentBlocks = workspace.getAllBlocks(true);
   workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);
 
   if (!onlyWarning) {
@@ -99,6 +106,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
       value: 'const Captcha = require("@haileybot/captcha-generator")',
     },
     fetch_: "axios",
+    time_: "ms"
   };
 
   let blockImportCode = "";
@@ -157,10 +165,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     const client = new Discord.Client({
       intents: 3276799
     });
-    ${
-      mobilePresenceBot
-        ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
-        : ""
+    ${mobilePresenceBot
+      ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
+      : ""
     }
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -169,9 +176,8 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${
-    topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
-  }
+    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
+    }
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
@@ -189,7 +195,6 @@ export function getWholeProjectWorkspace(
   workspaceId
 ) {
   const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
-
   const tempData = Blockly.serialization.workspaces.save(currentWorkspace);
 
   project.workspaces
