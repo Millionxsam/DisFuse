@@ -259,13 +259,13 @@ javascriptGenerator.forBlock["javascript_trycatch_error"] = () => ["errorButWith
 
 Blockly.Blocks["javascript_exit"] = {
   init: function () {
-    this.appendDummyInput().appendField("Stop program");
+    this.appendDummyInput().appendField("Forcequit");
     this.appendValueInput("code")
       .setCheck("Number")
       .appendField("Code:");
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
-    this.setTooltip("Stops the program with an exit code.");
+    this.setTooltip("Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!");
     this.setHelpUrl("");
   },
 };
