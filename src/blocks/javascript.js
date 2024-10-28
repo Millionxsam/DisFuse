@@ -161,7 +161,7 @@ Blockly.Blocks["javascript_consoleinput"] = {
       .appendField("Prompt message");
     this.setOutput(true, "String");
     this.setColour("#c93a5e");
-    this.setTooltip("Asks the user for input in the terminal.");
+    this.setTooltip("Asks the user for input and returns it as text.");
     this.setHelpUrl("");
   },
 };
@@ -172,19 +172,19 @@ javascriptGenerator.forBlock["javascript_consoleinput"] = function (
 ) {
   var promptMessage = generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
 
-  var code = `
-(new Promise((resolve) => {
-  const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  readline.question(${promptMessage}, (input) => {
-    readline.close();
-    resolve(input);
-  });
-}));`;
-
-  return [code, Order.NONE];
+  return [
+    `(await (new Promise((resolve) => {
+      const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      readline.question(${promptMessage}, (input) => {
+        readline.close();
+        resolve(input);
+      });
+    })))`,
+    Order.NONE,
+  ];
 };
 
 Blockly.Blocks["javascript_trycatch"] = {
