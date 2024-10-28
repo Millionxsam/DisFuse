@@ -971,6 +971,10 @@ i.workspacesMenuBtn:hover {
   box-shadow: 0 0 2rem var(--main-color);
 }
 
+.home-container div.head p#offer {
+  font-size: 25px;
+}
+
 .dashboard-container {
   display: flex;
   position: relative;
