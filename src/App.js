@@ -7,6 +7,7 @@ import Sidebar from "./Pages/Dashboard/Sidebar";
 import Explore from "./Pages/Dashboard/Explore";
 import Favorites from "./Pages/Dashboard/Favorites";
 import Staff from "./Pages/Staff";
+import Tos from "./Pages/Tos";
 import Settings from "./Pages/Dashboard/Settings/Settings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
@@ -35,6 +36,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={[<Navbar />, <Home />]} />
         <Route path="/staff" element={[<Navbar />, <Staff />]} />
+        <Route path="/tos" element={[<Navbar />, <Tos />]} />
 
         <Route
           path="/dashboard/projects"

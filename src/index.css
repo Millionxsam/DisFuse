@@ -859,6 +859,34 @@ i.workspacesMenuBtn:hover {
   letter-spacing: 2px;
 }
 
+.tos-container {
+  color: white;
+  padding: 1rem;
+  font-size: 20px;
+}
+
+.tos-container * {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  list-style-position: inside;
+}
+
+.tos-container strong,
+.tos-container a {
+  font-weight: 900;
+  color: #95bee4;
+}
+
+.tos-container h1 {
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+}
+
+.tos-container h1,
+.tos-container h2 {
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
+
 .home-container .head {
   display: flex;
   flex-direction: column;
