@@ -278,14 +278,3 @@ javascriptGenerator.forBlock["javascript_exit"] = function (
 
   return `process.exit(${exitCode});\n`;
 };
-
-createRestrictions(
-  ['emoji_getallinserver_value'],
-  [
-    {
-      type: 'hasParent',
-      blockTypes: ['emoji_getallinserver'],
-      message: 'This block must be in a "for each emoji in the server" block',
-    },
-  ]
-);
