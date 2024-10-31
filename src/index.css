@@ -72,7 +72,8 @@ p.errors {
   color: rgb(255, 134, 134);
 }
 
-button {
+button,
+input[type='date'] {
   display: flex;
   align-items: center;
   gap: 0.5vw;
@@ -1216,7 +1217,8 @@ i.workspacesMenuBtn:hover {
 
 .explore-container,
 .fav-container,
-.inbox-container {
+.inbox-container,
+.adminDashboard-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -1224,9 +1226,22 @@ i.workspacesMenuBtn:hover {
   width: 100%;
 }
 
+.adminDashboard-container .inline {
+  display: flex;
+  flex-direction: row;
+  gap: 0.7rem;
+  align-items: center;
+  align-content: center;
+}
+
+.adminDashboard-container button {
+  width: fit-content;
+}
+
 .explore-container .head,
 .fav-container .head,
-.inbox-container .head {
+.inbox-container .head,
+.adminDashboard-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
@@ -1243,7 +1258,8 @@ i.workspacesMenuBtn:hover {
   gap: 1rem;
 }
 
-input.search {
+input.search,
+.adminDashboard-container * input[type='text'] {
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 2rem;

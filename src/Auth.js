@@ -44,7 +44,10 @@ export default function Auth({ children }) {
         Authorization: token,
       },
     })
-    .then(() => setLoading(false));
+    .then(() => setLoading(false))
+    .catch((error) => {
+      console.error(error);
+    });
 
   if (loading)
     return (
