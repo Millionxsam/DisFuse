@@ -34,7 +34,7 @@ export default function Staff() {
               alt=""
             />
             <h3>TropicGalxy</h3>
-            <p>Admin</p>
+            <p>Developer & Admin</p>
           </div>
         </Link>
 
