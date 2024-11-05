@@ -49,14 +49,13 @@ export default function Staff() {
           </div>
         </Link>
 
-        {/* Add yourself here */}
-        <Link to="https://github.com/hologramsteve"> {/* Replace with your actual GitHub link */}
+        <Link to="https://github.com/hologramsteve">
           <div>
             <img
               src="https://images-ext-1.discordapp.net/external/WFMNS9js2eq809hW2_E5DpN8DalFb-ObN2oeuTXP_tg/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/834792444121448518/34d04dff542a4b2a16298dbd2cdd3f1d.png?format=webp&quality=lossless&width=307&height=307" // Replace with your avatar URL if needed
               alt=""
             />
-            <h3>Steve </h3>
+            <h3>Hologramsteve</h3>
             <p>Wiki Writer</p>
           </div>
         </Link>
