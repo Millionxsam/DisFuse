@@ -72,7 +72,8 @@ p.errors {
   color: rgb(255, 134, 134);
 }
 
-button {
+button,
+input[type='date'] {
   display: flex;
   align-items: center;
   gap: 0.5vw;
@@ -859,6 +860,34 @@ i.workspacesMenuBtn:hover {
   letter-spacing: 2px;
 }
 
+.tos-container {
+  color: white;
+  padding: 1rem;
+  font-size: 20px;
+}
+
+.tos-container * {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  list-style-position: inside;
+}
+
+.tos-container strong,
+.tos-container a {
+  font-weight: 900;
+  color: #95bee4;
+}
+
+.tos-container h1 {
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+}
+
+.tos-container h1,
+.tos-container h2 {
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
+
 .home-container .head {
   display: flex;
   flex-direction: column;
@@ -941,6 +970,10 @@ i.workspacesMenuBtn:hover {
 
 .home-container .scrollDownBtn:hover i {
   box-shadow: 0 0 2rem var(--main-color);
+}
+
+.home-container div.head p#offer {
+  font-size: 25px;
 }
 
 .dashboard-container {
@@ -1133,7 +1166,18 @@ i.workspacesMenuBtn:hover {
 
 .priProject .name-container i,
 .pubProject .name-container i {
-  font-size: 30px;
+  font-size: 20px;
+  transition: scale 0.2s ease;
+}
+
+.priProject .name-container i:nth-of-type(1):hover {
+  animation: spin 0.5s ease;
+  scale: 1.05;
+}
+
+.priProject .name-container i:nth-of-type(1):active {
+  animation: spin 0.5s ease;
+  scale: 0.9;
 }
 
 .priProject .buttons button {
@@ -1173,7 +1217,8 @@ i.workspacesMenuBtn:hover {
 
 .explore-container,
 .fav-container,
-.inbox-container {
+.inbox-container,
+.adminDashboard-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -1181,9 +1226,22 @@ i.workspacesMenuBtn:hover {
   width: 100%;
 }
 
+.adminDashboard-container .inline {
+  display: flex;
+  flex-direction: row;
+  gap: 0.7rem;
+  align-items: center;
+  align-content: center;
+}
+
+.adminDashboard-container button {
+  width: fit-content;
+}
+
 .explore-container .head,
 .fav-container .head,
-.inbox-container .head {
+.inbox-container .head,
+.adminDashboard-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
@@ -1200,7 +1258,8 @@ i.workspacesMenuBtn:hover {
   gap: 1rem;
 }
 
-input.search {
+input.search,
+.adminDashboard-container * input[type='text'] {
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 2rem;
@@ -1270,7 +1329,7 @@ input[type='search']::-webkit-search-results-decoration {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .pubProject .buttons {

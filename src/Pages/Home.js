@@ -1,6 +1,21 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+const { apiUrl } = require("../config/config.json");
 
 export default function Home() {
+  const [users, setUsers] = useState(Number);
+  const [projects, setProjects] = useState(Number);
+
+  useEffect(() => {
+    axios
+      .get(apiUrl + '/stats')
+      .then(data => {
+        setUsers(data.data.users);
+        setProjects(data.data.projects);
+      });
+  }, []);
+
   return (
     <>
       <div className="home-container">
@@ -25,11 +40,12 @@ export default function Home() {
               </button>
             </Link>
           </div>
+          <p id="offer">We offer our service to <strong>{users}</strong> users, and <strong>{projects}</strong> projects!</p>
         </div>
         <div
           onClick={() => {
             window.scrollTo({
-              top: window.innerHeight,
+              top: window.outerHeight,
               left: 0,
               behavior: "smooth",
             });

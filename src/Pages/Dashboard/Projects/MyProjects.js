@@ -92,7 +92,7 @@ export default function MyProjects() {
       if (cancelled) return;
 
       await Queue.fire({
-        title: "Project Visibility",
+        title: "Project visibility",
         currentProgressStep: 2,
         showCancelButton: true,
         confirmButtonText: "Create",
@@ -192,7 +192,7 @@ export default function MyProjects() {
         if (cancelled) return;
 
         await Queue.fire({
-          title: "Project Visibility",
+          title: "Project visibility",
           currentProgressStep: 2,
           showCancelButton: true,
           confirmButtonText: "Create",

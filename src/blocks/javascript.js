@@ -78,6 +78,21 @@ javascriptGenerator.forBlock["javascript_wait"] = function (block, generator) {
   return `await wait(${time});\n`;
 };
 
+Blockly.Blocks["javascript_consoleclear"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Clear console");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#c93a5e");
+    this.setTooltip("Clears the terminal console.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_consoleclear"] = function () {
+  return `console.clear();\n`;
+};
+
 Blockly.Blocks["javascript_consolelog"] = {
   init: function () {
     this.appendValueInput("log").setCheck(null).appendField("Console log:");
@@ -136,6 +151,40 @@ javascriptGenerator.forBlock["javascript_consoleerror"] = function (
   var log = generator.valueToCode(block, "log", Order.ATOMIC);
 
   return `console.error(${log});\n`;
+};
+
+Blockly.Blocks["javascript_consoleinput"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Ask for input:");
+    this.appendValueInput("prompt")
+      .setCheck(null)
+      .appendField("Prompt message");
+    this.setOutput(true, "String");
+    this.setColour("#c93a5e");
+    this.setTooltip("Asks the user for input and returns it as text.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_consoleinput"] = function (
+  block,
+  generator
+) {
+  var promptMessage = generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
+
+  return [
+    `(await (new Promise((resolve) => {
+      const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      readline.question(${promptMessage}, (input) => {
+        readline.close();
+        resolve(input);
+      });
+    })))`,
+    Order.NONE,
+  ];
 };
 
 Blockly.Blocks["javascript_trycatch"] = {
@@ -208,13 +257,24 @@ Blockly.Blocks["javascript_trycatch_error"] = {
 
 javascriptGenerator.forBlock["javascript_trycatch_error"] = () => ["errorButWithLengthyName", Order.NONE,];
 
-createRestrictions(
-  ['emoji_getallinserver_value'],
-  [
-    {
-      type: 'hasParent',
-      blockTypes: ['emoji_getallinserver'],
-      message: 'This block must be in a "for each emoji in the server" block',
-    },
-  ]
-);
+Blockly.Blocks["javascript_exit"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Forcequit");
+    this.appendValueInput("code")
+      .setCheck("Number")
+      .appendField("Code:");
+    this.setPreviousStatement(true, "default");
+    this.setColour("#c93a5e");
+    this.setTooltip("Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["javascript_exit"] = function (
+  block,
+  generator
+) {
+  var exitCode = generator.valueToCode(block, "code", Order.ATOMIC) || 0;
+
+  return `process.exit(${exitCode});\n`;
+};

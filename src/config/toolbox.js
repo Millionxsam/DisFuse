@@ -1154,6 +1154,18 @@ export const toolbox = {
           type: "javascript_consoleerror",
         },
         {
+          kind: block,
+          type: "javascript_consoleclear",
+        },
+        {
+          kind: "label",
+          text: "Ask for user input ↓",
+        },
+        {
+          kind: block,
+          type: "javascript_consoleinput",
+        },
+        {
           kind: "label",
           text: "Try catch ↓",
         },
@@ -1168,6 +1180,14 @@ export const toolbox = {
         {
           kind: block,
           type: "javascript_trycatch_error",
+        },
+        {
+          kind: "label",
+          text: "Program control ↓",
+        },
+        {
+          kind: block,
+          type: "javascript_exit",
         },
       ],
     },

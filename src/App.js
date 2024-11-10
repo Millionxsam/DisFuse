@@ -7,6 +7,7 @@ import Sidebar from "./Pages/Dashboard/Sidebar";
 import Explore from "./Pages/Dashboard/Explore";
 import Favorites from "./Pages/Dashboard/Favorites";
 import Staff from "./Pages/Staff";
+import Tos from "./Pages/Tos";
 import Settings from "./Pages/Dashboard/Settings/Settings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
@@ -16,10 +17,29 @@ import Inbox from "./Pages/Dashboard/Inbox";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import NotificationSettings from './Pages/Dashboard/Settings/NotificationSettings';
 import OptimizationSettings from './Pages/Dashboard/Settings/OptimizationSettings';
+import Admin from './Pages/Dashboard/Admin';
 
 import "./index.css";
 
 export default function App() {
+  window.addEventListener("unhandledrejection", function (event) {
+    if (event?.reason?.response && event?.reason?.response?.data?.error) {
+      const data = event.reason.response.data;
+      if (data.error !== 'You are temporarily banned from DisFuse.') return console.error(event.reason);
+
+      event.preventDefault();
+      console.log(data, event.reason.response)
+
+      window.document.body.innerHTML = `
+      <div class="home-container">
+        <div class="head">
+          <h1>You are banned from DisFuse</h1>
+          <h2>You may not access DisFuse until: ${new Date(data.bannedUntil).toDateString()}.</h2>
+        </div>
+      </div>`;
+    }
+  });
+
   setInterval(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -35,6 +55,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={[<Navbar />, <Home />]} />
         <Route path="/staff" element={[<Navbar />, <Staff />]} />
+        <Route path="/tos" element={[<Navbar />, <Tos />]} />
 
         <Route
           path="/dashboard/projects"
@@ -70,6 +91,7 @@ export default function App() {
             <Route path="notifications" element={<NotificationSettings />} />
             <Route path="optimization" element={<OptimizationSettings />} />
           </Route>
+          <Route path="admin" element={<Admin />} />
         </Route>
 
         <Route path="/:username/:projectId/view" element={<ViewProject />} />
