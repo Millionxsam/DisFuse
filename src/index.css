@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Ubuntu Sans', 'Roboto', sans-serif;
+  font-family: "Ubuntu Sans", "Roboto", sans-serif;
   --main-color: #014f98;
   --border-color: rgba(112, 128, 144, 0.233);
   --foreground-color: #001222;
@@ -73,7 +73,7 @@ p.errors {
 }
 
 button,
-input[type='date'] {
+input[type="date"] {
   display: flex;
   align-items: center;
   gap: 0.5vw;
@@ -131,7 +131,7 @@ button.disabled:active {
   scale: 1;
 }
 
-input[type='number'] {
+input[type="number"] {
   background-color: transparent;
   border: 2px solid var(--border-color);
   border-radius: 10px;
@@ -144,7 +144,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-input[type='number']:hover {
+input[type="number"]:hover {
   background-color: var(--border-color);
 }
 
@@ -194,7 +194,7 @@ input[type='number']:hover {
 }
 
 .underline-effect::after {
-  content: '';
+  content: "";
   display: block;
   opacity: 0;
   height: 0.3vh;
@@ -254,7 +254,7 @@ input[type='number']:hover {
 .slider:before {
   position: absolute;
   border-radius: 2rem;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -336,7 +336,8 @@ p.modal-text {
   line-height: 3vh;
 }
 
-.workspace-navbar {
+.workspace-navbar,
+.workshopWorkspaceNavbar {
   display: flex;
   align-items: center;
   background-color: var(--main-color);
@@ -403,7 +404,7 @@ i.workspacesMenuBtn:hover {
 
 .projectName p {
   cursor: pointer;
-  font-family: 'Poetsen One';
+  font-family: "Poetsen One";
   font-size: 20px;
   white-space: nowrap;
   min-width: fit-content;
@@ -506,7 +507,8 @@ i.workspacesMenuBtn:hover {
   width: 100%;
 }
 
-#previewWorkspace {
+#previewWorkspace,
+#workshopWorkspace {
   height: 92.5vh;
   width: 100%;
 }
@@ -789,7 +791,8 @@ i.workspacesMenuBtn:hover {
 }
 
 #workspace input,
-#previewWorkspace input {
+#previewWorkspace input,
+#workshopWorkspace input {
   border: none;
   padding: 0.25vh;
   background-color: transparent;
@@ -801,7 +804,8 @@ i.workspacesMenuBtn:hover {
 }
 
 #workspace input::placeholder,
-#previewWorkspace input::placeholder {
+#previewWorkspace input::placeholder,
+#workshopWorkspace input::placeholder {
   color: white;
 }
 
@@ -879,7 +883,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .tos-container h1 {
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .tos-container h1,
@@ -900,7 +904,7 @@ i.workspacesMenuBtn:hover {
 
 .home-container .head h1 {
   font-size: 70px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .home-container .head p {
@@ -936,7 +940,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .home-container .head .logo::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -1026,7 +1030,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .sidebar-container .logo div {
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .sidebar-container .logo img {
@@ -1037,7 +1041,6 @@ i.workspacesMenuBtn:hover {
 .sidebar-container ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
   list-style: none;
   gap: 2rem;
   height: 30%;
@@ -1047,7 +1050,7 @@ i.workspacesMenuBtn:hover {
 .sidebar-container ul li {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 1.25rem;
   justify-content: center;
 }
 
@@ -1144,7 +1147,7 @@ i.workspacesMenuBtn:hover {
 .priProject .buttons {
   display: flex;
   margin-top: auto;
-  gap: 0.5rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -1181,8 +1184,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .priProject .buttons button {
-  width: 50%;
-  border-radius: 1.5rem;
+  width: 100%;
 }
 
 .projects-container .nametag {
@@ -1218,7 +1220,8 @@ i.workspacesMenuBtn:hover {
 .explore-container,
 .fav-container,
 .inbox-container,
-.adminDashboard-container {
+.adminDashboard-container,
+.workshop-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -1241,7 +1244,8 @@ i.workspacesMenuBtn:hover {
 .explore-container .head,
 .fav-container .head,
 .inbox-container .head,
-.adminDashboard-container .head {
+.adminDashboard-container .head,
+.workshop-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
@@ -1249,7 +1253,8 @@ i.workspacesMenuBtn:hover {
 
 .explore-container .exploration,
 .fav-container .favorites,
-.inbox-container .notifications {
+.inbox-container .notifications,
+.workshop-container .workshop {
   margin-left: 1rem;
 }
 
@@ -1259,7 +1264,7 @@ i.workspacesMenuBtn:hover {
 }
 
 input.search,
-.adminDashboard-container * input[type='text'] {
+.adminDashboard-container * input[type="text"] {
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 2rem;
@@ -1285,10 +1290,10 @@ input.search:focus::placeholder {
   color: rgba(190, 190, 190, 0.288);
 }
 
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
@@ -1328,8 +1333,7 @@ input[type='search']::-webkit-search-results-decoration {
 .priProject .name-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  justify-content: left;
+  justify-content: space-between;
 }
 
 .pubProject .buttons {
@@ -1464,7 +1468,8 @@ input[type='search']::-webkit-search-results-decoration {
   padding: 0 0.5rem 0 0.5rem;
 }
 
-.project-page-container {
+.project-page-container,
+.blockPackPage {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -1472,7 +1477,8 @@ input[type='search']::-webkit-search-results-decoration {
   width: 100%;
 }
 
-.project-page-container .head {
+.project-page-container .head,
+.blockPackPage .head {
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
   display: flex;
@@ -1481,17 +1487,20 @@ input[type='search']::-webkit-search-results-decoration {
   padding: 1rem;
 }
 
-.project-page-container .head .info {
+.project-page-container .head .info,
+.blockPackPage .head .info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.project-page-container .head .info h1 {
+.project-page-container .head .info h1,
+.blockPackPage .head .info h1 {
   font-size: 50px;
 }
 
-.project-page-container .head .buttons {
+.project-page-container .head .buttons,
+.blockPackPage .head .buttons {
   display: flex;
   gap: 1vw;
 }
@@ -1524,12 +1533,14 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .project-page-container .head .buttons .like.active i,
-.comment .bottom .like.active i {
+.comment .bottom .like.active i,
+.blockPackPage .head .buttons .like.active i {
   color: red;
 }
 
 .project-page-container .head .buttons .like.active.newLike i,
-.comment .bottom .like.active.newLike i {
+.comment .bottom .like.active.newLike i,
+.blockPackPage .head .buttons .like.active.newLike i {
   animation: spin 0.5s ease 1, scale 0.5s ease 1;
 }
 
@@ -1541,7 +1552,8 @@ input[type='search']::-webkit-search-results-decoration {
   animation: spin 0.5s ease 1, scale 0.5s ease 1;
 }
 
-.project-page-container .body {
+.project-page-container .body,
+.blockPackPage .body {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -1730,6 +1742,7 @@ select option {
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
+  .workshop-container .workshop .content,
   .user-profile-container .body {
     grid-template-columns: repeat(3, 20rem);
   }
@@ -1739,6 +1752,7 @@ select option {
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
+  .workshop-container .workshop .content,
   .user-profile-container .body {
     grid-template-columns: repeat(2, 20rem);
   }
@@ -1803,6 +1817,7 @@ select option {
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
+  .workshop-container .workshop .content,
   .user-profile-container .body {
     grid-template-columns: repeat(1, 20rem);
   }
@@ -1893,6 +1908,7 @@ select option {
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
+  .workshop-container .workshop .content,
   .user-profile-container .body {
     grid-template-columns: repeat(1, 20rem);
   }
@@ -1974,7 +1990,7 @@ select option {
   }
 
   .hamburger div {
-    font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+    font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
   }
 
   .hamburger i {
@@ -1986,9 +2002,11 @@ select option {
   .explore-container,
   .user-profile-container,
   .fav-container,
+  .workshop-container,
   .settings-container,
   .project-page-container,
-  .inbox-container {
+  .inbox-container,
+  .blockPackPage {
     margin-top: 2rem;
   }
 
@@ -2006,11 +2024,13 @@ select option {
     max-width: 90%;
   }
 
-  .project-page-container .head > .buttons {
+  .project-page-container .head > .buttons,
+  .blockPackPage .head > .buttons {
     flex-direction: column;
   }
 
-  .project-page-container .head > .buttons div {
+  .project-page-container .head > .buttons div,
+  .blockPackPage .head > .buttons div {
     gap: 2vw;
   }
 }
@@ -2021,7 +2041,8 @@ select option {
     gap: 1rem;
   }
 
-  .project-page-container .head .info h1 {
+  .project-page-container .head .info h1,
+  .blockPackPage .head .info h1 {
     font-size: 40px;
   }
 }
@@ -2045,6 +2066,7 @@ select option {
   .projects-container .projects,
   .explore-container .exploration .content,
   .fav-container .favorites .content,
+  .workshop-container .workshop .content,
   .user-profile-container .body {
     grid-template-columns: repeat(1, auto);
   }
@@ -2062,6 +2084,7 @@ select option {
   .projects-container .head,
   .explore-container .head,
   .fav-container .head,
+  .workshop-container .head,
   .settings-container .head,
   .inbox-container .head {
     font-size: 40px;
@@ -2089,6 +2112,7 @@ select option {
   .projects-container .head,
   .explore-container .head,
   .fav-container .head,
+  .workshop-container .head,
   .settings-container .head,
   .inbox-container .head {
     font-size: 30px;
@@ -2135,7 +2159,7 @@ select option {
 .home-container .body h2 {
   text-align: center;
   font-size: 50px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .features {
@@ -2259,7 +2283,7 @@ div.hidden:not(.shown) {
 .staff-container h1 {
   text-align: center;
   font-size: 50px;
-  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
 .staff-container .staff {
@@ -2304,7 +2328,7 @@ div.hidden:not(.shown) {
 }
 
 .blocklyTreeIcon {
-  background-image: url('../public/media/sprite.png');
+  background-image: url("../public/media/sprite.png");
 }
 
 .blocklyTreeRow {
@@ -2466,15 +2490,68 @@ div.hidden:not(.shown) {
 }
 
 .code-view-tabs div.active::after {
-  content: '';
+  content: "";
   width: 100%;
   height: 2px;
   margin-top: 5px;
   background-color: var(--main-color);
 }
 
-.swal2-html-container p.missingBlock {
+.exportErrors {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exportErrors p.exportError {
+  display: flex;
+  flex-direction: column;
   background-color: var(--border-color);
+  gap: 0.5rem;
   border-radius: 10px;
   padding: 10px;
+}
+
+.exportErrors p.exportError span:first-child {
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.workshop-container .workshop .content {
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: repeat(2, 40rem);
+  gap: 3rem;
+}
+
+.workshop-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workshop-container .workshop .content .workshop-item {
+  background-color: var(--foreground-color);
+  padding: 1.5rem;
+  border-radius: 2rem;
+  border: 2px solid var(--border-color);
+}
+
+.workshop-item .info {
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.workshop-container .workshop .content .workshop-item .buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.workshop-item .buttons button {
+  width: 100%;
 }
