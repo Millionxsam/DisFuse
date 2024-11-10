@@ -34,7 +34,7 @@ export default function Staff() {
               alt=""
             />
             <h3>TropicGalxy</h3>
-            <p>Admin</p>
+            <p>Developer & Admin</p>
           </div>
         </Link>
 
@@ -48,6 +48,18 @@ export default function Staff() {
             <p>Moderator</p>
           </div>
         </Link>
+
+        <Link to="https://github.com/hologramsteve">
+          <div>
+            <img
+              src="https://images-ext-1.discordapp.net/external/WFMNS9js2eq809hW2_E5DpN8DalFb-ObN2oeuTXP_tg/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/834792444121448518/34d04dff542a4b2a16298dbd2cdd3f1d.png?format=webp&quality=lossless&width=307&height=307" // Replace with your avatar URL if needed
+              alt=""
+            />
+            <h3>Hologramsteve</h3>
+            <p>Wiki Writer</p>
+          </div>
+        </Link>
+
       </div>
     </div>
   );

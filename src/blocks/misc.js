@@ -21,6 +21,77 @@ Blockly.Blocks["misc_int_reply"] = {
   },
 };
 
+createRestrictions(
+  ["misc_int_reply", "misc_int_reply_rows", "misc_int_edit"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["content"],
+      check: (val) => val.length <= 2000,
+      message: "Content cannot be greator than 2,000 characters",
+    },
+    {
+      type: "hasHat",
+      blockTypes: [
+        "slash_received",
+        "buttons_event",
+        "modal_handle_interaction",
+        "menus_event",
+        "contextMenu_received",
+      ],
+      message: "This must be under a interaction event",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["content", "embeds"],
+      message: "You must specify the content or embed(s) to send",
+    },
+    {
+      type: "validator",
+      blockTypes: ["embeds"],
+      check: (val, workspace) => {
+        if (!val.length) return true;
+
+        let embeds = val.split(",");
+        let pass = true;
+
+        embeds.forEach((embedName) => {
+          if (
+            !workspace
+              .getAllBlocks(false)
+              .find(
+                (b) =>
+                  b.type === "embed_create" &&
+                  b.getFieldValue("name") === embedName.trim()
+              )
+          )
+            pass = false;
+        });
+
+        return pass;
+      },
+      message: "No embed with that name exists",
+    },
+  ]
+);
+
+createRestrictions(
+  ["misc_int_deferReply"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: [
+        "slash_received",
+        "buttons_event",
+        "modal_handle_interaction",
+        "menus_event",
+        "contextMenu_received",
+      ],
+      message: "This must be under a interaction event",
+    },
+  ]
+);
+
 Blockly.Blocks["misc_int_reply_rows"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the interaction");

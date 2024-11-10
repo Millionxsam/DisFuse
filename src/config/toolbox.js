@@ -379,7 +379,7 @@ export const toolbox = {
                 },
               },
             },
-          }
+          },
         },
         {
           kind: "label",
@@ -948,7 +948,7 @@ export const toolbox = {
                 },
               },
             },
-          }
+          },
         },
         {
           kind: block,
@@ -970,8 +970,8 @@ export const toolbox = {
                 },
               },
             },
-          }
-        }
+          },
+        },
       ],
     },
     {
@@ -1210,6 +1210,16 @@ export const toolbox = {
         {
           kind: block,
           type: "main_token",
+          inputs: {
+            token: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "Your bot token",
+                },
+              },
+            },
+          },
         },
         {
           kind: "label",
@@ -1218,6 +1228,11 @@ export const toolbox = {
         {
           kind: block,
           type: "main_env",
+          inputs: {
+            value: {
+              shadow: { type: "text", fields: { TEXT: "Secret name" } },
+            },
+          },
         },
         {
           kind: "label",
@@ -1258,6 +1273,24 @@ export const toolbox = {
         {
           kind: block,
           type: "main_presence",
+          inputs: {
+            afk: {
+              shadow: {
+                type: "logic_boolean",
+                fields: {
+                  BOOL: "FALSE",
+                },
+              },
+            },
+            activity_name: {
+              shadow: {
+                type: "text",
+                fields: {
+                  TEXT: "Name of activity",
+                },
+              },
+            },
+          },
         },
         {
           kind: block,
@@ -1285,38 +1318,129 @@ export const toolbox = {
         {
           kind: block,
           type: "embed_settitle",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setdsc",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setcolor",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_seturl",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setauthor",
+          inputs: {
+            name: {
+              shadow: {
+                type: "text",
+              },
+            },
+            icon: {
+              shadow: {
+                type: "text",
+              },
+            },
+            url: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setfooter",
+          inputs: {
+            text: {
+              shadow: {
+                type: "text",
+              },
+            },
+            icon: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setimage",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_setthumb",
+          inputs: {
+            value: {
+              shadow: {
+                type: "text",
+              },
+            },
+          },
         },
         {
           kind: block,
           type: "embed_addfield",
+          inputs: {
+            name: {
+              shadow: {
+                type: "text",
+              },
+            },
+            val: {
+              shadow: {
+                type: "text",
+              },
+            },
+            inline: {
+              shadow: {
+                type: "logic_boolean",
+                fields: {
+                  BOOL: "FALSE",
+                },
+              },
+            },
+          },
         },
         {
           kind: block,
@@ -1341,6 +1465,13 @@ export const toolbox = {
             {
               kind: block,
               type: "msg_getone",
+              inputs: {
+                id: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -1357,19 +1488,29 @@ export const toolbox = {
             {
               kind: block,
               type: "msg_reply",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "msg_reply_rows",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_messageSent",
             },
-            //{
-            //  kind: block,
-            //  type: 'msg_delete',
-            //},
             {
               kind: block,
               type: "msg_deleteOther",
@@ -1388,6 +1529,11 @@ export const toolbox = {
                 message: {
                   shadow: {
                     type: "misc_messageSent",
+                  },
+                },
+                content: {
+                  shadow: {
+                    type: "text",
                   },
                 },
               },
@@ -1412,40 +1558,19 @@ export const toolbox = {
               },
             },
             {
-              kind: "label",
-              text: "Information about the message ↓",
-            },
-            {
-              kind: block,
-              type: "msg_msg",
-            },
-            {
-              kind: block,
-              type: "msg_content",
-            },
-            {
-              kind: block,
-              type: "msg_member",
-            },
-            {
-              kind: block,
-              type: "msg_user",
-            },
-            {
-              kind: block,
-              type: "msg_channel",
-            },
-            {
-              kind: block,
-              type: "msg_server",
-            },
-            {
               kind: label,
               text: "Information about a message ↓",
             },
             {
               kind: block,
               type: "message_property",
+              inputs: {
+                message: {
+                  shadow: {
+                    type: "msg_msg",
+                  },
+                },
+              },
             },
           ],
         },
@@ -1461,6 +1586,13 @@ export const toolbox = {
             {
               kind: block,
               type: "threads_getone",
+              inputs: {
+                value: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1477,10 +1609,39 @@ export const toolbox = {
             {
               kind: block,
               type: "threads_msgCreateThread",
+              inputs: {
+                message: {
+                  shadow: {
+                    type: "msg_msg",
+                  },
+                },
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                slowmode: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "threads_channelCreateThread",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                slowmode: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1529,18 +1690,46 @@ export const toolbox = {
             {
               kind: block,
               type: "threads_setName",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "threads_setArchived",
+              inputs: {
+                archived: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "threads_setLocked",
+              inputs: {
+                locked: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "threads_setSlowmode",
+              inputs: {
+                slowmode: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1580,10 +1769,40 @@ export const toolbox = {
             {
               kind: block,
               type: "poll_create",
+              inputs: {
+                QUESTION: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                DURATION: {
+                  shadow: {
+                    type: "math_number",
+                    fields: {
+                      NUM: 2,
+                    },
+                  },
+                },
+                MULTISELECT: {
+                  shadow: {
+                    type: "logic_boolean",
+                    fields: {
+                      BOOL: "FALSE",
+                    },
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "poll_choice",
+              inputs: {
+                TEXT: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1725,6 +1944,13 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_getone",
+              inputs: {
+                value: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -1745,6 +1971,13 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1809,10 +2042,24 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_send",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "channel_send_rows",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1825,6 +2072,13 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_setParent",
+              inputs: {
+                syncPerms: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1847,14 +2101,17 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_setnsfw",
+              inputs: {
+                set: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
             },
             {
               kind: "label",
               text: "----------------------------------------------------",
-            },
-            {
-              kind: "label",
-              text: "Set a permission on a certain channel ↓",
             },
             {
               kind: block,
@@ -1865,23 +2122,59 @@ export const toolbox = {
                     type: "misc_permissionChannel",
                   },
                 },
+                role: {
+                  shadow: {
+                    type: "misc_everyone",
+                  },
+                },
               },
             },
             {
               kind: block,
               type: "channel_setslowmode",
+              inputs: {
+                time: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "channel_settopic",
+              inputs: {
+                topic: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "channel_starttyping",
+              inputs: {
+                wait: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "channel_bulkdelete",
+              inputs: {
+                amount: {
+                  shadow: {
+                    type: "math_number",
+                    fields: {
+                      NUM: 10,
+                    },
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1890,6 +2183,13 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_clone",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -1902,18 +2202,6 @@ export const toolbox = {
             {
               kind: block,
               type: "channel_setname",
-            },
-            {
-              kind: block,
-              type: "channel_set_permission",
-            },
-            {
-              kind: block,
-              type: "misc_permissionChannel",
-            },
-            {
-              kind: block,
-              type: "misc_everyone",
             },
             {
               kind: "label",
@@ -1969,6 +2257,13 @@ export const toolbox = {
             {
               kind: block,
               type: "roles_getone",
+              inputs: {
+                value: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2010,6 +2305,28 @@ export const toolbox = {
             {
               kind: block,
               type: "roles_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                color: {
+                  shadow: {
+                    type: "colour_picker",
+                  },
+                },
+                position: {
+                  shadow: {
+                    type: "math_number",
+                  },
+                },
+                mentionable: {
+                  shadow: {
+                    type: "logic_boolean",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2069,6 +2386,13 @@ export const toolbox = {
             {
               kind: block,
               type: "roles_rename",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2124,10 +2448,24 @@ export const toolbox = {
             {
               kind: block,
               type: "member_getone",
+              inputs: {
+                value: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "member_getuser",
+              inputs: {
+                value: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2235,6 +2573,16 @@ export const toolbox = {
             {
               kind: block,
               type: "member_timeout",
+              inputs: {
+                seconds: {
+                  shadow: {
+                    type: "math_number",
+                    fields: {
+                      NUM: 60,
+                    },
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2243,14 +2591,35 @@ export const toolbox = {
             {
               kind: block,
               type: "member_dm",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "member_dm_rows",
+              inputs: {
+                content: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "member_setnick",
+              inputs: {
+                nickname: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2345,6 +2714,18 @@ export const toolbox = {
             {
               kind: block,
               type: "webhooks_fetch",
+              inputs: {
+                id: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                token: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2353,6 +2734,13 @@ export const toolbox = {
             {
               kind: block,
               type: "webhooks_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2369,6 +2757,13 @@ export const toolbox = {
             {
               kind: block,
               type: "webhooks_token",
+              inputs: {
+                webhook: {
+                  shadow: {
+                    type: "webhooks_createdWebhook",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2377,14 +2772,40 @@ export const toolbox = {
             {
               kind: block,
               type: "webhooks_send",
+              inputs: {
+                webhook: {
+                  shadow: {
+                    type: "webhooks_createdWebhook",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "webhooks_delete",
+              inputs: {
+                webhook: {
+                  shadow: {
+                    type: "webhooks_createdWebhook",
+                  },
+                },
+              },
             },
             {
               kind: block,
               type: "webhooks_edit",
+              inputs: {
+                webhook: {
+                  shadow: {
+                    type: "webhooks_createdWebhook",
+                  },
+                },
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2420,6 +2841,13 @@ export const toolbox = {
             {
               kind: block,
               type: "emoji_getemojiwith",
+              inputs: {
+                equal: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: "label",
@@ -2468,6 +2896,18 @@ export const toolbox = {
             {
               kind: block,
               type: "emoji_create",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+                url: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
             {
               kind: block,
@@ -2476,6 +2916,13 @@ export const toolbox = {
             {
               kind: block,
               type: "emoji_setname",
+              inputs: {
+                name: {
+                  shadow: {
+                    type: "text",
+                  },
+                },
+              },
             },
           ],
         },
@@ -2539,10 +2986,19 @@ export const toolbox = {
             {
               kind: block,
               type: "slash_addoption",
+              inputs: {
+                name: { shadow: { type: "text" } },
+                dsc: { shadow: { type: "text" } },
+                required: { shadow: { type: "logic_boolean" } },
+              },
             },
             {
               kind: block,
               type: "slash_addchoice",
+              inputs: {
+                name: { shadow: { type: "text" } },
+                value: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -2551,10 +3007,18 @@ export const toolbox = {
             {
               kind: block,
               type: "slash_addsubcommand",
+              inputs: {
+                name: { shadow: { type: "text" } },
+                dsc: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
               type: "slash_addsubcommandgroup",
+              inputs: {
+                name: { shadow: { type: "text" } },
+                dsc: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -2571,6 +3035,12 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_reply",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: label,
@@ -2583,10 +3053,21 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_deferReply",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_int_reply_rows",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
@@ -2595,6 +3076,9 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_edit",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -2642,6 +3126,15 @@ export const toolbox = {
             {
               kind: block,
               type: "buttons_add",
+              inputs: {
+                label: { shadow: { type: "text" } },
+                emoji: { shadow: { type: "text" } },
+                id: { shadow: { type: "text" } },
+                url: { shadow: { type: "text" } },
+                disabled: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: "label",
@@ -2686,6 +3179,22 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_reply",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
+            },
+            {
+              kind: block,
+              type: "misc_int_reply_rows",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: label,
@@ -2698,10 +3207,18 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_deferReply",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_int_edit",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
@@ -2733,6 +3250,10 @@ export const toolbox = {
             {
               kind: block,
               type: "modal_create",
+              inputs: {
+                title: { shadow: { type: "text" } },
+                customId: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -2741,10 +3262,23 @@ export const toolbox = {
             {
               kind: block,
               type: "modal_add_text_input",
+              inputs: {
+                label: { shadow: { type: "text" } },
+                customId: { shadow: { type: "text" } },
+                required: { shadow: { type: "logic_boolean" } },
+              },
             },
             {
               kind: block,
               type: "modal_add_text_input_advanced",
+              inputs: {
+                label: { shadow: { type: "text" } },
+                customId: { shadow: { type: "text" } },
+                required: { shadow: { type: "logic_boolean" } },
+                placeholder: { shadow: { type: "text" } },
+                max: { shadow: { type: "math_number", fields: { NUM: 100 } } },
+                min: { shadow: { type: "math_number", fields: { NUM: 10 } } },
+              },
             },
             {
               kind: "label",
@@ -2761,6 +3295,9 @@ export const toolbox = {
             {
               kind: block,
               type: "modal_get_input_value",
+              inputs: {
+                customId: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
@@ -2777,6 +3314,22 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_reply",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
+            },
+            {
+              kind: block,
+              type: "misc_int_reply_rows",
+              inputs: {
+                content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: label,
@@ -2789,14 +3342,18 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_deferReply",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply_rows",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_int_edit",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
           ],
         },
@@ -2816,10 +3373,26 @@ export const toolbox = {
             {
               kind: block,
               type: "menus_add",
+              inputs: {
+                placeholder: { shadow: { type: "text" } },
+                id: { shadow: { type: "text" } },
+                disabled: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "menus_addoption",
+              inputs: {
+                label: { shadow: { type: "text" } },
+                dsc: { shadow: { type: "text" } },
+                emoji: { shadow: { type: "text" } },
+                value: { shadow: { type: "text" } },
+                default: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: "label",
@@ -2872,18 +3445,45 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_deferReply",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_int_reply",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+                content: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "misc_int_reply_rows",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
               type: "misc_int_edit",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
               type: "menus_update",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
@@ -2939,6 +3539,22 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_reply",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+                content: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "misc_int_reply_rows",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: label,
@@ -2951,14 +3567,18 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_int_deferReply",
-            },
-            {
-              kind: block,
-              type: "misc_int_reply_rows",
+              inputs: {
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
+              },
             },
             {
               kind: block,
               type: "misc_int_edit",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -3174,10 +3794,16 @@ export const toolbox = {
         {
           kind: block,
           type: "db_get",
+          inputs: {
+            id: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
           type: "db_has",
+          inputs: {
+            id: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
@@ -3190,22 +3816,41 @@ export const toolbox = {
         {
           kind: block,
           type: "db_set",
+          inputs: {
+            id: { shadow: { type: "text" } },
+            val: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
           type: "db_del",
+          inputs: {
+            id: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
           type: "db_add",
+          inputs: {
+            id: { shadow: { type: "text" } },
+            val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+          },
         },
         {
           kind: block,
           type: "db_sub",
+          inputs: {
+            id: { shadow: { type: "text" } },
+            val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+          },
         },
         {
           kind: block,
           type: "db_push",
+          inputs: {
+            id: { shadow: { type: "text" } },
+            val: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
@@ -3226,6 +3871,9 @@ export const toolbox = {
             {
               kind: block,
               type: "scratch_getprofile",
+              inputs: {
+                username: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
@@ -3234,6 +3882,9 @@ export const toolbox = {
             {
               kind: block,
               type: "scratch_getmessages",
+              inputs: {
+                username: { shadow: { type: "text" } },
+              },
             },
           ],
         },
@@ -3261,10 +3912,16 @@ export const toolbox = {
             {
               kind: block,
               type: "captcha_send",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
             {
               kind: block,
               type: "captcha_reply",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
             },
           ],
         },
@@ -3280,6 +3937,9 @@ export const toolbox = {
             {
               kind: block,
               type: "fetch_send",
+              inputs: {
+                url: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -3293,6 +3953,7 @@ export const toolbox = {
               kind: block,
               type: "fetch_sendAdvanced",
               inputs: {
+                url: { shadow: { type: "text" } },
                 config: {
                   block: {
                     type: "fetch_configSection",
@@ -3335,6 +3996,10 @@ export const toolbox = {
             {
               kind: block,
               type: "fetch_configSection",
+              inputs: {
+                key: { shadow: { type: "text" } },
+                value: { shadow: { type: "text" } },
+              },
             },
             {
               kind: "label",
@@ -3425,6 +4090,10 @@ export const toolbox = {
         {
           kind: block,
           type: "music_findLyrics",
+          inputs: {
+            artist: { shadow: { type: "text" } },
+            song: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
@@ -3448,6 +4117,9 @@ export const toolbox = {
         {
           kind: block,
           type: "fs_readFile",
+          inputs: {
+            path: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
@@ -3456,6 +4128,9 @@ export const toolbox = {
         {
           kind: block,
           type: "fs_readdir",
+          inputs: {
+            path: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
@@ -3472,6 +4147,10 @@ export const toolbox = {
         {
           kind: block,
           type: "fs_writeFile",
+          inputs: {
+            path: { shadow: { type: "text" } },
+            data: { shadow: { type: "text" } },
+          },
         },
         {
           kind: "label",
@@ -3480,14 +4159,25 @@ export const toolbox = {
         {
           kind: block,
           type: "fs_deleteFile",
+          inputs: {
+            path: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
           type: "fs_renameFile",
+          inputs: {
+            path: { shadow: { type: "text" } },
+            newpath: { shadow: { type: "text" } },
+          },
         },
         {
           kind: block,
           type: "fs_sendFile",
+          inputs: {
+            path: { shadow: { type: "text" } },
+            content: { shadow: { type: "text" } },
+          },
         },
       ],
     },

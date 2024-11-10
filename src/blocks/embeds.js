@@ -6,8 +6,13 @@ Blockly.Blocks["embed_create"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("Create an embed with name:")
-      .appendField(new Blockly.FieldTextInput("name"), "name");
-    this.appendStatementInput("config").setCheck("embedBlockCreatorBlock").appendField("then");
+      .appendField(
+        new Blockly.FieldTextInput("name", (val) => val.replaceAll(" ", "_")),
+        "name"
+      );
+    this.appendStatementInput("config")
+      .setCheck("embedBlockCreatorBlock")
+      .appendField("then");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("00A58E");
@@ -29,6 +34,18 @@ Blockly.Blocks["embed_settitle"] = {
   },
 };
 
+createRestrictions(
+  ["embed_settitle"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) => val.length <= 256,
+      message: "Title cannot be greater than 256 characters",
+    },
+  ]
+);
+
 Blockly.Blocks["embed_setdsc"] = {
   init: function () {
     this.appendValueInput("value")
@@ -41,6 +58,18 @@ Blockly.Blocks["embed_setdsc"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["embed_setdsc"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) => val.length <= 4096,
+      message: "Description cannot be greater than 4096 characters",
+    },
+  ]
+);
 
 Blockly.Blocks["embed_setcolor"] = {
   init: function () {
@@ -68,6 +97,21 @@ Blockly.Blocks["embed_seturl"] = {
   },
 };
 
+createRestrictions(
+  ["embed_seturl"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) =>
+        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
+          val
+        ),
+      message: "URL must be a valid URL",
+    },
+  ]
+);
+
 Blockly.Blocks["embed_setauthor"] = {
   init: function () {
     this.appendValueInput("name")
@@ -83,6 +127,36 @@ Blockly.Blocks["embed_setauthor"] = {
   },
 };
 
+createRestrictions(
+  ["embed_setauthor"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 256,
+      message: "Author cannot be greater than 256 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["icon"],
+      check: (val) =>
+        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
+          val
+        ),
+      message: "Icon must be a valid URL",
+    },
+    {
+      type: "validator",
+      blockTypes: ["url"],
+      check: (val) =>
+        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
+          val
+        ),
+      message: "Click URL must be a valid URL",
+    },
+  ]
+);
+
 Blockly.Blocks["embed_setfooter"] = {
   init: function () {
     this.appendValueInput("text")
@@ -97,6 +171,18 @@ Blockly.Blocks["embed_setfooter"] = {
   },
 };
 
+createRestrictions(
+  ["embed_setfooter"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["text"],
+      check: (val) => val.length <= 2048,
+      message: "Footer cannot be greater than 2048 characters",
+    },
+  ]
+);
+
 Blockly.Blocks["embed_setimage"] = {
   init: function () {
     this.appendValueInput("value")
@@ -109,6 +195,21 @@ Blockly.Blocks["embed_setimage"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["embed_setimage"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) =>
+        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
+          val
+        ),
+      message: "URL must be a valid URL",
+    },
+  ]
+);
 
 Blockly.Blocks["embed_setthumb"] = {
   init: function () {
@@ -123,6 +224,21 @@ Blockly.Blocks["embed_setthumb"] = {
   },
 };
 
+createRestrictions(
+  ["embed_setthumb"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) =>
+        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
+          val
+        ),
+      message: "URL must be a valid URL",
+    },
+  ]
+);
+
 Blockly.Blocks["embed_addfield"] = {
   init: function () {
     this.appendDummyInput().appendField("Add embed field");
@@ -136,6 +252,24 @@ Blockly.Blocks["embed_addfield"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["embed_addfield"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 256,
+      message: "Field name cannot be greater than 256 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["val"],
+      check: (val) => val.length <= 1024,
+      message: "Field value cannot be greater than 1024 characters",
+    },
+  ]
+);
 
 Blockly.Blocks["embed_settimestamp"] = {
   init: function () {

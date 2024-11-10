@@ -18,11 +18,12 @@ export default function Favorites() {
         },
       })
       .then(({ data }) => {
-        axios.get(apiUrl + "/users/" + data.id, {
-          headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
-          },
-        })
+        axios
+          .get(apiUrl + "/users/" + data.id, {
+            headers: {
+              Authorization: localStorage.getItem("disfuse-token"),
+            },
+          })
           .then(({ data: user }) => {
             axios
               .get(apiUrl + "/projects", {
@@ -31,7 +32,10 @@ export default function Favorites() {
                 },
               })
               .then(({ data: projects }) => {
-                let p = user.favorites.map((f) => projects.find((p) => p._id === f));
+                let p = user.favorites
+                  .filter((f) => projects.find((p) => p._id === f))
+                  .map((f) => projects.find((p) => p._id === f));
+
                 setProjects(p);
                 setShown(p);
                 setLoading(false);
@@ -69,8 +73,8 @@ export default function Favorites() {
           {shown.length > 0
             ? shown.map((project) => <PubProject project={project} />)
             : !isLoading
-              ? "No projects"
-              : ""}
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </div>

@@ -126,7 +126,7 @@ export default function Workspace() {
                       Blockly.Themes.Zelos.blockStyles["variable_blocks"],
                     variable_dynamic_blocks:
                       Blockly.Themes.Zelos.blockStyles[
-                      "variable_dynamic_blocks"
+                        "variable_dynamic_blocks"
                       ],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles["hat_blocks"],
                   },
@@ -192,11 +192,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                        spacing: gridSpacing,
-                        length: 5,
-                        colour: "#8888886e",
-                        snap: snapToGrid,
-                      }
+                          spacing: gridSpacing,
+                          length: 5,
+                          colour: "#8888886e",
+                          snap: snapToGrid,
+                        }
                       : false,
                     zoom: {
                       controls: true,
@@ -267,7 +267,7 @@ export default function Workspace() {
                   "captcha",
                   "Captcha",
                   "permsChannel",
-                  "errorButWithLengthyName"
+                  "errorButWithLengthyName",
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
@@ -417,7 +417,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
                   );
-                } catch (_) { }
+                } catch (_) {}
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -646,49 +646,69 @@ export default function Workspace() {
                       );
 
                       let missingBlocks = [];
+                      let warningBlocks = [];
 
-                      if (result.value === "project") {
-                        requiredBlocks.forEach((requiredBlock) => {
-                          if (
-                            !fullWorkspace
-                              .getAllBlocks(false)
-                              .find(
-                                (block) => block.type === requiredBlock.type
-                              )
-                          )
-                            missingBlocks.push(requiredBlock);
-                        });
-                      } else if (result.value === "workspace") {
-                        requiredBlocks.forEach((requiredBlock) => {
-                          if (
-                            !workspace
-                              .getAllBlocks(false)
-                              .find(
-                                (block) => block.type === requiredBlock.type
-                              )
-                          )
-                            missingBlocks.push(requiredBlock);
-                        });
-                      }
+                      let exportingWs;
+                      if (result.value === "project")
+                        exportingWs = fullWorkspace;
+                      else exportingWs = workspace;
 
-                      if (missingBlocks.length) {
+                      requiredBlocks.forEach((requiredBlock) => {
+                        if (
+                          !exportingWs
+                            .getAllBlocks(false)
+                            .find((block) => block.type === requiredBlock.type)
+                        )
+                          missingBlocks.push(requiredBlock);
+                      });
+
+                      exportingWs.getAllBlocks(false).forEach((block) => {
+                        if (block.data?.length)
+                          warningBlocks.push({
+                            message: block.data,
+                            id: block.id,
+                          });
+                      });
+
+                      if (missingBlocks.length || warningBlocks.length) {
                         let { isConfirmed } = await Swal.fire({
-                          title: "Missing Blocks",
+                          title: "Errors",
                           icon: "warning",
                           showCancelButton: true,
                           confirmButtonText: "Download Anyway",
                           confirmButtonColor: "#e40000",
                           html: `
-                          <p>You are missing the following blocks:</p>
-                          <br />
+                          <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                              .map(
-                                (block) =>
-                                  `<p class="missingBlock">${block.message}</p>`
-                              )
-                              .join("<br />")}
+                            .map(
+                              (block) =>
+                                `<p class="exportError">${block.message}</p>`
+                            )
+                            .join("")}
+                          ${warningBlocks
+                            .map(
+                              (block) =>
+                                `
+                              <p class="exportError">
+                                <span>
+                                ${titleCase(
+                                  exportingWs
+                                    .getBlockById(block.id)
+                                    .type.replaceAll("_", " ")
+                                )}
+                                </span>
+                              ${block.message
+                                .map((m) => `<span>${m}</span>`)
+                                .join("")}
+                              </p>`
+                            )
+                            .join("")}
                           `,
                           ...modalColors,
+                          customClass: {
+                            container: "dark",
+                            htmlContainer: "exportErrors",
+                          },
                         });
 
                         if (!isConfirmed) return;
@@ -770,7 +790,7 @@ export default function Workspace() {
                 let projectNameDiv = document.querySelector(".projectName p");
 
                 projectNameDiv.addEventListener("click", () => {
-                  if (projectNameDiv.dataset.collapsed == "false") {
+                  if (projectNameDiv.dataset.collapsed === "false") {
                     projectNameDiv.dataset.collapsed = "true";
                     projectNameDiv.innerText = "...";
                   } else {
@@ -783,7 +803,7 @@ export default function Workspace() {
                 if (
                   window.location.hostname === "localhost" &&
                   String(e) ===
-                  'Error: Shortcut named "startSearch" already exists.'
+                    'Error: Shortcut named "startSearch" already exists.'
                 ) {
                   return window.location.reload();
                 } else throw new Error(e);
@@ -854,4 +874,11 @@ function reloadContextMenus(project, currentWorkspace) {
   Blockly.ContextMenuRegistry.registry.unregister("moveBlock");
   Blockly.ContextMenuRegistry.registry.unregister("mergeWorkspace");
   registerContextMenus(project, currentWorkspace);
+}
+
+function titleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
 }

@@ -80,7 +80,8 @@ export default function MyProjects() {
         showCancelButton: true,
         inputPlaceholder: "Some description",
         inputValidator: (i) => {
-          if (i.length > 500) return "The description must be below 500 characters";
+          if (i.length > 500)
+            return "The description must be below 500 characters";
           else return false;
         },
       }).then((result) => {
@@ -179,7 +180,8 @@ export default function MyProjects() {
           input: "text",
           inputPlaceholder: "Some description",
           inputValidator: (i) => {
-            if (i.length > 500) return "The description must be below 500 characters";
+            if (i.length > 500)
+              return "The description must be below 500 characters";
             else return false;
           },
         }).then((result) => {
@@ -375,8 +377,8 @@ export default function MyProjects() {
           {shown.length > 0
             ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
-              ? "No projects"
-              : ""}
+            ? "No projects"
+            : ""}
         </div>
       </div>
     </>

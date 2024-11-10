@@ -222,10 +222,11 @@ javascriptGenerator.forBlock["roles_create"] = function (block, generator) {
   );
   var code = `${val_server}.roles.create({
   name: ${val_name},
-  color: ${val_color || "Default"},
+  color: "${val_color || "#00000"}",
   position: ${val_position || 1},
-  mentionable: ${val_mentionable || false}${val_permissions ? `,\npermissions: ${val_permissions}` : ""
-    }
+  mentionable: ${val_mentionable || false}${
+    val_permissions ? `,\npermissions: ${val_permissions}` : ""
+  }
 });\n`;
 
   return code;
@@ -259,10 +260,11 @@ javascriptGenerator.forBlock["roles_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.roles.cache${dropdown_type === "id"
+  var code = `${value_server}.roles.cache${
+    dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(r => r.name == ${value_value})`
-    }`;
+  }`;
   return [code, Order.NONE];
 };
 
@@ -473,12 +475,18 @@ createRestrictions(
     {
       type: "notEmpty",
       blockTypes: ["server"],
-      message: "You must specify the server to create the role in.",
+      message: "You must specify the server to create the role in",
     },
     {
       type: "notEmpty",
       blockTypes: ["name"],
-      message: "You must specify the name of the role.",
+      message: "You must specify the name of the role",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 100,
+      message: "Name cannot be greater than 100 characters",
     },
   ]
 );
@@ -490,6 +498,12 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["role"],
       message: "You must specify the role to delete.",
+    },
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
     },
   ]
 );
@@ -506,6 +520,12 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["name"],
       message: "You must specify the new name for the role.",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 100,
+      message: "Name cannot be greater than 100 characters",
     },
   ]
 );

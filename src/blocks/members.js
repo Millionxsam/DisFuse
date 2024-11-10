@@ -624,10 +624,11 @@ javascriptGenerator.forBlock["member_getuser"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.users.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(u => u.username == ${value_value})`
-    }`;
+  var code = `client.users.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(u => u.username == ${value_value})`
+  }`;
   return [code, Order.NONE];
 };
 
@@ -636,10 +637,11 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.members.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(m => m.username == ${value_value})`
-    }`;
+  var code = `${value_server}.members.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(m => m.username == ${value_value})`
+  }`;
   return [code, Order.NONE];
 };
 
@@ -723,12 +725,31 @@ createRestrictions(
     "member_color",
     "member_timedout",
     "member_userFlags",
+    "member_removetimeout",
   ],
   [
     {
       type: "notEmpty",
       blockTypes: ["member"],
       message: "You must specify the user/member.",
+    },
+  ]
+);
+
+createRestrictions(
+  [
+    "member_ban",
+    "member_timeout",
+    "member_kick",
+    "member_setnick",
+    "member_removetimeout",
+  ],
+  [
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
     },
   ]
 );

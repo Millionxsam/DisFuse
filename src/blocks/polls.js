@@ -31,6 +31,24 @@ Blockly.Blocks["poll_create"] = {
   },
 };
 
+createRestrictions(
+  ["poll_create"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["QUESTION"],
+      check: (val) => val.length <= 300,
+      message: "Question cannot be greater than 300 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["DURATION"],
+      check: (val) => 0 <= parseInt(val) && parseInt(val) <= 336,
+      message: "Duration must be between 0 and 336 hours (2 weeks)",
+    },
+  ]
+);
+
 javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
   var text_name = block.getFieldValue("NAME");
   var value_question = generator.valueToCode(block, "QUESTION", Order.ATOMIC);
@@ -66,6 +84,24 @@ Blockly.Blocks["poll_choice"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["poll_choice"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["TEXT"],
+      check: (val) => val.length <= 55,
+      message: "Text cannot be greater than 55 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["EMOJI"],
+      check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
+      message: "Emoji must be a single valid emoji",
+    },
+  ]
+);
 
 javascriptGenerator.forBlock["poll_choice"] = function (block, generator) {
   var value_text = generator.valueToCode(block, "TEXT", Order.ATOMIC);
@@ -109,6 +145,18 @@ javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
   poll: PollCreator${text_name}
 });\n`;
 };
+
+createRestrictions(
+  ["poll_sendchannel"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["MESSAGE"],
+      check: (val) => val.length <= 2000,
+      message: "Text cannot be greater than 2,000 characters",
+    },
+  ]
+);
 
 Blockly.Blocks["poll_whenvoteadded"] = {
   init: function () {
