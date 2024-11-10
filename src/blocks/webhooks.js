@@ -9,7 +9,7 @@ Blockly.Blocks["webhooks_create"] = {
       .setCheck("String");
     this.appendValueInput("avatar")
       .setCheck("String")
-      .appendField("and avatar URL:");
+      .appendField("avatar URL:");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in channel:");
@@ -247,6 +247,21 @@ createRestrictions(
       blockTypes: ["channel"],
       message: "You must specify the channel to create the webhook in",
     },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 80,
+      message: "Name cannot be greater than 80 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["avatar"],
+      check: (val) =>
+        /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$|^$/.test(
+          val
+        ),
+      message: "URL must be a valid URL",
+    },
   ]
 );
 
@@ -257,6 +272,12 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["content"],
       message: "You must specify the content to send",
+    },
+    {
+      type: "validator",
+      blockTypes: ["content"],
+      check: (val) => val.length <= 2000,
+      message: "Content cannot be greater than 2,000 characters",
     },
   ]
 );
@@ -288,6 +309,27 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["webhook"],
       message: "You must specify the webhook",
+    },
+  ]
+);
+
+createRestrictions(
+  ["webhooks_edit"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 80,
+      message: "Name cannot be greater than 80 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["avatar"],
+      check: (val) =>
+        /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$|^$/.test(
+          val
+        ),
+      message: "URL must be a valid URL",
     },
   ]
 );

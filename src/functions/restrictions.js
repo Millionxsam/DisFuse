@@ -1,3 +1,5 @@
+import { javascriptGenerator, Order } from "blockly/javascript";
+
 export const restrictions = {};
 
 export function createRestrictions(blockNames, newRestrictions) {
@@ -58,11 +60,31 @@ export function executeRestrictions(workspace) {
           });
           if (!passBE) errors.push(restriction.message);
           break;
+        case "validator":
+          let passValidator = true;
+          restriction.blockTypes.forEach((input) => {
+            let val = javascriptGenerator.valueToCode(block, input, Order.NONE);
+            if (
+              !(val.startsWith("'") && val.endsWith("'")) &&
+              isNaN(val) &&
+              isNaN(parseFloat(val))
+            )
+              return;
+
+            passValidator = restriction.check(
+              val.replaceAll("'", ""),
+              workspace
+            );
+          });
+
+          if (!passValidator) errors.push(restriction.message);
       }
     });
 
     if (errors.length > 0) block.setWarningText(errors.join("\n"));
     else block.setWarningText(null);
+
+    block.data = errors;
   });
 }
 
@@ -90,4 +112,3 @@ function hasBlockInParentOfType(block, types) {
 
   return hasParent;
 }
-

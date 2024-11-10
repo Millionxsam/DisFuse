@@ -146,6 +146,18 @@ Blockly.Blocks["msg_react"] = {
   },
 };
 
+createRestrictions(
+  ["msg_react"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["reaction"],
+      check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
+      message: "Emoji must be a single valid emoji",
+    },
+  ]
+);
+
 javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
   var message = generator.valueToCode(block, "message", Order.ATOMIC);
   var reaction = generator.valueToCode(block, "reaction", Order.ATOMIC);
@@ -407,7 +419,7 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["msg_reply", "msg_reply_rows"],
+  ["msg_reply", "msg_reply_rows", "msg_edit"],
   [
     {
       type: "hasHat",
@@ -419,16 +431,37 @@ createRestrictions(
       blockTypes: ["content", "embeds"],
       message: "You must specify the content and/or embed(s) to send",
     },
-  ]
-);
-
-createRestrictions(
-  ["msg_edit"],
-  [
     {
-      type: "notEmpty",
-      blockTypes: ["content", "embeds"],
-      message: "You must specify the content and/or embed(s) to edit",
+      type: "validator",
+      blockTypes: ["content"],
+      check: (val) => val.length <= 2000,
+      message: "Content cannot be greater than 2,000 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["embeds"],
+      check: (val, workspace) => {
+        if (!val.length) return true;
+
+        let embeds = val.split(",");
+        let pass = true;
+
+        embeds.forEach((embedName) => {
+          if (
+            !workspace
+              .getAllBlocks(false)
+              .find(
+                (b) =>
+                  b.type === "embed_create" &&
+                  b.getFieldValue("name") === embedName.trim()
+              )
+          )
+            pass = false;
+        });
+
+        return pass;
+      },
+      message: "No embed with that name exists",
     },
   ]
 );

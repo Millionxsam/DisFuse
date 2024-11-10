@@ -106,6 +106,18 @@ Blockly.Blocks["channel_channel"] = {
   },
 };
 
+createRestrictions(
+  ["channel_setslowmode"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["time"],
+      check: (val) => 0 <= parseInt(val) && parseInt(val) <= 21600,
+      message: "Slowmode must be between 0 and 21,600 seconds",
+    },
+  ]
+);
+
 Blockly.Blocks["channel_setslowmode"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -136,6 +148,23 @@ Blockly.Blocks["channel_settopic"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["channel_settopic"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["topic"],
+      check: (val) => val.length <= 1024,
+      message: "Topic cannot be greater than 1024 characters",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to set the topic of",
+    },
+  ]
+);
 
 Blockly.Blocks["channel_syncPerms"] = {
   init: function () {
@@ -208,6 +237,24 @@ Blockly.Blocks["channel_setautoarchive"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["channel_setautoarchive"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message:
+        "You must specify the channel to set the auto archive duration of",
+    },
+  ]
+);
 
 Blockly.Blocks["channel_getslowmode"] = {
   init: function () {
@@ -402,6 +449,29 @@ Blockly.Blocks["channel_clone"] = {
   },
 };
 
+createRestrictions(
+  ["channel_clone"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to clone",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-zA-Z0-9 _-]*$/.test(val),
+      message: "Invalid channel name",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 100,
+      message: "The name cannot be greater than 100 characters",
+    },
+  ]
+);
+
 Blockly.Blocks["channel_setParent"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -532,11 +602,12 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
     name: ${name || "''"},
     parent: ${parent || "null"},
     type: Discord.ChannelType.${type}
-  })${then
+  })${
+    then
       ? `.then(async (createdChannel) => {
   ${then}});`
       : ";"
-    }`;
+  }`;
 };
 
 Blockly.Blocks["channel_del"] = {
@@ -553,6 +624,23 @@ Blockly.Blocks["channel_del"] = {
   },
 };
 
+createRestrictions(
+  ["channel_del"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to delete",
+    },
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
+    },
+  ]
+);
+
 Blockly.Blocks["channel_setname"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -566,6 +654,29 @@ Blockly.Blocks["channel_setname"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["channel_setname"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to rename",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-zA-Z0-9 _-]*$/.test(val),
+      message: "Invalid channel name",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 100,
+      message: "The name cannot be greater than 100 characters",
+    },
+  ]
+);
 
 javascriptGenerator.forBlock["channel_setname"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
@@ -588,8 +699,9 @@ javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
   var name = generator.valueToCode(block, "name", Order.NONE);
   var then = generator.statementToCode(block, "then");
 
-  var code = `${channel}.clone({ name: ${name || `${channel}.name`
-    } }).then(async (createdChannel) => {
+  var code = `${channel}.clone({ name: ${
+    name || `${channel}.name`
+  } }).then(async (createdChannel) => {
     ${then}});\n`;
 
   return code;
@@ -649,10 +761,11 @@ javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(c => c.name == ${value_value})`
-    }`;
+  var code = `${value_server}.channels.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(c => c.name == ${value_value})`
+  }`;
   return [code, Order.NONE];
 };
 
@@ -858,6 +971,38 @@ createRestrictions(
       blockTypes: ["content", "embeds"],
       message: "You must specify the content or embeds to send",
     },
+    {
+      type: "validator",
+      blockTypes: ["content"],
+      check: (val) => val.length <= 2000,
+      message: "The content cannot be greater than 2,000 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["embeds"],
+      check: (val, workspace) => {
+        if (!val.length) return true;
+
+        let embeds = val.split(",");
+        let pass = true;
+
+        embeds.forEach((embedName) => {
+          if (
+            !workspace
+              .getAllBlocks(false)
+              .find(
+                (b) =>
+                  b.type === "embed_create" &&
+                  b.getFieldValue("name") === embedName.trim()
+              )
+          )
+            pass = false;
+        });
+
+        return pass;
+      },
+      message: "No embed with that name exists",
+    },
   ]
 );
 
@@ -873,6 +1018,12 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["category"],
       message: "You must specify the category to move the channel to",
+    },
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
     },
   ]
 );
@@ -890,6 +1041,12 @@ createRestrictions(
       blockTypes: ["position"],
       message: "You must specify the position to move the channel to",
     },
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
+    },
   ]
 );
 
@@ -905,6 +1062,18 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["name"],
       message: "You must specify the name of the channel",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-zA-Z0-9 _-]*$/.test(val),
+      message: "Invalid channel name",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 100,
+      message: "The name cannot be greater than 100 characters",
     },
   ]
 );

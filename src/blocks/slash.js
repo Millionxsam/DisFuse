@@ -378,8 +378,9 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
       description: ${dsc},
       nsfw: ${nsfw || false},
       dmPermission: ${dm || true},
-      defaultMemberPermissions: ${perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
-    },
+      defaultMemberPermissions: ${
+        perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+      },
       options: [${options}]
     },`;
 
@@ -482,6 +483,25 @@ createRestrictions(
       message:
         'This block must be under "Set slash commands / context menus" block',
     },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-z0-9_-]+$/.test(val),
+      message:
+        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 32,
+      message: "The name cannot be greater than 32 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["dsc"],
+      check: (val) => val.length <= 100,
+      message: "The description cannot be greater than 100 characters",
+    },
   ]
 );
 
@@ -494,6 +514,25 @@ createRestrictions(
       message:
         'This block must be under "add slash command" OR "add subcommand" block',
     },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-z0-9_-]+$/.test(val),
+      message:
+        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 32,
+      message: "The name cannot be greater than 32 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["dsc"],
+      check: (val) => val.length <= 100,
+      message: "The description cannot be greater than 100 characters",
+    },
   ]
 );
 createRestrictions(
@@ -503,6 +542,25 @@ createRestrictions(
       type: "surroundParent",
       blockTypes: ["slash_addoption"],
       message: 'This block must be under "add option" block',
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-z0-9_-]+$/.test(val),
+      message:
+        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 25,
+      message: "The name cannot be greater than 25 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) => val.length <= 100,
+      message: "The name cannot be greater than 100 characters",
     },
   ]
 );
@@ -515,6 +573,25 @@ createRestrictions(
       message:
         'This block must be under "add slash command" OR "add subcommand group" block',
     },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^[a-z0-9_-]+$/.test(val),
+      message:
+        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+    },
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => val.length <= 32,
+      message: "The name cannot be greater than 32 characters",
+    },
+    {
+      type: "validator",
+      blockTypes: ["dsc"],
+      check: (val) => val.length <= 100,
+      message: "The description cannot be greater than 100 characters",
+    },
   ]
 );
 createRestrictions(
@@ -524,16 +601,6 @@ createRestrictions(
       type: "surroundParent",
       blockTypes: ["slash_create"],
       message: 'This block must be under "add slash command" block',
-    },
-  ]
-);
-createRestrictions(
-  ["slash_addchoice"],
-  [
-    {
-      type: "surroundParent",
-      blockTypes: ["slash_addoption"],
-      message: 'This block must be under "add option" block',
     },
   ]
 );

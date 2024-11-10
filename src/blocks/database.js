@@ -123,7 +123,7 @@ Blockly.Blocks["db_sub"] = {
 
 Blockly.Blocks["db_push"] = {
   init: function () {
-    this.appendValueInput("val").setCheck("Number").appendField("Push");
+    this.appendValueInput("val").setCheck(null).appendField("Push");
     this.appendValueInput("id").setCheck("String").appendField("to");
     this.appendDummyInput()
       .appendField("in the database with the name:")
