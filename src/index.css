@@ -899,11 +899,11 @@ i.workspacesMenuBtn:hover {
   text-align: center;
   justify-content: center;
   gap: 2vh;
-  margin-top: 10vh;
+  margin-top: 7vh;
 }
 
 .home-container .head h1 {
-  font-size: 70px;
+  font-size: 65px;
   font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
 }
 
@@ -976,8 +976,32 @@ i.workspacesMenuBtn:hover {
   box-shadow: 0 0 2rem var(--main-color);
 }
 
-.home-container div.head p#offer {
-  font-size: 25px;
+.home-container div.stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.home-container div.stats div {
+  background-color: #001222;
+  padding: 1rem;
+  border-radius: 2rem;
+  font-size: 18px;
+  position: relative;
+}
+
+.home-container div.stats div::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  padding: 3px;
+  background: blue;
+  background: -webkit-linear-gradient(to right, blue, purple);
+  background: linear-gradient(to right, blue, purple);
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  left: -3px;
+  top: -3px;
 }
 
 .dashboard-container {

@@ -8,12 +8,35 @@ export default function Home() {
   const [projects, setProjects] = useState(Number);
 
   useEffect(() => {
-    axios
-      .get(apiUrl + '/stats')
-      .then(data => {
-        setUsers(data.data.users);
-        setProjects(data.data.projects);
-      });
+    axios.get(apiUrl + "/stats").then(({ data }) => {
+      setUsers(data.users);
+      setProjects(data.projects);
+
+      const usersEle = document.querySelectorAll(
+        ".home-container .stats div"
+      )[0];
+      const projectsEle = document.querySelectorAll(
+        ".home-container .stats div"
+      )[1];
+
+      const animationMs = 2000;
+
+      let i = 0;
+
+      let intervalId = setInterval(() => {
+        usersEle.innerHTML = i + " Users";
+        i++;
+        if (i === data.users) clearInterval(intervalId);
+      }, animationMs / data.users);
+
+      let y = 0;
+
+      let intervalId2 = setInterval(() => {
+        projectsEle.innerHTML = y + " Projects";
+        y++;
+        if (y === data.projects) clearInterval(intervalId2);
+      }, animationMs / data.projects);
+    });
   }, []);
 
   return (
@@ -24,6 +47,10 @@ export default function Home() {
             <img src="/media/disfuse.png" alt="" />
           </div>
           <h1>DisFuse</h1>
+          <div className="stats hidden">
+            <div>{users} Users</div>
+            <div>{projects} Projects</div>
+          </div>
           <p>
             Create your own <strong>advanced</strong> Discord bot by using
             <strong> simple</strong>, easy-to-use block coding
@@ -40,7 +67,6 @@ export default function Home() {
               </button>
             </Link>
           </div>
-          <p id="offer">We offer our service to <strong>{users}</strong> users, and <strong>{projects}</strong> projects!</p>
         </div>
         <div
           onClick={() => {
