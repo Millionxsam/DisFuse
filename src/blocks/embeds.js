@@ -7,7 +7,10 @@ Blockly.Blocks["embed_create"] = {
     this.appendDummyInput()
       .appendField("Create an embed with name:")
       .appendField(
-        new Blockly.FieldTextInput("name", (val) => val.replaceAll(" ", "_")),
+        new Blockly.FieldTextInput("name", (val) => {
+          if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
+          else return val;
+        }),
         "name"
       );
     this.appendStatementInput("config")
@@ -33,6 +36,18 @@ Blockly.Blocks["embed_settitle"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["embed_create"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["name"],
+      check: (val) => /^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val),
+      message: "Embed name must start with a letter, and can only contain alphanumeric character",
+    },
+  ]
+);
 
 createRestrictions(
   ["embed_settitle"],
@@ -103,10 +118,14 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["value"],
-      check: (val) =>
-        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
-          val
-        ),
+      check: (val) => {
+        try {
+          new URL(val);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      },
       message: "URL must be a valid URL",
     },
   ]

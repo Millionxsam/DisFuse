@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Ubuntu Sans", "Roboto", sans-serif;
+  font-family: 'Ubuntu Sans', 'Roboto', sans-serif;
   --main-color: #014f98;
   --border-color: rgba(112, 128, 144, 0.233);
   --foreground-color: #001222;
@@ -73,7 +73,7 @@ p.errors {
 }
 
 button,
-input[type="date"] {
+input[type='date'] {
   display: flex;
   align-items: center;
   gap: 0.5vw;
@@ -131,7 +131,7 @@ button.disabled:active {
   scale: 1;
 }
 
-input[type="number"] {
+input[type='number'] {
   background-color: transparent;
   border: 2px solid var(--border-color);
   border-radius: 10px;
@@ -144,7 +144,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-input[type="number"]:hover {
+input[type='number']:hover {
   background-color: var(--border-color);
 }
 
@@ -194,7 +194,7 @@ input[type="number"]:hover {
 }
 
 .underline-effect::after {
-  content: "";
+  content: '';
   display: block;
   opacity: 0;
   height: 0.3vh;
@@ -254,7 +254,7 @@ input[type="number"]:hover {
 .slider:before {
   position: absolute;
   border-radius: 2rem;
-  content: "";
+  content: '';
   height: 26px;
   width: 26px;
   left: 4px;
@@ -404,7 +404,7 @@ i.workspacesMenuBtn:hover {
 
 .projectName p {
   cursor: pointer;
-  font-family: "Poetsen One";
+  font-family: 'Poetsen One';
   font-size: 20px;
   white-space: nowrap;
   min-width: fit-content;
@@ -883,7 +883,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .tos-container h1 {
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
 }
 
 .tos-container h1,
@@ -904,7 +904,7 @@ i.workspacesMenuBtn:hover {
 
 .home-container .head h1 {
   font-size: 65px;
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
 }
 
 .home-container .head p {
@@ -940,7 +940,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .home-container .head .logo::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
@@ -990,7 +990,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .home-container div.stats div::before {
-  content: "";
+  content: '';
   z-index: -1;
   position: absolute;
   padding: 3px;
@@ -1054,7 +1054,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .sidebar-container .logo div {
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
 }
 
 .sidebar-container .logo img {
@@ -1288,7 +1288,7 @@ i.workspacesMenuBtn:hover {
 }
 
 input.search,
-.adminDashboard-container * input[type="text"] {
+.adminDashboard-container * input[type='text'] {
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 2rem;
@@ -1314,10 +1314,10 @@ input.search:focus::placeholder {
   color: rgba(190, 190, 190, 0.288);
 }
 
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
@@ -2014,7 +2014,7 @@ select option {
   }
 
   .hamburger div {
-    font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+    font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
   }
 
   .hamburger i {
@@ -2183,7 +2183,7 @@ select option {
 .home-container .body h2 {
   text-align: center;
   font-size: 50px;
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
 }
 
 .features {
@@ -2307,7 +2307,7 @@ div.hidden:not(.shown) {
 .staff-container h1 {
   text-align: center;
   font-size: 50px;
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-family: 'Poetsen One', 'Ubuntu Sans', sans-serif;
 }
 
 .staff-container .staff {
@@ -2352,7 +2352,7 @@ div.hidden:not(.shown) {
 }
 
 .blocklyTreeIcon {
-  background-image: url("../public/media/sprite.png");
+  background-image: url('../public/media/sprite.png');
 }
 
 .blocklyTreeRow {
@@ -2514,7 +2514,7 @@ div.hidden:not(.shown) {
 }
 
 .code-view-tabs div.active::after {
-  content: "";
+  content: '';
   width: 100%;
   height: 2px;
   margin-top: 5px;
@@ -2578,4 +2578,26 @@ div.hidden:not(.shown) {
 
 .workshop-item .buttons button {
   width: 100%;
+}
+
+.custom-menu {
+  position: absolute;
+  display: none;
+  background-color: var(--foreground-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  list-style: none;
+  padding: 5px 0;
+}
+
+.custom-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-menu li:hover {
+  background-color: #007bff;
+  color: #fff;
 }
