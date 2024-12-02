@@ -976,12 +976,16 @@ export const toolbox = {
     },
     {
       kind: "category",
-      name: "Color",
+      name: "Colour",
       colour: "#ad794c",
       contents: [
         {
           kind: block,
           type: "colour_picker",
+        },
+        {
+          kind: block,
+          type: "colour_hex",
         },
         {
           kind: block,

@@ -128,5 +128,5 @@ export default function Sidebar() {
 function logout(e) {
   e.stopPropagation();
   localStorage.removeItem("disfuse-token");
-  window.location = "/";
+  window.location.replace("/");
 }

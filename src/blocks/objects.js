@@ -233,6 +233,26 @@ javascriptGenerator.forBlock['object_parse'] = function (block, generator) {
     return [`JSON.parse(${val_string})`, Order.NONE];
 };
 
+Blockly.Blocks['object_merge'] = {
+    init: function () {
+        this.appendValueInput('object1')
+            .setCheck('object').appendField('merge object');
+        this.appendValueInput('object2')
+            .setCheck('object').appendField('with object');
+        this.setInputsInline(true);
+        this.setColour('#BA59CE');
+        this.setOutput(true, 'object');
+    }
+};
+
+javascriptGenerator.forBlock['object_merge'] = function (block, generator) {
+    var object1 = generator.valueToCode(block, 'object1', Order.ATOMIC);
+    var object2 = generator.valueToCode(block, 'object2', Order.ATOMIC);
+
+    return [`Object.assign({}, ${object1}, ${object2})`, Order.NONE];
+};
+
+
 createRestrictions(
     ['object_setkey', 'object_deletekey', 'object_getkey', 'object_length', 'object_keys', 'object_values', 'object_has', 'object_stringify'],
     [
@@ -240,6 +260,17 @@ createRestrictions(
             type: "notEmpty",
             blockTypes: ["object"],
             message: 'You must specify the object',
+        },
+    ]
+);
+
+createRestrictions(
+    ['object_merge'],
+    [
+        {
+            type: "notEmpty",
+            blockTypes: ["object1", "object2"],
+            message: 'You must specify the first and second object',
         },
     ]
 );
