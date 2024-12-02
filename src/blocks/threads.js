@@ -67,8 +67,8 @@ Blockly.Blocks["threads_channelCreateThread"] = {
       .appendField("type:")
       .appendField(
         new Blockly.FieldDropdown([
-          ["Public", "GUILD_PUBLIC_THREAD"],
-          ["Private", "GUILD_PRIVATE_THREAD"],
+          ["Public", "PublicThread"],
+          ["Private", "PrivateThread"],
         ]),
         "type"
       );
@@ -92,7 +92,7 @@ javascriptGenerator.forBlock["threads_channelCreateThread"] = function (
 
   var code = `${val_channel}.threads.create({
   name: ${val_name},
-  type: ${val_type},${
+  type: Discord.ChannelType.${val_type},${
     val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
   }
 })`;
