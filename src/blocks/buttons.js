@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript, { Order } from "blockly/javascript";
+import { Order, JavascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["buttons_add"] = {
@@ -148,7 +148,7 @@ Blockly.Blocks["buttons_del"] = {
   },
 };
 
-javascript.javascriptGenerator.forBlock["buttons_del"] = function (
+JavascriptGenerator.forBlock["buttons_del"] = function (
   block,
   generator
 ) {
@@ -156,52 +156,52 @@ javascript.javascriptGenerator.forBlock["buttons_del"] = function (
   return code;
 };
 
-javascript.javascriptGenerator.forBlock["buttons_message"] = () => [
+JavascriptGenerator.forBlock["buttons_message"] = () => [
   "interaction.message",
   Order.NONE,
 ];
 
-javascript.javascriptGenerator.forBlock["buttons_server"] = function (
+JavascriptGenerator.forBlock["buttons_server"] = function (
   block,
   generator
 ) {
   var code = `interaction.guild`;
-  return [code, javascript.Order.NONE];
+  return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["buttons_channel"] = function (
+JavascriptGenerator.forBlock["buttons_channel"] = function (
   block,
   generator
 ) {
   var code = `interaction.channel`;
-  return [code, javascript.Order.NONE];
+  return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["buttons_user"] = function (
+JavascriptGenerator.forBlock["buttons_user"] = function (
   block,
   generator
 ) {
   var code = `interaction.member.user`;
-  return [code, javascript.Order.NONE];
+  return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["buttons_member"] = function (
+JavascriptGenerator.forBlock["buttons_member"] = function (
   block,
   generator
 ) {
   var code = `interaction.member`;
-  return [code, javascript.Order.NONE];
+  return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["buttons_id"] = function (
+JavascriptGenerator.forBlock["buttons_id"] = function (
   block,
   generator
 ) {
   var code = `interaction.customId`;
-  return [code, javascript.Order.NONE];
+  return [code, Order.NONE];
 };
 
-javascript.javascriptGenerator.forBlock["buttons_event"] = function (
+JavascriptGenerator.forBlock["buttons_event"] = function (
   block,
   generator
 ) {
@@ -214,27 +214,31 @@ javascript.javascriptGenerator.forBlock["buttons_event"] = function (
   return codeEvent;
 };
 
-javascript.javascriptGenerator.forBlock["buttons_add"] = function (
+JavascriptGenerator.forBlock["buttons_add"] = function (
   block,
   generator
 ) {
-  var label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
-  var emoji = generator.valueToCode(block, "emoji", javascript.Order.ATOMIC);
+  var label = generator.valueToCode(block, "label", Order.ATOMIC);
+  var emoji = generator.valueToCode(block, "emoji", Order.ATOMIC);
   var style = block.getFieldValue("style");
-  var id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var id = generator.valueToCode(block, "id", Order.ATOMIC);
   var disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    Order.ATOMIC
   );
-  var url = generator.valueToCode(block, "url", javascript.Order.ATOMIC);
+  var url = generator.valueToCode(block, "url", Order.ATOMIC);
 
-  var code = `new Discord.ButtonBuilder().setLabel(${label || "''"})
-  .setStyle(${style})
-  .setDisabled(${disabled || "false"})${url ? `\n.setURL(${url})` : ""}${
-    id ? `\n.setCustomId(${id})` : ""
-  }${emoji ? `\n.setEmoji(${emoji})` : ""},\n`;
-  return code;
+  const resultCode = ['new Discord.ButtonBuilder()'];
+  resultCode.push(`.setLabel(${label || "''"})`);
+  resultCode.push(`.setStyle(${style ?? "'1'"})`);
+  resultCode.push(`.setDisabled(${disabled ?? false})`);
+  resultCode.push(`.setLabel(${label || "''"})`);
+  resultCode.push(`.setCustomId(${id})`);
+  if (url && url !== '') resultCode.push(`.setURL(${url})`);
+  if (emoji && emoji !== '') resultCode.push(`.setEmoji(${emoji})`);
+
+  return resultCode.join('\n');
 };
 
 createRestrictions(

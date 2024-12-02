@@ -4,7 +4,7 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["logic_switch"] = {
   init: function () {
-    this.appendValueInput("switch").appendField("Check");
+    this.appendValueInput("switch").appendField("Check if");
     this.appendStatementInput("cases").setCheck("case");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -15,7 +15,7 @@ Blockly.Blocks["logic_switch"] = {
 
 Blockly.Blocks["logic_case"] = {
   init: function () {
-    this.appendValueInput("case").appendField("If it =");
+    this.appendValueInput("case").appendField("Equals to");
     this.appendStatementInput("code").appendField("then");
     this.setPreviousStatement(true, "case");
     this.setNextStatement(true, "case");
@@ -81,7 +81,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["logic_switch"],
-      message: "This block must be under a 'check' block",
+      message: "This block must be under a 'check if' block",
     },
   ]
 );

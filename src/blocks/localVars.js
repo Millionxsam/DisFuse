@@ -3,21 +3,17 @@ import { Order, javascriptGenerator } from 'blockly/javascript';
 
 Blockly.Blocks['localVars_set'] = {
   init: function () {
-    var validator = function (newValue) {
-      if (/^[a-zA-Z0-9]+$/.test(newValue)) {
-        return newValue;
-      } else {
-        return null;
-      }
-    };
-
-    var varInput = new Blockly.FieldTextInput('variable');
-    varInput.setValidator(validator);
 
     this.appendValueInput('value')
       .setCheck(null)
       .appendField('set')
-      .appendField(varInput, 'variable')
+      .appendField(
+        new Blockly.FieldTextInput('variable', (val) => {
+          if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
+          else return val;
+        }),
+        'variable'
+      )
       .appendField('to');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');

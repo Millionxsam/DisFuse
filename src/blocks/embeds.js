@@ -11,7 +11,7 @@ Blockly.Blocks["embed_create"] = {
           if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
           else return val;
         }),
-        "name"
+        'name'
       );
     this.appendStatementInput("config")
       .setCheck("embedBlockCreatorBlock")
@@ -36,18 +36,6 @@ Blockly.Blocks["embed_settitle"] = {
     this.setHelpUrl("");
   },
 };
-
-createRestrictions(
-  ["embed_create"],
-  [
-    {
-      type: "validator",
-      blockTypes: ["name"],
-      check: (val) => /^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val),
-      message: "Embed name must start with a letter, and can only contain alphanumeric character",
-    },
-  ]
-);
 
 createRestrictions(
   ["embed_settitle"],
@@ -98,6 +86,18 @@ Blockly.Blocks["embed_setcolor"] = {
     this.setHelpUrl("");
   },
 };
+
+createRestrictions(
+  ["embed_setcolor"],
+  [
+    {
+      type: "validator",
+      blockTypes: ["value"],
+      check: (val) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(val) || String(val).toLowerCase() === "Random",
+      message: 'Color must be a valid hex color, or "Random"',
+    },
+  ]
+);
 
 Blockly.Blocks["embed_seturl"] = {
   init: function () {
@@ -153,7 +153,7 @@ createRestrictions(
       type: "validator",
       blockTypes: ["name"],
       check: (val) => val.length <= 256,
-      message: "Author cannot be greater than 256 characters",
+      message: "Author name cannot be greater than 256 characters",
     },
     {
       type: "validator",
@@ -345,7 +345,7 @@ javascriptGenerator.forBlock["embed_setauthor"] = function (block, generator) {
   var value_icon = generator.valueToCode(block, "icon", Order.ATOMIC);
   var value_url = generator.valueToCode(block, "url", Order.ATOMIC);
 
-  var code = `.setAuthor({ name: ${value_name}, iconURL: ${value_icon}, url: ${value_url} })`;
+  var code = `.setAuthor({ name: ${value_name}, ${value_icon ? `\niconURL: ${value_icon},` : ''} ${value_url ? `\nurl: ${value_url},` : ''} })`;
   return code;
 };
 

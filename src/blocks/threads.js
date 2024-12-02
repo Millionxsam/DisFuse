@@ -41,9 +41,8 @@ javascriptGenerator.forBlock["threads_msgCreateThread"] = function (
 
   var code = `${val_message}.startThread({
   name: ${val_name},
-  type: ${val_type},${
-    val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
-  }
+  type: '${val_type}',${val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
+    }
 })`;
 
   if (then) code += `.then(async (createdThread) => {\n${then}})`;
@@ -92,9 +91,8 @@ javascriptGenerator.forBlock["threads_channelCreateThread"] = function (
 
   var code = `${val_channel}.threads.create({
   name: ${val_name},
-  type: ${val_type},${
-    val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
-  }
+  type: '${val_type}',${val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
+    }
 })`;
 
   if (then) code += `.then(async (createdThread) => {\n${then}})`;
@@ -442,11 +440,10 @@ javascriptGenerator.forBlock["threads_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
-  var code = `${value_channel}.threads.cache${
-    dropdown_type === "id"
-      ? `.get(${value_value})`
-      : `.find(t => t.name == ${value_value})`
-  }`;
+  var code = `${value_channel}.threads.cache${dropdown_type === "id"
+    ? `.get(${value_value})`
+    : `.find(t => t.name == ${value_value})`
+    }`;
   return [code, Order.NONE];
 };
 

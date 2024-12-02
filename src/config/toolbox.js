@@ -2411,7 +2411,7 @@ export const toolbox = {
         {
           kind: "category",
           name: "Members",
-          colour: "#C17778",
+          colour: "#3c9e56",
           contents: [
             {
               kind: "label",
@@ -2705,7 +2705,7 @@ export const toolbox = {
         {
           kind: "category",
           name: "Webhooks",
-          colour: "#D49E55",
+          colour: "#4f85db",
           contents: [
             {
               kind: "label",

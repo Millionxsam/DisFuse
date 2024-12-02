@@ -16,7 +16,7 @@ Blockly.Blocks["webhooks_create"] = {
     this.appendStatementInput("code").setCheck("default").appendField("then");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -24,7 +24,7 @@ Blockly.Blocks["webhooks_createdWebhook"] = {
   init: function () {
     this.appendDummyInput().appendField("created webhook");
     this.setOutput(true, "webhook");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -41,7 +41,7 @@ Blockly.Blocks["webhooks_send"] = {
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -80,7 +80,7 @@ Blockly.Blocks["webhooks_delete"] = {
       .appendField("Delete the webhook:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -105,7 +105,7 @@ Blockly.Blocks["webhooks_edit"] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -127,7 +127,7 @@ Blockly.Blocks["webhooks_fetch"] = {
       .appendField("get webhook with ID:");
     this.appendValueInput("token").setCheck("String").appendField("and token:");
     this.setOutput(true, "webhook");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -146,7 +146,7 @@ Blockly.Blocks["webhooks_token"] = {
       .setCheck("webhook")
       .appendField("token of webhook:");
     this.setOutput(true, "String");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -162,7 +162,7 @@ Blockly.Blocks["webhooks_name"] = {
       .setCheck("webhook")
       .appendField("name of webhook:");
     this.setOutput(true, "String");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -178,7 +178,7 @@ Blockly.Blocks["webhooks_owner"] = {
       .setCheck("webhook")
       .appendField("user owner of webhook:");
     this.setOutput(true, "user");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -194,7 +194,7 @@ Blockly.Blocks["webhooks_id"] = {
       .setCheck("webhook")
       .appendField("id of webhook:");
     this.setOutput(true, "String");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
@@ -210,7 +210,7 @@ Blockly.Blocks["webhooks_createdAt"] = {
       .setCheck("webhook")
       .appendField("creation date of webhook:");
     this.setOutput(true, "date");
-    this.setColour("#D49E55");
+    this.setColour("#4f85db");
   },
 };
 
