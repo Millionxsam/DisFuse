@@ -3723,6 +3723,10 @@ export const toolbox = {
             },
             {
               kind: block,
+              type: "events_message_ReactionAdd_msg"
+            },
+            {
+              kind: block,
               type: "events_message_ReactionAdd_emoji",
             },
             {
