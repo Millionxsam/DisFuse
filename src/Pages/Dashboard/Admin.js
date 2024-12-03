@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
-const { discordUrl, apiUrl } = require('../../config/config.json');
+const { apiUrl } = require('../../config/config.json');
 
 export default function Admin() {
     async function getIdByName(username) {
@@ -122,6 +121,7 @@ export default function Admin() {
         <div className="adminDashboard-container">
             <div className="head">
                 <i class="fa-solid fa-user-tie"></i> Admin Dashboard
+                <h2>If you are not an Admin, you won't be able to use this panel</h2>
             </div>
 
             <div className="inline">

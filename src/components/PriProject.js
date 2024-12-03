@@ -17,12 +17,12 @@ export default function PriProject({ project }) {
       <div className="priProject">
         <div className="top">
           <div className="name-container">
-            <div><i class="fa-solid fa-pen-to-square" onClick={() => editProject(project)}></i></div>
             <h1>{project.name}</h1>
+            <div><i class="fa-solid fa-pen-to-square" onClick={() => editProject(project)}></i></div>
             {project.private ? <div><i class="fa-solid fa-lock"></i></div> : ""}
           </div>
           <i>
-            {project?.lastEdited && lastEdited && lastEdited.getTime() != 0 ? (
+            {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
               <>
                 Edited{" "}
                 {ms(Date.now() - lastEdited.getTime(), {
@@ -66,6 +66,7 @@ function deleteProject(project) {
     showCancelButton: true,
     focusCancel: true,
     animation: true,
+    ...modalColors,
   }).then((result) => {
     if (!result.isConfirmed) return;
 

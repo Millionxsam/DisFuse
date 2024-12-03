@@ -1197,13 +1197,12 @@ i.workspacesMenuBtn:hover {
   transition: scale 0.2s ease;
 }
 
-.priProject .name-container i:nth-of-type(1):hover {
+.priProject .name-container i:hover:not(.fa-solid.fa-lock) {
   animation: spin 0.5s ease;
-  scale: 1.05;
+  scale: 1.1;
 }
 
-.priProject .name-container i:nth-of-type(1):active {
-  animation: spin 0.5s ease;
+.priProject .name-container i:active:not(.fa-solid.fa-lock) {
   scale: 0.9;
 }
 
@@ -1357,7 +1356,8 @@ input[type='search']::-webkit-search-results-decoration {
 .priProject .name-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: left;
+  gap: 10px;
 }
 
 .pubProject .buttons {
@@ -2443,21 +2443,15 @@ div.hidden:not(.shown) {
 }
 
 .swal2-popup button {
-  padding: 1.5vh;
-  border-radius: 10px !important;
-  transition: all 0.2s ease !important;
+  padding: 1vw;
+  padding-left: 1.7vw;
+  padding-right: 1.7vw;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
 
 .swal2-popup button:hover {
-  border-radius: 15px !important;
-}
-
-.swal2-cancel:hover {
-  opacity: 0.6 !important;
-}
-
-.swal2-confirm:hover {
-  opacity: 0.6 !important;
+  border-radius: 13px;
 }
 
 .swal2-deny {
@@ -2465,7 +2459,23 @@ div.hidden:not(.shown) {
 }
 
 .swal2-deny:hover {
-  background: rgba(255, 59, 59, 0.596) !important;
+  opacity: 0.7;
+}
+
+.swal2-confirm {
+  background: rgb(59, 121, 255) !important;
+}
+
+.swal2-confirm:hover {
+  opacity: 0.7;
+}
+
+.swal2-cancel {
+  background: rgb(87, 87, 87) !important;
+}
+
+.swal2-cancel:hover {
+  opacity: 0.7;
 }
 
 /* Swal2 dark styling > */

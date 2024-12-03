@@ -126,13 +126,13 @@ export default function Workspace() {
                       Blockly.Themes.Zelos.blockStyles["variable_blocks"],
                     variable_dynamic_blocks:
                       Blockly.Themes.Zelos.blockStyles[
-                        "variable_dynamic_blocks"
+                      "variable_dynamic_blocks"
                       ],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles["hat_blocks"],
                   },
                 };
 
-                let renderer = user.settings?.workspace.renderer ?? "zelos";
+                let renderer = user.settings?.workspace.renderer ?? 'zelos';
                 let sounds = user.settings?.workspace.sounds ?? true;
                 let showGrid = user.settings?.workspace.grid.enabled ?? true;
                 let snapToGrid = user.settings?.workspace.grid.snap ?? false;
@@ -192,11 +192,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                          spacing: gridSpacing,
-                          length: 5,
-                          colour: "#8888886e",
-                          snap: snapToGrid,
-                        }
+                        spacing: gridSpacing,
+                        length: 5,
+                        colour: "#8888886e",
+                        snap: snapToGrid,
+                      }
                       : false,
                     zoom: {
                       controls: true,
@@ -417,7 +417,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
                   );
-                } catch (_) {}
+                } catch (_) { }
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -680,29 +680,29 @@ export default function Workspace() {
                           html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                            .map(
-                              (block) =>
-                                `<p class="exportError">${block.message}</p>`
-                            )
-                            .join("")}
+                              .map(
+                                (block) =>
+                                  `<p class="exportError">${block.message}</p>`
+                              )
+                              .join("")}
                           ${warningBlocks
-                            .map(
-                              (block) =>
-                                `
+                              .map(
+                                (block) =>
+                                  `
                               <p class="exportError">
                                 <span>
                                 ${titleCase(
-                                  exportingWs
-                                    .getBlockById(block.id)
-                                    .type.replaceAll("_", " ")
-                                )}
+                                    exportingWs
+                                      .getBlockById(block.id)
+                                      .type.replaceAll("_", " ")
+                                  )}
                                 </span>
                               ${block.message
-                                .map((m) => `<span>${m}</span>`)
-                                .join("")}
+                                    .map((m) => `<span>${m}</span>`)
+                                    .join("")}
                               </p>`
-                            )
-                            .join("")}
+                              )
+                              .join("")}
                           `,
                           ...modalColors,
                           customClass: {
@@ -803,7 +803,7 @@ export default function Workspace() {
                 if (
                   window.location.hostname === "localhost" &&
                   String(e) ===
-                    'Error: Shortcut named "startSearch" already exists.'
+                  'Error: Shortcut named "startSearch" already exists.'
                 ) {
                   return window.location.reload();
                 } else throw new Error(e);

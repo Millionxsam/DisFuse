@@ -3760,6 +3760,10 @@ export const toolbox = {
           colour: "#999999",
           contents: [
             {
+              kind: "label",
+              text: "Use custom discord.js v14 events ↓",
+            },
+            {
               kind: block,
               type: "events_custom",
             },
@@ -3776,85 +3780,92 @@ export const toolbox = {
     },
     {
       kind: "category",
-      name: "Database",
+      name: "Databases",
       colour: "C66953",
       contents: [
         {
-          kind: "label",
-          text: "Create a database first ↓",
-        },
-        {
-          kind: block,
-          type: "db_create",
-        },
-        {
-          kind: "label",
-          text: "Get information from the database ↓",
-        },
-        {
-          kind: block,
-          type: "db_get",
-          inputs: {
-            id: { shadow: { type: "text" } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_has",
-          inputs: {
-            id: { shadow: { type: "text" } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_all",
-        },
-        {
-          kind: "label",
-          text: "Actions in the database ↓",
-        },
-        {
-          kind: block,
-          type: "db_set",
-          inputs: {
-            id: { shadow: { type: "text" } },
-            val: { shadow: { type: "text" } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_del",
-          inputs: {
-            id: { shadow: { type: "text" } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_add",
-          inputs: {
-            id: { shadow: { type: "text" } },
-            val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_sub",
-          inputs: {
-            id: { shadow: { type: "text" } },
-            val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_push",
-          inputs: {
-            id: { shadow: { type: "text" } },
-            val: { shadow: { type: "text" } },
-          },
-        },
-        {
-          kind: block,
-          type: "db_clear",
+          kind: "category",
+          name: "Simple",
+          colour: "C66953",
+          contents: [
+            {
+              kind: "label",
+              text: "Create a database first ↓",
+            },
+            {
+              kind: block,
+              type: "db_create",
+            },
+            {
+              kind: "label",
+              text: "Get information from the database ↓",
+            },
+            {
+              kind: block,
+              type: "db_get",
+              inputs: {
+                id: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_has",
+              inputs: {
+                id: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_all",
+            },
+            {
+              kind: "label",
+              text: "Actions in the database ↓",
+            },
+            {
+              kind: block,
+              type: "db_set",
+              inputs: {
+                id: { shadow: { type: "text" } },
+                val: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_del",
+              inputs: {
+                id: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_add",
+              inputs: {
+                id: { shadow: { type: "text" } },
+                val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_sub",
+              inputs: {
+                id: { shadow: { type: "text" } },
+                val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_push",
+              inputs: {
+                id: { shadow: { type: "text" } },
+                val: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "db_clear",
+            },
+          ],
         },
       ],
     },
