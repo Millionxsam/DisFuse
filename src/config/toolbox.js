@@ -2642,6 +2642,10 @@ export const toolbox = {
             },
             {
               kind: block,
+              type: "invite_createGuild"
+            },
+            {
+              kind: block,
               type: "invite_delete",
             },
             {

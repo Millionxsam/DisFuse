@@ -21,9 +21,32 @@ javascriptGenerator.forBlock["invite_create"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var uses = generator.valueToCode(block, "uses", Order.ATOMIC);
 
-  const code = `await ${channel}.createInvite({ maxAge: 0, maxUses: ${
-    uses || "null"
-  }, unique: true })`;
+  const code = `await ${channel}.createInvite({ maxAge: 0, maxUses: ${uses || "null"
+    }, unique: true })`;
+  return [code, Order.AWAIT];
+};
+
+Blockly.Blocks["invite_createGuild"] = {
+  init: function () {
+    this.appendValueInput("guild")
+      .appendField("create invite for server:")
+      .setCheck("server");
+    this.appendValueInput("uses")
+      .appendField("amount of uses:")
+      .setCheck("Number");
+    this.setOutput(true, "invite");
+    this.setColour("#CA8A67");
+    this.setTooltip("Creates an invite URL for a server.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["invite_createGuild"] = function (block, generator) {
+  var guild = generator.valueToCode(block, "guild", Order.ATOMIC);
+  var uses = generator.valueToCode(block, "uses", Order.ATOMIC);
+
+  const code = `await ${guild}.invites.create({ maxAge: 0, maxUses: ${uses || "null"
+    }, unique: true })`;
   return [code, Order.AWAIT];
 };
 
