@@ -34,6 +34,7 @@ Blockly.Blocks["invite_createGuild"] = {
     this.appendValueInput("uses")
       .appendField("amount of uses:")
       .setCheck("Number");
+    this.setWarningText('This block is broken, use "create invite for channel" instead')
     this.setOutput(true, "invite");
     this.setColour("#CA8A67");
     this.setTooltip("Creates an invite URL for a server.");

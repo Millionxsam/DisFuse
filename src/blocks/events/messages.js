@@ -9,7 +9,7 @@ createEventBlock({
   text: "When a message gets deleted",
   colour: "#FF4F4F",
   event: "messageDelete",
-  variables: "messageDeleted",
+  variables: "messageDeleted"
 });
 
 createEventVariable({
@@ -37,6 +37,7 @@ createEventBlock({
   colour: "#FF4F4F",
   event: "messageReactionAdd",
   variables: ["messageReaction", "user"],
+  blockOutput: "if (messageReaction.partial) await messageReaction.fetch();"
 });
 
 createEventVariable({

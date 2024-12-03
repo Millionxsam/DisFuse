@@ -11,6 +11,7 @@ interface EventBlockOptions {
   colour: string;
   event: string;
   variables: string | string[];
+  blockOutput: string;
 }
 
 interface EventVariableOptions {
@@ -22,7 +23,7 @@ interface EventVariableOptions {
 }
 
 export function createEventBlock(options: EventBlockOptions): void {
-  const { id, text, colour, event, variables } = options;
+  const { id, text, colour, event, variables, blockOutput } = options;
 
   const eventVariables = Array.isArray(variables)
     ? variables.join(', ')
@@ -41,7 +42,7 @@ export function createEventBlock(options: EventBlockOptions): void {
     generator: JavascriptGenerator
   ) {
     const statements_code = generator.statementToCode(block, 'code');
-    const code = `client.on('${event}', async (${eventVariables}) => {\n${statements_code}});\n`;
+    const code = `client.on('${event}', async (${eventVariables}) => {\n${blockOutput}\n${statements_code}});\n`;
     return code;
   };
 }
