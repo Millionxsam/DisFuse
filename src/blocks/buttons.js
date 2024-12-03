@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import { Order, JavascriptGenerator } from "blockly/javascript";
+import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["buttons_add"] = {
@@ -148,7 +148,7 @@ Blockly.Blocks["buttons_del"] = {
   },
 };
 
-JavascriptGenerator.forBlock["buttons_del"] = function (
+javascriptGenerator.forBlock["buttons_del"] = function (
   block,
   generator
 ) {
@@ -156,12 +156,12 @@ JavascriptGenerator.forBlock["buttons_del"] = function (
   return code;
 };
 
-JavascriptGenerator.forBlock["buttons_message"] = () => [
+javascriptGenerator.forBlock["buttons_message"] = () => [
   "interaction.message",
   Order.NONE,
 ];
 
-JavascriptGenerator.forBlock["buttons_server"] = function (
+javascriptGenerator.forBlock["buttons_server"] = function (
   block,
   generator
 ) {
@@ -169,7 +169,7 @@ JavascriptGenerator.forBlock["buttons_server"] = function (
   return [code, Order.NONE];
 };
 
-JavascriptGenerator.forBlock["buttons_channel"] = function (
+javascriptGenerator.forBlock["buttons_channel"] = function (
   block,
   generator
 ) {
@@ -177,7 +177,7 @@ JavascriptGenerator.forBlock["buttons_channel"] = function (
   return [code, Order.NONE];
 };
 
-JavascriptGenerator.forBlock["buttons_user"] = function (
+javascriptGenerator.forBlock["buttons_user"] = function (
   block,
   generator
 ) {
@@ -185,7 +185,7 @@ JavascriptGenerator.forBlock["buttons_user"] = function (
   return [code, Order.NONE];
 };
 
-JavascriptGenerator.forBlock["buttons_member"] = function (
+javascriptGenerator.forBlock["buttons_member"] = function (
   block,
   generator
 ) {
@@ -193,7 +193,7 @@ JavascriptGenerator.forBlock["buttons_member"] = function (
   return [code, Order.NONE];
 };
 
-JavascriptGenerator.forBlock["buttons_id"] = function (
+javascriptGenerator.forBlock["buttons_id"] = function (
   block,
   generator
 ) {
@@ -201,7 +201,7 @@ JavascriptGenerator.forBlock["buttons_id"] = function (
   return [code, Order.NONE];
 };
 
-JavascriptGenerator.forBlock["buttons_event"] = function (
+javascriptGenerator.forBlock["buttons_event"] = function (
   block,
   generator
 ) {
@@ -214,7 +214,7 @@ JavascriptGenerator.forBlock["buttons_event"] = function (
   return codeEvent;
 };
 
-JavascriptGenerator.forBlock["buttons_add"] = function (
+javascriptGenerator.forBlock["buttons_add"] = function (
   block,
   generator
 ) {
