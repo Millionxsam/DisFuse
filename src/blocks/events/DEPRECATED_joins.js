@@ -2,31 +2,31 @@ import { createRestrictions } from "../../functions/restrictions";
 import {
   createEventBlock,
   createEventVariable,
-} from "../../functions/createEvent";
+} from "../../functions/createEvent.ts";
 
-createEventBlock(
-  "events_joins_guildmemberadd",
-  "When a member joins a server",
-  "#FF4F4F",
-  "guildMemberAdd",
-  ["joinedMember"]
-);
+createEventBlock({
+  id: "events_joins_guildmemberadd",
+  text: "When a member joins a server",
+  colour: "#FF4F4F",
+  event: "guildMemberAdd",
+  variables: "joinedMember"
+});
 
-createEventVariable(
-  "events_joins_guildmemberadd_member",
-  "joining member",
-  "#FF4F4F",
-  "member",
-  "joinedMember"
-);
+createEventVariable({
+  id: "events_joins_guildmemberadd_member",
+  text: "joining member",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "joinedMember"
+});
 
-createEventVariable(
-  "events_joins_guildmemberadd_server",
-  "joining server",
-  "#FF4F4F",
-  "server",
-  "joinedMember.guild"
-);
+createEventVariable({
+  id: "events_joins_guildmemberadd_server",
+  text: "joining server",
+  colour: "#FF4F4F",
+  blockType: "server",
+  blockOutput: "joinedMember.guild"
+});
 
 createRestrictions(
   ["events_joins_guildmemberadd_member", "events_joins_guildmemberadd_server"],

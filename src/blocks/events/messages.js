@@ -2,23 +2,23 @@ import { createRestrictions } from "../../functions/restrictions";
 import {
   createEventBlock,
   createEventVariable,
-} from "../../functions/createEvent";
+} from "../../functions/createEvent.ts";
 
-createEventBlock(
-  "events_message_deleted",
-  "When a message gets deleted",
-  "#FF4F4F",
-  "messageDelete",
-  "messageDeleted"
-);
+createEventBlock({
+  id: "events_message_deleted",
+  text: "When a message gets deleted",
+  colour: "#FF4F4F",
+  event: "messageDelete",
+  variables: "messageDeleted",
+});
 
-createEventVariable(
-  "events_message_deleted_message",
-  "message that got deleted",
-  "#FF4F4F",
-  "message",
-  "messageDeleted"
-);
+createEventVariable({
+  id: "events_message_deleted_message",
+  text: "message that got deleted",
+  colour: "#FF4F4F",
+  blockType: "message",
+  blockOutput: "messageDeleted",
+});
 
 createRestrictions(
   ["events_message_deleted_message"],
@@ -31,32 +31,41 @@ createRestrictions(
   ]
 );
 
-createEventBlock(
-  "events_message_ReactionAdd", // block id
-  "When a reaction is added to a message", // label
-  "#FF4F4F", // colour
-  "messageReactionAdd", // event
-  "messageReaction" // event parameter/s
-);
+createEventBlock({
+  id: "events_message_ReactionAdd",
+  text: "When a reaction is added to a message",
+  colour: "#FF4F4F",
+  event: "messageReactionAdd",
+  variables: ["messageReaction", "user"],
+});
 
-createEventVariable(
-  "events_message_ReactionAdd_emoji", // block id
-  "emoji of the reaction", // label
-  "#FF4F4F", // colour
-  "String", // output type
-  "messageReaction.emoji.toString()" // code output
-);
+createEventVariable({
+  id: "events_message_ReactionAdd_user",
+  text: "user that added reaction",
+  colour: "#FF4F4F",
+  blockType: "user",
+  blockOutput: "user",
+});
 
-createEventVariable(
-  "events_message_ReactionAdd_count", // block id
-  "amount of the reaction", // label
-  "#FF4F4F", // colour
-  "Number", // output type
-  "messageReaction.count" // code output
-);
+createEventVariable({
+  id: "events_message_ReactionAdd_emoji",
+  text: "emoji of the reaction",
+  colour: "#FF4F4F",
+  blockType: "String",
+  blockOutput: "messageReaction.emoji.toString()",
+});
+
+createEventVariable({
+  id: "events_message_ReactionAdd_count",
+  text: "amount of the reaction",
+  colour: "#FF4F4F",
+  blockType: "Number",
+  blockOutput: "messageReaction.count",
+});
+
 
 createRestrictions(
-  ["events_message_ReactionAdd_emoji", "events_message_ReactionAdd_count"],
+  ["events_message_ReactionAdd_user", , "events_message_ReactionAdd_emoji", "events_message_ReactionAdd_count"],
   [
     {
       type: "hasHat",

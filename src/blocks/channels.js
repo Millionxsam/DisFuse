@@ -602,12 +602,11 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
     name: ${name || "''"},
     parent: ${parent || "null"},
     type: Discord.ChannelType.${type}
-  })${
-    then
+  })${then
       ? `.then(async (createdChannel) => {
   ${then}});`
       : ";"
-  }`;
+    }`;
 };
 
 Blockly.Blocks["channel_del"] = {
@@ -699,9 +698,8 @@ javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
   var name = generator.valueToCode(block, "name", Order.NONE);
   var then = generator.statementToCode(block, "then");
 
-  var code = `${channel}.clone({ name: ${
-    name || `${channel}.name`
-  } }).then(async (createdChannel) => {
+  var code = `${channel}.clone({ name: ${name || `${channel}.name`
+    } }).then(async (createdChannel) => {
     ${then}});\n`;
 
   return code;
@@ -761,11 +759,10 @@ javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.channels.cache${
-    dropdown_type === "id"
+  var code = `${value_server}.channels.cache${dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(c => c.name == ${value_value})`
-  }`;
+    }`;
   return [code, Order.NONE];
 };
 
@@ -884,7 +881,7 @@ javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${value_server}.channels.cache.forEach(channel => {
+  var code = `${value_server}.channels.cache.forEach(async (channel) => {
     ${codeVal}});\n`;
   return code;
 };

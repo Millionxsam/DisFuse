@@ -2,122 +2,121 @@ import { createRestrictions } from '../../functions/restrictions';
 import {
   createEventBlock,
   createEventVariable,
-} from '../../functions/createEvent';
+} from '../../functions/createEvent.ts';
 
-createEventBlock(
-  'events_guild_created', // block id
-  'When the bot is added to a server', // label
-  '#FF4F4F', // colour
-  'guildCreate', // event
-  'guildClientJoined' // event parameter/s
-);
+createEventBlock({
+  id: "events_guild_created",
+  text: "When the bot is added to a server",
+  colour: "#FF4F4F",
+  event: "guildCreate",
+  variables: "guildClientJoined",
+});
 
-createEventVariable(
-  'events_guild_created_guild', // block id
-  'server the bot joined', // label
-  '#FF4F4F', // colour
-  'server', // output type
-  'guildClientJoined' // code output
-);
+createEventVariable({
+  id: "events_guild_created_guild",
+  text: "server the bot joined",
+  colour: "#FF4F4F",
+  blockType: "server",
+  blockOutput: "guildClientJoined",
+});
 
 createRestrictions(
-  ['events_guild_created_guild'],
+  ["events_guild_created_guild"],
   [
     {
-      type: 'hasHat',
-      blockTypes: ['events_guild_created'],
-      message:
-        "This block must be in the 'When the bot is added to a server' event",
+      type: "hasHat",
+      blockTypes: ["events_guild_created"],
+      message: "This block must be in the 'When the bot is added to a server' event",
     },
   ]
 );
 
-createEventBlock(
-  'events_guild_deleted', // block id
-  'When the bot is removed from a server', // label
-  '#FF4F4F', // colour
-  'guildDelete', // event
-  'guildRemovedClient' // event parameter/s
-);
+createEventBlock({
+  id: "events_guild_deleted",
+  text: "When the bot is removed from a server",
+  colour: "#FF4F4F",
+  event: "guildDelete",
+  variables: "guildRemovedClient",
+});
 
-createEventVariable(
-  'events_guild_deleted_guild', // block id
-  'server that removed the bot', // label
-  '#FF4F4F', // colour
-  'server', // output type
-  'guildRemovedClient' // code output
-);
+createEventVariable({
+  id: "events_guild_deleted_guild",
+  text: "server that removed the bot",
+  colour: "#FF4F4F",
+  blockType: "server",
+  blockOutput: "guildRemovedClient",
+});
 
 createRestrictions(
-  ['events_guild_deleted_guild'],
+  ["events_guild_deleted_guild"],
   [
     {
-      type: 'hasHat',
-      blockTypes: ['events_guild_deleted'],
-      message:
-        "This block must be in the 'When the bot is removed from a server' event",
+      type: "hasHat",
+      blockTypes: ["events_guild_deleted"],
+      message: "This block must be in the 'When the bot is removed from a server' event",
     },
   ]
 );
 
-createEventBlock(
-  'events_guild_memberAdd', // block id
-  'When a member joins a server', // label
-  '#FF4F4F', // colour
-  'guildMemberAdd', // event
-  'guildMemberAdded' // event parameter/s
-);
+createEventBlock({
+  id: "events_guild_memberAdd",
+  text: "When a member joins a server",
+  colour: "#FF4F4F",
+  event: "guildMemberAdd",
+  variables: "guildMemberAdded",
+});
 
-createEventVariable(
-  'events_guild_memberAdd_member', // block id
-  'member that joined', // label
-  '#FF4F4F', // colour
-  'member', // output type
-  'guildMemberAdded' // code output
-);
+createEventVariable({
+  id: "events_guild_memberAdd_member",
+  text: "member that joined",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "guildMemberAdded",
+});
 
-createEventVariable(
-  'events_guild_memberAdd_server', // block id
-  'server the member joined to', // label
-  '#FF4F4F', // colour
-  'server', // output type
-  'guildMemberAdded.guild' // code output
-);
+createEventVariable({
+  id: "events_guild_memberAdd_server",
+  text: "server the member joined to",
+  colour: "#FF4F4F",
+  blockType: "server",
+  blockOutput: "guildMemberAdded.guild",
+});
 
 createRestrictions(
-  ['events_guild_memberAdd_member', 'events_guild_memberAdd_server'],
+  ["events_guild_memberAdd_member", "events_guild_memberAdd_server"],
   [
     {
-      type: 'hasHat',
-      blockTypes: ['events_guild_memberAdd'],
+      type: "hasHat",
+      blockTypes: ["events_guild_memberAdd"],
       message: "This block must be in the 'When a member joins a server' event",
     },
   ]
 );
 
-createEventBlock(
-  'events_remove_guildmemberremove', // block id
-  'When a member leaves / gets kicked from a server', // label
-  '#FF4F4F', // colour
-  'guildMemberRemove', // event
-  'leavingMember' // event parameter/s
-);
+createEventBlock({
+  id: "events_remove_guildmemberremove",
+  text: "When a member leaves / gets kicked from a server",
+  colour: "#FF4F4F",
+  event: "guildMemberRemove",
+  variables: "leavingMember",
+});
 
-createEventVariable(
-  'events_remove_guildmemberremove_member', // block id
-  'leaving member', // label
-  '#FF4F4F', // colour
-  'member', // output type
-  'leavingMember' // code output
-);
+createEventVariable({
+  id: "events_remove_guildmemberremove_member",
+  text: "leaving member",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "leavingMember",
+});
 
-createEventVariable(
-  'events_remove_guildmemberremove_server', // block id
-  'server that the member left from', // label
-  '#FF4F4F', // colour
-  'server', // output type
-  'leavingMember.guild' // code output
-);
+createEventVariable({
+  id: "events_remove_guildmemberremove_server",
+  text: "server that the member left from",
+  colour: "#FF4F4F",
+  blockType: "server",
+  blockOutput: "leavingMember.guild",
+});
+
 
 createRestrictions(
   [

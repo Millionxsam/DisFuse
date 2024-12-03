@@ -1,56 +1,72 @@
 import {
   createEventBlock,
   createEventVariable,
-} from '../../functions/createEvent';
+} from '../../functions/createEvent.ts';
 import { createRestrictions } from '../../functions/restrictions';
 
-createEventBlock(
-  'events_members_addRole',
-  'When a member is given a role',
-  '#FF4F4F',
-  'guildMemberRoleAdd',
-  ['member', 'role']
-);
+createEventBlock({
+  id: "events_joins_guildmemberadd",
+  text: "When a member joins a server",
+  colour: "#FF4F4F",
+  event: "guildMemberAdd",
+  variables: "joinedMember",
+});
 
-createEventVariable(
-  'events_members_addRole_member',
-  'member who was given a role',
-  '#FF4F4F',
-  'member',
-  'member'
-);
+createEventVariable({
+  id: "events_joins_guildmemberadd_member",
+  text: "joining member",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "joinedMember",
+});
 
-createEventVariable(
-  'events_members_addRole_role',
-  'added role',
-  '#FF4F4F',
-  'role',
-  'role'
-);
+createEventBlock({
+  id: "events_members_addRole",
+  text: "When a member is given a role",
+  colour: "#FF4F4F",
+  event: "guildMemberRoleAdd",
+  variables: ["member", "role"],
+});
 
-createEventBlock(
-  'events_members_removeRole',
-  'When a member is removed from a role',
-  '#FF4F4F',
-  'guildMemberRoleAdd',
-  ['member', 'role']
-);
+createEventVariable({
+  id: "events_members_addRole_member",
+  text: "member who was given a role",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "member",
+});
 
-createEventVariable(
-  'events_members_removeRole_member',
-  'member who was removed from a role',
-  '#FF4F4F',
-  'member',
-  'member'
-);
+createEventVariable({
+  id: "events_members_addRole_role",
+  text: "added role",
+  colour: "#FF4F4F",
+  blockType: "role",
+  blockOutput: "role",
+});
 
-createEventVariable(
-  'events_members_removeRole_role',
-  'removed role',
-  '#FF4F4F',
-  'role',
-  'role'
-);
+createEventBlock({
+  id: "events_members_removeRole",
+  text: "When a member is removed from a role",
+  colour: "#FF4F4F",
+  event: "guildMemberRoleRemove",
+  variables: ["member", "role"],
+});
+
+createEventVariable({
+  id: "events_members_removeRole_member",
+  text: "member who was removed from a role",
+  colour: "#FF4F4F",
+  blockType: "member",
+  blockOutput: "member",
+});
+
+createEventVariable({
+  id: "events_members_removeRole_role",
+  text: "removed role",
+  colour: "#FF4F4F",
+  blockType: "role",
+  blockOutput: "role",
+});
 
 createRestrictions(
   ['events_members_addRole_member', 'events_members_addRole_role'],

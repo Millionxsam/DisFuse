@@ -3715,6 +3715,10 @@ export const toolbox = {
             },
             {
               kind: block,
+              type: "events_message_ReactionAdd_user",
+            },
+            {
+              kind: block,
               type: "events_message_ReactionAdd_emoji",
             },
             {

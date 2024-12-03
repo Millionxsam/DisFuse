@@ -4,8 +4,6 @@
 /coverage
 /build
 package-lock.json
-/src/config/config.json
-src/config/config.json
 .DS_Store
 .env
 .env.local
