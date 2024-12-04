@@ -6,17 +6,13 @@ import Swal from "sweetalert2";
 
 const { apiUrl } = require("../config/config.json");
 
-export default function Comment({ project, comment: c, user, index }) {
+export default function Comment({ project, comment: c, user, allUsers, index }) {
   const [author, setAuthor] = useState({});
   const [newLike, setNewLike] = useState(false);
   const [comment, setComment] = useState(c);
 
   useEffect(() => {
-    axios
-      .get(apiUrl + "/users")
-      .then(({ data }) =>
-        setAuthor(data.find((u) => u.id === comment.authorId))
-      );
+    setAuthor(allUsers.find((u) => u.id === comment.authorId));
 
     if (window.location.hash) {
       const commentEle = document.getElementById(
@@ -29,7 +25,6 @@ export default function Comment({ project, comment: c, user, index }) {
   }, []);
 
   var likeButtonEnabled = true;
-
   function toggleLike() {
     if (!likeButtonEnabled) return;
 
@@ -163,6 +158,7 @@ export default function Comment({ project, comment: c, user, index }) {
           <Reply
             reply={reply}
             user={user}
+            allUsers={allUsers}
             project={project}
             comment={comment}
           />

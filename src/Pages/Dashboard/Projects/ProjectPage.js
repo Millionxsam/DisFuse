@@ -12,6 +12,7 @@ export default function ProjectPage() {
   const [project, setProject] = useState({});
   const [user, setUser] = useState({});
   const [comments, setComments] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [newLike, setNewLike] = useState(false);
   const [newFav, setNewFav] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -45,10 +46,16 @@ export default function ProjectPage() {
                 setProject(project);
 
                 axios
-                  .get(apiUrl + `/comments/${projectId}`)
+                  .get(apiUrl + '/users')
                   .then(({ data }) => {
-                    setComments(data);
-                    setLoading(false);
+                    setAllUsers(data);
+
+                    axios
+                      .get(apiUrl + `/comments/${projectId}`)
+                      .then(({ data }) => {
+                        setComments(data);
+                        setLoading(false);
+                      });
                   });
               })
               .catch(() => (window.location = '/explore'));
@@ -59,10 +66,9 @@ export default function ProjectPage() {
   if (!project) return (window.location = '/explore');
 
   var likeButtonEnabled = true;
-
   function toggleLike() {
     if (!likeButtonEnabled) return;
-    if (!project.data) return;
+    if (!project.name) return;
 
     likeButtonEnabled = false;
     setTimeout(() => (likeButtonEnabled = true), 700);
@@ -80,10 +86,9 @@ export default function ProjectPage() {
   }
 
   var favButtonEnabled = true;
-
   function toggleFav(favId) {
     if (!favButtonEnabled) return;
-    if (!project.data) return;
+    if (!project.name) return;
 
     favButtonEnabled = false;
     setTimeout(() => (favButtonEnabled = true), 700);
@@ -105,7 +110,7 @@ export default function ProjectPage() {
   }
 
   function cloneProject() {
-    if (!project.data || !project.name) return;
+    if (!project.name) return;
 
     const Queue = Swal.mixin({
       progressSteps: ['1', '2', '3'],
@@ -195,11 +200,13 @@ export default function ProjectPage() {
   }
 
   function postComment() {
-    if (!project.data) return;
+    if (!project.name) return;
 
     const content = document
       .querySelector('textarea.commentInput')
       .value.trim();
+
+    console.log(content)
 
     if (content === '' || !content) return;
 
@@ -276,6 +283,7 @@ export default function ProjectPage() {
             comment={comment}
             project={project}
             user={user}
+            allUsers={allUsers}
             repliable={true}
             index={i}
           />

@@ -21,7 +21,7 @@ export default function StaffPanel() {
                             return;
                         }
 
-                        const staffUser = staff.users.find(u => u.id === user.id)
+                        const staffUser = staff.users.find(u => u.id === user.id);
                         if (!staffUser.moderator && !staffUser.admin && !staffUser.owner) {
                             window.location.replace('/projects');
                             return;

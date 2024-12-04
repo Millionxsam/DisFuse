@@ -5,15 +5,13 @@ import Swal from "sweetalert2";
 
 const { apiUrl } = require("../config/config.json");
 
-export default function Reply({ reply: r, user, project, comment }) {
+export default function Reply({ reply: r, user, allUsers, project, comment }) {
   const [author, setAuthor] = useState({});
   const [reply, setReply] = useState(r);
   const [newLike, setNewLike] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(apiUrl + "/users")
-      .then(({ data }) => setAuthor(data.find((u) => u.id === reply.authorId)));
+    setAuthor(allUsers.find((u) => u.id === reply.authorId));
   }, []);
 
   function delReply() {
@@ -29,7 +27,7 @@ export default function Reply({ reply: r, user, project, comment }) {
       axios
         .delete(
           apiUrl +
-            `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
+          `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
           {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
           }
@@ -48,7 +46,7 @@ export default function Reply({ reply: r, user, project, comment }) {
       axios
         .patch(
           apiUrl +
-            `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
+          `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
           { content: r.value },
           { headers: { Authorization: localStorage.getItem("disfuse-token") } }
         )
@@ -60,7 +58,7 @@ export default function Reply({ reply: r, user, project, comment }) {
     axios
       .patch(
         apiUrl +
-          `/comments/${project._id}/${comment._id}/replies/${reply._id}/likes`,
+        `/comments/${project._id}/${comment._id}/replies/${reply._id}/likes`,
         null,
         {
           headers: {
@@ -94,9 +92,8 @@ export default function Reply({ reply: r, user, project, comment }) {
         <div className="bottom">
           <div
             onClick={toggleLike}
-            className={`like${
-              reply?.likes?.includes(user.id) ? " active" : ""
-            }${newLike ? " newLike" : ""}`}
+            className={`like${reply?.likes?.includes(user.id) ? " active" : ""
+              }${newLike ? " newLike" : ""}`}
           >
             <i class="fa-solid fa-heart"></i>
             <div>{reply?.likes?.length}</div>
