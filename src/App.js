@@ -17,7 +17,7 @@ import Inbox from "./Pages/Dashboard/Inbox";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import NotificationSettings from './Pages/Dashboard/Settings/NotificationSettings';
 import OptimizationSettings from './Pages/Dashboard/Settings/OptimizationSettings';
-import Admin from './Pages/Dashboard/Admin';
+import StaffPanel from './Pages/Dashboard/StaffPanel';
 
 import "./index.css";
 
@@ -91,7 +91,7 @@ export default function App() {
             <Route path="notifications" element={<NotificationSettings />} />
             <Route path="optimization" element={<OptimizationSettings />} />
           </Route>
-          <Route path="admin" element={<Admin />} />
+          <Route path="staff/panel" element={<StaffPanel />} />
         </Route>
 
         <Route path="/:username/:projectId/view" element={<ViewProject />} />

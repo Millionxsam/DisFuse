@@ -1,14 +1,37 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-const { apiUrl } = require('../../config/config.json');
+const { apiUrl, discordUrl } = require('../../config/config.json');
 
-export default function Admin() {
-    async function getIdByName(username) {
-        return await axios
-            .get(apiUrl + "/users")
-            .then(({ data }) => {
-                return (data.find((u) => u.username === username) || { id: null }).id;
+export default function StaffPanel() {
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        axios
+            .get(discordUrl + '/users/@me', {
+                headers: {
+                    Authorization: localStorage.getItem('disfuse-token'),
+                },
+            })
+            .then(({ data: user }) => {
+                axios
+                    .get(apiUrl + '/users/staff')
+                    .then(({ data: staff }) => {
+                        if (!staff.users.some(u => u.id === user.id)) {
+                            window.location.replace('/projects');
+                            return;
+                        }
+                    });
             });
+
+        axios
+            .get(apiUrl + "/users")
+            .then(({ data: allUsers }) => {
+                setUsers(allUsers);
+            })
+    }, []);
+
+    async function getIdByName(username) {
+        return (users.find((u) => u.username === username) ?? { id: null }).id;
     }
 
     async function banUser() {
@@ -120,13 +143,15 @@ export default function Admin() {
     return (
         <div className="adminDashboard-container">
             <div className="head">
-                <i class="fa-solid fa-user-tie"></i> Admin Dashboard
-                <h2>If you are not an Admin, you won't be able to use this panel</h2>
+                <i class="fa-solid fa-user-tie"></i> Staff Panel
             </div>
 
             <div className="inline">
                 <label htmlFor='usernameBan'>Username of user to ban:</label>
-                <input type='text' id='usernameBan' />
+                <input type='text' id='usernameBan' list='usernames' />
+                <datalist id='usernames'>
+                    {users.map(i => <option value={i.username} />)}
+                </datalist>
             </div>
 
             <div className="inline">

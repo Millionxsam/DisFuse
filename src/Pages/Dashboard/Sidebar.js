@@ -7,6 +7,7 @@ const { discordUrl, apiUrl } = require("../../config/config.json");
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
+  const [isStaff, setStaff] = useState(false);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
@@ -27,6 +28,12 @@ export default function Sidebar() {
         axios.get(apiUrl + "/users").then(({ data: users }) => {
           let user = users.find((u) => u.id === data.id);
           setUser(user);
+
+          axios
+            .get(apiUrl + '/users/staff')
+            .then(({ data: staff }) => {
+              setStaff(staff.users.some(u => u.id === user.id));
+            });
         });
       });
   }, []);
@@ -103,6 +110,15 @@ export default function Sidebar() {
                   <i class="fa-solid fa-gear"></i> <div>Settings</div>
                 </li>
               </Link>
+              {isStaff && <Link
+                onClick={() => setActive(false)}
+                className="underline-effect"
+                to="/staff/panel"
+              >
+                <li>
+                  <i class="fa-solid fa-user-tie"></i> <div>Staff</div>
+                </li>
+              </Link>}
             </ul>
           </div>
           <div className="bottom">

@@ -1065,6 +1065,7 @@ i.workspacesMenuBtn:hover {
 .sidebar-container ul {
   display: flex;
   flex-direction: column;
+  align-items: center;
   list-style: none;
   gap: 2rem;
   height: 30%;
@@ -2610,4 +2611,16 @@ div.hidden:not(.shown) {
 .custom-menu li:hover {
   background-color: #007bff;
   color: #fff;
+}
+
+.staff-roles-card {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.staff-roles-card span {
+  background-color: var(--main-color);
+  border-radius: 5px;
+  padding: 4px;
 }
