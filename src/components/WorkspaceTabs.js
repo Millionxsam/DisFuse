@@ -31,13 +31,19 @@ export default function WorkspaceTabs({
                 editWorkspaceName(e, workspace, project, modalColors)
               }
               class="fa-solid fa-pen"
-            ></i>
+            />
             <i
               onClick={(e) =>
                 deleteWorkspace(e, workspace, project, modalColors)
               }
               class="fa-solid fa-trash"
-            ></i>
+            />
+            <i
+              onClick={(e) =>
+                duplicateWorkspace(e, workspace, project, modalColors)
+              }
+              class="fa-solid fa-clone"
+            />
           </div>
         </div>
       ))}
@@ -117,6 +123,40 @@ function deleteWorkspace(e, workspace, project, modalColors) {
           Authorization: localStorage.getItem('disfuse-token'),
         },
       })
+      .then(() => window.location.reload());
+  });
+}
+
+function duplicateWorkspace(e, workspace, project, modalColors) {
+  e.stopPropagation();
+
+  if (!workspace.data || workspace.data === '') return;
+
+  Swal.fire({
+    title: 'Duplicate workspace',
+    text: 'Choose a name for the duplicate workspace',
+    input: 'text',
+    inputValue: workspace.name,
+    confirmButtonText: 'Duplicate',
+    showCancelButton: true,
+    ...modalColors,
+  }).then((response) => {
+    if (!response.isConfirmed) return;
+
+    axios
+      .post(
+        apiUrl + `/projects/${project._id}/workspaces`,
+        {
+          name: response.value ?? workspace.name,
+          data: workspace.data
+        },
+        {
+          headers: {
+            Authorization:
+              localStorage.getItem("disfuse-token"),
+          },
+        }
+      )
       .then(() => window.location.reload());
   });
 }

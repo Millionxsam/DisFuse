@@ -553,6 +553,19 @@ i.workspacesMenuBtn:hover {
   margin-left: 1rem;
 }
 
+.workspace-tabs .tab {
+  height: 34px;
+}
+
+.workspace-tabs .tab div.buttons {
+  display: none;
+}
+
+.workspace-tabs .tab:hover div.buttons,
+.workspace-tabs .tab.active div.buttons {
+  display: block;
+}
+
 .workspace-tabs .tab.active {
   background-color: var(--main-color);
 }
@@ -583,6 +596,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .workspace-tabs div .buttons i:hover {
+  animation: spin 0.5s ease;
   background-color: var(--main-color);
 }
 
