@@ -217,9 +217,8 @@ javascript.javascriptGenerator.forBlock["misc_int_deferReply"] = function (
 ) {
   var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  var code = `await interaction.deferReply({ ephemeral: ${
-    ephemeral || "false"
-  } });`;
+  var code = `await interaction.deferReply({ ephemeral: ${ephemeral || "false"
+    } });`;
   return code;
 };
 
@@ -319,6 +318,8 @@ createRestrictions(
         "channel_send_rows",
         "member_dm_rows",
         "misc_int_reply_rows",
+        "misc_int_edit",
+        "slash_editreply"
       ],
       message: "This block must be under a block that has a 'rows' section",
     },
