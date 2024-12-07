@@ -11,6 +11,114 @@ export default function WorkspaceTabs({
   workspace,
   modalColors,
 }) {
+
+  function closeTabs(workspace) {
+    document.querySelector('.workspace-tabs').style.height = '0vh';
+    document.querySelector('#workspace').style.height = '92.5vh';
+
+    document.getElementById('workspace-tabs-open-container').style.width =
+      '1.8rem';
+
+    Blockly.svgResize(workspace);
+
+    setTimeout(() => {
+      document.querySelector(
+        '.workspace-navbar .workspace-tabs-open'
+      ).style.opacity = '1';
+
+      Blockly.svgResize(workspace);
+
+      setTimeout(() => { Blockly.svgResize(workspace); }, 310);
+    }, 310);
+  }
+
+  function editWorkspaceName(e, workspace, project, modalColors) {
+    e.stopPropagation();
+
+    Swal.fire({
+      title: 'Edit workspace name',
+      text: 'Change the name of this workspace',
+      input: 'text',
+      inputValue: workspace.name,
+      confirmButtonText: 'Change',
+      showCancelButton: true,
+      ...modalColors,
+    }).then((response) => {
+      if (!response.isConfirmed) return;
+
+      axios
+        .patch(
+          apiUrl + `/projects/${project._id}/workspaces/${workspace._id}/name`,
+          {
+            name: response.value,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem('disfuse-token'),
+            },
+          }
+        )
+        .then(() => window.location.reload());
+    });
+  }
+
+  function deleteWorkspace(e, workspace, project, modalColors) {
+    e.stopPropagation();
+
+    Swal.fire({
+      title: 'Delete workspace',
+      text: `Are you sure you want to delete ${workspace.name}?`,
+      footer: 'This is not reversible!',
+      confirmButtonText: 'Delete',
+      showCancelButton: true,
+      ...modalColors,
+    }).then((response) => {
+      if (!response.isConfirmed) return;
+
+      axios
+        .delete(apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`, {
+          headers: {
+            Authorization: localStorage.getItem('disfuse-token'),
+          },
+        })
+        .then(() => window.location.reload());
+    });
+  }
+
+  function duplicateWorkspace(e, workspace, project, modalColors) {
+    e.stopPropagation();
+
+    if (!workspace.data || workspace.data === '') return;
+
+    Swal.fire({
+      title: 'Duplicate workspace',
+      text: 'Choose a name for the duplicate workspace',
+      input: 'text',
+      inputValue: workspace.name,
+      confirmButtonText: 'Duplicate',
+      showCancelButton: true,
+      ...modalColors,
+    }).then((response) => {
+      if (!response.isConfirmed) return;
+
+      axios
+        .post(
+          apiUrl + `/projects/${project._id}/workspaces`,
+          {
+            name: response.value ?? workspace.name,
+            data: workspace.data
+          },
+          {
+            headers: {
+              Authorization:
+                localStorage.getItem("disfuse-token"),
+            },
+          }
+        )
+        .then(() => window.location.reload());
+    });
+  }
+
   return (
     <div className="workspace-tabs">
       <div
@@ -52,111 +160,4 @@ export default function WorkspaceTabs({
       </div>
     </div>
   );
-}
-
-function closeTabs(workspace) {
-  document.querySelector('.workspace-tabs').style.height = '0vh';
-  document.querySelector('#workspace').style.height = '92.5vh';
-
-  document.getElementById('workspace-tabs-open-container').style.width =
-    '1.8rem';
-
-  Blockly.svgResize(workspace);
-
-  setTimeout(() => {
-    document.querySelector(
-      '.workspace-navbar .workspace-tabs-open'
-    ).style.opacity = '1';
-
-    Blockly.svgResize(workspace);
-
-    setTimeout(() => { Blockly.svgResize(workspace); }, 310);
-  }, 310);
-}
-
-function editWorkspaceName(e, workspace, project, modalColors) {
-  e.stopPropagation();
-
-  Swal.fire({
-    title: 'Edit workspace name',
-    text: 'Change the name of this workspace',
-    input: 'text',
-    inputValue: workspace.name,
-    confirmButtonText: 'Change',
-    showCancelButton: true,
-    ...modalColors,
-  }).then((response) => {
-    if (!response.isConfirmed) return;
-
-    axios
-      .patch(
-        apiUrl + `/projects/${project._id}/workspaces/${workspace._id}/name`,
-        {
-          name: response.value,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem('disfuse-token'),
-          },
-        }
-      )
-      .then(() => window.location.reload());
-  });
-}
-
-function deleteWorkspace(e, workspace, project, modalColors) {
-  e.stopPropagation();
-
-  Swal.fire({
-    title: 'Delete workspace',
-    text: `Are you sure you want to delete ${workspace.name}?`,
-    footer: 'This is not reversible!',
-    confirmButtonText: 'Delete',
-    showCancelButton: true,
-    ...modalColors,
-  }).then((response) => {
-    if (!response.isConfirmed) return;
-
-    axios
-      .delete(apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`, {
-        headers: {
-          Authorization: localStorage.getItem('disfuse-token'),
-        },
-      })
-      .then(() => window.location.reload());
-  });
-}
-
-function duplicateWorkspace(e, workspace, project, modalColors) {
-  e.stopPropagation();
-
-  if (!workspace.data || workspace.data === '') return;
-
-  Swal.fire({
-    title: 'Duplicate workspace',
-    text: 'Choose a name for the duplicate workspace',
-    input: 'text',
-    inputValue: workspace.name,
-    confirmButtonText: 'Duplicate',
-    showCancelButton: true,
-    ...modalColors,
-  }).then((response) => {
-    if (!response.isConfirmed) return;
-
-    axios
-      .post(
-        apiUrl + `/projects/${project._id}/workspaces`,
-        {
-          name: response.value ?? workspace.name,
-          data: workspace.data
-        },
-        {
-          headers: {
-            Authorization:
-              localStorage.getItem("disfuse-token"),
-          },
-        }
-      )
-      .then(() => window.location.reload());
-  });
 }

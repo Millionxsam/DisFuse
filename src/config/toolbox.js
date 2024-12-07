@@ -748,6 +748,29 @@ export const toolbox = {
             },
           },
         },
+        {
+          kind: block,
+          type: "list_find",
+          inputs: {
+            list: {
+              block: {
+                type: "variables_get",
+              },
+            },
+            method: {
+              block: {
+                type: "logic_compare",
+                inputs: {
+                  A: {
+                    block: {
+                      type: "list_filter_item",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       ],
     },
     {

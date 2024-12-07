@@ -268,6 +268,9 @@ export default function Workspace() {
                   "Captcha",
                   "permsChannel",
                   "errorButWithLengthyName",
+                  "variable",
+                  "list",
+                  "disfuse"
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
@@ -798,15 +801,6 @@ export default function Workspace() {
                     projectNameDiv.innerText = project.name;
                   }
                 });
-              })
-              .catch((e) => {
-                if (
-                  window.location.hostname === "localhost" &&
-                  String(e) ===
-                  'Error: Shortcut named "startSearch" already exists.'
-                ) {
-                  return window.location.reload();
-                } else throw new Error(e);
               });
           });
       })

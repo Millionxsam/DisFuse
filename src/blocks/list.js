@@ -18,7 +18,27 @@ Blockly.Blocks['list_filter'] = {
 javascriptGenerator.forBlock['list_filter'] = function (block, generator) {
   var val_list = generator.valueToCode(block, 'list', Order.ATOMIC);
   var val_method = generator.valueToCode(block, 'method', Order.ATOMIC);
-  var code = `${val_list}.filter((filterItem) => ${val_method})`;
+  var code = `${val_list}.filter(filterItem => ${val_method})`;
+  return [code, Order.NONE];
+};
+
+Blockly.Blocks['list_find'] = {
+  init: function () {
+    this.appendValueInput('list').setCheck('Array').appendField('find first in list');
+    this.appendValueInput('method').setCheck('Boolean').appendField('that matches');
+    this.setInputsInline(true);
+    this.setColour('#9966ff');
+    this.setTooltip(
+      "Returns the first item in a list that matches the boolean"
+    );
+    this.setOutput(true, null);
+  },
+};
+
+javascriptGenerator.forBlock['list_find'] = function (block, generator) {
+  var val_list = generator.valueToCode(block, 'list', Order.ATOMIC);
+  var val_method = generator.valueToCode(block, 'method', Order.ATOMIC);
+  var code = `${val_list}.find(filterItem => ${val_method})`;
   return [code, Order.NONE];
 };
 
@@ -41,8 +61,8 @@ createRestrictions(
   [
     {
       type: 'hasParent',
-      blockTypes: ['list_filter'],
-      message: "This block must be inside a 'filter by' block",
+      blockTypes: ['list_filter', 'list_find'],
+      message: "This block must be inside a 'filter list' or 'find first in list' block",
     },
   ]
 );
