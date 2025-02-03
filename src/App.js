@@ -31,8 +31,8 @@ export default function App() {
       console.log(data, event.reason.response)
 
       window.document.body.innerHTML = `
-      <div class="home-container">
-        <div class="head">
+      <div className="home-container">
+        <div className="head">
           <h1>You are banned from DisFuse</h1>
           <h2>You may not access DisFuse until: ${new Date(data.bannedUntil).toDateString()}.</h2>
         </div>

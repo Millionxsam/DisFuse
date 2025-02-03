@@ -95,16 +95,16 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
             className={`like${reply?.likes?.includes(user.id) ? " active" : ""
               }${newLike ? " newLike" : ""}`}
           >
-            <i class="fa-solid fa-heart"></i>
+            <i className="fa-solid fa-heart"></i>
             <div>{reply?.likes?.length}</div>
           </div>
           {user.id === author.id ? (
             <>
               <div onClick={editReply} className="edit">
-                <i class="fa-regular fa-pen-to-square"></i>
+                <i className="fa-regular fa-pen-to-square"></i>
               </div>
               <div onClick={delReply} className="delete">
-                <i class="fa-solid fa-trash-can"></i>
+                <i className="fa-solid fa-trash-can"></i>
               </div>
             </>
           ) : (

@@ -192,7 +192,8 @@ module.exports = [
         "ws": "^8.17.0",
         "dotenv": "^16.0.3",
         "lyrics-finder": "^21.7.0",
-        "ms": "^2.1.3"
+        "ms": "^2.1.3",
+        "@haileybot/captcha-generator": "^1.7.0"
       },
       "scripts": {
         "start": "node index.js",

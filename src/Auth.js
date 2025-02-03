@@ -51,8 +51,8 @@ export default function Auth({ children }) {
 
   if (loading)
     return (
-      <div className="load-container">
-        <LoadingAnim />
+      <div key={'loadingAnim'} className="load-container">
+        <LoadingAnim/>
       </div>
     );
 

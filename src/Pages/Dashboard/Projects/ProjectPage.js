@@ -239,7 +239,7 @@ export default function ProjectPage() {
         <div className="buttons">
           <Link to={`/@${project.owner?.username}/${project._id}/view`}>
             <div className="darkBtn">
-              <i class="fa-solid fa-eye"></i>
+              <i className="fa-solid fa-eye"></i>
               <div>View</div>
             </div>
           </Link>
@@ -248,11 +248,11 @@ export default function ProjectPage() {
             className={`darkBtn like${project.likes?.includes(user.id) ? ' active' : ''
               }${newLike ? ' newLike' : ''}`}
           >
-            <i class="fa-solid fa-heart"></i>
+            <i className="fa-solid fa-heart"></i>
             <div>{project.likes?.length} Likes</div>
           </div>
           <div onClick={cloneProject} className="darkBtn clone">
-            <i class="fa-solid fa-clone"></i>
+            <i className="fa-solid fa-clone"></i>
             <div>{project.clones?.length} Clones</div>
           </div>
           <div
@@ -260,7 +260,7 @@ export default function ProjectPage() {
             className={`darkBtn fav${user.favorites?.includes(projectId) ? ' active' : ''
               }${newFav ? ' newFav' : ''}`}
           >
-            <i class="fa-solid fa-star"></i>
+            <i className="fa-solid fa-star"></i>
             <div>
               {user.favorites?.includes(projectId) ? 'Unfavorite' : 'Favorite'}
             </div>

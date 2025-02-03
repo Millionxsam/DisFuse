@@ -9,7 +9,7 @@ export default function Settings() {
   return (
     <div className="settings-container">
       <div className="head">
-        <i class="fa-solid fa-gear"></i> Settings
+        <i className="fa-solid fa-gear"></i> Settings
       </div>
       <div className="body">
         <ul className="categories">

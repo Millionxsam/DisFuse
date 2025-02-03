@@ -646,13 +646,13 @@ export default function Workspace() {
                         html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                            .map((block) => `<p class="exportError">${block.message}</p>`)
+                            .map((block) => `<p className="exportError">${block.message}</p>`)
                             .join("")}
                           ${warningBlocks
                             .map(
                               (block) =>
                                 `
-                              <p class="exportError">
+                              <p className="exportError">
                                 <span>
                                 ${titleCase(
                                   exportingWs

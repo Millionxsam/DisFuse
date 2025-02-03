@@ -18,8 +18,8 @@ export default function PriProject({ project }) {
         <div className="top">
           <div className="name-container">
             <h1>{project.name}</h1>
-            <div><i class="fa-solid fa-pen-to-square" onClick={() => editProject(project)}></i></div>
-            {project.private ? <div><i class="fa-solid fa-lock"></i></div> : ""}
+            <div><i className="fa-solid fa-pen-to-square" onClick={() => editProject(project)}></i></div>
+            {project.private ? <div><i className="fa-solid fa-lock"></i></div> : ""}
           </div>
           <i>
             {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (

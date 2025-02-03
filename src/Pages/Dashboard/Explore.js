@@ -84,7 +84,7 @@ export default function Explore() {
   return (
     <div className="explore-container">
       <div className="head">
-        <i class="fa-solid fa-earth-americas"></i> Explore
+        <i className="fa-solid fa-earth-americas"></i> Explore
       </div>
       <div className="buttons">
         <input
@@ -94,7 +94,7 @@ export default function Explore() {
           className="search"
         />
         <button onClick={sort}>
-          <i class="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
+          <i className="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
         </button>
       </div>
       <div className="exploration">
