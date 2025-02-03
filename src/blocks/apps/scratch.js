@@ -9,7 +9,7 @@ Blockly.Blocks['scratch_getprofile'] = {
     this.appendStatementInput('code').appendField('Then').setCheck('default');
     this.setPreviousStatement(true, 'default');
     this.setNextStatement(true, 'default');
-    this.setColour('#0fbd8c');
+    this.setColour('#e6a53e');
     this.setTooltip('');
     this.setHelpUrl('');
   },
@@ -46,7 +46,7 @@ Blockly.Blocks['scratch_getprofileinfo'] = {
       )
       .appendField('of Scratch profile');
     this.setOutput(true, null);
-    this.setColour('#0fbd8c');
+    this.setColour('#e6a53e');
     this.setTooltip('');
     this.setHelpUrl('');
   },
@@ -63,7 +63,7 @@ Blockly.Blocks['scratch_getmessages'] = {
       .setCheck('String')
       .appendField('amount of messages of Scratch user:');
     this.setOutput(true, 'Number');
-    this.setColour('#0fbd8c');
+    this.setColour('#e6a53e');
     this.setTooltip('');
     this.setHelpUrl('');
   },

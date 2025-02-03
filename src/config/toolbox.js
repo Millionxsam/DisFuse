@@ -3742,7 +3742,7 @@ export const toolbox = {
             },
             {
               kind: block,
-              type: "events_message_ReactionAdd_msg"
+              type: "events_message_ReactionAdd_msg",
             },
             {
               kind: block,
@@ -3907,8 +3907,81 @@ export const toolbox = {
       contents: [
         {
           kind: "category",
+          name: "Canvas",
+          colour: "#4C9F70",
+          contents: [
+            {
+              kind: block,
+              type: "canvas_createCanvas",
+              inputs: {
+                WIDTH: { shadow: { type: "math_number", fields: { NUM: 500 } } },
+                HEIGHT: { shadow: { type: "math_number", fields: { NUM: 500 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_width",
+            },
+            {
+              kind: block,
+              type: "canvas_height",
+            },
+            {
+              kind: block,
+              type: "canvas_setFillColor",
+              inputs: {
+                COLOR: { shadow: { type: "colour_picker" } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_setStrokeColor",
+              inputs: {
+                COLOR: { shadow: { type: "colour_picker" } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_setLineWidth",
+              inputs: {
+                WIDTH: { shadow: { type: "math_number", fields: { NUM: 2 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_drawRectangle",
+              inputs: {
+                X: { shadow: { type: "math_number", fields: { NUM: 250 } } },
+                Y: { shadow: { type: "math_number", fields: { NUM: 250 } } },
+                WIDTH: { shadow: { type: "math_number", fields: { NUM: 50 } } },
+                HEIGHT: { shadow: { type: "math_number", fields: { NUM: 50 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_drawCircle",
+              inputs: {
+                X: { shadow: { type: "math_number", fields: { NUM: 250 } } },
+                Y: { shadow: { type: "math_number", fields: { NUM: 250 } } },
+                RADIUS: { shadow: { type: "math_number", fields: { NUM: 50 } } },
+              },
+            },
+            {
+              kind: block,
+              type: "canvas_drawLine",
+              inputs: {
+                X1: { shadow: { type: "math_number", fields: { NUM: 50 } } },
+                Y1: { shadow: { type: "math_number", fields: { NUM: 50 } } },
+                X2: { shadow: { type: "math_number", fields: { NUM: 150 } } },
+                Y2: { shadow: { type: "math_number", fields: { NUM: 150 } } },
+              },
+            },
+          ],
+        },
+        {
+          kind: "category",
           name: "Scratch",
-          colour: "#0fbd8c",
+          colour: "#e6a53e",
           contents: [
             {
               kind: block,

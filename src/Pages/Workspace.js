@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+
 import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
-import Swal from "sweetalert2";
 import { Backpack } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
 import "@blockly/toolbox-search";
+
+import Swal from "sweetalert2";
 import JSZip from "jszip";
 import beautify from "beautify";
 import axios from "axios";
@@ -31,6 +33,8 @@ import modalThemeColor from "../functions/modalThemeColor";
 
 import WorkspaceTabs from "../components/WorkspaceTabs";
 import WorkspaceBar from "../components/WorkspaceBar";
+import Renderer from "../functions/render";
+Blockly.blockRendering.register('custom_zelos', Renderer);
 
 require
   .context("../blocks", true, /\.js$/)
@@ -114,32 +118,25 @@ export default function Workspace() {
                       colourSecondary: "#8d5b3d",
                       colourTertiary: "#6b3f2c",
                     },
-                    logic_blocks:
-                      Blockly.Themes.Zelos.blockStyles["logic_blocks"],
-                    loop_blocks:
-                      Blockly.Themes.Zelos.blockStyles["loop_blocks"],
-                    list_blocks:
-                      Blockly.Themes.Zelos.blockStyles["list_blocks"],
+                    logic_blocks: Blockly.Themes.Zelos.blockStyles["logic_blocks"],
+                    loop_blocks: Blockly.Themes.Zelos.blockStyles["loop_blocks"],
+                    list_blocks: Blockly.Themes.Zelos.blockStyles["list_blocks"],
                     procedure_blocks:
                       Blockly.Themes.Zelos.blockStyles["procedure_blocks"],
-                    variable_blocks:
-                      Blockly.Themes.Zelos.blockStyles["variable_blocks"],
+                    variable_blocks: Blockly.Themes.Zelos.blockStyles["variable_blocks"],
                     variable_dynamic_blocks:
-                      Blockly.Themes.Zelos.blockStyles[
-                      "variable_dynamic_blocks"
-                      ],
+                      Blockly.Themes.Zelos.blockStyles["variable_dynamic_blocks"],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles["hat_blocks"],
                   },
                 };
 
-                let renderer = user.settings?.workspace.renderer ?? 'zelos';
+                let renderer = user.settings?.workspace.renderer ?? "zelos";
                 let sounds = user.settings?.workspace.sounds ?? true;
                 let showGrid = user.settings?.workspace.grid.enabled ?? true;
                 let snapToGrid = user.settings?.workspace.grid.snap ?? false;
                 let gridSpacing = user.settings?.workspace.grid.spacing ?? 35;
 
-                let toolboxBtIcons =
-                  user.settings?.workspace.toolboxBtIcons ?? true;
+                let toolboxBtIcons = user.settings?.workspace.toolboxBtIcons ?? true;
 
                 if (!toolboxBtIcons) {
                   let styleEle = document.createElement("style");
@@ -151,8 +148,7 @@ export default function Workspace() {
                   document.head.appendChild(styleEle);
                 }
 
-                let fastRenderMode =
-                  user.settings?.optimization.fastRenderMode ?? false;
+                let fastRenderMode = user.settings?.optimization.fastRenderMode ?? false;
 
                 if (fastRenderMode === true) {
                   let styleEle = document.createElement("style");
@@ -168,53 +164,49 @@ export default function Workspace() {
                 }
 
                 // Inject workspace
-                const workspace = Blockly.inject(
-                  document.getElementById("workspace"),
-                  {
-                    toolbox,
-                    theme,
-                    move: {
-                      wheel: true,
-                    },
-                    renderer,
-                    collapse: true,
-                    comments: true,
-                    disable: true,
-                    maxBlocks: Infinity,
-                    trashcan: true,
-                    horizontalLayout: false,
-                    toolboxPosition: "start",
-                    css: true,
-                    media: "https://blockly-demo.appspot.com/static/media/",
-                    rtl: false,
-                    scrollbars: true,
-                    sounds: sounds,
-                    oneBasedIndex: true,
-                    grid: showGrid
-                      ? {
+                const workspace = Blockly.inject(document.getElementById("workspace"), {
+                  toolbox,
+                  theme,
+                  move: {
+                    wheel: true,
+                  },
+                  renderer: "custom_zelos",
+                  collapse: true,
+                  comments: true,
+                  disable: true,
+                  maxBlocks: Infinity,
+                  trashcan: true,
+                  horizontalLayout: false,
+                  toolboxPosition: "start",
+                  css: true,
+                  media: "https://blockly-demo.appspot.com/static/media/",
+                  rtl: false,
+                  scrollbars: true,
+                  sounds: sounds,
+                  oneBasedIndex: true,
+                  grid: showGrid
+                    ? {
                         spacing: gridSpacing,
                         length: 5,
                         colour: "#8888886e",
                         snap: snapToGrid,
                       }
-                      : false,
-                    zoom: {
-                      controls: true,
-                      wheel: true,
-                      startScale: 1,
-                      maxScale: 3,
-                      minScale: 0.3,
-                      scaleSpeed: 1.2,
-                    },
-                  }
-                );
+                    : false,
+                  zoom: {
+                    controls: true,
+                    wheel: true,
+                    startScale: 1,
+                    maxScale: 3,
+                    minScale: 0.3,
+                    scaleSpeed: 1.2,
+                  },
+                });
                 setWorkspace(workspace);
 
                 Blockly.svgResize(workspace);
 
-                document.querySelector(
-                  ".workspace-navbar .projectName p"
-                ).innerText = project.name;
+                document.querySelector(".workspace-navbar .projectName p").innerText =
+                  project.name;
 
                 [
                   "Discord",
@@ -270,7 +262,9 @@ export default function Workspace() {
                   "errorButWithLengthyName",
                   "variable",
                   "list",
-                  "disfuse"
+                  "disfuse",
+                  "canvas",
+                  "ctx",
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
@@ -337,8 +331,7 @@ export default function Workspace() {
                     text: "Create multiple workspaces to organize your blocks into separate tabs",
                     input: "text",
                     inputValidator: (value) => {
-                      if (value?.length < 3)
-                        return "Name needs at least 3 characters";
+                      if (value?.length < 3) return "Name needs at least 3 characters";
                     },
                     inputPlaceholder: "Initial workspace",
                     showCancelButton: false,
@@ -353,8 +346,7 @@ export default function Workspace() {
                         { name: response.value },
                         {
                           headers: {
-                            Authorization:
-                              localStorage.getItem("disfuse-token"),
+                            Authorization: localStorage.getItem("disfuse-token"),
                           },
                         }
                       )
@@ -364,9 +356,7 @@ export default function Workspace() {
 
                 if (
                   searchParams.get("id") &&
-                  project.workspaces.find(
-                    (p) => p._id === searchParams.get("id")
-                  )
+                  project.workspaces.find((p) => p._id === searchParams.get("id"))
                 )
                   currentWorkspace.current = project.workspaces.find(
                     (p) => p._id === searchParams.get("id")
@@ -380,8 +370,7 @@ export default function Workspace() {
                   currentWorkspace.current = project.workspaces[0];
                 }
 
-                if (project.owner.id !== user.id)
-                  return (window.location = "/projects");
+                if (project.owner.id !== user.id) return (window.location = "/projects");
 
                 registerContextMenus(project, currentWorkspace.current);
 
@@ -420,7 +409,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
                   );
-                } catch (_) { }
+                } catch (_) {}
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -448,12 +437,7 @@ export default function Workspace() {
                     currentWorkspace.current
                   );
 
-                  updateCode(
-                    workspace,
-                    project,
-                    currentWorkspace.current._id,
-                    true
-                  );
+                  updateCode(workspace, project, currentWorkspace.current._id, true);
                 });
 
                 // New tab event
@@ -483,8 +467,7 @@ export default function Workspace() {
                           },
                           {
                             headers: {
-                              Authorization:
-                                localStorage.getItem("disfuse-token"),
+                              Authorization: localStorage.getItem("disfuse-token"),
                             },
                           }
                         )
@@ -496,85 +479,73 @@ export default function Workspace() {
                 document
                   .querySelector("button#showCode")
                   .addEventListener("click", () => {
-                    updateCode(
-                      workspace,
-                      project,
-                      currentWorkspace.current._id
-                    );
+                    updateCode(workspace, project, currentWorkspace.current._id);
                     document.querySelector(".code-view").style.display = "flex";
                   });
 
                 // Load from file event
-                document
-                  .querySelector("button#load")
-                  .addEventListener("click", () => {
-                    const fileInput = document.createElement("input");
-                    fileInput.type = "file";
-                    fileInput.accept = ".df";
+                document.querySelector("button#load").addEventListener("click", () => {
+                  const fileInput = document.createElement("input");
+                  fileInput.type = "file";
+                  fileInput.accept = ".df";
 
-                    fileInput.addEventListener("change", (e) => {
-                      let file = e.target.files[0];
-                      if (!file) return;
+                  fileInput.addEventListener("change", (e) => {
+                    let file = e.target.files[0];
+                    if (!file) return;
 
-                      let reader = new FileReader();
+                    let reader = new FileReader();
 
-                      reader.onload = async (event) => {
-                        let data = event.target.result;
+                    reader.onload = async (event) => {
+                      let data = event.target.result;
 
-                        let json;
-                        try {
-                          json = JSON.parse(data);
-                        } catch (error) {
-                          return Swal.fire("Error", String(error), "error");
-                        }
+                      let json;
+                      try {
+                        json = JSON.parse(data);
+                      } catch (error) {
+                        return Swal.fire("Error", String(error), "error");
+                      }
 
-                        if (!json.blocks || !json.blocks.blocks) {
-                          return Swal.fire(
-                            "Error",
-                            "The selected file doesn't contain any blocks.",
-                            "error"
+                      if (!json.blocks || !json.blocks.blocks) {
+                        return Swal.fire(
+                          "Error",
+                          "The selected file doesn't contain any blocks.",
+                          "error"
+                        );
+                      }
+
+                      Swal.fire({
+                        title: "Load Blocks from File",
+                        text: "Do you want to replace the current blocks in the workspace?",
+                        showCancelButton: true,
+                        showDenyButton: true,
+                        cancelButtonText: "Cancel",
+                        confirmButtonText: "Replace",
+                        denyButtonText: "Combine",
+                        icon: "question",
+                        animation: true,
+                        ...modalColors,
+                      }).then((result) => {
+                        if (result.isDismissed) return;
+
+                        if (result.isConfirmed) {
+                          Blockly.serialization.workspaces.load(json, workspace);
+                        } else {
+                          json.blocks.blocks = json.blocks.blocks.concat(
+                            Blockly.serialization.workspaces.save(workspace)?.blocks
+                              ?.blocks || []
                           );
+
+                          Blockly.serialization.workspaces.load(json, workspace);
                         }
+                      });
+                    };
 
-                        Swal.fire({
-                          title: "Load Blocks from File",
-                          text: "Do you want to replace the current blocks in the workspace?",
-                          showCancelButton: true,
-                          showDenyButton: true,
-                          cancelButtonText: "Cancel",
-                          confirmButtonText: "Replace",
-                          denyButtonText: "Combine",
-                          icon: "question",
-                          animation: true,
-                          ...modalColors,
-                        }).then((result) => {
-                          if (result.isDismissed) return;
-
-                          if (result.isConfirmed) {
-                            Blockly.serialization.workspaces.load(
-                              json,
-                              workspace
-                            );
-                          } else {
-                            json.blocks.blocks = json.blocks.blocks.concat(
-                              Blockly.serialization.workspaces.save(workspace)
-                                ?.blocks?.blocks || []
-                            );
-
-                            Blockly.serialization.workspaces.load(
-                              json,
-                              workspace
-                            );
-                          }
-                        });
-                      };
-
-                      reader.readAsText(file);
-                    });
-
-                    fileInput.click();
-                    fileInput.remove();
+                    reader.readAsText(file);
                   });
+
+                  fileInput.click();
+                  fileInput.remove();
+                });
 
                 // Templates button event
                 document
@@ -610,158 +581,139 @@ export default function Workspace() {
                   });
 
                 // Export button event
-                document
-                  .querySelector("button.export")
-                  .addEventListener("click", () => {
-                    updateCode(
-                      workspace,
+                document.querySelector("button.export").addEventListener("click", () => {
+                  updateCode(workspace, project, currentWorkspace.current._id);
+
+                  Swal.fire({
+                    title: "Export Project",
+                    icon: "info",
+                    confirmButtonText: "Download ZIP",
+                    input: "select",
+                    inputOptions: {
+                      project: "Export whole project",
+                      workspace: "Export current workspace",
+                    },
+                    showCancelButton: false,
+                    html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+                    ...modalColors,
+                  }).then(async (result) => {
+                    if (!result.isConfirmed) return;
+
+                    const zip = new JSZip();
+
+                    const projectCode =
+                      document.querySelector(".project.code code").innerText;
+                    const wsCode =
+                      document.querySelector(".workspace.code code").innerText;
+
+                    const fullWorkspace = getWholeProjectWorkspace(
                       project,
+                      workspace,
                       currentWorkspace.current._id
                     );
 
-                    Swal.fire({
-                      title: "Export Project",
-                      icon: "info",
-                      confirmButtonText: "Download ZIP",
-                      input: "select",
-                      inputOptions: {
-                        project: "Export whole project",
-                        workspace: "Export current workspace",
-                      },
-                      showCancelButton: false,
-                      html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
-                      ...modalColors,
-                    }).then(async (result) => {
-                      if (!result.isConfirmed) return;
+                    let missingBlocks = [];
+                    let warningBlocks = [];
 
-                      const zip = new JSZip();
+                    let exportingWs;
+                    if (result.value === "project") exportingWs = fullWorkspace;
+                    else exportingWs = workspace;
 
-                      const projectCode =
-                        document.querySelector(".project.code code").innerText;
-                      const wsCode = document.querySelector(
-                        ".workspace.code code"
-                      ).innerText;
+                    requiredBlocks.forEach((requiredBlock) => {
+                      if (
+                        !exportingWs
+                          .getAllBlocks(false)
+                          .find((block) => block.type === requiredBlock.type)
+                      )
+                        missingBlocks.push(requiredBlock);
+                    });
 
-                      const fullWorkspace = getWholeProjectWorkspace(
-                        project,
-                        workspace,
-                        currentWorkspace.current._id
-                      );
+                    exportingWs.getAllBlocks(false).forEach((block) => {
+                      if (block.data?.length)
+                        warningBlocks.push({
+                          message: block.data,
+                          id: block.id,
+                        });
+                    });
 
-                      let missingBlocks = [];
-                      let warningBlocks = [];
-
-                      let exportingWs;
-                      if (result.value === "project")
-                        exportingWs = fullWorkspace;
-                      else exportingWs = workspace;
-
-                      requiredBlocks.forEach((requiredBlock) => {
-                        if (
-                          !exportingWs
-                            .getAllBlocks(false)
-                            .find((block) => block.type === requiredBlock.type)
-                        )
-                          missingBlocks.push(requiredBlock);
-                      });
-
-                      exportingWs.getAllBlocks(false).forEach((block) => {
-                        if (block.data?.length)
-                          warningBlocks.push({
-                            message: block.data,
-                            id: block.id,
-                          });
-                      });
-
-                      if (missingBlocks.length || warningBlocks.length) {
-                        let { isConfirmed } = await Swal.fire({
-                          title: "Errors",
-                          icon: "warning",
-                          showCancelButton: true,
-                          confirmButtonText: "Download Anyway",
-                          confirmButtonColor: "#e40000",
-                          html: `
+                    if (missingBlocks.length || warningBlocks.length) {
+                      let { isConfirmed } = await Swal.fire({
+                        title: "Errors",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Download Anyway",
+                        confirmButtonColor: "#e40000",
+                        html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                              .map(
-                                (block) =>
-                                  `<p class="exportError">${block.message}</p>`
-                              )
-                              .join("")}
+                            .map((block) => `<p class="exportError">${block.message}</p>`)
+                            .join("")}
                           ${warningBlocks
-                              .map(
-                                (block) =>
-                                  `
+                            .map(
+                              (block) =>
+                                `
                               <p class="exportError">
                                 <span>
                                 ${titleCase(
-                                    exportingWs
-                                      .getBlockById(block.id)
-                                      .type.replaceAll("_", " ")
-                                  )}
+                                  exportingWs
+                                    .getBlockById(block.id)
+                                    .type.replaceAll("_", " ")
+                                )}
                                 </span>
-                              ${block.message
-                                    .map((m) => `<span>${m}</span>`)
-                                    .join("")}
+                              ${block.message.map((m) => `<span>${m}</span>`).join("")}
                               </p>`
-                              )
-                              .join("")}
+                            )
+                            .join("")}
                           `,
-                          ...modalColors,
-                          customClass: {
-                            container: "dark",
-                            htmlContainer: "exportErrors",
-                          },
-                        });
-
-                        if (!isConfirmed) return;
-                      }
-
-                      const indexjs =
-                        result.value === "project" ? projectCode : wsCode;
-
-                      const envFile = `${project.secrets
-                        .map((s) => `${s.name}=${s.value}`)
-                        .join("\n")}`;
-
-                      exportFiles.forEach((file) => {
-                        zip.file(file.name, file.content);
+                        ...modalColors,
+                        customClass: {
+                          container: "dark",
+                          htmlContainer: "exportErrors",
+                        },
                       });
 
-                      zip.file(
-                        "index.js",
-                        `${beautify(indexjs, { format: "js" })}`
-                      );
-                      zip.file(".env", envFile);
-                      zip.file(
-                        `${project.name}.df`,
-                        JSON.stringify(
-                          Blockly.serialization.workspaces.save(workspace)
-                        )
-                      );
+                      if (!isConfirmed) return;
+                    }
 
-                      zip.generateAsync({ type: "blob" }).then((content) => {
-                        let url = window.URL.createObjectURL(content);
-                        let anchor = document.createElement("a");
-                        anchor.href = url;
-                        anchor.download = `${project.name}.zip`;
+                    const indexjs = result.value === "project" ? projectCode : wsCode;
 
-                        anchor.click();
+                    const envFile = `${project.secrets
+                      .map((s) => `${s.name}=${s.value}`)
+                      .join("\n")}`;
 
-                        window.URL.revokeObjectURL(url);
+                    exportFiles.forEach((file) => {
+                      zip.file(file.name, file.content);
+                    });
 
-                        Swal.fire({
-                          toast: true,
-                          position: "bottom-end",
-                          timer: 5000,
-                          timerProgressBar: true,
-                          icon: "success",
-                          title: "Successfully exported",
-                          showConfirmButton: false,
-                        });
+                    zip.file("index.js", `${beautify(indexjs, { format: "js" })}`);
+                    zip.file(".env", envFile);
+                    zip.file(
+                      `${project.name}.df`,
+                      JSON.stringify(Blockly.serialization.workspaces.save(workspace))
+                    );
+
+                    zip.generateAsync({ type: "blob" }).then((content) => {
+                      let url = window.URL.createObjectURL(content);
+                      let anchor = document.createElement("a");
+                      anchor.href = url;
+                      anchor.download = `${project.name}.zip`;
+
+                      anchor.click();
+
+                      window.URL.revokeObjectURL(url);
+
+                      Swal.fire({
+                        toast: true,
+                        position: "bottom-end",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        icon: "success",
+                        title: "Successfully exported",
+                        showConfirmButton: false,
                       });
                     });
                   });
+                });
 
                 // Save file event
                 document.querySelector("button#save").onclick = async () => {
