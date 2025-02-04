@@ -105,7 +105,6 @@ Blockly.Blocks['captcha_replyInteraction'] = {
 };
 
 javascriptGenerator.forBlock['captcha_replyInteraction'] = function (block, generator) {
-  var message = generator.valueToCode(block, 'message', Order.ATOMIC);
   var content = generator.valueToCode(block, 'content', Order.ATOMIC);
   var embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
   var rows = generator.statementToCode(block, 'rows');
