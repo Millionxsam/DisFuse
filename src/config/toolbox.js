@@ -3151,7 +3151,6 @@ export const toolbox = {
               type: "buttons_add",
               inputs: {
                 label: { shadow: { type: "text" } },
-                emoji: { shadow: { type: "text" } },
                 id: { shadow: { type: "text" } },
                 url: { shadow: { type: "text" } },
                 disabled: {
@@ -4034,6 +4033,13 @@ export const toolbox = {
             {
               kind: block,
               type: "captcha_reply",
+              inputs: {
+                content: { shadow: { type: "text" } },
+              },
+            },
+            {
+              kind: block,
+              type: "captcha_replyInteraction",
               inputs: {
                 content: { shadow: { type: "text" } },
               },

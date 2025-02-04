@@ -235,8 +235,8 @@ javascriptGenerator.forBlock["buttons_add"] = function (
   resultCode.push(`.setDisabled(${disabled ?? false})`);
   resultCode.push(`.setLabel(${label || "''"})`);
   resultCode.push(`.setCustomId(${id})`);
-  if (url && url !== '' && url !== null && style === '5') resultCode.push(`.setURL(${url})`);
-  if (emoji && emoji !== '' && emoji !== null) resultCode.push(`.setEmoji(${emoji})`);
+  if (url && url !== '' && url !== 'null' && style === '5') resultCode.push(`.setURL(${url})`);
+  if (emoji && emoji !== '' && emoji !== 'null') resultCode.push(`.setEmoji(${emoji})`);
 
   return resultCode.join('') + ',\n';
 };

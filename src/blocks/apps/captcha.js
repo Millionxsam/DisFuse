@@ -85,6 +85,57 @@ javascriptGenerator.forBlock['captcha_reply'] = function (block, generator) {
 });\n`;
 };
 
+Blockly.Blocks['captcha_replyInteraction'] = {
+  init: function () {
+    this.appendValueInput('message')
+      .setCheck('message')
+      .appendField('Reply captcha to interaction');
+    this.appendValueInput('content')
+      .setCheck('String')
+      .appendField('with content:');
+    this.appendValueInput('embeds')
+      .setCheck('String')
+      .appendField('embed name(s):');
+    this.appendStatementInput('rows').setCheck('rows').appendField('rows:');
+    this.setPreviousStatement(true, 'default');
+    this.setNextStatement(true, 'default');
+    this.setColour('#0fbd8c');
+    this.setTooltip('Replies to the interaction with a captcha');
+  },
+};
+
+javascriptGenerator.forBlock['captcha_replyInteraction'] = function (block, generator) {
+  var message = generator.valueToCode(block, 'message', Order.ATOMIC);
+  var content = generator.valueToCode(block, 'content', Order.ATOMIC);
+  var embeds = generator.valueToCode(block, 'embeds', Order.ATOMIC);
+  var rows = generator.statementToCode(block, 'rows');
+
+  return `interaction.reply({
+  files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
+  content: ${content || "''"},
+  embeds: [${embeds.replaceAll("'", '') || ''}],
+  components: [
+  ${rows}]
+});\n`;
+};
+
+createRestrictions(
+  ["captcha_replyInteraction"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: [
+        "slash_received",
+        "buttons_event",
+        "modal_handle_interaction",
+        "menus_event",
+        "contextMenu_received",
+      ],
+      message: "This must be under a interaction event",
+    },
+  ]
+);
+
 Blockly.Blocks['captcha_value'] = {
   init: function () {
     this.appendDummyInput().appendField('get value of captcha');
