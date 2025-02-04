@@ -87,9 +87,7 @@ javascriptGenerator.forBlock['captcha_reply'] = function (block, generator) {
 
 Blockly.Blocks['captcha_replyInteraction'] = {
   init: function () {
-    this.appendValueInput('message')
-      .setCheck('message')
-      .appendField('Reply captcha to interaction');
+    this.appendDummyInput().appendField('Reply captcha to interaction');
     this.appendValueInput('content')
       .setCheck('String')
       .appendField('with content:');
