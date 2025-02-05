@@ -1505,6 +1505,10 @@ export const toolbox = {
               type: "msg_received",
             },
             {
+              kind: block,
+              type: "msg_msg"
+            },
+            {
               kind: "label",
               text: "Actions ↓",
             },
@@ -1533,6 +1537,10 @@ export const toolbox = {
             {
               kind: block,
               type: "misc_messageSent",
+            },
+            {
+              kind: sep,
+              gap: "50",
             },
             {
               kind: block,
@@ -4042,6 +4050,9 @@ export const toolbox = {
               type: "captcha_replyInteraction",
               inputs: {
                 content: { shadow: { type: "text" } },
+                ephemeral: {
+                  shadow: { type: "logic_boolean", fields: { BOOL: "FALSE" } },
+                },
               },
             },
           ],

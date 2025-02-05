@@ -5,6 +5,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
     super.init();
     this.OCTAGON = this.makeOctagon();
     this.CURVY = this.makeCurvy();
+    this.BOWL = this.makeBowl();
   }
 
   makeOctagon() {
@@ -99,6 +100,53 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
     };
   }
 
+  makeBowl() {
+    const maxWidth = this.MAX_DYNAMIC_CONNECTION_SHAPE_WIDTH;
+    const maxHeight = maxWidth * 2;
+    const thisCopy = this
+
+    function makeMainPath(blockHeight, up, right) {
+      const remainingHeight = blockHeight > maxHeight ? blockHeight - maxHeight : 0;
+      const height = (blockHeight > maxHeight ? maxHeight : blockHeight) + remainingHeight;
+      const radius = height / 2;
+
+      const dirRight = right ? 1 : -1;
+      const dirUp = up ? -1 : 1;
+
+      return `h ${radius * dirRight} q ${(radius / 2) * -dirRight} ${radius * dirUp} 0 ${height * dirUp} h ${radius * -dirRight}`;
+    }
+
+    return {
+      type: this.SHAPES.ROUND,
+      isDynamic: true,
+      width(height) {
+        const halfHeight = height / 2;
+        return halfHeight > maxWidth ? maxWidth : halfHeight;
+      },
+      height(height) {
+        return height;
+      },
+      connectionOffsetY(connectionHeight) {
+        return connectionHeight / 2;
+      },
+      connectionOffsetX(connectionWidth) {
+        return -connectionWidth;
+      },
+      pathDown(height) {
+        return makeMainPath(height, false, false);
+      },
+      pathUp(height) {
+        return makeMainPath(height, true, false);
+      },
+      pathRightDown(height) {
+        return thisCopy.ROUNDED.pathRightDown(height);
+      },
+      pathRightUp(height) {
+        return thisCopy.ROUNDED.pathRightUp(height);
+      },
+    };
+  }
+
   /**
    * @param {Blockly.RenderedConnection} connection
    */
@@ -112,6 +160,8 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
           return this.OCTAGON;
         } else if (checks.includes('object')) {
           return this.CURVY;
+        } else if (checks.includes('message')) {
+          return this.BOWL;
         }
       }
     }
