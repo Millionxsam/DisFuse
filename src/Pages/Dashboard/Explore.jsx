@@ -5,6 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 
 import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
+import { userCache } from "../../cache.ts";
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);
@@ -12,6 +13,13 @@ export default function Explore() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (userCache.explore) {
+      setProjects(userCache.explore);
+      setShown(userCache.explore);
+      setLoading(false);
+      return;
+    }
+
     axios
       .get(apiUrl + "/projects", {
         headers: {
@@ -20,6 +28,8 @@ export default function Explore() {
       })
       .then(({ data }) => {
         data = data.sort((a, b) => b.likes.length - a.likes.length);
+
+        userCache.explore = data;
 
         setProjects(data);
         setShown(data);

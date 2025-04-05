@@ -1,9 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
 
 import { apiUrl, authUrl, devAuthUrl, discordUrl } from "./config/config.json";
+import { userCache } from "./cache";
+
+let lastAuthTime = null;
 
 export default function Auth({ children }) {
   const [params] = useSearchParams(window.location.hash.slice(1));
@@ -29,6 +32,7 @@ export default function Auth({ children }) {
   const exp = parseInt(localStorage.getItem("disfuse-token-exp"));
 
   if (!token || Date.now() > exp) {
+    userCache.isAuthenticated = false;
     if (window.location.hostname === "localhost") window.location = devAuthUrl;
     else window.location = authUrl;
   }
@@ -36,21 +40,32 @@ export default function Auth({ children }) {
   if (window.location.href.includes("access_token="))
     window.location = window.location.pathname;
 
-  axios
-    .post(apiUrl + "/users", null, {
-      headers: {
-        Authorization: token,
-      },
-    })
-    .then(() => setLoading(false))
-    .catch((error) => {
-      console.error(error);
-    });
+  useEffect(() => {
+    if (userCache.isAuthenticated) {
+      if (lastAuthTime - Date.now() < 60000) {
+        setLoading(false);
+        return;
+      }
+    }
+
+    axios
+      .post(apiUrl + "/users", null, {
+        headers: { Authorization: token },
+      })
+      .then(() => {
+        userCache.isAuthenticated = true;
+        setLoading(false);
+        lastAuthTime = Date.now();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [token]);
 
   if (loading)
     return (
-      <div key={'loadingAnim'} className="load-container">
-        <LoadingAnim/>
+      <div key={"loadingAnim"} className="load-container">
+        <LoadingAnim />
       </div>
     );
 

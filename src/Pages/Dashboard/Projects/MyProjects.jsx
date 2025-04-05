@@ -5,7 +5,13 @@ import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
 import modalThemeColor from "../../../functions/modalThemeColor";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
+import {
+  apiUrl,
+  authUrl,
+  devAuthUrl,
+  discordUrl,
+} from "../../../config/config.json";
+import { userCache } from "../../../cache.ts";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -17,6 +23,14 @@ export default function MyProjects() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (userCache.user && userCache.projects) {
+      setUser(userCache.user);
+      setProjects(userCache.projects);
+      setShown(userCache.projects);
+      setLoading(false);
+      return;
+    }
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -30,13 +44,15 @@ export default function MyProjects() {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
           })
           .then(({ data: p }) => {
-            setProjects(
-              p.sort(
-                (a, b) =>
-                  new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
-              )
+            let sortedProjects = p.sort(
+              (a, b) =>
+                new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
             );
-            setShown(p);
+
+            userCache.projects = sortedProjects;
+
+            setProjects(sortedProjects);
+            setShown(sortedProjects);
             setLoading(false);
           });
       });
@@ -336,14 +352,20 @@ export default function MyProjects() {
       )
     );
   }
-
+  
   return (
     <>
       <div className="projects-container">
         <div className="nametag">
           <img
-            src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
+            src={String(user.avatar).startsWith('https://') ? user.avatar : `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
             alt=""
+            width={"36px"}
+            onError={(e) => {
+              e.preventDefault();
+              e.target.onerror = null; 
+              e.target.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+            }}
           />
           Hello,
           <div>{user?.global_name || user?.username}</div>
@@ -375,7 +397,9 @@ export default function MyProjects() {
         {isLoading ? <LoadingAnim /> : ""}
         <div className="projects">
           {shown.length > 0
-            ? shown.map((project, index) => <PriProject project={project} key={index} />)
+            ? shown.map((project, index) => (
+                <PriProject project={project} key={index} />
+              ))
             : !isLoading
             ? "No projects"
             : ""}
