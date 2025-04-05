@@ -5,7 +5,7 @@ export default function UserTag({ user }) {
       onClick={() => (window.location = `/@${user?.username}`)}
     >
       <img
-        src={user.avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png'}
+        src={user?.avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png'}
         alt=""
         onError={(e) => {
           e.preventDefault();
