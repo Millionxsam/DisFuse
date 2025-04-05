@@ -14,7 +14,7 @@ export default async function autosave(workspace, projectId, currentWorkspace) {
     await axios
       .patch(
         apiUrl +
-        `/projects/${projectId}/workspaces/${currentWorkspace._id}/data`,
+          `/projects/${projectId}/workspaces/${currentWorkspace._id}/data`,
         {
           data,
         },
@@ -28,13 +28,13 @@ export default async function autosave(workspace, projectId, currentWorkspace) {
         console.error(e);
 
         if (autosaveIndicator) {
-          autosaveIndicator.innerHTML = `<i className="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+          autosaveIndicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
         }
       })
   ).data;
 
   if (autosaveIndicator) {
-    autosaveIndicator.innerHTML = `<i className="fa-solid fa-cloud"></i><div>
+    autosaveIndicator.innerHTML = `<i class="fa-solid fa-cloud"></i><div>
     ${new Date().toLocaleTimeString([], {
       timeStyle: "short",
     })}</div>`;

@@ -31,9 +31,10 @@ export function updateCode(
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
-  if (blocksIndicator) blocksIndicator.innerHTML = `<i className="fa-solid fa-cube"></i><div>
-  ${projectBlocks?.length ?? '??'}
-  </div>`
+  if (blocksIndicator)
+    blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+  ${projectBlocks?.length ?? "??"}
+  </div>`;
 
   if (!onlyWarning) {
     projectCode = setUpCode(project, tempWorkspace, projectBlocks);
@@ -68,6 +69,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     let tokenCode = javascriptGenerator.blockToCode(mainToken);
 
     if (
+      // eslint-disable-next-line no-useless-escape
       /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
         tokenCode
       )
@@ -111,7 +113,10 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     },
     fetch_: "axios",
     time_: "ms",
-    canvas_: { type: "code", value: 'const canvasModule = require("canvas");\n' },
+    canvas_: {
+      type: "code",
+      value: 'const canvasModule = require("canvas");\n',
+    },
   };
 
   let blockImportCode = "";
@@ -151,7 +156,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     } else if (typeof importName === "object") {
       if (importName["type"] === "code") blockImportCode += importName["value"];
     } else {
-      blockImportCode += `const ${fixImport(importName)} = require("${importName}");\n`;
+      blockImportCode += `const ${fixImport(
+        importName
+      )} = require("${importName}");\n`;
     }
   });
 

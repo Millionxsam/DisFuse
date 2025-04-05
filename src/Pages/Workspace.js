@@ -973,58 +973,59 @@ export default function Workspace() {
         },
         [projectId, searchParams, setSearchParams]
       );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    async function loadTab(index) {
-      let p = (
-        await axios.get(apiUrl + `/projects/${projectId}`, {
-          headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
-          },
-        })
-      ).data;
+  return (
+    <>
+      <WorkspaceBar workspace={workspace} />
+      <CodeView />
+      <SecretsView />
 
-      currentWorkspace.current = p.workspaces[index];
+      <div className="load-container">{isLoading ? <LoadingAnim /> : ""}</div>
 
-      setSearchParams((params) => {
-        params.set("id", p.workspaces[index]._id);
-        return params;
-      });
+      <div className="invisibleWs"></div>
 
-      reloadContextMenus(project, currentWorkspace.current);
-
-      if (p.workspaces[index].data?.length)
-        Blockly.serialization.workspaces.load(
-          JSON.parse(p.workspaces[index].data),
-          workspace
-        );
-      else workspace.clear();
-    }
-
-    return (
-      <>
-        <WorkspaceBar workspace={workspace} />
-        <CodeView />
-        <SecretsView />
-
-        <div className="load-container">{isLoading ? <LoadingAnim /> : ""}</div>
-
-        <div className="invisibleWs"></div>
-
-        <div className="workspace-container">
-          <div className="right">
-            <WorkspaceTabs
-              currentTab={currentWorkspace.current}
-              onClick={loadTab}
-              project={project}
-              workspace={workspace}
-              modalColors={modalColors}
-            />
-            <div id="workspace"></div>
-          </div>
+      <div className="workspace-container">
+        <div className="right">
+          <WorkspaceTabs
+            currentTab={currentWorkspace.current}
+            onClick={loadTab}
+            project={project}
+            workspace={workspace}
+            modalColors={modalColors}
+          />
+          <div id="workspace"></div>
         </div>
-      </>
-    );
-  });
+      </div>
+    </>
+  );
+
+  async function loadTab(index) {
+    let p = (
+      await axios.get(apiUrl + `/projects/${projectId}`, {
+        headers: {
+          Authorization: localStorage.getItem("disfuse-token"),
+        },
+      })
+    ).data;
+
+    currentWorkspace.current = p.workspaces[index];
+
+    setSearchParams((params) => {
+      params.set("id", p.workspaces[index]._id);
+      return params;
+    });
+
+    reloadContextMenus(project, currentWorkspace.current);
+
+    if (p.workspaces[index].data?.length)
+      Blockly.serialization.workspaces.load(
+        JSON.parse(p.workspaces[index].data),
+        workspace
+      );
+    else workspace.clear();
+  }
 
   function reloadContextMenus(project, currentWorkspace) {
     Blockly.ContextMenuRegistry.registry.unregister("copyCode");
