@@ -7,7 +7,8 @@ import getToolbox from "../../../config/toolbox";
 import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
-const { apiUrl } = require("../../../config/config.json");
+
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
 
 export default function ViewProject() {
   let { projectId } = useParams();

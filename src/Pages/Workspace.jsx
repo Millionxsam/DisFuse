@@ -37,16 +37,9 @@ import registerCustomBlocks from "../functions/registerCustomBlocks";
 import Renderer from "../functions/render";
 Blockly.blockRendering.register("custom_zelos", Renderer);
 
-require
-  .context("../blocks", true, /\.js$/)
-  .keys()
-  .forEach((key) => {
-    key = key.replace("./", "");
+import.meta.glob("../blocks/**/*.js", { eager: true });
 
-    import(`../blocks/${key}`).catch(console.error);
-  });
-
-const { apiUrl, discordUrl } = require("../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
 
 const requiredBlocks = [
   {
@@ -737,7 +730,7 @@ export default function Workspace() {
                       }).then((result) => {
                         if (!result.isConfirmed) return;
 
-                        let data = require(`../templates/${result.value}`);
+                        let data = import(`../templates/${result.value}.js`);
 
                         data.blocks.blocks = data.blocks.blocks.concat(
                           Blockly.serialization.workspaces.save(workspace)
@@ -842,14 +835,14 @@ export default function Workspace() {
                           ${missingBlocks
                             .map(
                               (block) =>
-                                `<p class="exportError">${block.message}</p>`
+                                `<p className="exportError">${block.message}</p>`
                             )
                             .join("")}
                           ${warningBlocks
                             .map(
                               (block) =>
                                 `
-                              <p class="exportError">
+                              <p className="exportError">
                                 <span>
                                 ${titleCase(
                                   exportingWs
@@ -949,19 +942,6 @@ export default function Workspace() {
                             showConfirmButton: false,
                           });
                         };
-
-                      let projectNameDiv =
-                        document.querySelector(".projectName p");
-
-                      projectNameDiv.addEventListener("click", () => {
-                        if (projectNameDiv.dataset.collapsed === "false") {
-                          projectNameDiv.dataset.collapsed = "true";
-                          projectNameDiv.innerText = "...";
-                        } else {
-                          projectNameDiv.dataset.collapsed = "false";
-                          projectNameDiv.innerText = project.name;
-                        }
-                      });
                     });
                 });
             })

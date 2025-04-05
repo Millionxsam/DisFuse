@@ -1243,14 +1243,13 @@ i.workspacesMenuBtn:hover {
   gap: 0.25rem;
 }
 
-.priProject .name-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.priProject .name-container,
+.pubProject .name-container {
+  width: 100%;
 }
 
-.priProject .name-container div,
-.pubProject .name-container div,
+.priProject .name-container,
+.pubProject .name-container,
 .workshop-item .info div,
 .blockPackPage .head .info div {
   display: flex;

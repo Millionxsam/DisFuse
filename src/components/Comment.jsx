@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Reply from "./Reply";
 import Swal from "sweetalert2";
 
-const { apiUrl } = require("../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
 
 export default function Comment({ project, comment: c, user, allUsers, index }) {
   const [author, setAuthor] = useState({});

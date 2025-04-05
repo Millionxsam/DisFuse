@@ -3,9 +3,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
 
-const { apiUrl } = require("./config/config.json");
-
-const { authUrl, devAuthUrl } = require("./config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "./config/config.json";
 
 export default function Auth({ children }) {
   const [params] = useSearchParams(window.location.hash.slice(1));

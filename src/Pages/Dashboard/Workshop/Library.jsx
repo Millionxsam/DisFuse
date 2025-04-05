@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingAnim from "../../../components/LoadingAnim";
 import WorkshopItem from "../../../components/WorkshopItem";
 
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
 
 export default function Library() {
   const [packs, setPacks] = useState([]);
@@ -50,14 +50,14 @@ export default function Library() {
   return (
     <div className="library-container">
       <div className="head">
-        <i class="fa-solid fa-cubes-stacked"></i> Library
+        <i className="fa-solid fa-cubes-stacked"></i> Library
       </div>
       <div className="buttons">
         <button
           style={{ width: "min-content" }}
           onClick={() => navigate("/workshop")}
         >
-          <i class="fa-solid fa-arrow-left"></i> Workshop
+          <i className="fa-solid fa-arrow-left"></i> Workshop
         </button>
         {/* <input
           type="text"

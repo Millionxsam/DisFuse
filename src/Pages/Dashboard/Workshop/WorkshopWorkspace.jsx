@@ -12,16 +12,9 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { renderToStaticMarkup } from "react-dom/server";
 
-require
-  .context("./workshopBlocks", true, /\.js$/)
-  .keys()
-  .forEach((key) => {
-    key = key.replace("./", "");
+import.meta.glob("./workshopBlocks/*.js", { eager: true })
 
-    import(`./workshopBlocks/${key}`).catch(console.error);
-  });
-
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
 
 export default function WorkshopWorkspace() {
   const [pack, setPack] = useState({});
@@ -183,7 +176,7 @@ export default function WorkshopWorkspace() {
           </div>
           <h1 className="packName">{pack.name}</h1>
           <i className="blockCount">
-            <i class="fa-solid fa-cubes"></i> {blocks.length} block
+            <i className="fa-solid fa-cubes"></i> {blocks.length} block
             {blocks.length === 1 ? "" : "s"}
           </i>
         </div>

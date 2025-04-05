@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-const { apiUrl } = require('../config/config.json');
+
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
 
 export default function Staff() {
   const [staff, setStaff] = useState([]);

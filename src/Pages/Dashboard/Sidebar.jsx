@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-const { discordUrl, apiUrl } = require("../../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
@@ -92,7 +92,7 @@ export default function Sidebar() {
                 to="/workshop"
               >
                 <li>
-                  <i class="fa-solid fa-tools"></i> <div>Workshop</div>
+                  <i className="fa-solid fa-tools"></i> <div>Workshop</div>
                 </li>
               </Link>
               <Link

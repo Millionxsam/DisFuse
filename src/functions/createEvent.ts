@@ -37,7 +37,7 @@ export function createEventBlock(options: EventBlockOptions): void {
     },
   };
 
-  javascriptGenerator[id] = function (
+  javascriptGenerator.forBlock[id] = function (
     block: Blockly.Block,
     generator: JavascriptGenerator
   ) {

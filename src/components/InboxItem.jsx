@@ -4,7 +4,7 @@ import UserTag from "./UserTag";
 import ms from "ms";
 import { useNavigate } from "react-router-dom";
 
-const { apiUrl } = require("../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
 
 export default function InboxItem({ item, user, index }) {
   let link, title, body;

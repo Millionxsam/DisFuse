@@ -5,7 +5,7 @@ import modalThemeColor from "../functions/modalThemeColor";
 
 const modalColors = modalThemeColor(null, true);
 
-const { apiUrl } = require("../config/config.json");
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
 
 export default function PriProject({ project }) {
   if (!project) return;
@@ -17,23 +17,16 @@ export default function PriProject({ project }) {
       <div className="priProject">
         <div className="top">
           <div className="name-container">
-            <div>
-              <h1>{project.name}</h1>
-              {project.private ? (
-                <div>
-                  <i class="fa-solid fa-lock"></i>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-            <div>
-              <i
-                class="fa-solid fa-pen-to-square"
-                style={{ cursor: "pointer" }}
-                onClick={() => editProject(project)}
-              ></i>
-            </div>
+            <h1>{project.name}</h1>
+            {project.private && (<i className="fa-solid fa-lock"/>)}
+            <i
+              className="fa-solid fa-pen-to-square"
+              style={{
+                cursor: "pointer",
+                marginLeft: "auto"
+              }}
+              onClick={() => editProject(project)}
+            />
           </div>
           <i>
             {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
@@ -56,11 +49,11 @@ export default function PriProject({ project }) {
               (window.location = `/@${project.owner.username}/${project._id}/workspace`)
             }
           >
-            <i class="fa-solid fa-square-arrow-up-right"></i>
+            <i className="fa-solid fa-square-arrow-up-right"></i>
             Open
           </button>
           <button onClick={() => deleteProject(project)} id="red">
-            <i class="fa-solid fa-trash"></i>
+            <i className="fa-solid fa-trash"></i>
             Delete
           </button>
         </div>
