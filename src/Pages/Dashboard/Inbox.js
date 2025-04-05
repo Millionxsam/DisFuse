@@ -68,12 +68,12 @@ export default function Inbox() {
   return (
     <div className="inbox-container">
       <div className="head">
-        <i class="fa-solid fa-inbox"></i> Inbox
+        <i className="fa-solid fa-inbox"></i> Inbox
       </div>
 
       <div className="buttons">
         <button onClick={clearAll} id="red">
-          <i class="fa-solid fa-trash"></i> Clear All
+          <i className="fa-solid fa-trash"></i> Clear All
         </button>
       </div>
 

@@ -90,11 +90,12 @@ export function executeRestrictions(workspace) {
 
 function hasParentOfType(block, types) {
   let hasParent = false;
-  while (block.getParent()) {
-    if (types.includes(block.getParent().type)) {
+  while (block.getSurroundParent()) {
+    if (types.includes(block.getSurroundParent()?.type)) {
       hasParent = true;
     }
-    block = block.getParent();
+
+    block = block.getSurroundParent();
   }
   return hasParent;
 }

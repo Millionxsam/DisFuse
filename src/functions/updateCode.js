@@ -14,6 +14,8 @@ export function updateCode(
   workspaceId,
   onlyWarning = false
 ) {
+  javascriptGenerator.init(workspace);
+
   const workspaceCodeEle = document.querySelector(".workspace.code code");
   const projectCodeEle = document.querySelector(".project.code code");
   const blocksIndicator = document.querySelector(
@@ -29,7 +31,7 @@ export function updateCode(
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
-  if (blocksIndicator) blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+  if (blocksIndicator) blocksIndicator.innerHTML = `<i className="fa-solid fa-cube"></i><div>
   ${projectBlocks?.length ?? '??'}
   </div>`
 
@@ -54,6 +56,8 @@ export function updateCode(
 }
 
 function setUpCode(project, workspace, blocks, onlyWarning = false) {
+  javascriptGenerator.init(workspace);
+
   function tokenAlertCheck() {
     if (project.private) return;
 
@@ -106,7 +110,8 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
       value: 'const Captcha = require("@haileybot/captcha-generator")',
     },
     fetch_: "axios",
-    time_: "ms"
+    time_: "ms",
+    canvas_: { type: "code", value: 'const canvasModule = require("canvas");\n' },
   };
 
   let blockImportCode = "";
@@ -146,9 +151,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     } else if (typeof importName === "object") {
       if (importName["type"] === "code") blockImportCode += importName["value"];
     } else {
-      blockImportCode += `const ${fixImport(
-        importName
-      )} = require("${importName}");\n`;
+      blockImportCode += `const ${fixImport(importName)} = require("${importName}");\n`;
     }
   });
 
@@ -156,18 +159,18 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
 
   let mobilePresenceBot = false;
   let mainTokenBlock = blocks.find((b) => b.type === "main_token");
-  if (mainTokenBlock) {
+  if (mainTokenBlock)
     mobilePresenceBot = mainTokenBlock.getField("mobile").getValue() === "TRUE";
-  }
 
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
     const client = new Discord.Client({
       intents: 3276799
     });
-    ${mobilePresenceBot
-      ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
-      : ""
+    ${
+      mobilePresenceBot === true
+        ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
+        : ""
     }
     const databases = {};
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -176,8 +179,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
-    }
+    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${
+    topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
+  }
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
@@ -194,6 +198,8 @@ export function getWholeProjectWorkspace(
   currentWorkspace,
   workspaceId
 ) {
+  javascriptGenerator.init(currentWorkspace);
+
   const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
   const tempData = Blockly.serialization.workspaces.save(currentWorkspace);
 

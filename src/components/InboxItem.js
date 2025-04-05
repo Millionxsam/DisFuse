@@ -138,7 +138,7 @@ export default function InboxItem({ item, user, index }) {
       className={`inbox-item${item.read ? "" : " unread"}`}
     >
       <div className="clearBtn" onClick={clearItem}>
-        <i class="fa-solid fa-xmark"></i>
+        <i className="fa-solid fa-xmark"></i>
       </div>
       <div className="info">
         <h2>{title}</h2>

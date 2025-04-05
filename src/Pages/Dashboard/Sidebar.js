@@ -41,7 +41,7 @@ export default function Sidebar() {
     <>
       <div className="dashboard-container">
         <div onClick={() => setActive(true)} className="hamburger">
-          <i class="fa-solid fa-bars"></i>
+          <i className="fa-solid fa-bars"></i>
           <div>DisFuse</div>
         </div>
         <div className="sidebar-container">
@@ -49,7 +49,7 @@ export default function Sidebar() {
             <i
               style={{ fontSize: "2rem" }}
               onClick={() => setActive(false)}
-              class="fa-solid fa-xmark close-sidebar"
+              className="fa-solid fa-xmark close-sidebar"
             ></i>
             <Link to="/">
               <div className="logo">
@@ -64,7 +64,7 @@ export default function Sidebar() {
                 to="/projects"
               >
                 <li>
-                  <i class="fa-solid fa-cubes"></i>
+                  <i className="fa-solid fa-cubes"></i>
                   <div>Projects</div>
                 </li>
               </Link>
@@ -74,7 +74,7 @@ export default function Sidebar() {
                 to="/explore"
               >
                 <li>
-                  <i class="fa-solid fa-earth-americas"></i> <div>Explore</div>
+                  <i className="fa-solid fa-earth-americas"></i> <div>Explore</div>
                 </li>
               </Link>
               <Link
@@ -83,7 +83,7 @@ export default function Sidebar() {
                 to="/favorites"
               >
                 <li>
-                  <i class="fa-solid fa-star"></i> <div>Favorites</div>
+                  <i className="fa-solid fa-star"></i> <div>Favorites</div>
                 </li>
               </Link>
               <Link
@@ -101,7 +101,7 @@ export default function Sidebar() {
                 to="/inbox"
               >
                 <li>
-                  <i class="fa-solid fa-inbox"></i> <div>Inbox</div>
+                  <i className="fa-solid fa-inbox"></i> <div>Inbox</div>
                   {user.inbox?.filter((i) => !i.read).length ? (
                     <span>{user.inbox?.filter((i) => !i.read).length}</span>
                   ) : (
@@ -115,7 +115,7 @@ export default function Sidebar() {
                 to="/settings"
               >
                 <li>
-                  <i class="fa-solid fa-gear"></i> <div>Settings</div>
+                  <i className="fa-solid fa-gear"></i> <div>Settings</div>
                 </li>
               </Link>
               {isStaff && <Link
@@ -124,7 +124,7 @@ export default function Sidebar() {
                 to="/staff/panel"
               >
                 <li>
-                  <i class="fa-solid fa-user-tie"></i> <div>Staff</div>
+                  <i className="fa-solid fa-user-tie"></i> <div>Staff</div>
                 </li>
               </Link>}
             </ul>
@@ -138,7 +138,7 @@ export default function Sidebar() {
               <div>{user.username}</div>
               <i
                 onClick={logout}
-                class="fa-solid fa-arrow-right-from-bracket"
+                className="fa-solid fa-arrow-right-from-bracket"
               ></i>
             </div>
           </div>

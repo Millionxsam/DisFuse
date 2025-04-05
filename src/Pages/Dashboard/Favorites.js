@@ -59,7 +59,7 @@ export default function Favorites() {
   return (
     <div className="fav-container">
       <div className="head">
-        <i class="fa-solid fa-star"></i> Favorites
+        <i className="fa-solid fa-star"></i> Favorites
       </div>
       <div className="favorites">
         <input

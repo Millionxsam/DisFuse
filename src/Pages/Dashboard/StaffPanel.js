@@ -149,7 +149,7 @@ export default function StaffPanel() {
     return (
         <div className="adminDashboard-container">
             <div className="head">
-                <i class="fa-solid fa-user-tie"></i> Staff Panel
+                <i className="fa-solid fa-user-tie"></i> Staff Panel
             </div>
 
             <div className="inline">
@@ -167,11 +167,11 @@ export default function StaffPanel() {
 
             <div className="inline">
                 <button onClick={banUser} id="red">
-                    <i class="fa-solid fa-ban"></i> Ban User
+                    <i className="fa-solid fa-ban"></i> Ban User
                 </button>
 
                 <button onClick={unbanUser}>
-                    <i class="fa-solid fa-thumbs-up"></i> Unban User
+                    <i className="fa-solid fa-thumbs-up"></i> Unban User
                 </button>
             </div>
         </div>

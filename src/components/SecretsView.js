@@ -88,7 +88,7 @@ export default function SecretsView() {
           <ul>
             {project?.secrets?.map((secret, i) => (
               <>
-                <li>
+                <li key={i}>
                   <div>{secret.name}</div>
                   <div>
                     {secret.value
@@ -97,10 +97,10 @@ export default function SecretsView() {
                       .join("")}
                   </div>
                   <div className="button copy" onClick={() => copySecret(i)}>
-                    <i class="fa-solid fa-copy"></i>
+                    <i className="fa-solid fa-copy"></i>
                   </div>
                   <div className="button delete" onClick={() => delSecret(i)}>
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </div>
                 </li>
               </>

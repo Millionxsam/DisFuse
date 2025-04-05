@@ -349,20 +349,20 @@ export default function MyProjects() {
           <div>{user?.global_name || user?.username}</div>
         </div>
         <div className="head">
-          <i class="fa-solid fa-cubes"></i> My Projects
+          <i className="fa-solid fa-cubes"></i> My Projects
         </div>
         <div className="buttons">
           <button onClick={newProject}>
-            <i class="fa-solid fa-plus"></i> New Project
+            <i className="fa-solid fa-plus"></i> New Project
           </button>
           <button onClick={loadFile}>
-            <i class="fa-solid fa-upload"></i> Load from file
+            <i className="fa-solid fa-upload"></i> Load from file
           </button>
           <button onClick={sort}>
-            <i class="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
+            <i className="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
           </button>
           <button onClick={filter}>
-            <i class="fa-solid fa-filter"></i> Filter Projects
+            <i className="fa-solid fa-filter"></i> Filter Projects
           </button>
         </div>
         <input

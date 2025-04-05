@@ -128,19 +128,19 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
           className={`like${comment?.likes?.includes(user.id) ? " active" : ""
             }${newLike ? " newLike" : ""}`}
         >
-          <i class="fa-solid fa-heart"></i>
+          <i className="fa-solid fa-heart"></i>
           <div>{comment?.likes?.length}</div>
         </div>
         <div onClick={showReply} className="reply">
-          <i class="fa-solid fa-reply"></i>
+          <i className="fa-solid fa-reply"></i>
         </div>
         {user.id === author.id ? (
           <>
             <div onClick={editComment} className="edit">
-              <i class="fa-regular fa-pen-to-square"></i>
+              <i className="fa-regular fa-pen-to-square"></i>
             </div>
             <div onClick={delComment} className="delete">
-              <i class="fa-solid fa-trash-can"></i>
+              <i className="fa-solid fa-trash-can"></i>
             </div>
           </>
         ) : (

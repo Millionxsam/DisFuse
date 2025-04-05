@@ -122,15 +122,17 @@ export default function WorkspaceTabs({
   return (
     <div className="workspace-tabs">
       <div
+        key={'unknown1'}
         onClick={() => closeTabs(workspace)}
         style={{ height: '2rem', width: '2rem' }}
       >
-        <i class="fa-solid fa-xmark"></i>
+        <i className="fa-solid fa-xmark"></i>
       </div>
       {project.workspaces?.map((workspace, index) => (
         <div
           onClick={() => onClick(index)}
           className={`tab${currentTab._id === workspace._id ? ' active' : ''}`}
+          key={index}
         >
           <div>{workspace.name}</div>
           <div className="buttons">
@@ -138,25 +140,25 @@ export default function WorkspaceTabs({
               onClick={(e) =>
                 editWorkspaceName(e, workspace, project, modalColors)
               }
-              class="fa-solid fa-pen"
+              className="fa-solid fa-pen"
             />
             <i
               onClick={(e) =>
                 deleteWorkspace(e, workspace, project, modalColors)
               }
-              class="fa-solid fa-trash"
+              className="fa-solid fa-trash"
             />
             <i
               onClick={(e) =>
                 duplicateWorkspace(e, workspace, project, modalColors)
               }
-              class="fa-solid fa-clone"
+              className="fa-solid fa-clone"
             />
           </div>
         </div>
       ))}
-      <div className="newTab">
-        <i class="fa-solid fa-plus"></i>
+      <div key={'unknown2'} className="newTab">
+        <i className="fa-solid fa-plus"></i>
       </div>
     </div>
   );
