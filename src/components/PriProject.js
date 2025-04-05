@@ -17,9 +17,23 @@ export default function PriProject({ project }) {
       <div className="priProject">
         <div className="top">
           <div className="name-container">
-            <h1>{project.name}</h1>
-            <div><i class="fa-solid fa-pen-to-square" onClick={() => editProject(project)}></i></div>
-            {project.private ? <div><i class="fa-solid fa-lock"></i></div> : ""}
+            <div>
+              <h1>{project.name}</h1>
+              {project.private ? (
+                <div>
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            <div>
+              <i
+                class="fa-solid fa-pen-to-square"
+                style={{ cursor: "pointer" }}
+                onClick={() => editProject(project)}
+              ></i>
+            </div>
           </div>
           <i>
             {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
@@ -42,9 +56,11 @@ export default function PriProject({ project }) {
               (window.location = `/@${project.owner.username}/${project._id}/workspace`)
             }
           >
+            <i class="fa-solid fa-square-arrow-up-right"></i>
             Open
           </button>
           <button onClick={() => deleteProject(project)} id="red">
+            <i class="fa-solid fa-trash"></i>
             Delete
           </button>
         </div>
@@ -122,7 +138,8 @@ function editProject(project) {
       inputPlaceholder: "Some description",
       inputValue: project.description,
       inputValidator: (i) => {
-        if (i.length > 500) return "The description must be below 500 characters";
+        if (i.length > 500)
+          return "The description must be below 500 characters";
         else return false;
       },
     }).then((result) => {
@@ -142,7 +159,7 @@ function editProject(project) {
         private: "Private",
         public: "Public",
       },
-      inputValue: project.private ? "private" : "public"
+      inputValue: project.private ? "private" : "public",
     }).then((result) => {
       if (result.isConfirmed) isPrivate = result.value === "private";
       else cancelled = true;
@@ -164,8 +181,6 @@ function editProject(project) {
           },
         }
       )
-      .then(
-        () => window.location.reload()
-      );
+      .then(() => window.location.reload());
   })();
 }

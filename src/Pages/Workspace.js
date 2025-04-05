@@ -15,7 +15,7 @@ import CodeView from "../components/CodeView";
 import SecretsView from "../components/SecretsView";
 import LoadingAnim from "../components/LoadingAnim";
 
-import { toolbox } from "../config/toolbox";
+import getToolbox from "../config/toolbox";
 import { DFTheme } from "../components/themes/DFTheme";
 import { DarkerTheme } from "../components/themes/DarkerTheme";
 import { LightTheme } from "../components/themes/LightTheme";
@@ -31,6 +31,7 @@ import modalThemeColor from "../functions/modalThemeColor";
 
 import WorkspaceTabs from "../components/WorkspaceTabs";
 import WorkspaceBar from "../components/WorkspaceBar";
+import registerCustomBlocks from "../functions/registerCustomBlocks";
 
 require
   .context("../blocks", true, /\.js$/)
@@ -71,9 +72,23 @@ export default function Workspace() {
           .get(apiUrl + `/users/${data.id}`, {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
           })
-          .then(({ data: user }) => {
+          .then(async ({ data: user }) => {
             const modalColors = modalThemeColor(user, false);
             setModalColors(modalColors);
+
+            let installedBlockPacks = [];
+
+            const responses = await Promise.all(
+              user.installedBlockPacks?.map((packId) =>
+                axios.get(apiUrl + `/workshop/${packId}`, {
+                  headers: {
+                    Authorization: localStorage.getItem("disfuse-token"),
+                  },
+                })
+              )
+            );
+
+            installedBlockPacks = responses.map((response) => response.data);
 
             axios
               .get(apiUrl + `/projects/${projectId}`, {
@@ -126,13 +141,13 @@ export default function Workspace() {
                       Blockly.Themes.Zelos.blockStyles["variable_blocks"],
                     variable_dynamic_blocks:
                       Blockly.Themes.Zelos.blockStyles[
-                      "variable_dynamic_blocks"
+                        "variable_dynamic_blocks"
                       ],
                     hat_blocks: Blockly.Themes.Zelos.blockStyles["hat_blocks"],
                   },
                 };
 
-                let renderer = user.settings?.workspace.renderer ?? 'zelos';
+                let renderer = user.settings?.workspace.renderer ?? "zelos";
                 let sounds = user.settings?.workspace.sounds ?? true;
                 let showGrid = user.settings?.workspace.grid.enabled ?? true;
                 let snapToGrid = user.settings?.workspace.grid.snap ?? false;
@@ -167,11 +182,17 @@ export default function Workspace() {
                   document.head.appendChild(styleEle);
                 }
 
+                installedBlockPacks?.forEach((pack) => {
+                  registerCustomBlocks(
+                    pack.versions[pack.versions.length - 1]?.blocks || []
+                  );
+                });
+
                 // Inject workspace
                 const workspace = Blockly.inject(
                   document.getElementById("workspace"),
                   {
-                    toolbox,
+                    toolbox: getToolbox(installedBlockPacks),
                     theme,
                     move: {
                       wheel: true,
@@ -192,11 +213,11 @@ export default function Workspace() {
                     oneBasedIndex: true,
                     grid: showGrid
                       ? {
-                        spacing: gridSpacing,
-                        length: 5,
-                        colour: "#8888886e",
-                        snap: snapToGrid,
-                      }
+                          spacing: gridSpacing,
+                          length: 5,
+                          colour: "#8888886e",
+                          snap: snapToGrid,
+                        }
                       : false,
                     zoom: {
                       controls: true,
@@ -270,7 +291,7 @@ export default function Workspace() {
                   "errorButWithLengthyName",
                   "variable",
                   "list",
-                  "disfuse"
+                  "disfuse",
                 ].forEach((word) => javascriptGenerator.addReservedWords(word));
 
                 if (project.data?.length && !project.workspaces?.length) {
@@ -385,10 +406,26 @@ export default function Workspace() {
 
                 registerContextMenus(project, currentWorkspace.current);
 
-                Blockly.serialization.workspaces.load(
-                  JSON.parse(currentWorkspace.current?.data || "{}"),
-                  workspace
-                );
+                try {
+                  Blockly.serialization.workspaces.load(
+                    JSON.parse(currentWorkspace.current?.data || "{}"),
+                    workspace
+                  );
+                } catch (error) {
+                  console.error(error);
+                  return Swal.fire({
+                    title: "Corrupt Project",
+                    text: "Part of your project is corrupt and cannot be loaded. This can be because one of your installed block packs is corrupt or your project is trying to load blocks that don't exist. Please join our Discord server and create a post in the support channel to fix this issue.",
+                    icon: "error",
+                    footer:
+                      '<a target="_blank" rel="noopener" style="color: lightblue" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    ...modalColors,
+                  });
+                }
 
                 // Initiating plugins
                 const backpack = new Backpack(workspace, {
@@ -420,7 +457,7 @@ export default function Workspace() {
                   backpack.setContents(
                     JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
                   );
-                } catch (_) { }
+                } catch (_) {}
 
                 // Disable blocks that are not attached to anything
                 workspace.addChangeListener(Blockly.Events.disableOrphans);
@@ -576,6 +613,95 @@ export default function Workspace() {
                     fileInput.remove();
                   });
 
+                // AI Generate button event (UNRELEASED)
+                // document
+                //   .querySelector("button#generate")
+                //   .addEventListener("click", () => {
+                //     Swal.fire({
+                //       title: "Generate Block",
+                //       text: "Describe your block",
+                //       showCancelButton: true,
+                //       inputPlaceholder:
+                //         "A block that logs something in the console",
+                //       cancelButtonText: "Cancel",
+                //       confirmButtonText: "Generate",
+                //       input: "text",
+                //       showLoaderOnConfirm: true,
+                //       preConfirm: async (value) => {
+                //         const res = (
+                //           await axios.post(
+                //             `https://ai.aerioncloud.com/v1/chat/completions`,
+                //             {
+                //               model: "gpt-4o",
+                //               messages: [
+                //                 {
+                //                   role: "system",
+                //                   content:
+                //                     "You are an AI assistant that provides valid JSON to create Blockly blocks to create a Discord bot in Discord.JS v14. ONLY INCLUDE THE JSON, NOTHING ELSE. DO NOT USE FORMATTING. The user will provide a description of one or more blocks to create, and you will send an array of objects to create those blocks.",
+                //                 },
+                //                 {
+                //                   role: "system",
+                //                   content: `This is an example of a block, this is how your responses SHOULD look like:
+                //                 [{
+                //                   "name": "example_block",
+                //                   "outputCode": "console.log(\${generator.valueToCode(block, "example_input", Order.NONE)})",
+                //                   "inlineInputs": null,
+                //                   "type": <"none", "output", "stack", "hat", or "end">,
+                //                   "output": <null, "String", "Boolean", "Number", or "Array">,
+                //                   "previousStatement": null,
+                //                   "nextStatement": null,
+                //                   "inputs": [{
+                //                     "type": <"value", "statement", "dummy", "endrow">,
+                //                     "name": "example_input",
+                //                     "check": <null, "String", "Boolean", "Number", or "Array">,
+                //                     "align": -1,
+                //                     "fields": [{
+                //                       "type": "label",
+                //                       "text": "This is a label"
+                //                     }]
+                //                   }],
+                //                   "color": "#3333ff",
+                //                   "description": "This is an example block"
+                //                 }]`,
+                //                 },
+                //                 {
+                //                   role: "system",
+                //                   content: `Here is a description of some parameters, ALWAYS follow the rules specified:
+                //                   name <string>: the name or id of the block.
+                //                   outputCode <string>: the code that will be outputed. must ALWAYS be in javascript.
+                //                   type <string>: must ALWAYS be one of "none", "output", "stack", "hat", or "end".
+                //                   output <string>: must ALWAYS be one of null, "String", "Boolean", "Number", or "Array". use null if not an output.
+                //                   previousStatement <null>: must ALWAYS be null.
+                //                   nextStatement <null>: must ALWAYS be null.
+                //                   color <string>: the hex color of the block.
+                //                   description <string>: the description of the block.
+                //                   inputs > type <string>: must ALWAYS be one of "value", "statement", "dummy" or "endrow". use dummy if there are no inputs (only label fields).
+                //                   inputs > name <string>: the name of the input. use only for value or statement input types.
+                //                   inputs > check <string>: must ALWAYS be one of null, "String", "Boolean", "Number", or "Array". use only for value or statement types, use null to accept any type.
+                //                   inputs > align <number>: must ALWAYS be -1.
+                //                   inputs > fields <object>: an array of Blockly fields. use an empty array if there's no fields.`,
+                //                 },
+                //                 {
+                //                   role: "user",
+                //                   content: value,
+                //                 },
+                //               ],
+                //             }
+                //           )
+                //         ).data;
+
+                //         console.log(res);
+                //         const json = JSON.parse(res.choices[0].message.content);
+                //         console.log(json);
+                //         registerCustomBlocks(json, workspace, true, true);
+                //         return json;
+                //       },
+                //       ...modalColors,
+                //     }).then((result) => {
+                //       if (!result.isConfirmed) return;
+                //     });
+                //   });
+
                 // Templates button event
                 document
                   .querySelector("button#templates")
@@ -629,7 +755,7 @@ export default function Workspace() {
                         workspace: "Export current workspace",
                       },
                       showCancelButton: false,
-                      html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+                      html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.<br />Join our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
                       ...modalColors,
                     }).then(async (result) => {
                       if (!result.isConfirmed) return;
@@ -683,29 +809,29 @@ export default function Workspace() {
                           html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                              .map(
-                                (block) =>
-                                  `<p class="exportError">${block.message}</p>`
-                              )
-                              .join("")}
+                            .map(
+                              (block) =>
+                                `<p class="exportError">${block.message}</p>`
+                            )
+                            .join("")}
                           ${warningBlocks
-                              .map(
-                                (block) =>
-                                  `
+                            .map(
+                              (block) =>
+                                `
                               <p class="exportError">
                                 <span>
                                 ${titleCase(
-                                    exportingWs
-                                      .getBlockById(block.id)
-                                      .type.replaceAll("_", " ")
-                                  )}
+                                  exportingWs
+                                    .getBlockById(block.id)
+                                    .type.replaceAll("_", " ")
+                                )}
                                 </span>
                               ${block.message
-                                    .map((m) => `<span>${m}</span>`)
-                                    .join("")}
+                                .map((m) => `<span>${m}</span>`)
+                                .join("")}
                               </p>`
-                              )
-                              .join("")}
+                            )
+                            .join("")}
                           `,
                           ...modalColors,
                           customClass: {
@@ -752,7 +878,7 @@ export default function Workspace() {
 
                         Swal.fire({
                           toast: true,
-                          position: "bottom-end",
+                          position: "top-right",
                           timer: 5000,
                           timerProgressBar: true,
                           icon: "success",
@@ -781,7 +907,7 @@ export default function Workspace() {
 
                   Swal.fire({
                     toast: true,
-                    position: "bottom-end",
+                    position: "top-right",
                     timer: 5000,
                     timerProgressBar: true,
                     icon: "success",
@@ -809,7 +935,7 @@ export default function Workspace() {
         alert("This project does not exist");
         return (window.location = "/projects");
       });
-  }, []);
+  }, [projectId, searchParams, setSearchParams]);
 
   async function loadTab(index) {
     let p = (

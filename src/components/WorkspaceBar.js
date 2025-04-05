@@ -57,16 +57,13 @@ export default function WorkspaceBar({ workspace }) {
           <div className="left">
             <ul>
               <div className="dropdown" style={{ position: "relative" }}>
-                <button
-                  className="dropdown-button"
-                  onClick={toggleDropdown}
-                  style={{ height: "3rem" }}
-                >
+                <button className="dropdown-button" onClick={toggleDropdown}>
                   <i className="fa-solid fa-file"></i>
                   <div>File</div>
                   <i
-                    className={`fa-solid fa-chevron-${dropdownOpen ? "up" : "down"
-                      } noRotate`}
+                    className={`fa-solid fa-chevron-${
+                      dropdownOpen ? "up" : "down"
+                    } noRotate`}
                   ></i>
                 </button>
                 <div
@@ -74,58 +71,57 @@ export default function WorkspaceBar({ workspace }) {
                   style={{
                     position: "absolute",
                     top: "calc(100% + 5px)",
-                    left: "0",
                     zIndex: 1000,
                     flexDirection: "column",
+                    alignContent: "center",
+                    alignItems: "center",
+                    justifyItems: "center",
+                    justifyContent: "center",
                     gap: "5px",
                     display: dropdownOpen ? "flex" : "none",
                   }}
                 >
-                  <button
-                    id="save"
-                    style={{ height: "3rem" }}
-                    onClick={toggleDropdown}
-                  >
+                  <button id="save" onClick={toggleDropdown}>
                     <i className="fa-solid fa-floppy-disk"></i>
-                    <div>Save File</div>
+                    Save File
                   </button>
-                  <button
-                    id="load"
-                    style={{ height: "3rem" }}
-                    onClick={toggleDropdown}
-                  >
+                  <button id="load" onClick={toggleDropdown}>
                     <i className="fa-solid fa-upload"></i>
-                    <div>Load File</div>
+                    Load File
                   </button>
                 </div>
               </div>
-              <button id="showCode" style={{ height: "3rem" }}>
+              <button id="showCode">
                 <i className="fa-brands fa-square-js"></i>
                 <div>Show Code</div>
               </button>
-              <button onClick={showSecrets} style={{ height: "3rem" }}>
+              <button onClick={showSecrets}>
                 <i className="fa-solid fa-key"></i>
                 <div>Secrets</div>
               </button>
-              <button id="templates" style={{ height: "3rem" }}>
+              <button id="templates">
                 <i className="fa-solid fa-shapes"></i>
                 <div>Templates</div>
               </button>
+              {/* <button id="generate">
+                <i className="fa-solid fa-robot"></i>
+                <div>Generate Block</div>
+              </button> */}
             </ul>
           </div>
           <div className="right">
             <ul>
               <i className="indicator" id="blocks-indicator"></i>
               <i className="indicator" id="autosave-indicator"></i>
-              <a rel="noreferrer" target="_blank" href="https://dsc.gg/disfuse">
-                <button style={{ height: "3rem" }}>
-                  <i className="fa-brands fa-discord"></i>
-                </button>
-              </a>
-              <button className="export" style={{ height: "3rem" }}>
+              <button className="export">
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>
               </button>
+              <a rel="noreferrer" target="_blank" href="https://dsc.gg/disfuse">
+                <button>
+                  <i className="fa-brands fa-discord"></i>
+                </button>
+              </a>
             </ul>
           </div>
         </div>

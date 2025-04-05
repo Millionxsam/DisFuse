@@ -1,3 +1,5 @@
+import "./index.css";
+
 import { Route, Routes, Navigate } from "react-router-dom";
 import Workspace from "./Pages/Workspace";
 import Home from "./Pages/Home";
@@ -15,26 +17,32 @@ import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
 import ViewProject from "./Pages/Dashboard/Projects/ViewProject";
 import Inbox from "./Pages/Dashboard/Inbox";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
-import NotificationSettings from './Pages/Dashboard/Settings/NotificationSettings';
-import OptimizationSettings from './Pages/Dashboard/Settings/OptimizationSettings';
-import StaffPanel from './Pages/Dashboard/StaffPanel';
-
+import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
+import OptimizationSettings from "./Pages/Dashboard/Settings/OptimizationSettings";
+import StaffPanel from "./Pages/Dashboard/StaffPanel";
+import Workshop from "./Pages/Dashboard/Workshop/Workshop";
+import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
+import WorkshopWorkspace from "./Pages/Dashboard/Workshop/WorkshopWorkspace";
 import "./index.css";
+import Library from "./Pages/Dashboard/Workshop/Library";
 
 export default function App() {
   window.addEventListener("unhandledrejection", function (event) {
     if (event?.reason?.response && event?.reason?.response?.data?.error) {
       const data = event.reason.response.data;
-      if (data.error !== 'You are temporarily banned from DisFuse.') return console.error(event.reason);
+      if (data.error !== "You are temporarily banned from DisFuse.")
+        return console.error(event.reason);
 
       event.preventDefault();
-      console.log(data, event.reason.response)
+      console.log(data, event.reason.response);
 
       window.document.body.innerHTML = `
       <div class="home-container">
         <div class="head">
           <h1>You are banned from DisFuse</h1>
-          <h2>You may not access DisFuse until: ${new Date(data.bannedUntil).toDateString()}.</h2>
+          <h2>You may not access DisFuse until: ${new Date(
+            data.bannedUntil
+          ).toDateString()}.</h2>
         </div>
       </div>`;
     }
@@ -82,6 +90,9 @@ export default function App() {
           <Route path="projects" element={<MyProjects />} />
           <Route path="explore" element={<Explore />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="workshop" element={<Workshop />} />
+          <Route path="workshop/library" element={<Library />} />
+          <Route path="workshop/:packId" element={<BlockPackPage />} />
           <Route path="inbox" element={<Inbox />} />
           <Route path="/:username" element={<UserPage />} />
           <Route path="/:username/:projectId" element={<ProjectPage />} />
@@ -99,6 +110,11 @@ export default function App() {
         <Route
           path="/:username/:projectId/workspace"
           element={[<Auth />, <Workspace />]}
+        />
+
+        <Route
+          path="/workshop/:packId/workspace"
+          element={[<Auth />, <WorkshopWorkspace />]}
         />
       </Routes>
     </>

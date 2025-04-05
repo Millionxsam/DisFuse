@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import CodeView from "../../../components/CodeView";
 import LoadingAnim from "../../../components/LoadingAnim";
 import * as Blockly from "blockly";
 
-import { toolbox } from "../../../config/toolbox";
+import getToolbox from "../../../config/toolbox";
 import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
@@ -27,7 +26,7 @@ export default function ViewProject() {
           document.getElementById("previewWorkspace"),
           {
             readOnly: true,
-            toolbox,
+            toolbox: getToolbox(),
             theme: DFTheme,
             move: {
               wheel: true,
@@ -71,7 +70,7 @@ export default function ViewProject() {
           );
         }
       });
-  }, []);
+  }, [projectId]);
 
   return (
     <>

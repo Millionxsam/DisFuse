@@ -16,6 +16,7 @@
     "blockly": "^10.4.3",
     "browserify": "^17.0.0",
     "fs": "^0.0.1-security",
+    "gpti": "^2.1.8",
     "highlight.js": "^11.10.0",
     "jszip": "^3.10.1",
     "ms": "^2.1.3",
@@ -23,8 +24,10 @@
     "react-blockly": "^8.1.1",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
+    "remark-gfm": "^4.0.1",
     "sweetalert2": "^11.10.8",
     "vercel": "^37.6.1",
     "web-vitals": "^2.1.4"

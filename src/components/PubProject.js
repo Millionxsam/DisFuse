@@ -23,7 +23,9 @@ export default function PubProject({ project }) {
 
         <div className="buttons">
           <Link to={`/@${project.owner.username}/${project._id}`}>
-            <button>View</button>
+            <button>
+              <i class="fa-solid fa-eye"></i> View
+            </button>
           </Link>
         </div>
       </div>

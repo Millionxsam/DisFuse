@@ -60,8 +60,8 @@ export default function MyProjects() {
         inputPlaceholder: "DisFuse Project",
         showCancelButton: true,
         inputValidator: (i) => {
-          if (i.length < 3) return "The name must be at least 2 characters";
-          if (i.length > 12) return "The name must be below 12 characters";
+          if (i.length < 2) return "The name must be at least 2 characters";
+          if (i.length > 18) return "The name must be below 18 characters";
           return false;
         },
         animation: true,
@@ -160,8 +160,8 @@ export default function MyProjects() {
           showCancelButton: true,
           inputPlaceholder: "DisFuse Project",
           inputValidator: (i) => {
-            if (i.length < 3) return "The name must be at least 2 characters";
-            if (i.length > 12) return "The name must be below 12 characters";
+            if (i.length < 2) return "The name must be at least 2 characters";
+            if (i.length > 18) return "The name must be below 18 characters";
             return false;
           },
           animation: true,
