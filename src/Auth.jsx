@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
 
 import { apiUrl, authUrl, devAuthUrl, discordUrl } from "./config/config.json";
-import { userCache } from "./cache";
 
 let lastAuthTime = null;
 
@@ -32,7 +31,6 @@ export default function Auth({ children }) {
   const exp = parseInt(localStorage.getItem("disfuse-token-exp"));
 
   if (!token || Date.now() > exp) {
-    userCache.isAuthenticated = false;
     if (window.location.hostname === "localhost") window.location = devAuthUrl;
     else window.location = authUrl;
   }
@@ -41,11 +39,9 @@ export default function Auth({ children }) {
     window.location = window.location.pathname;
 
   useEffect(() => {
-    if (userCache.isAuthenticated) {
-      if (lastAuthTime - Date.now() < 60000) {
-        setLoading(false);
-        return;
-      }
+    if (lastAuthTime - Date.now() < 20000) {
+      setLoading(false);
+      return;
     }
 
     axios
@@ -53,7 +49,6 @@ export default function Auth({ children }) {
         headers: { Authorization: token },
       })
       .then(() => {
-        userCache.isAuthenticated = true;
         setLoading(false);
         lastAuthTime = Date.now();
       })

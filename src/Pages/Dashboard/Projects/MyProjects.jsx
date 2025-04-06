@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import PriProject from "../../../components/PriProject";
-import LoadingAnim from "../../../components/LoadingAnim";
-import modalThemeColor from "../../../functions/modalThemeColor";
+import PriProject from "../../../components/PriProject.jsx";
+import LoadingAnim from "../../../components/LoadingAnim.jsx";
+import modalThemeColor from "../../../functions/modalThemeColor.js";
 
 import {
   apiUrl,
@@ -23,7 +23,7 @@ export default function MyProjects() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (userCache.user && userCache.projects) {
+    if (userCache?.user && userCache?.projects) {
       setUser(userCache.user);
       setProjects(userCache.projects);
       setShown(userCache.projects);
@@ -358,7 +358,7 @@ export default function MyProjects() {
       <div className="projects-container">
         <div className="nametag">
           <img
-            src={String(user.avatar).startsWith('https://') ? user.avatar : `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
+            src={String(user?.avatar).startsWith('https://') ? user?.avatar : `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.webp?size=32`}
             alt=""
             width={"36px"}
             onError={(e) => {
