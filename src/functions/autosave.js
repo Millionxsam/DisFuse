@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as Blockly from "blockly";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
+const { apiUrl } = require("../config/config.json");
 
 export default async function autosave(workspace, projectId, currentWorkspace) {
   const autosaveIndicator = document.querySelector(

@@ -5,7 +5,7 @@ import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
 import modalThemeColor from "../../../functions/modalThemeColor";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
+const { discordUrl, apiUrl } = require("../../../config/config.json");
 
 const modalColors = modalThemeColor(null, true);
 
@@ -375,7 +375,7 @@ export default function MyProjects() {
         {isLoading ? <LoadingAnim /> : ""}
         <div className="projects">
           {shown.length > 0
-            ? shown.map((project, index) => <PriProject project={project} key={index} />)
+            ? shown.map((project) => <PriProject project={project} />)
             : !isLoading
             ? "No projects"
             : ""}

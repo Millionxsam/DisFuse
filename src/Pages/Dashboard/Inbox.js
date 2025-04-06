@@ -4,7 +4,7 @@ import InboxItem from '../../components/InboxItem';
 import LoadingAnim from '../../components/LoadingAnim';
 import Swal from 'sweetalert2';
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
+const { discordUrl, apiUrl } = require('../../config/config.json');
 
 export default function Inbox() {
   const [user, setUser] = useState({});

@@ -3,7 +3,7 @@ import UserTag from "./UserTag";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
+const { apiUrl, discordUrl } = require("../config/config.json");
 
 export default function WorkshopItem({ pack: p, editable = false }) {
   const [pack, setPack] = useState(p);
@@ -45,7 +45,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
           <h1>{pack.name}</h1>
           {pack.private ? (
             <div>
-              <i className="fa-solid fa-lock"></i>
+              <i class="fa-solid fa-lock"></i>
             </div>
           ) : (
             ""
@@ -72,21 +72,21 @@ export default function WorkshopItem({ pack: p, editable = false }) {
                 (window.location = `/workshop/${pack._id}/workspace`)
               }
             >
-              <i className="fa-solid fa-square-arrow-up-right"></i>
+              <i class="fa-solid fa-square-arrow-up-right"></i>
               Edit
             </button>
             <button onClick={() => (window.location = `/workshop/${pack._id}`)}>
-              <i className="fa-solid fa-eye"></i>
+              <i class="fa-solid fa-eye"></i>
               View
             </button>
             <button onClick={installPack}>
               {localUser.installedBlockPacks?.includes(pack._id) ? (
                 <>
-                  <i className="fa-solid fa-xmark"></i> Uninstall
+                  <i class="fa-solid fa-xmark"></i> Uninstall
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-plus"></i> Install
+                  <i class="fa-solid fa-plus"></i> Install
                 </>
               )}
             </button>
@@ -94,17 +94,17 @@ export default function WorkshopItem({ pack: p, editable = false }) {
         ) : (
           <>
             <button onClick={() => (window.location = `/workshop/${pack._id}`)}>
-              <i className="fa-solid fa-eye"></i>
+              <i class="fa-solid fa-eye"></i>
               View
             </button>
             <button onClick={installPack}>
               {localUser.installedBlockPacks?.includes(pack._id) ? (
                 <>
-                  <i className="fa-solid fa-xmark"></i> Uninstall
+                  <i class="fa-solid fa-xmark"></i> Uninstall
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-plus"></i> Install
+                  <i class="fa-solid fa-plus"></i> Install
                 </>
               )}
             </button>

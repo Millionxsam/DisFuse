@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
+const { apiUrl } = require("../config/config.json");
 
 export default function Home() {
   const [users, setUsers] = useState(Number);
@@ -24,7 +24,6 @@ export default function Home() {
       let i = 0;
 
       let intervalId = setInterval(() => {
-        if (usersEle === null) clearInterval(intervalId);
         usersEle.innerHTML = i + " Users";
         i++;
         if (i === data.users) clearInterval(intervalId);
@@ -33,7 +32,6 @@ export default function Home() {
       let y = 0;
 
       let intervalId2 = setInterval(() => {
-        if (projectsEle === null) clearInterval(intervalId2);
         projectsEle.innerHTML = y + " Projects";
         y++;
         if (y === data.projects) clearInterval(intervalId2);

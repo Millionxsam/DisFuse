@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
+import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
+const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function UserPage() {
   const { username } = useParams();
@@ -96,6 +97,9 @@ export default function UserPage() {
       sendPatch();
     });
   }
+
+  let description =
+    "Check out this user's profile and projects on DisFuse, a platform to create Discord bots with block coding!";
 
   return (
     <>

@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const modalColors = modalThemeColor(null, true);
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../../config/config.json";
+const { apiUrl, discordUrl } = require("../../../config/config.json");
 
 export default function Workshop() {
   const [packs, setPacks] = useState([]);
@@ -55,11 +55,11 @@ export default function Workshop() {
   return (
     <div className="workshop-container">
       <div className="head">
-        <i className="fa-solid fa-screwdriver-wrench"></i> Workshop
+        <i class="fa-solid fa-screwdriver-wrench"></i> Workshop
       </div>
       <div className="buttons">
         <button onClick={createPack}>
-          <i className="fa-solid fa-plus"></i> Create
+          <i class="fa-solid fa-plus"></i> Create
         </button>
         <input
           type="text"
@@ -86,9 +86,9 @@ export default function Workshop() {
           <>
             <div className="library">
               <Link to="/workshop/library">
-                <i className="fa-solid fa-cubes-stacked"></i>
+                <i class="fa-solid fa-cubes-stacked"></i>
                 <span style={{ textWrap: "nowrap" }}>Your Library</span>
-                <i className="fa-solid fa-chevron-right"></i>
+                <i class="fa-solid fa-chevron-right"></i>
               </Link>
             </div>
             <h1 style={{ marginTop: "2rem" }}>Your Packs</h1>

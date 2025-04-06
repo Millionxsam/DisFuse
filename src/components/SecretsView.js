@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../config/config.json";
+const { apiUrl } = require("../config/config.json");
 
 export default function SecretsView() {
   const { projectId } = useParams();

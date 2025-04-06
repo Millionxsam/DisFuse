@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
+const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function Favorites() {
   const [projects, setProjects] = useState([]);

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-
-import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
+const { apiUrl, discordUrl } = require('../../config/config.json');
 
 export default function StaffPanel() {
     const [users, setUsers] = useState([]);
