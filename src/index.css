@@ -89,10 +89,6 @@ input[type="date"] {
   transition: all 0.2s ease;
 }
 
-::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
-
 button#red {
   background-color: #c42222;
 }

@@ -1,11 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
 
 import { apiUrl, authUrl, devAuthUrl, discordUrl } from "./config/config.json";
-
-let lastAuthTime = null;
 
 export default function Auth({ children }) {
   const [params] = useSearchParams(window.location.hash.slice(1));
@@ -38,29 +36,21 @@ export default function Auth({ children }) {
   if (window.location.href.includes("access_token="))
     window.location = window.location.pathname;
 
-  useEffect(() => {
-    if (lastAuthTime - Date.now() < 20000) {
-      setLoading(false);
-      return;
-    }
-
-    axios
-      .post(apiUrl + "/users", null, {
-        headers: { Authorization: token },
-      })
-      .then(() => {
-        setLoading(false);
-        lastAuthTime = Date.now();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [token]);
+  axios
+    .post(apiUrl + "/users", null, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then(() => setLoading(false))
+    .catch((error) => {
+      console.error(error);
+    });
 
   if (loading)
     return (
-      <div key={"loadingAnim"} className="load-container">
-        <LoadingAnim />
+      <div key={'loadingAnim'} className="load-container">
+        <LoadingAnim/>
       </div>
     );
 
