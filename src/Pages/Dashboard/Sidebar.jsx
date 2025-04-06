@@ -2,13 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-import { apiUrl, discordUrl } from "../../config/config.json";
-import { userCache } from "../../cache.ts"; 
+import { apiUrl, authUrl, devAuthUrl, discordUrl } from "../../config/config.json";
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
-  const [isStaff, setStaff] = useState(userCache.isStaff);
-  const [user, setUser] = useState(userCache.user || {});
+  const [isStaff, setStaff] = useState(false);
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,12 +17,6 @@ export default function Sidebar() {
   }, [active]);
 
   useEffect(() => {
-    if (userCache.user) {
-      setUser(userCache.user);
-      setStaff(userCache.isStaff);
-      return;
-    }
-
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -32,15 +25,14 @@ export default function Sidebar() {
       })
       .then(({ data }) => {
         axios.get(apiUrl + "/users").then(({ data: users }) => {
-          let u = users.find((u) => u.id === data.id);
-          userCache.user = u;
-          setUser(u);
+          let user = users.find((u) => u.id === data.id);
+          setUser(user);
 
-          axios.get(apiUrl + "/users/staff").then(({ data: staff }) => {
-            const isStaffMember = staff.users.some((s) => s.id === u.id);
-            userCache.isStaff = isStaffMember;
-            setStaff(isStaffMember);
-          });
+          axios
+            .get(apiUrl + '/users/staff')
+            .then(({ data: staff }) => {
+              setStaff(staff.users.some(u => u.id === user.id));
+            });
         });
       });
   }, []);

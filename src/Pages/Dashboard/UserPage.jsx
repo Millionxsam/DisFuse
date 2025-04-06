@@ -99,18 +99,28 @@ export default function UserPage() {
 
   return (
     <>
+      <Helmet>
+        <meta name="description" content={description} />
+        <title>{`${user.displayName} on DisFuse`}</title>
+
+        <meta property="og:title" content={`${user.displayName} on DisFuse`} />
+        <meta property="og:description" content={description} />
+        <meta
+          property="og:image"
+          content={
+            user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
+          }
+        />
+        <meta property="og:type" content="profile" />
+      </Helmet>
+
       <div className="user-profile-container">
         <div className="head">
           <div className="nametag">
             <img
               src={
-                user.avatar ?? "https://cdn.discordapp.com/embed/avatars/0.png"
+                user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
               }
-              onError={(e) => {
-                e.preventDefault();
-                e.target.onerror = null; 
-                e.target.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
-              }}
               alt=""
             />
             <div>
