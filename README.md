@@ -21,7 +21,7 @@ Official website: https://disfuse.vercel.app
 * Built-in and user-made templates
 * Easy-to-use and organized environment
 * Workspace settings
-* Custom blocks (coming soon)
+* Custom blocks
 
 ## Get Started
 1. Create a project
