@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript from "blockly/javascript";
+import javascript, { Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["menus_add"] = {
@@ -22,6 +22,207 @@ Blockly.Blocks["menus_add"] = {
     this.setTooltip("This represents the whole menu");
     this.setHelpUrl("");
   },
+};
+
+Blockly.Blocks["menus_addChannelMenu"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add a channel menu");
+    this.appendValueInput("placeholder")
+      .setCheck("String")
+      .appendField("placeholder:");
+    this.appendValueInput("id").setCheck("String").appendField("ID:");
+    this.appendValueInput("disabled")
+      .setCheck("Boolean")
+      .appendField("disabled?");
+    this.appendValueInput("channelTypes")
+      .setCheck("Array")
+      .appendField("accepted channel types:");
+    this.appendValueInput("defaultChannels")
+      .setCheck("Array")
+      .appendField("default selected channel IDs:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("26A483");
+    this.setTooltip("This represents the whole menu");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["menus_addChannelMenu"] = function (
+  block,
+  generator
+) {
+  var value_placeholder = generator.valueToCode(
+    block,
+    "placeholder",
+    javascript.Order.ATOMIC
+  );
+  var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var value_disabled = generator.valueToCode(
+    block,
+    "disabled",
+    javascript.Order.ATOMIC
+  );
+  var acceptedChannels = generator.valueToCode(
+    block,
+    "channelTypes",
+    Order.ATOMIC
+  );
+  var defaultChannels = generator.valueToCode(
+    block,
+    "defaultChannels",
+    Order.ATOMIC
+  );
+
+  return `new Discord.ChannelSelectMenuBuilder()
+  .setPlaceholder(${value_placeholder || "''"})
+  .setCustomId(${value_id || "''"})
+  .setDisabled(${value_disabled || "false"})
+  .setDefaultChannels(${defaultChannels || "[]"})
+  .setChannelTypes(${acceptedChannels || "[]"}),\n`;
+};
+
+Blockly.Blocks["menus_addRoleMenu"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add a role menu");
+    this.appendValueInput("placeholder")
+      .setCheck("String")
+      .appendField("placeholder:");
+    this.appendValueInput("id").setCheck("String").appendField("ID:");
+    this.appendValueInput("disabled")
+      .setCheck("Boolean")
+      .appendField("disabled?");
+    this.appendValueInput("defaultRoles")
+      .setCheck("Array")
+      .appendField("default selected role IDs:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("26A483");
+    this.setTooltip("This represents the whole menu");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["menus_addRoleMenu"] = function (
+  block,
+  generator
+) {
+  var value_placeholder = generator.valueToCode(
+    block,
+    "placeholder",
+    javascript.Order.ATOMIC
+  );
+  var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var value_disabled = generator.valueToCode(
+    block,
+    "disabled",
+    javascript.Order.ATOMIC
+  );
+  var defaultChannels = generator.valueToCode(
+    block,
+    "defaultRoles",
+    Order.ATOMIC
+  );
+
+  return `new Discord.RoleSelectMenuBuilder()
+  .setPlaceholder(${value_placeholder || "''"})
+  .setCustomId(${value_id || "''"})
+  .setDisabled(${value_disabled || "false"})
+  .setDefaultRoles(${defaultChannels || "[]"}),\n`;
+};
+
+Blockly.Blocks["menus_addMentionableMenu"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add a mentionable menu");
+    this.appendValueInput("placeholder")
+      .setCheck("String")
+      .appendField("placeholder:");
+    this.appendValueInput("id").setCheck("String").appendField("ID:");
+    this.appendValueInput("disabled")
+      .setCheck("Boolean")
+      .appendField("disabled?");
+    this.appendValueInput("defaultVals")
+      .setCheck("Array")
+      .appendField("default selected value IDs:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("26A483");
+    this.setTooltip("This represents the whole menu");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["menus_addMentionableMenu"] = function (
+  block,
+  generator
+) {
+  var value_placeholder = generator.valueToCode(
+    block,
+    "placeholder",
+    javascript.Order.ATOMIC
+  );
+  var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var value_disabled = generator.valueToCode(
+    block,
+    "disabled",
+    javascript.Order.ATOMIC
+  );
+  var defaultVals = generator.valueToCode(block, "defaultVals", Order.ATOMIC);
+
+  return `new Discord.MentionableSelectMenuBuilder()
+  .setPlaceholder(${value_placeholder || "''"})
+  .setCustomId(${value_id || "''"})
+  .setDisabled(${value_disabled || "false"})
+  .setDefaultValues(${defaultVals || "[]"}),\n`;
+};
+
+Blockly.Blocks["menus_addUserMenu"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add a user menu");
+    this.appendValueInput("placeholder")
+      .setCheck("String")
+      .appendField("placeholder:");
+    this.appendValueInput("id").setCheck("String").appendField("ID:");
+    this.appendValueInput("disabled")
+      .setCheck("Boolean")
+      .appendField("disabled?");
+    this.appendValueInput("defaultUsers")
+      .setCheck("Array")
+      .appendField("default selected user IDs:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("26A483");
+    this.setTooltip("This represents the whole menu");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["menus_addUserMenu"] = function (
+  block,
+  generator
+) {
+  var value_placeholder = generator.valueToCode(
+    block,
+    "placeholder",
+    javascript.Order.ATOMIC
+  );
+  var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
+  var value_disabled = generator.valueToCode(
+    block,
+    "disabled",
+    javascript.Order.ATOMIC
+  );
+  var defaultUsers = generator.valueToCode(block, "defaultUsers", Order.ATOMIC);
+
+  return `new Discord.UserSelectMenuBuilder()
+  .setPlaceholder(${value_placeholder || "''"})
+  .setCustomId(${value_id || "''"})
+  .setDisabled(${value_disabled || "false"})
+  .setDefaultUsers(${defaultUsers || "[]"}),\n`;
 };
 
 Blockly.Blocks["menus_addoption"] = {

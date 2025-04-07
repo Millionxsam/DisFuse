@@ -3422,6 +3422,10 @@ export default function getToolbox(blockPacks = []) {
                 type: "misc_addrow",
               },
               {
+                kind: "label",
+                text: "Create a menu with TEXT options ↓",
+              },
+              {
                 kind: "block",
                 type: "menus_add",
                 inputs: {
@@ -3447,6 +3451,228 @@ export default function getToolbox(blockPacks = []) {
                     shadow: {
                       type: "logic_boolean",
                       fields: { BOOL: "FALSE" },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
+                text: "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
+              },
+              {
+                kind: "block",
+                type: "menus_addChannelMenu",
+                inputs: {
+                  placeholder: { shadow: { type: "text" } },
+                  id: { shadow: { type: "text" } },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  channelTypes: {
+                    shadow: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          shadow: {
+                            type: "misc_channelType",
+                          },
+                        },
+                        ADD1: {
+                          shadow: {
+                            type: "misc_channelType",
+                          },
+                        },
+                        ADD2: {
+                          shadow: {
+                            type: "misc_channelType",
+                          },
+                        },
+                      },
+                    },
+                  },
+                  defaultChannels: {
+                    shadow: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "misc_channelType",
+              },
+              {
+                kind: "label",
+                text: "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
+              },
+              {
+                kind: "block",
+                type: "menus_addRoleMenu",
+                inputs: {
+                  placeholder: { shadow: { type: "text" } },
+                  id: { shadow: { type: "text" } },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultRoles: {
+                    shadow: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
+                text: "Create a menu with USER options (auto-adds all users in the server) ↓",
+              },
+              {
+                kind: "block",
+                type: "menus_addUserMenu",
+                inputs: {
+                  placeholder: { shadow: { type: "text" } },
+                  id: { shadow: { type: "text" } },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultUsers: {
+                    shadow: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
+                text: "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
+              },
+              {
+                kind: "block",
+                type: "menus_addMentionableMenu",
+                inputs: {
+                  placeholder: { shadow: { type: "text" } },
+                  id: { shadow: { type: "text" } },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultVals: {
+                    shadow: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          shadow: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                      },
                     },
                   },
                 },

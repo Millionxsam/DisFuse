@@ -119,7 +119,11 @@ export default function registerCustomBlocks(
         "block",
         "generator",
         "Order",
-        `return ${aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode};`
+        bl.type === "output"
+          ? `return [${
+              aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode
+            }, Order.NONE]`
+          : `return ${aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode};`
       );
 
       return genCode(block, generator, Order);

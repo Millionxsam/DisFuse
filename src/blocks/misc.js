@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript, { Order } from "blockly/javascript";
+import javascript, { javascriptGenerator, Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["misc_int_reply"] = {
@@ -217,8 +217,9 @@ javascript.javascriptGenerator.forBlock["misc_int_deferReply"] = function (
 ) {
   var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  var code = `await interaction.deferReply({ ephemeral: ${ephemeral || "false"
-    } });`;
+  var code = `await interaction.deferReply({ ephemeral: ${
+    ephemeral || "false"
+  } });`;
   return code;
 };
 
@@ -319,7 +320,7 @@ createRestrictions(
         "member_dm_rows",
         "misc_int_reply_rows",
         "misc_int_edit",
-        "slash_editreply"
+        "slash_editreply",
       ],
       message: "This block must be under a block that has a 'rows' section",
     },
@@ -455,3 +456,31 @@ createRestrictions(
     },
   ]
 );
+
+Blockly.Blocks["misc_channelType"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("channel type")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["announcements", "GuildAnnouncement"],
+          ["category", "GuildCategory"],
+          ["forum", "GuildForum"],
+          ["media", "GuildMedia"],
+          ["stage", "GuildStageVoice"],
+          ["text", "GuildText"],
+          ["voice", "GuildVoice"],
+        ]),
+        "type"
+      );
+    this.setOutput(true, "channelType");
+    this.setColour("4192E9");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_channelType"] = (
+  block,
+  generator
+) => {
+  return [`Discord.ChannelType.${block.getFieldValue("type")}`, Order.NONE];
+};
