@@ -45,7 +45,7 @@ javascript.javascriptGenerator.forBlock["input_value"] = function (
   return `{
     "type": "value",
     "name": "${name}",
-    "check": ${check},
+    "check": ${!check || check === "null" ? "null" : `"${check}"`},
     "align": ${fieldPos},
     "fields": [${(fields || "")
       .split("")
@@ -102,7 +102,7 @@ javascript.javascriptGenerator.forBlock["input_statement"] = function (
   return `{
     "type": "statement",
     "name": "${name}",
-    "check": ${check},
+    "check": ${!check || check === "null" ? "null" : `"${check}"`},
     "align": ${fieldPos},
     "fields": [${(fields || "")
       .split("")
