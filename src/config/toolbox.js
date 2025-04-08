@@ -3472,21 +3472,21 @@ export default function getToolbox(blockPacks = []) {
                     },
                   },
                   channelTypes: {
-                    shadow: {
+                    block: {
                       type: "lists_create_with",
                       inputs: {
                         ADD0: {
-                          shadow: {
+                          block: {
                             type: "misc_channelType",
                           },
                         },
                         ADD1: {
-                          shadow: {
+                          block: {
                             type: "misc_channelType",
                           },
                         },
                         ADD2: {
-                          shadow: {
+                          block: {
                             type: "misc_channelType",
                           },
                         },
@@ -3494,11 +3494,11 @@ export default function getToolbox(blockPacks = []) {
                     },
                   },
                   defaultChannels: {
-                    shadow: {
+                    block: {
                       type: "lists_create_with",
                       inputs: {
                         ADD0: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of channel to select by default",
@@ -3506,7 +3506,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD1: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of channel to select by default",
@@ -3514,7 +3514,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD2: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of channel to select by default",
@@ -3547,11 +3547,11 @@ export default function getToolbox(blockPacks = []) {
                     },
                   },
                   defaultRoles: {
-                    shadow: {
+                    block: {
                       type: "lists_create_with",
                       inputs: {
                         ADD0: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role to select by default",
@@ -3559,7 +3559,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD1: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role to select by default",
@@ -3567,7 +3567,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD2: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role to select by default",
@@ -3596,11 +3596,11 @@ export default function getToolbox(blockPacks = []) {
                     },
                   },
                   defaultUsers: {
-                    shadow: {
+                    block: {
                       type: "lists_create_with",
                       inputs: {
                         ADD0: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of user to select by default",
@@ -3608,7 +3608,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD1: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of user to select by default",
@@ -3616,7 +3616,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD2: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of user to select by default",
@@ -3645,11 +3645,11 @@ export default function getToolbox(blockPacks = []) {
                     },
                   },
                   defaultVals: {
-                    shadow: {
+                    block: {
                       type: "lists_create_with",
                       inputs: {
                         ADD0: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role/user to select by default",
@@ -3657,7 +3657,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD1: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role/user to select by default",
@@ -3665,7 +3665,7 @@ export default function getToolbox(blockPacks = []) {
                           },
                         },
                         ADD2: {
-                          shadow: {
+                          block: {
                             type: "text",
                             fields: {
                               TEXT: "ID of role/user to select by default",
