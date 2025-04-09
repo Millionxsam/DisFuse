@@ -23,7 +23,6 @@ import { DarkerTheme } from "../components/themes/DarkerTheme";
 import { LightTheme } from "../components/themes/LightTheme";
 import { BlueBlackTheme } from "../components/themes/BlueBlackTheme";
 import { CandyTheme } from "../components/themes/CandyTheme";
-import exportFiles from "../config/exportFiles";
 import { executeRestrictions } from "../functions/restrictions";
 import { useParams, useSearchParams } from "react-router-dom";
 import autosave from "../functions/autosave";
@@ -35,6 +34,7 @@ import WorkspaceTabs from "../components/WorkspaceTabs";
 import WorkspaceBar from "../components/WorkspaceBar";
 import registerCustomBlocks from "../functions/registerCustomBlocks";
 import Renderer from "../functions/render";
+import getExportFiles from "../config/getExportFiles";
 Blockly.blockRendering.register("custom_zelos", Renderer);
 
 require
@@ -789,55 +789,41 @@ export default function Workspace() {
                           currentWorkspace.current._id
                         );
 
-                        Swal.fire({
-                          title: "Export Project",
-                          icon: "info",
-                          confirmButtonText: "Download ZIP",
-                          input: "select",
-                          inputOptions: {
-                            project: "Export whole project",
-                            workspace: "Export current workspace",
-                          },
-                          showCancelButton: false,
-                          html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.<br />Join our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
-                          ...modalColors,
-                        }).then(async (result) => {
-                          if (!result.isConfirmed) return;
-                          let missingBlocks = [];
-                          let warningBlocks = [];
+                        let missingBlocks = [];
+                        let warningBlocks = [];
 
-                          let exportingWs;
-                          if (result.value === "project")
-                            exportingWs = fullWorkspace;
-                          else exportingWs = workspace;
+                        let exportingWs;
+                        if (result.value === "project")
+                          exportingWs = fullWorkspace;
+                        else exportingWs = workspace;
 
-                          requiredBlocks.forEach((requiredBlock) => {
-                            if (
-                              !exportingWs
-                                .getAllBlocks(false)
-                                .find(
-                                  (block) => block.type === requiredBlock.type
-                                )
-                            )
-                              missingBlocks.push(requiredBlock);
-                          });
+                        requiredBlocks.forEach((requiredBlock) => {
+                          if (
+                            !exportingWs
+                              .getAllBlocks(false)
+                              .find(
+                                (block) => block.type === requiredBlock.type
+                              )
+                          )
+                            missingBlocks.push(requiredBlock);
+                        });
 
-                          exportingWs.getAllBlocks(false).forEach((block) => {
-                            if (block.data?.length)
-                              warningBlocks.push({
-                                message: block.data,
-                                id: block.id,
-                              });
-                          });
+                        exportingWs.getAllBlocks(false).forEach((block) => {
+                          if (block.data?.length)
+                            warningBlocks.push({
+                              message: block.data,
+                              id: block.id,
+                            });
+                        });
 
-                          if (missingBlocks.length || warningBlocks.length) {
-                            let { isConfirmed } = await Swal.fire({
-                              title: "Errors",
-                              icon: "warning",
-                              showCancelButton: true,
-                              confirmButtonText: "Download Anyway",
-                              confirmButtonColor: "#e40000",
-                              html: `
+                        if (missingBlocks.length || warningBlocks.length) {
+                          let { isConfirmed } = await Swal.fire({
+                            title: "Errors",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Download Anyway",
+                            confirmButtonColor: "#e40000",
+                            html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
                             .map(
@@ -864,61 +850,64 @@ export default function Workspace() {
                             )
                             .join("")}
                           `,
-                              ...modalColors,
-                              customClass: {
-                                container: "dark",
-                                htmlContainer: "exportErrors",
-                              },
-                            });
-
-                            if (!isConfirmed) return;
-                          }
-
-                          const indexjs =
-                            result.value === "project" ? projectCode : wsCode;
-
-                          const envFile = `${project.secrets
-                            .map((s) => `${s.name}=${s.value}`)
-                            .join("\n")}`;
-
-                          exportFiles.forEach((file) => {
-                            zip.file(file.name, file.content);
+                            ...modalColors,
+                            customClass: {
+                              container: "dark",
+                              htmlContainer: "exportErrors",
+                            },
                           });
 
-                          zip.file(
-                            "index.js",
-                            `${beautify(indexjs, { format: "js" })}`
-                          );
-                          zip.file(".env", envFile);
-                          zip.file(
-                            `${project.name}.df`,
-                            JSON.stringify(
-                              Blockly.serialization.workspaces.save(workspace)
-                            )
-                          );
+                          if (!isConfirmed) return;
+                        }
 
-                          zip
-                            .generateAsync({ type: "blob" })
-                            .then((content) => {
-                              let url = window.URL.createObjectURL(content);
-                              let anchor = document.createElement("a");
-                              anchor.href = url;
-                              anchor.download = `${project.name}.zip`;
+                        const indexjs =
+                          result.value === "project" ? projectCode : wsCode;
 
-                              anchor.click();
+                        const envFile = `${project.secrets
+                          .map((s) => `${s.name}=${s.value}`)
+                          .join("\n")}`;
 
-                              window.URL.revokeObjectURL(url);
+                        const deps = [];
 
-                              Swal.fire({
-                                toast: true,
-                                position: "top-right",
-                                timer: 5000,
-                                timerProgressBar: true,
-                                icon: "success",
-                                title: "Successfully exported",
-                                showConfirmButton: false,
-                              });
-                            });
+                        installedBlockPacks.forEach((bp) =>
+                          deps.push(...(bp.dependencies || []))
+                        );
+
+                        getExportFiles(deps).forEach((file) => {
+                          zip.file(file.name, file.content);
+                        });
+
+                        zip.file(
+                          "index.js",
+                          `${beautify(indexjs, { format: "js" })}`
+                        );
+                        zip.file(".env", envFile);
+                        zip.file(
+                          `${project.name}.df`,
+                          JSON.stringify(
+                            Blockly.serialization.workspaces.save(workspace)
+                          )
+                        );
+
+                        zip.generateAsync({ type: "blob" }).then((content) => {
+                          let url = window.URL.createObjectURL(content);
+                          let anchor = document.createElement("a");
+                          anchor.href = url;
+                          anchor.download = `${project.name}.zip`;
+
+                          anchor.click();
+
+                          window.URL.revokeObjectURL(url);
+
+                          Swal.fire({
+                            toast: true,
+                            position: "top-right",
+                            timer: 5000,
+                            timerProgressBar: true,
+                            icon: "success",
+                            title: "Successfully exported",
+                            showConfirmButton: false,
+                          });
                         });
                       });
 
