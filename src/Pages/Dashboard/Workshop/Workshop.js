@@ -39,12 +39,26 @@ export default function Workshop() {
                 },
               })
               .then((res) => {
-                setUserPacks(res.data);
-                setShownUserPacks(res.data);
+                let sortedUserPacks = res.data.sort(
+                  (a, b) =>
+                    b.likes.length +
+                    b.users.length -
+                    (a.likes.length + a.users.length)
+                );
+
+                setUserPacks(sortedUserPacks);
+                setShownUserPacks(sortedUserPacks);
 
                 axios.get(apiUrl + "/workshop").then(({ data: packs }) => {
-                  setPacks(packs);
-                  setShown(packs);
+                  let sortedPacks = packs.sort(
+                    (a, b) =>
+                      b.likes.length +
+                      b.users.length -
+                      (a.likes.length + a.users.length)
+                  );
+
+                  setPacks(sortedPacks);
+                  setShown(sortedPacks);
                   setLoading(false);
                 });
               });
