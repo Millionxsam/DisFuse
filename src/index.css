@@ -663,7 +663,8 @@ i.workspacesMenuBtn:hover {
   color: white;
 }
 
-.code-view .code {
+.code-view .code,
+#workshopPreviewCode {
   font-family: monospace !important;
   padding: 1.5vh;
   font-size: 15px;
@@ -674,9 +675,9 @@ i.workspacesMenuBtn:hover {
   overflow: auto;
 }
 
-.code-view .code * {
+.code-view .code *,
+#workshopPreviewCode * {
   font-family: monospace !important;
-  font-weight: 400;
 }
 
 .code-view .top {
@@ -829,7 +830,8 @@ i.workspacesMenuBtn:hover {
 #workspace input,
 #previewWorkspace input,
 #workshopWorkspace input,
-#blockPackPreviewWorkspace input {
+#blockPackPreviewWorkspace input,
+#workshopPreviewWorkspace input {
   border: none;
   padding: 0.25vh;
   background-color: transparent;
@@ -2762,12 +2764,17 @@ div.hidden:not(.shown) {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 25%;
+  width: 30%;
   padding: 1rem;
 }
 
+.workshopPreview h1 {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
 #workshopWorkspace {
-  width: 75% !important;
+  width: 70% !important;
 }
 
 .workshopPreview #workshopPreviewWorkspace {
@@ -2853,6 +2860,42 @@ div.hidden:not(.shown) {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+}
+
+.configurePackModal .dependency {
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.configurePackModal .addDependency {
+  display: flex;
+  flex-direction: column;
+}
+
+.configurePackModal .addDependency div {
+  flex-direction: row;
+}
+
+.configurePackModal .addDependency div input {
+  font-size: 15px !important;
+  padding: 0.75rem !important;
+}
+
+.separator {
+  background-color: var(--border-color);
+  height: 2px;
+  width: 100%;
+}
+
+.configurePackModal .dependency div {
+  background-color: var(--foreground-color);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.configurePackModal div p {
+  opacity: 0.5;
+  font-size: 15px;
 }
 
 .configurePackModal div input[type="text"],
@@ -3035,4 +3078,8 @@ div.hidden:not(.shown) {
 .library-container > .buttons {
   display: flex;
   gap: 1rem;
+}
+
+#workshopPreviewCode {
+  height: 50%;
 }

@@ -11,6 +11,7 @@ import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { renderToStaticMarkup } from "react-dom/server";
+import "@blockly/toolbox-search";
 
 require
   .context("./workshopBlocks", true, /\.js$/)
@@ -252,14 +253,7 @@ export default function WorkshopWorkspace() {
             <label for="name">Pack Name:</label>
             <input type="text" defaultValue={pack.name} id="packNameInput" />
           </div>
-          <div className="colorPicker">
-            <label for="color">Pack Color:</label>
-            <input
-              type="color"
-              id="packColorPicker"
-              defaultValue={pack.color}
-            />
-          </div>
+          <span className="separator"></span>
           <div className="description">
             <label for="description">Pack Description:</label>
             <textarea
@@ -267,6 +261,27 @@ export default function WorkshopWorkspace() {
               placeholder="Describe the blocks in your pack..."
               id="packDescriptionInput"
               rows="4"
+            />
+          </div>
+          <span className="separator"></span>
+          <div className="dependencies">
+            <label htmlFor="dependenciesInput">Dependencies</label>
+            <p>Add any npm modules your pack requires, separated by commas</p>
+            <p>These modules will be automatically added to package.json:</p>
+            <textarea
+              placeholder="packageOne, packageTwo, etc..."
+              id="dependenciesInput"
+              defaultValue={(pack?.dependencies || []).join(", ")}
+            ></textarea>
+          </div>
+          <span className="separator"></span>
+          <div className="colorPicker">
+            <label for="color">Pack Color:</label>
+            <p>This is the color your category will be in the toolbox:</p>
+            <input
+              type="color"
+              id="packColorPicker"
+              defaultValue={pack.color}
             />
           </div>
         </div>
@@ -280,6 +295,12 @@ export default function WorkshopWorkspace() {
       const name = document.getElementById("packNameInput").value;
       const color = document.getElementById("packColorPicker").value;
       const description = document.getElementById("packDescriptionInput").value;
+      const dependencies = (
+        document.getElementById("dependenciesInput").value || ""
+      )
+        .split(",")
+        .map((d) => d.trim())
+        .filter((d) => d.length > 0);
 
       axios
         .patch(
@@ -288,6 +309,7 @@ export default function WorkshopWorkspace() {
             name,
             color,
             description,
+            dependencies,
           },
           {
             headers: {
@@ -314,8 +336,6 @@ export default function WorkshopWorkspace() {
   function arraysAreEqual(arr1, arr2) {
     arr1 = arr1.sort((a, b) => a.name.localeCompare(b.name));
     arr2 = arr2.sort((a, b) => a.name.localeCompare(b.name));
-
-    console.log(arr1, arr2);
 
     if (arr1.length !== arr2.length) {
       return false;

@@ -1,9 +1,14 @@
 import * as Blockly from "blockly";
-//import { javascriptGenerator } from "blockly/javascript";
 import { useEffect, useState } from "react";
 import { DFTheme } from "../../../components/themes/DFTheme";
-//import { workshopToolbox } from "./WorkshopToolbox";
 import registerCustomBlocks from "../../../functions/registerCustomBlocks";
+import getToolbox from "../../../config/toolbox";
+import { javascriptGenerator } from "blockly/javascript";
+import hljs from "highlight.js/lib/core";
+import beautify from "beautify";
+import javascript from "highlight.js/lib/languages/javascript";
+
+hljs.registerLanguage("javascript", javascript);
 
 export default function PreviewBox({ blocks = [] }) {
   const [previewWorkspace, setWorkspace] = useState();
@@ -12,6 +17,7 @@ export default function PreviewBox({ blocks = [] }) {
     const workspace = Blockly.inject(
       document.getElementById("workshopPreviewWorkspace"),
       {
+        toolbox: getToolbox([]),
         theme: DFTheme,
         move: {
           wheel: true,
@@ -47,6 +53,19 @@ export default function PreviewBox({ blocks = [] }) {
     );
 
     setWorkspace(workspace);
+
+    workspace.addChangeListener(() => {
+      const code = javascriptGenerator.workspaceToCode(workspace);
+
+      document.getElementById("workshopPreviewCode").innerHTML = hljs.highlight(
+        beautify(code, {
+          format: "js",
+        }),
+        {
+          language: "javascript",
+        }
+      ).value;
+    });
   }, []);
 
   useEffect(() => {
@@ -60,6 +79,8 @@ export default function PreviewBox({ blocks = [] }) {
       <div className="workshopPreview">
         <h1>Preview</h1>
         <div id="workshopPreviewWorkspace"></div>
+        <h1>Output</h1>
+        <pre id="workshopPreviewCode"></pre>
       </div>
     </>
   );
