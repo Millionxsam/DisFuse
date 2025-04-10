@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
+import { userCache } from "../../cache.ts";
 
 const { apiUrl } = require("../../config/config.json");
 
@@ -12,6 +13,13 @@ export default function Explore() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (userCache.explore) {
+      setProjects(userCache.explore);
+      setShown(userCache.explore);
+      setLoading(false);
+      return;
+    }
+    
     axios
       .get(apiUrl + "/projects", {
         headers: {
@@ -19,10 +27,12 @@ export default function Explore() {
         },
       })
       .then(({ data }) => {
-        data = data.sort((a, b) => b.likes.length - a.likes.length);
+        let projects = data.sort((a, b) => b.likes.length - a.likes.length);
 
-        setProjects(data);
-        setShown(data);
+        userCache.explore = projects;
+
+        setProjects(projects);
+        setShown(projects);
         setLoading(false);
       });
   }, []);

@@ -154,7 +154,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
     let checks = connection.getCheck();
     if (!checks && connection.targetConnection) checks = connection.targetConnection.getCheck();
 
-    if (connection.type == 1 || connection.type == 2) {
+    if (connection.type === 1 || connection.type === 2) {
       if (checks) {
         if (checks.includes('date')) {
           return this.OCTAGON;
@@ -171,6 +171,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
 }
 
 export default class Renderer extends Blockly.zelos.Renderer {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

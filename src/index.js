@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./components/fontawesome/css/all.css";
 import { BrowserRouter } from "react-router-dom";

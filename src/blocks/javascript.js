@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
+//import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["javascript_raw"] = {
   init: function () {

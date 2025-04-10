@@ -22,7 +22,7 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
       commentEle?.scrollIntoView({ behavior: "smooth" });
       commentEle?.classList.add("highlighted");
     }
-  }, []);
+  }, [allUsers, comment.authorId]);
 
   var likeButtonEnabled = true;
   function toggleLike() {
@@ -51,7 +51,7 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
   function postReply() {
     const content = document.querySelectorAll("textarea.replyInput")[index].value.trim();
 
-    if (content == '') return;
+    if (content === '') return;
 
     axios
       .post(

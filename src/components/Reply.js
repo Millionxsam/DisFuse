@@ -12,7 +12,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
 
   useEffect(() => {
     setAuthor(allUsers.find((u) => u.id === reply.authorId));
-  }, []);
+  }, [allUsers, reply.authorId]);
 
   function delReply() {
     Swal.fire({

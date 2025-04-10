@@ -1,8 +1,8 @@
 import * as Blockly from "blockly";
-import { javascriptGenerator } from "blockly/javascript";
+//import { javascriptGenerator } from "blockly/javascript";
 import { useEffect, useState } from "react";
 import { DFTheme } from "../../../components/themes/DFTheme";
-import { workshopToolbox } from "./WorkshopToolbox";
+//import { workshopToolbox } from "./WorkshopToolbox";
 import registerCustomBlocks from "../../../functions/registerCustomBlocks";
 
 export default function PreviewBox({ blocks = [] }) {

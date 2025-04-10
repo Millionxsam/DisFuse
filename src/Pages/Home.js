@@ -26,7 +26,7 @@ export default function Home() {
       let intervalId = setInterval(() => {
         usersEle.innerHTML = i + " Users";
         i++;
-        if (i === data.users) clearInterval(intervalId);
+        if (i === data.users || window.location.pathname === '/home') clearInterval(intervalId);
       }, animationMs / data.users);
 
       let y = 0;
@@ -34,8 +34,9 @@ export default function Home() {
       let intervalId2 = setInterval(() => {
         projectsEle.innerHTML = y + " Projects";
         y++;
-        if (y === data.projects) clearInterval(intervalId2);
+        if (y === data.projects || window.location.pathname === '/home') clearInterval(intervalId2);
       }, animationMs / data.projects);
+
     });
   }, []);
 

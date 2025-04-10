@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript, { javascriptGenerator, Order } from "blockly/javascript";
+import javascript, { Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["misc_int_reply"] = {

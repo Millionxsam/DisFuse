@@ -36,7 +36,7 @@ export default function Library() {
               )
             )
               .then((responses) => {
-                const packs = responses.map((response) => response.data);
+                let packs = responses.map((response) => response.data);
                 setPacks(packs);
                 setShown(packs);
               })
@@ -59,7 +59,7 @@ export default function Library() {
         >
           <i class="fa-solid fa-arrow-left"></i> Workshop
         </button>
-        {/* <input
+        {<input
           type="text"
           className="search"
           placeholder="Search your library..."
@@ -70,7 +70,7 @@ export default function Library() {
               )
             );
           }}
-        /> */}
+        />}
       </div>
       <div className="content">
         {isLoading ? (

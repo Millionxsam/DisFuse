@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserTag from "./UserTag";
 import ms from "ms";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function InboxItem({ item, user, index }) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  (async () => {
     if (item.notification.userId) {
       axios
         .get(apiUrl + `/users/${item.notification.userId}`, {
@@ -57,7 +57,7 @@ export default function InboxItem({ item, user, index }) {
           }
         });
     }
-  }, []);
+  })();
 
   // eslint-disable-next-line default-case
   switch (item.notification.alertType) {

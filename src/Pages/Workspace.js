@@ -153,7 +153,8 @@ export default function Workspace() {
                     },
                   };
 
-                  let renderer = user.settings?.workspace.renderer ?? "zelos";
+                  let renderer = user.settings?.workspace.renderer ?? 'custom_zelos';
+                  if (renderer === 'zelos') renderer = 'custom_zelos';
                   let sounds = user.settings?.workspace.sounds ?? true;
                   let showGrid = user.settings?.workspace.grid.enabled ?? true;
                   let snapToGrid = user.settings?.workspace.grid.snap ?? false;

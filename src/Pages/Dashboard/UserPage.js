@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
-import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 
 const { apiUrl, discordUrl } = require("../../config/config.json");
@@ -98,26 +97,8 @@ export default function UserPage() {
     });
   }
 
-  let description =
-    "Check out this user's profile and projects on DisFuse, a platform to create Discord bots with block coding!";
-
   return (
     <>
-      <Helmet>
-        <meta name="description" content={description} />
-        <title>{`${user.displayName} on DisFuse`}</title>
-
-        <meta property="og:title" content={`${user.displayName} on DisFuse`} />
-        <meta property="og:description" content={description} />
-        <meta
-          property="og:image"
-          content={
-            user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
-          }
-        />
-        <meta property="og:type" content="profile" />
-      </Helmet>
-
       <div className="user-profile-container">
         <div className="head">
           <div className="nametag">
@@ -126,6 +107,10 @@ export default function UserPage() {
                 user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
               }
               alt=""
+              onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+              }}
             />
             <div>
               <h1>{user.displayName || user.username}</h1>

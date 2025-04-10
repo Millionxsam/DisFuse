@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
+import { userCache } from "../../cache.ts";
 
 const { apiUrl, discordUrl } = require("../../config/config.json");
 
@@ -11,6 +12,15 @@ export default function Favorites() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (userCache.user && userCache.user?.favorites) {
+      let favoriteProjects = userCache.user.favorites;
+
+      setProjects(favoriteProjects);
+      setShown(favoriteProjects);
+      setLoading(false);
+      return;
+    }
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -31,13 +41,13 @@ export default function Favorites() {
                   Authorization: localStorage.getItem("disfuse-token"),
                 },
               })
-              .then(({ data: projects }) => {
-                let p = user.favorites
-                  .filter((f) => projects.find((p) => p._id === f))
-                  .map((f) => projects.find((p) => p._id === f));
+              .then(({ data: allProjects }) => {
+                let favoriteProjects = user.favorites
+                  .filter((f) => allProjects.find((p) => p._id === f))
+                  .map((f) => allProjects.find((p) => p._id === f));
 
-                setProjects(p);
-                setShown(p);
+                setProjects(favoriteProjects);
+                setShown(favoriteProjects);
                 setLoading(false);
               });
           });
