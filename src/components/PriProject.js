@@ -17,23 +17,14 @@ export default function PriProject({ project }) {
       <div className="priProject">
         <div className="top">
           <div className="name-container">
-            <div>
-              <h1>{project.name}</h1>
-              {project.private ? (
-                <div>
-                  <i class="fa-solid fa-lock"></i>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-            <div>
-              <i
-                class="fa-solid fa-pen-to-square"
-                style={{ cursor: "pointer" }}
-                onClick={() => editProject(project)}
-              ></i>
-            </div>
+            <h1>{project.name}</h1>
+
+            {project.private && <i className="fa-solid fa-lock" />}
+            <i
+              className="fa-solid fa-pen-to-square"
+              style={{ cursor: "pointer", marginLeft: "auto" }}
+              onClick={() => editProject(project)}
+            />
           </div>
           <i>
             {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
@@ -99,71 +90,122 @@ function deleteProject(project) {
 function editProject(project) {
   const token = localStorage.getItem("disfuse-token");
 
-  const Queue = Swal.mixin({
-    progressSteps: ["1", "2", "3"],
-    animation: false,
-    confirmButtonText: "Next >",
-    ...modalColors,
-  });
-
   (async () => {
-    let name, dsc, isPrivate;
+    let name = project.name;
+    let dsc = project.description;
+    let isPrivate = project.private;
     let cancelled = false;
 
-    await Queue.fire({
-      title: "Enter your new project name",
-      input: "text",
-      inputPlaceholder: "DisFuse Project",
-      inputValue: project.name,
+    const editChoice = await Swal.fire({
+      title: "What do you want to edit?",
+      html: `
+        <div style="text-align: left; justify-self: center;">
+          <input type="checkbox" id="name" value="Project Name">
+          <label for="name"> Project Name</label><br>
+          <input type="checkbox" id="description" value="Project Description">
+          <label for="description"> Project Description</label><br>
+          <input type="checkbox" id="visibility" value="Visibility">
+          <label for="visibility"> Visibility</label>
+        </div>
+      `,
+      focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: "Edit selected",
       animation: true,
-      inputValidator: (i) => {
-        if (i.length < 3) return "The name must be at least 2 characters";
-        if (i.length > 12) return "The name must be below 12 characters";
-        return false;
+      ...modalColors,
+      preConfirm: () => {
+        const selected = [];
+        if (document.getElementById("name").checked) selected.push("name");
+        if (document.getElementById("description").checked)
+          selected.push("description");
+        if (document.getElementById("visibility").checked)
+          selected.push("visibility");
+        return selected;
       },
-      currentProgressStep: 0,
-    }).then((result) => {
-      if (result.isConfirmed) name = result.value;
-      else cancelled = true;
     });
 
-    if (cancelled) return;
+    if (!editChoice.isConfirmed || editChoice.value?.length < 1) return;
 
-    await Queue.fire({
-      title: "Enter the new description (optional)",
-      currentProgressStep: 1,
-      input: "text",
-      showCancelButton: true,
-      inputPlaceholder: "Some description",
-      inputValue: project.description,
-      inputValidator: (i) => {
-        if (i.length > 500)
-          return "The description must be below 500 characters";
-        else return false;
-      },
-    }).then((result) => {
-      if (result.isConfirmed) dsc = result.value;
-      else cancelled = true;
-    });
+    const sequence = ["name", "description", "visibility"].filter((i) =>
+      editChoice.value.includes(i)
+    );
+    const steps = sequence.map((_, i) => (i + 1).toString());
 
-    if (cancelled) return;
+    for (let i = 0; i < sequence.length; i++) {
+      const currentField = sequence[i];
 
-    await Queue.fire({
-      title: "Change project visibility",
-      currentProgressStep: 2,
-      showCancelButton: true,
-      confirmButtonText: "Edit",
-      input: "select",
-      inputOptions: {
-        private: "Private",
-        public: "Public",
-      },
-      inputValue: project.private ? "private" : "public",
-    }).then((result) => {
-      if (result.isConfirmed) isPrivate = result.value === "private";
-      else cancelled = true;
-    });
+      const isLastStep = i === sequence.length - 1;
+      const confirmText = isLastStep ? "Finish" : "Next >";
+
+      const commonOptions = {
+        showCancelButton: true,
+        currentProgressStep: i,
+        progressSteps: steps,
+        confirmButtonText: confirmText,
+        animation: true,
+        ...modalColors,
+      };
+
+      if (currentField === "name") {
+        const result = await Swal.fire({
+          title: "Enter your new project name",
+          input: "text",
+          inputPlaceholder: "DisFuse Project",
+          inputValue: name,
+          inputValidator: (i) => {
+            if (i.length < 3) return "The name must be at least 2 characters";
+            if (i.length > 18) return "The name must be below 18 characters";
+            return null;
+          },
+          ...commonOptions,
+          ...modalColors,
+        });
+
+        if (!result.isConfirmed) {
+          cancelled = true;
+          break;
+        }
+        name = result.value;
+      } else if (currentField === "description") {
+        const result = await Swal.fire({
+          title: "Enter the new description",
+          input: "text",
+          inputPlaceholder: "Some description",
+          inputValue: dsc,
+          inputValidator: (i) => {
+            if (i.length > 500)
+              return "The description must be below 500 characters";
+            return null;
+          },
+          ...commonOptions,
+          ...modalColors,
+        });
+
+        if (!result.isConfirmed) {
+          cancelled = true;
+          break;
+        }
+        dsc = result.value;
+      } else if (currentField === "visibility") {
+        const result = await Swal.fire({
+          title: "Change project visibility",
+          input: "select",
+          inputOptions: {
+            private: "Private",
+            public: "Public",
+          },
+          inputValue: isPrivate ? "private" : "public",
+          ...commonOptions,
+          ...modalColors,
+        });
+
+        if (!result.isConfirmed) {
+          cancelled = true;
+          break;
+        }
+        isPrivate = result.value === "private";
+      }
+    }
 
     if (cancelled) return;
 

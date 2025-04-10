@@ -96,7 +96,7 @@ button#red {
 button:not(.disabled):hover {
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 1.3rem;
-  box-shadow: 0 0 20px 5px var(--border-color);
+  box-shadow: 0 0 10px 3px var(--border-color);
 }
 
 button#red:hover {
@@ -1245,14 +1245,15 @@ i.workspacesMenuBtn:hover {
   gap: 0.25rem;
 }
 
-.priProject .name-container {
+.priProject .name-container,
+.pubProject .name-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
-.priProject .name-container div,
-.pubProject .name-container div,
+.priProject .name-container,
+.pubProject .name-container,
 .workshop-item .info div,
 .blockPackPage .head .info div {
   display: flex;
@@ -1348,13 +1349,6 @@ i.workspacesMenuBtn:hover {
   padding-bottom: 1rem;
 }
 
-.explore-container .exploration,
-.fav-container .favorites,
-.inbox-container .notifications,
-.workshop-container .workshop {
-  margin-left: 1rem;
-}
-
 .explore-container .buttons {
   display: flex;
   gap: 1rem;
@@ -1404,7 +1398,6 @@ input[type="search"]::-webkit-search-results-decoration {
 .explore-container .exploration .content,
 .fav-container .favorites .content {
   display: grid;
-  padding: 1rem;
   grid-template-columns: repeat(4, 20rem);
   gap: 3rem;
 }
@@ -2635,20 +2628,26 @@ div.hidden:not(.shown) {
   border-bottom: 2px solid var(--border-color);
 }
 
+.workshop-container .workshop {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workshop-container .workshop h1 {
+  margin-top: 1rem;
+}
+
 .workshop-container .workshop .content {
   display: grid;
-  padding: 1rem;
   grid-template-columns: repeat(2, 40rem);
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .workshop-item {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.workshop-item {
   background-color: var(--foreground-color);
   padding: 1.5rem;
   border-radius: 1.5rem;
@@ -2661,6 +2660,10 @@ div.hidden:not(.shown) {
   flex-direction: column;
   gap: 0.5rem;
   padding-bottom: 1rem;
+}
+
+.workshop-item .info h1 {
+  margin: 0;
 }
 
 .workshop-item .stats {

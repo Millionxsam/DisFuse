@@ -105,7 +105,7 @@ export default function Workshop() {
                 <i class="fa-solid fa-chevron-right"></i>
               </Link>
             </div>
-            <h1 style={{ marginTop: "2rem" }}>Your Packs</h1>
+            <h1>Your Packs</h1>
             <div className="content">
               {shownUserPacks.length
                 ? shownUserPacks.map((pack) => (
@@ -113,7 +113,7 @@ export default function Workshop() {
                   ))
                 : "No packs"}
             </div>
-            <h1 style={{ marginTop: "2rem" }}>Featured</h1>
+            <h1>Featured</h1>
             <div className="content">
               {shown.map((pack) => (
                 <WorkshopItem pack={pack} />
