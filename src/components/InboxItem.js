@@ -43,7 +43,7 @@ export default function InboxItem({ item, user, index }) {
       axios
         .get(
           apiUrl +
-          `/comments/${item.notification.projectId}/${item.notification.commentId}`
+            `/comments/${item.notification.projectId}/${item.notification.commentId}`
         )
         .then(({ data: comment }) => {
           setComment(comment);
@@ -115,6 +115,19 @@ export default function InboxItem({ item, user, index }) {
         </>
       ) : (
         "Loading..."
+      );
+      break;
+
+    case "tosChanged":
+      link = `/tos`;
+      title = "DisFuse's Terms of Service were updated";
+      body = (
+        <>
+          <p>
+            We've made some changes to our Terms of Service. Please make sure to
+            review the updates to stay up to date with our rules.
+          </p>
+        </>
       );
       break;
   }

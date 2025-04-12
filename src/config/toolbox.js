@@ -4540,6 +4540,24 @@ export default function getToolbox(blockPacks = []) {
           })),
         ],
       },
+      ...(window.location.hostname === "localhost"
+        ? [
+            {
+              kind: "sep",
+            },
+            {
+              kind: "category",
+              name: "Testing",
+              colour: "#014f98",
+              contents: [
+                {
+                  kind: "block",
+                  type: "my_custom_block",
+                },
+              ],
+            },
+          ]
+        : []),
       /*{
       kind: 'category',
       name: 'Games',
