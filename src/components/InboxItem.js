@@ -118,7 +118,7 @@ export default function InboxItem({ item, user, index }) {
       );
       break;
 
-    case "tosChanged":
+    case "tosChange":
       link = `/tos`;
       title = "DisFuse's Terms of Service were updated";
       body = (
