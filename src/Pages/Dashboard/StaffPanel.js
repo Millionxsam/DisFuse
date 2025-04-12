@@ -171,7 +171,7 @@ export default function StaffPanel() {
             if (response.isConfirmed) {
                 axios
                     .post(
-                        apiUrl + "/tosChangeWarning",
+                        apiUrl + "/users/tosChangeWarning",
                         {},
                         {
                             headers: {
