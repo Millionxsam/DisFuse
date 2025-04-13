@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
+import { userCache } from "./cache.ts";
 
 const { apiUrl } = require("./config/config.json");
 
@@ -44,15 +45,25 @@ export default function Auth({ children }) {
         Authorization: token,
       },
     })
-    .then(() => setLoading(false))
+    .then(({ data }) => {
+      userCache.user = data;
+
+      axios.get(apiUrl + "/users/staff").then(({ data: staff }) => {
+        userCache.isStaff = staff.users.find((s) => s.id === data.id)
+          ? true
+          : false;
+      });
+
+      setLoading(false);
+    })
     .catch((error) => {
       console.error(error);
     });
 
   if (loading)
     return (
-      <div key={'loadingAnim'} className="load-container">
-        <LoadingAnim/>
+      <div key={"loadingAnim"} className="load-container">
+        <LoadingAnim />
       </div>
     );
 

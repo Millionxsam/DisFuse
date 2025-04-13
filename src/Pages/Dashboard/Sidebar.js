@@ -7,7 +7,6 @@ const { discordUrl, apiUrl } = require("../../config/config.json");
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
-  const [isStaff, setStaff] = useState(userCache.isStaff);
   const [user, setUser] = useState(userCache.user || {});
   const navigate = useNavigate();
 
@@ -18,12 +17,6 @@ export default function Sidebar() {
   }, [active]);
 
   useEffect(() => {
-    if (userCache.user) {
-      setUser(userCache.user);
-      setStaff(userCache.isStaff);
-      return;
-    }
-
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -33,14 +26,7 @@ export default function Sidebar() {
       .then(({ data }) => {
         axios.get(apiUrl + "/users").then(({ data: users }) => {
           let user = users.find((u) => u.id === data.id);
-          userCache.user = user;
           setUser(user);
-
-          axios.get(apiUrl + "/users/staff").then(({ data: staff }) => {
-            const isStaffMember = staff.users.some((s) => s.id === user.id);
-            userCache.isStaff = isStaffMember;
-            setStaff(isStaffMember);
-          });
         });
       });
   }, []);
@@ -127,7 +113,7 @@ export default function Sidebar() {
                   <i className="fa-solid fa-gear"></i> <div>Settings</div>
                 </li>
               </Link>
-              {isStaff && (
+              {userCache.isStaff && (
                 <Link
                   onClick={() => setActive(false)}
                   className="underline-effect"

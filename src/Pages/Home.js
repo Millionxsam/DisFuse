@@ -26,7 +26,8 @@ export default function Home() {
       let intervalId = setInterval(() => {
         usersEle.innerHTML = i + " Users";
         i++;
-        if (i === data.users || window.location.pathname === '/home') clearInterval(intervalId);
+        if (i === data.users || window.location.pathname === "/home")
+          clearInterval(intervalId);
       }, animationMs / data.users);
 
       let y = 0;
@@ -34,9 +35,9 @@ export default function Home() {
       let intervalId2 = setInterval(() => {
         projectsEle.innerHTML = y + " Projects";
         y++;
-        if (y === data.projects || window.location.pathname === '/home') clearInterval(intervalId2);
+        if (y === data.projects || window.location.pathname === "/home")
+          clearInterval(intervalId2);
       }, animationMs / data.projects);
-
     });
   }, []);
 
@@ -89,6 +90,10 @@ export default function Home() {
               Private/public projects
             </div>
             <div className="hidden">
+              <i className="fa-solid fa-shapes"></i>Custom & community-made
+              blocks
+            </div>
+            <div className="hidden">
               <i className="fa-solid fa-comments"></i>
               View and comment on others' public projects
             </div>
@@ -101,10 +106,12 @@ export default function Home() {
               Built-in secrets (environment variables)
             </div>
             <div className="hidden">
-              <i className="fa-solid fa-cubes"></i>Built-in and user-made templates
+              <i className="fa-solid fa-cubes"></i>Built-in and user-made
+              templates
             </div>
             <div className="hidden">
-              <i className="fa-brands fa-square-js"></i>Advanced Discord features
+              <i className="fa-brands fa-square-js"></i>Advanced Discord
+              features
             </div>
             <div className="hidden">
               <i className="fa-solid fa-desktop"></i>Easy-to-use and organized
@@ -112,9 +119,6 @@ export default function Home() {
             </div>
             <div className="hidden">
               <i className="fa-solid fa-gears"></i>Workspace settings
-            </div>
-            <div className="hidden">
-              <i className="fa-solid fa-shapes"></i>Custom blocks (coming soon)
             </div>
           </div>
         </div>

@@ -24,32 +24,31 @@ export default function MyProjects() {
       setShown(userCache.projects);
       setLoading(false);
       return;
-    }
+    } else
+      axios
+        .get(discordUrl + "/users/@me", {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then(({ data }) => {
+          setUser(data);
 
-    axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then(({ data }) => {
-        setUser(data);
-        
-        axios
-          .get(apiUrl + `/users/${data.id}/projects`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
-          })
-          .then(({ data: p }) => {
-            let sortedProjects = p.sort(
-              (a, b) =>
-                new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
-            );
-            userCache.projects = sortedProjects;
-            setProjects(sortedProjects);
-            setShown(sortedProjects);
-            setLoading(false);
-          });
-      });
+          axios
+            .get(apiUrl + `/users/${data.id}/projects`, {
+              headers: { Authorization: localStorage.getItem("disfuse-token") },
+            })
+            .then(({ data: p }) => {
+              let sortedProjects = p.sort(
+                (a, b) =>
+                  new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+              );
+              userCache.projects = sortedProjects;
+              setProjects(sortedProjects);
+              setShown(sortedProjects);
+              setLoading(false);
+            });
+        });
   }, [token]);
 
   function newProject() {
@@ -57,6 +56,7 @@ export default function MyProjects() {
       progressSteps: ["1", "2", "3"],
       animation: false,
       confirmButtonText: "Next >",
+      footer: `By creating a project, you agree to our <a target="_blank" rel="noopener" href="/tos">TOS</a>`,
       ...modalColors,
     });
 

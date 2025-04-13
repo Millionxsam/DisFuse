@@ -18,23 +18,22 @@ export default function Explore() {
       setShown(userCache.explore);
       setLoading(false);
       return;
-    }
-    
-    axios
-      .get(apiUrl + "/projects", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      })
-      .then(({ data }) => {
-        let projects = data.sort((a, b) => b.likes.length - a.likes.length);
+    } else
+      axios
+        .get(apiUrl + "/projects", {
+          headers: {
+            Authorization: localStorage.getItem("disfuse-token"),
+          },
+        })
+        .then(({ data }) => {
+          let projects = data.sort((a, b) => b.likes.length - a.likes.length);
 
-        userCache.explore = projects;
+          userCache.explore = projects;
 
-        setProjects(projects);
-        setShown(projects);
-        setLoading(false);
-      });
+          setProjects(projects);
+          setShown(projects);
+          setLoading(false);
+        });
   }, []);
 
   function search() {

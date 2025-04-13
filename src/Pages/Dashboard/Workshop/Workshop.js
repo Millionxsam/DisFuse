@@ -128,6 +128,7 @@ export default function Workshop() {
   async function createPack() {
     const blockPackCreation = Swal.mixin({
       title: "Create Block Pack",
+      footer: `By creating a block pack, you agree to our <a target="_blank" rel="noopener" href="/tos">TOS</a>`,
       progressSteps: ["1", "2", "3"],
       animation: false,
       ...modalColors,
