@@ -234,7 +234,7 @@ javascriptGenerator.forBlock["buttons_add"] = function (
   resultCode.push(`.setStyle(${style ?? "'1'"})`);
   resultCode.push(`.setDisabled(${disabled ?? false})`);
   resultCode.push(`.setLabel(${label || "''"})`);
-  resultCode.push(`.setCustomId(${id})`);
+  if (Number(style) !== 5) resultCode.push(`.setCustomId(${id})`);
   if (Number(style) === 5 && String(url).trim() !== "''") resultCode.push(`.setURL(${url})`);
   if (String(emoji).trim() !== "''") resultCode.push(`.setEmoji(${emoji})`);
 
