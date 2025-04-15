@@ -7,12 +7,15 @@ import getToolbox from "../../../config/toolbox";
 import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
+import WorkspaceTabs from "../../../components/WorkspaceTabs";
 const { apiUrl } = require("../../../config/config.json");
 
 export default function ViewProject() {
   let { projectId } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [project, setProject] = useState({});
+  const [currentWorkspace, setCurrentWorkspace] = useState({});
+  const [workspace, setWorkspace] = useState({});
 
   useEffect(() => {
     axios
@@ -61,14 +64,15 @@ export default function ViewProject() {
           }
         );
 
-        setLoading(false);
+        setCurrentWorkspace(project.workspaces[0] || {});
 
-        if (project.data) {
-          Blockly.serialization.workspaces.load(
-            JSON.parse(project.data),
-            workspace
-          );
-        }
+        Blockly.serialization.workspaces.load(
+          JSON.parse(project.workspaces[0].data),
+          workspace
+        );
+
+        setWorkspace(workspace);
+        setLoading(false);
       });
   }, [projectId]);
 
@@ -81,16 +85,35 @@ export default function ViewProject() {
             <p>Back to project info</p>
           </button>
         </Link>
+
         <div>
           <h1 className="projectName">{project.name}</h1>
           by
           <UserTag user={project.owner} />
         </div>
       </div>
+      <WorkspaceTabs
+        onClick={loadTab}
+        currentTab={currentWorkspace}
+        project={project}
+        workspace={workspace}
+        editable={false}
+      />
       <div className="workspace-load-container">
         {isLoading ? <LoadingAnim /> : ""}
       </div>
       <div id="previewWorkspace"></div>
     </>
   );
+
+  async function loadTab(index) {
+    setCurrentWorkspace(project.workspaces[index]);
+
+    if (project.workspaces[index].data?.length)
+      Blockly.serialization.workspaces.load(
+        JSON.parse(project.workspaces[index].data),
+        workspace
+      );
+    else workspace.clear();
+  }
 }

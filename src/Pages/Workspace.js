@@ -35,6 +35,7 @@ import WorkspaceBar from "../components/WorkspaceBar";
 import registerCustomBlocks from "../functions/registerCustomBlocks";
 import Renderer from "../functions/render";
 import getExportFiles from "../config/getExportFiles";
+import { userCache } from "../cache.ts";
 Blockly.blockRendering.register("custom_zelos", Renderer);
 
 require
@@ -110,8 +111,6 @@ export default function Workspace() {
                     window.tokenAlertPopupAppeared = project?.private ?? false;
                   }
 
-                  window.changesUntilSave = Math.max(3, user.settings?.optimization?.changesUntilSave ?? 3);
-
                   let theme = user.settings?.workspace?.theme || "DFTheme";
 
                   if (theme === "DFTheme") theme = DFTheme;
@@ -148,15 +147,16 @@ export default function Workspace() {
                         Blockly.Themes.Zelos.blockStyles["variable_blocks"],
                       variable_dynamic_blocks:
                         Blockly.Themes.Zelos.blockStyles[
-                        "variable_dynamic_blocks"
+                          "variable_dynamic_blocks"
                         ],
                       hat_blocks:
                         Blockly.Themes.Zelos.blockStyles["hat_blocks"],
                     },
                   };
 
-                  let renderer = user.settings?.workspace.renderer ?? 'custom_zelos';
-                  if (renderer === 'zelos') renderer = 'custom_zelos';
+                  let renderer =
+                    user.settings?.workspace.renderer ?? "custom_zelos";
+                  if (renderer === "zelos") renderer = "custom_zelos";
                   let sounds = user.settings?.workspace.sounds ?? true;
                   let showGrid = user.settings?.workspace.grid.enabled ?? true;
                   let snapToGrid = user.settings?.workspace.grid.snap ?? false;
@@ -197,6 +197,13 @@ export default function Workspace() {
                     );
                   });
 
+                  registerCustomBlocks(
+                    user.blockBuddyBlocks || [],
+                    undefined,
+                    true,
+                    true
+                  );
+
                   // Inject workspace
                   const workspace = Blockly.inject(
                     document.getElementById("workspace"),
@@ -222,11 +229,11 @@ export default function Workspace() {
                       oneBasedIndex: true,
                       grid: showGrid
                         ? {
-                          spacing: gridSpacing,
-                          length: 5,
-                          colour: "#8888886e",
-                          snap: snapToGrid,
-                        }
+                            spacing: gridSpacing,
+                            length: 5,
+                            colour: "#8888886e",
+                            snap: snapToGrid,
+                          }
                         : false,
                       zoom: {
                         controls: true,
@@ -245,6 +252,23 @@ export default function Workspace() {
                   document.querySelector(
                     ".workspace-navbar .projectName p"
                   ).innerText = project.name;
+
+                  if (project.status?.suspended) {
+                    return Swal.fire({
+                      title: "Project Suspended",
+                      icon: "error",
+                      html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
+                      <br />
+                      <br />
+                      Reason: ${project.status?.reason || "None"}
+                      `,
+                      showConfirmButton: false,
+                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord</a>`,
+                      allowEscapeKey: false,
+                      allowOutsideClick: false,
+                      ...modalThemeColor(userCache.user),
+                    });
+                  }
 
                   [
                     "Discord",
@@ -421,6 +445,8 @@ export default function Workspace() {
 
                   registerContextMenus(project, currentWorkspace.current);
 
+                  Blockly.Events.disable();
+
                   try {
                     Blockly.serialization.workspaces.load(
                       JSON.parse(currentWorkspace.current?.data || "{}"),
@@ -440,7 +466,16 @@ export default function Workspace() {
                       allowOutsideClick: false,
                       ...modalColors,
                     });
+                  } finally {
+                    Blockly.Events.enable();
+                    updateCode(
+                      workspace,
+                      project,
+                      currentWorkspace.current._id
+                    );
                   }
+
+                  console.log(Object.values(Blockly.Blocks));
 
                   // Initiating plugins
                   const backpack = new Backpack(workspace, {
@@ -472,48 +507,36 @@ export default function Workspace() {
                     backpack.setContents(
                       JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
                     );
-                  } catch (_) { }
+                  } catch (_) {}
 
                   // Disable blocks that are not attached to anything
                   workspace.addChangeListener(Blockly.Events.disableOrphans);
 
                   setLoading(false);
 
-                  // When workspace changes
-                  let changes = 0;
                   workspace.addChangeListener(async (e) => {
                     let ignoredEvents = [
                       Blockly.Events.VIEWPORT_CHANGE,
                       Blockly.Events.SELECTED,
                       Blockly.Events.CLICK,
                       Blockly.Events.TOOLBOX_ITEM_SELECT,
-                      Blockly.Events.TRASHCAN_OPEN
+                      Blockly.Events.TRASHCAN_OPEN,
+                      Blockly.Events.FINISHED_LOADING,
+                      Blockly.Events.BLOCK_DRAG,
+                      Blockly.Events.CHANGE,
                     ];
 
-                    let willSave = e.type !== Blockly.Events.BLOCK_DRAG;
-
                     if (ignoredEvents.includes(e.type)) return;
-                    if (willSave) changes++;
 
                     reloadContextMenus(project, currentWorkspace.current);
                     setBackpackStorage();
                     addTooltips(workspace);
                     executeRestrictions(workspace);
 
-                    if (willSave && changes >= (window.changesUntilSave ?? 3)) {
-                      project = await autosave(
-                        workspace,
-                        projectId,
-                        currentWorkspace.current
-                      );
-                      changes = 0;
-                    }
-
-                    updateCode(
+                    project = await autosave(
                       workspace,
-                      project,
-                      currentWorkspace.current._id,
-                      true
+                      projectId,
+                      currentWorkspace.current
                     );
                   });
 
@@ -638,94 +661,73 @@ export default function Workspace() {
                       fileInput.remove();
                     });
 
-                  /*AI Generate button event (UNRELEASED)
-                  document
-                    .querySelector("button#generate")
-                    .addEventListener("click", () => {
-                      Swal.fire({
-                        title: "Generate Block",
-                        text: "Describe your block",
-                        showCancelButton: true,
-                        inputPlaceholder:
-                          "A block that logs something in the console",
-                        cancelButtonText: "Cancel",
-                        confirmButtonText: "Generate",
-                        input: "text",
-                        showLoaderOnConfirm: true,
-                        preConfirm: async (value) => {
-                          const res = (
-                            await axios.post(
-                              `https://ai.aerioncloud.com/v1/chat/completions`,
-                              {
-                                model: "gpt-4o",
-                                messages: [
-                                  {
-                                    role: "system",
-                                    content:
-                                      "You are an AI assistant that provides valid JSON to create Blockly blocks to create a Discord bot in Discord.JS v14. ONLY INCLUDE THE JSON, NOTHING ELSE. DO NOT USE FORMATTING. The user will provide a description of one or more blocks to create, and you will send an array of objects to create those blocks.",
-                                  },
-                                  {
-                                    role: "system",
-                                    content: `This is an example of a block, this is how your responses SHOULD look like:
-                                  [{
-                                    "name": "example_block",
-                                    "outputCode": "console.log(\${generator.valueToCode(block, "example_input", Order.NONE)})",
-                                    "inlineInputs": null,
-                                    "type": <"none", "output", "stack", "hat", or "end">,
-                                    "output": <null, "String", "Boolean", "Number", or "Array">,
-                                    "previousStatement": null,
-                                    "nextStatement": null,
-                                    "inputs": [{
-                                      "type": <"value", "statement", "dummy", "endrow">,
-                                      "name": "example_input",
-                                      "check": <null, "String", "Boolean", "Number", or "Array">,
-                                      "align": -1,
-                                      "fields": [{
-                                        "type": "label",
-                                        "text": "This is a label"
-                                      }]
-                                    }],
-                                    "color": "#3333ff",
-                                    "description": "This is an example block"
-                                  }]`,
-                                  },
-                                  {
-                                    role: "system",
-                                    content: `Here is a description of some parameters, ALWAYS follow the rules specified:
-                                    name <string>: the name or id of the block.
-                                    outputCode <string>: the code that will be outputed. must ALWAYS be in javascript.
-                                    type <string>: must ALWAYS be one of "none", "output", "stack", "hat", or "end".
-                                    output <string>: must ALWAYS be one of null, "String", "Boolean", "Number", or "Array". use null if not an output.
-                                    previousStatement <null>: must ALWAYS be null.
-                                    nextStatement <null>: must ALWAYS be null.
-                                    color <string>: the hex color of the block.
-                                    description <string>: the description of the block.
-                                    inputs > type <string>: must ALWAYS be one of "value", "statement", "dummy" or "endrow". use dummy if there are no inputs (only label fields).
-                                    inputs > name <string>: the name of the input. use only for value or statement input types.
-                                    inputs > check <string>: must ALWAYS be one of null, "String", "Boolean", "Number", or "Array". use only for value or statement types, use null to accept any type.
-                                    inputs > align <number>: must ALWAYS be -1.
-                                    inputs > fields <object>: an array of Blockly fields. use an empty array if there's no fields.`,
-                                  },
-                                  {
-                                    role: "user",
-                                    content: value,
-                                  },
-                                ],
-                              }
-                            )
-                          ).data;
-
-                          console.log(res);
-                          const json = JSON.parse(res.choices[0].message.content);
-                          console.log(json);
-                          registerCustomBlocks(json, workspace, true, true);
-                          return json;
-                        },
-                        ...modalColors,
-                      }).then((result) => {
-                        if (!result.isConfirmed) return;
-                      });
-                    });*/
+                  // AI Generate button event (UNRELEASED)
+                  // document
+                  //   .querySelector("button#blockBuddy")
+                  //   .addEventListener("click", () => {
+                  //     Swal.fire({
+                  //       ...modalColors,
+                  //       title: "BlockBuddy",
+                  //       showCancelButton: false,
+                  //       showConfirmButton: false,
+                  //       customClass: {
+                  //         popup: "blockBuddy-popup",
+                  //       },
+                  //       html: `
+                  //       <div class="blockBuddy-options">
+                  //         <div id="complete">
+                  //           <h3><i class="fa-solid fa-cubes-stacked"></i> Complete</h3>
+                  //           <p>Describe a command or feature to make</p>
+                  //         </div>
+                  //         <div id="suggest">
+                  //           <h3><i class="fa-solid fa-list-check"></i> Suggest</h3>
+                  //           <p>Suggest changes for your bot</p>
+                  //         </div>
+                  //         <div id="create">
+                  //           <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Create</h3>
+                  //           <p>Describe custom blocks to create</p>
+                  //         </div>
+                  //       </div>
+                  //       `,
+                  //       didOpen: () => {
+                  //         document
+                  //           .getElementById("create")
+                  //           .addEventListener("click", () => {
+                  //             Swal.fire({
+                  //               ...modalColors,
+                  //               title: "Create Blocks",
+                  //               text: "Describe the blocks you want to create",
+                  //               input: "textarea",
+                  //               customClass: {
+                  //                 input: "customBlockPrompt",
+                  //               },
+                  //               confirmButtonText: "Generate",
+                  //               inputPlaceholder:
+                  //                 "A block that logs something in the console...",
+                  //               showCancelButton: true,
+                  //               showLoaderOnConfirm: true,
+                  //               preConfirm: async (value) => {
+                  //                 axios.post(
+                  //                   apiUrl +
+                  //                     `/users/${user.id}/blockBuddyBlocks`,
+                  //                   {
+                  //                     prompt: value,
+                  //                   },
+                  //                   {
+                  //                     headers: {
+                  //                       Authorization:
+                  //                         localStorage.getItem("disfuse-token"),
+                  //                     },
+                  //                   }
+                  //                 );
+                  //               },
+                  //             });
+                  //           });
+                  //       },
+                  //     }).then((result) => {
+                  //       if (!result.isConfirmed) return;
+                  //     });
+                  //   });
 
                   // Templates button event
                   document
@@ -838,29 +840,29 @@ export default function Workspace() {
                             html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                                .map(
-                                  (block) =>
-                                    `<p class="exportError">${block.message}</p>`
-                                )
-                                .join("")}
+                            .map(
+                              (block) =>
+                                `<p class="exportError">${block.message}</p>`
+                            )
+                            .join("")}
                           ${warningBlocks
-                                .map(
-                                  (block) =>
-                                    `
+                            .map(
+                              (block) =>
+                                `
                               <p class="exportError">
                                 <span>
                                 ${titleCase(
-                                      exportingWs
-                                        .getBlockById(block.id)
-                                        .type.replaceAll("_", " ")
-                                    )}
+                                  exportingWs
+                                    .getBlockById(block.id)
+                                    .type.replaceAll("_", " ")
+                                )}
                                 </span>
                               ${block.message
-                                      .map((m) => `<span>${m}</span>`)
-                                      .join("")}
-                              </p>`
-                                )
+                                .map((m) => `<span>${m}</span>`)
                                 .join("")}
+                              </p>`
+                            )
+                            .join("")}
                           `,
                             ...modalColors,
                             customClass: {

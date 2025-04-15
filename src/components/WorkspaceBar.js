@@ -103,16 +103,18 @@ export default function WorkspaceBar({ workspace }) {
                 <i className="fa-solid fa-shapes"></i>
                 <div>Templates</div>
               </button>
-              {/* <button id="generate">
+              {/* <button id="blockBuddy">
                 <i className="fa-solid fa-robot"></i>
-                <div>Generate Block</div>
+                <div>BlockBuddy</div>
               </button> */}
             </ul>
           </div>
           <div className="right">
             <ul>
               <i className="indicator" id="blocks-indicator"></i>
-              <i className="indicator" id="autosave-indicator"></i>
+              <i className="indicator" id="autosave-indicator">
+                Autosave
+              </i>
               <button className="export">
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>

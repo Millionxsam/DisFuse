@@ -33,7 +33,7 @@ export function updateCode(
 
   if (blocksIndicator)
     blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
-  ${projectBlocks?.length ?? "??"}
+  ${projectBlocks?.length ?? "??"} blocks
   </div>`;
 
   if (!onlyWarning) {

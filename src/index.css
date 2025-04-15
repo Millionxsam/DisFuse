@@ -391,7 +391,7 @@ i.workspacesMenuBtn:hover {
 
 .previewWorkspaceNavbar > div {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   position: absolute;
   left: 50%;
@@ -403,7 +403,7 @@ i.workspacesMenuBtn:hover {
   margin-right: -0.6rem;
   cursor: default;
   background-color: var(--border-color);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 0.5rem;
   max-width: 10rem;
 }
@@ -524,12 +524,12 @@ i.workspacesMenuBtn:hover {
   width: 100%;
 }
 
-#workspace {
+#workspace,
+#previewWorkspace {
   height: 87.5vh;
   width: 100%;
 }
 
-#previewWorkspace,
 #workshopWorkspace {
   height: 92.5vh;
   width: 100%;
@@ -2517,6 +2517,10 @@ div.hidden:not(.shown) {
   gap: 1rem;
 }
 
+.swal2-container a {
+  color: #50a4ff !important;
+}
+
 .swal2-popup button {
   padding: 1vw;
   padding-left: 1.7vw;
@@ -3085,4 +3089,32 @@ div.hidden:not(.shown) {
 
 #workshopPreviewCode {
   height: 50%;
+}
+
+.blockBuddy-popup .blockBuddy-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blockBuddy-popup .blockBuddy-options div {
+  background-color: var(--foreground-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.blockBuddy-popup .blockBuddy-options div:hover {
+  background-color: var(--main-color);
+}
+
+.blockBuddy-popup .blockBuddy-options div h3 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }

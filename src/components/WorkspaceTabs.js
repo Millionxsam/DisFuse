@@ -1,8 +1,8 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import * as Blockly from 'blockly';
+import axios from "axios";
+import Swal from "sweetalert2";
+import * as Blockly from "blockly";
 
-const { apiUrl } = require('../config/config.json');
+const { apiUrl } = require("../config/config.json");
 
 export default function WorkspaceTabs({
   currentTab,
@@ -10,25 +10,27 @@ export default function WorkspaceTabs({
   project,
   workspace,
   modalColors,
+  editable = true,
 }) {
-
   function closeTabs(workspace) {
-    document.querySelector('.workspace-tabs').style.height = '0vh';
-    document.querySelector('#workspace').style.height = '92.5vh';
+    document.querySelector(".workspace-tabs").style.height = "0vh";
+    document.querySelector("#workspace").style.height = "92.5vh";
 
-    document.getElementById('workspace-tabs-open-container').style.width =
-      '1.8rem';
+    document.getElementById("workspace-tabs-open-container").style.width =
+      "1.8rem";
 
     Blockly.svgResize(workspace);
 
     setTimeout(() => {
       document.querySelector(
-        '.workspace-navbar .workspace-tabs-open'
-      ).style.opacity = '1';
+        ".workspace-navbar .workspace-tabs-open"
+      ).style.opacity = "1";
 
       Blockly.svgResize(workspace);
 
-      setTimeout(() => { Blockly.svgResize(workspace); }, 310);
+      setTimeout(() => {
+        Blockly.svgResize(workspace);
+      }, 310);
     }, 310);
   }
 
@@ -36,11 +38,11 @@ export default function WorkspaceTabs({
     e.stopPropagation();
 
     Swal.fire({
-      title: 'Edit workspace name',
-      text: 'Change the name of this workspace',
-      input: 'text',
+      title: "Edit workspace name",
+      text: "Change the name of this workspace",
+      input: "text",
       inputValue: workspace.name,
-      confirmButtonText: 'Change',
+      confirmButtonText: "Change",
       showCancelButton: true,
       ...modalColors,
     }).then((response) => {
@@ -54,7 +56,7 @@ export default function WorkspaceTabs({
           },
           {
             headers: {
-              Authorization: localStorage.getItem('disfuse-token'),
+              Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
@@ -66,21 +68,24 @@ export default function WorkspaceTabs({
     e.stopPropagation();
 
     Swal.fire({
-      title: 'Delete workspace',
+      title: "Delete workspace",
       text: `Are you sure you want to delete ${workspace.name}?`,
-      footer: 'This is not reversible!',
-      confirmButtonText: 'Delete',
+      footer: "This is not reversible!",
+      confirmButtonText: "Delete",
       showCancelButton: true,
       ...modalColors,
     }).then((response) => {
       if (!response.isConfirmed) return;
 
       axios
-        .delete(apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`, {
-          headers: {
-            Authorization: localStorage.getItem('disfuse-token'),
-          },
-        })
+        .delete(
+          apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("disfuse-token"),
+            },
+          }
+        )
         .then(() => window.location.reload());
     });
   }
@@ -88,14 +93,14 @@ export default function WorkspaceTabs({
   function duplicateWorkspace(e, workspace, project, modalColors) {
     e.stopPropagation();
 
-    if (!workspace.data || workspace.data === '') return;
+    if (!workspace.data || workspace.data === "") return;
 
     Swal.fire({
-      title: 'Duplicate workspace',
-      text: 'Choose a name for the duplicate workspace',
-      input: 'text',
+      title: "Duplicate workspace",
+      text: "Choose a name for the duplicate workspace",
+      input: "text",
       inputValue: workspace.name,
-      confirmButtonText: 'Duplicate',
+      confirmButtonText: "Duplicate",
       showCancelButton: true,
       ...modalColors,
     }).then((response) => {
@@ -106,12 +111,11 @@ export default function WorkspaceTabs({
           apiUrl + `/projects/${project._id}/workspaces`,
           {
             name: response.value ?? workspace.name,
-            data: workspace.data
+            data: workspace.data,
           },
           {
             headers: {
-              Authorization:
-                localStorage.getItem("disfuse-token"),
+              Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
@@ -121,45 +125,58 @@ export default function WorkspaceTabs({
 
   return (
     <div className="workspace-tabs">
-      <div
-        key={'unknown1'}
-        onClick={() => closeTabs(workspace)}
-        style={{ height: '2rem', width: '2rem' }}
-      >
-        <i className="fa-solid fa-xmark"></i>
-      </div>
+      {editable ? (
+        <div
+          key={"unknown1"}
+          onClick={() => closeTabs(workspace)}
+          style={{ height: "2rem", width: "2rem" }}
+        >
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      ) : (
+        ""
+      )}
+
       {project.workspaces?.map((workspace, index) => (
         <div
           onClick={() => onClick(index)}
-          className={`tab${currentTab._id === workspace._id ? ' active' : ''}`}
+          className={`tab${currentTab._id === workspace._id ? " active" : ""}`}
           key={index}
         >
           <div>{workspace.name}</div>
-          <div className="buttons">
-            <i
-              onClick={(e) =>
-                editWorkspaceName(e, workspace, project, modalColors)
-              }
-              className="fa-solid fa-pen"
-            />
-            <i
-              onClick={(e) =>
-                deleteWorkspace(e, workspace, project, modalColors)
-              }
-              className="fa-solid fa-trash"
-            />
-            <i
-              onClick={(e) =>
-                duplicateWorkspace(e, workspace, project, modalColors)
-              }
-              className="fa-solid fa-clone"
-            />
-          </div>
+          {editable ? (
+            <div className="buttons">
+              <i
+                onClick={(e) =>
+                  editWorkspaceName(e, workspace, project, modalColors)
+                }
+                className="fa-solid fa-pen"
+              />
+              <i
+                onClick={(e) =>
+                  deleteWorkspace(e, workspace, project, modalColors)
+                }
+                className="fa-solid fa-trash"
+              />
+              <i
+                onClick={(e) =>
+                  duplicateWorkspace(e, workspace, project, modalColors)
+                }
+                className="fa-solid fa-clone"
+              />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       ))}
-      <div key={'unknown2'} className="newTab">
-        <i className="fa-solid fa-plus"></i>
-      </div>
+      {editable ? (
+        <div key={"unknown2"} className="newTab">
+          <i className="fa-solid fa-plus"></i>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
