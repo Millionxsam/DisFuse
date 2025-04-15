@@ -228,15 +228,15 @@ javascriptGenerator.forBlock["buttons_add"] = function (
     Order.ATOMIC
   );
   var url = generator.valueToCode(block, "url", Order.ATOMIC);
-
+  
   const resultCode = ['new Discord.ButtonBuilder()'];
   resultCode.push(`.setLabel(${label || "''"})`);
   resultCode.push(`.setStyle(${style ?? "'1'"})`);
   resultCode.push(`.setDisabled(${disabled ?? false})`);
   resultCode.push(`.setLabel(${label || "''"})`);
-  resultCode.push(`.setCustomId(${id})`);
-  if (url && url !== '' && url !== 'null' && style === '5') resultCode.push(`.setURL(${url})`);
-  if (emoji && emoji !== '' && emoji !== 'null') resultCode.push(`.setEmoji(${emoji})`);
+  if (Number(style) !== 5) resultCode.push(`.setCustomId(${id})`);
+  if (Number(style) === 5 && String(url).trim() !== "''") resultCode.push(`.setURL(${url})`);
+  if (String(emoji).trim() !== "''") resultCode.push(`.setEmoji(${emoji})`);
 
   return resultCode.join('') + ',\n';
 };
@@ -297,7 +297,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["emoji"],
-      check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
+      check: (val) => (/^\p{Emoji}$/u).test(val),
       message: "Emoji must be a single valid emoji",
     },
     {
