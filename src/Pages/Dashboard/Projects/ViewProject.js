@@ -66,10 +66,17 @@ export default function ViewProject() {
 
         setCurrentWorkspace(project.workspaces[0] || {});
 
-        Blockly.serialization.workspaces.load(
-          JSON.parse(project.workspaces[0].data),
-          workspace
-        );
+        if (!project.workspaces?.length && project.data?.length > 0) {
+          // for old projects that haven't migrated to subworkspaces yet
+          Blockly.serialization.workspaces.load(
+            JSON.parse(project.data),
+            workspace
+          );
+        } else
+          Blockly.serialization.workspaces.load(
+            JSON.parse(project.workspaces[0].data),
+            workspace
+          );
 
         setWorkspace(workspace);
         setLoading(false);
