@@ -170,7 +170,8 @@ javascriptGenerator.forBlock["javascript_consoleinput"] = function (
   block,
   generator
 ) {
-  var promptMessage = generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
+  var promptMessage =
+    generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
 
   return [
     `(await (new Promise((resolve) => {
@@ -255,26 +256,45 @@ Blockly.Blocks["javascript_trycatch_error"] = {
   },
 };
 
-javascriptGenerator.forBlock["javascript_trycatch_error"] = () => ["errorButWithLengthyName", Order.NONE,];
+javascriptGenerator.forBlock["javascript_trycatch_error"] = () => [
+  "errorButWithLengthyName",
+  Order.NONE,
+];
 
 Blockly.Blocks["javascript_exit"] = {
   init: function () {
     this.appendDummyInput().appendField("Forcequit");
-    this.appendValueInput("code")
-      .setCheck("Number")
-      .appendField("Code:");
+    this.appendValueInput("code").setCheck("Number").appendField("Code:");
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
-    this.setTooltip("Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!");
+    this.setTooltip(
+      "Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!"
+    );
     this.setHelpUrl("");
   },
 };
 
-javascriptGenerator.forBlock["javascript_exit"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["javascript_exit"] = function (block, generator) {
   var exitCode = generator.valueToCode(block, "code", Order.ATOMIC) || 0;
 
   return `process.exit(${exitCode});\n`;
+};
+
+Blockly.Blocks["javascript_typeof"] = {
+  init: function () {
+    this.appendValueInput("value").appendField("type of");
+    this.setOutput(true, null);
+    this.setColour("#c93a5e");
+    this.setTooltip(
+      "Returns the the type (Number, String, Object, etc.) of the value specified"
+    );
+  },
+};
+
+javascriptGenerator.forBlock["javascript_typeof"] = function (
+  block,
+  generator
+) {
+  let value = generator.valueToCode(block, "value", Order.ATOMIC);
+  return [`typeof (${value})`, Order.NONE];
 };
