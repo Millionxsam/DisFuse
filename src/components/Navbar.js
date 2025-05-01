@@ -8,25 +8,25 @@ export default function Navbar() {
           <img src="/media/disfuse-clear.png" alt="" />
         </Link>
         <ul className="pages">
-          <li className="underline-effect">
+          <li key="home" className="underline-effect">
             <Link to="/">Home</Link>
           </li>
-          <li className="underline-effect">
+          <li key="dashboard" className="underline-effect">
             <Link to="/projects">Dashboard</Link>
           </li>
-          <li className="underline-effect">
+          <li key="explore" className="underline-effect">
             <Link to="/explore">Explore</Link>
           </li>
-          <li className="underline-effect">
+          <li key="staff" className="underline-effect">
             <Link to="/staff">Staff</Link>
           </li>
-          <li className="underline-effect">
-            <Link to="/tos">ToS</Link>
+          <li key="tos" className="underline-effect">
+            <Link to="/tos">TOS</Link>
           </li>
         </ul>
         <ul className="buttons">
-          <li id="discord">
-            <Link target="_blank " rel="noopener" to="https://dsc.gg/disfuse">
+          <li key="discord" id="discord">
+            <Link target="_blank" rel="noopener" to="https://dsc.gg/disfuse">
               <i className="fa-brands fa-discord"></i> Discord
             </Link>
           </li>

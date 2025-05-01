@@ -47,11 +47,11 @@ export default function PriProject({ project }) {
               (window.location = `/@${project.owner.username}/${project._id}/workspace`)
             }
           >
-            <i class="fa-solid fa-square-arrow-up-right"></i>
+            <i className="fa-solid fa-square-arrow-up-right"></i>
             Open
           </button>
           <button onClick={() => deleteProject(project)} id="red">
-            <i class="fa-solid fa-trash"></i>
+            <i className="fa-solid fa-trash"></i>
             Delete
           </button>
         </div>

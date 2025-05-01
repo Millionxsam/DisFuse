@@ -377,7 +377,7 @@ export default function MyProjects() {
         {isLoading ? <LoadingAnim /> : ""}
         <div className="projects">
           {shown.length > 0
-            ? shown.map((project) => <PriProject project={project} />)
+            ? shown.map((project, index) => <PriProject project={project} key={index}/>)
             : !isLoading
             ? "No projects"
             : ""}

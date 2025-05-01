@@ -154,13 +154,14 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
         </button>
       </div>
       <div className="replies">
-        {comment?.replies?.map((reply) => (
+        {comment?.replies?.map((reply, index) => (
           <Reply
             reply={reply}
             user={user}
             allUsers={allUsers}
             project={project}
             comment={comment}
+            key={index}
           />
         ))}
       </div>

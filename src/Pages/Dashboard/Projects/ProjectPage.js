@@ -286,6 +286,7 @@ export default function ProjectPage() {
             allUsers={allUsers}
             repliable={true}
             index={i}
+            key={i}
           />
         ))}
       </div>

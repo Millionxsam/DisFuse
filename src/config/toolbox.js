@@ -4366,6 +4366,201 @@ export default function getToolbox(blockPacks = []) {
               },
             ],
           },
+          {
+            kind: "category",
+            name: "Canvas",
+            colour: "#4C9F70",
+            contents: [
+              {
+                kind: "label",
+                text: "Create a Canvas ↓",
+              },
+              {
+                kind: "block",
+                type: "canvas_createCanvas",
+                inputs: {
+                  WIDTH: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                  HEIGHT: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
+                text: "Properties ↓",
+              },
+              {
+                kind: "block",
+                type: "canvas_width"
+              },
+              {
+                kind: "block",
+                type: "canvas_height"
+              },
+              {
+                kind: "label",
+                text: "Actions ↓",
+              },
+              {
+                kind: "block",
+                type: "canvas_setFillColor",
+                inputs: {
+                  COLOR: {
+                    shadow: {
+                      type: "colour_picker",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_setStrokeColor",
+                inputs: {
+                  COLOR: {
+                    shadow: {
+                      type: "colour_picker",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_setLineWidth",
+                inputs: {
+                  WIDTH: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 5,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_drawRectangle",
+                inputs: {
+                  X: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  WIDTH: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                  HEIGHT: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_drawCircle",
+                inputs: {
+                  X: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  RADIUS: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 256,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_drawLine",
+                inputs: {
+                  X1: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  Y1: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  X2: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                  Y2: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 512,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_clearCanvas"
+              }
+            ],
+          },
         ],
       },
       {

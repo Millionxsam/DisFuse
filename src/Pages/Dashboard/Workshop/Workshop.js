@@ -69,11 +69,11 @@ export default function Workshop() {
   return (
     <div className="workshop-container">
       <div className="head">
-        <i class="fa-solid fa-screwdriver-wrench"></i> Workshop
+        <i className="fa-solid fa-screwdriver-wrench"></i> Workshop
       </div>
       <div className="buttons">
         <button onClick={createPack}>
-          <i class="fa-solid fa-plus"></i> Create
+          <i className="fa-solid fa-plus"></i> Create
         </button>
         <input
           type="text"
@@ -100,23 +100,23 @@ export default function Workshop() {
           <>
             <div className="library">
               <Link to="/workshop/library">
-                <i class="fa-solid fa-cubes-stacked"></i>
+                <i className="fa-solid fa-cubes-stacked"></i>
                 <span style={{ textWrap: "nowrap" }}>Your Library</span>
-                <i class="fa-solid fa-chevron-right"></i>
+                <i className="fa-solid fa-chevron-right"></i>
               </Link>
             </div>
             <h1>Your Packs</h1>
             <div className="content">
               {shownUserPacks.length
-                ? shownUserPacks.map((pack) => (
-                    <WorkshopItem pack={pack} editable={true} />
+                ? shownUserPacks.map((pack, index) => (
+                    <WorkshopItem pack={pack} editable={true} key={index} />
                   ))
                 : "No packs"}
             </div>
             <h1>Featured</h1>
             <div className="content">
-              {shown.map((pack) => (
-                <WorkshopItem pack={pack} />
+              {shown.map((pack, index) => (
+                <WorkshopItem pack={pack} key={index} />
               ))}
             </div>
           </>

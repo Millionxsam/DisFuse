@@ -124,7 +124,7 @@ export default function BlockPackPage() {
             <h1>{pack.name}</h1>
             {pack.private ? (
               <div>
-                <i class="fa-solid fa-lock"></i>
+                <i className="fa-solid fa-lock"></i>
               </div>
             ) : (
               ""
@@ -153,7 +153,7 @@ export default function BlockPackPage() {
               user.installedBlockPacks?.includes(packId) ? " active" : ""
             }${newInstall ? " installAnim" : ""}`}
           >
-            <i class="fa-solid fa-plus"></i>
+            <i className="fa-solid fa-plus"></i>
             <div>
               {user.installedBlockPacks?.includes(packId)
                 ? "Uninstall"
@@ -169,7 +169,7 @@ export default function BlockPackPage() {
             ${newLike ? " newLike" : ""}
             `}
           >
-            <i class="fa-solid fa-heart"></i>
+            <i className="fa-solid fa-heart"></i>
             <div>{pack.likes?.length} Likes</div>
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function BlockPackPage() {
             return (
               <div key={index} className={`flag ${flag.type}`}>
                 <i
-                  class={`fa-solid ${
+                  className={`fa-solid ${
                     flag.type === "info"
                       ? "fa-circle-info"
                       : flag.type === "warning"

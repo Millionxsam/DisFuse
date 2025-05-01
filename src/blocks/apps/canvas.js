@@ -24,7 +24,7 @@ javascriptGenerator.forBlock["canvas_createCanvas"] = function (block, generator
   var statements = generator.statementToCode(block, "DO");
 
   return `(() => {
-  let canvas = canvasModule.createCanvas(${width}, ${height});
+  let canvas = _napi_rs_canvas.createCanvas(${width}, ${height});
   let ctx = canvas.getContext('2d');
   ${statements}})();`;
 };

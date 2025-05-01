@@ -259,7 +259,7 @@ javascript.javascriptGenerator.forBlock["db_create"] = function (
   var text_name = block.getFieldValue("name");
   var text_path = block.getFieldValue("path");
 
-  var code = `databases["${text_name}"] = new easyjsondatabase("./${text_path}.json");`;
+  var code = `databases["${text_name}"] = new easy_json_database("./${text_path}.json");`;
   return code;
 };
 

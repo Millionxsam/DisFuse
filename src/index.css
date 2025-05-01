@@ -2314,11 +2314,11 @@ select option {
 }
 
 .features div:nth-child(6):hover i {
-  color: rgb(255, 255, 127);
+  color: cyan;
 }
 
 .features div:nth-child(7):hover i {
-  color: cyan;
+  color: rgb(255, 255, 127);
 }
 
 .features div:nth-child(8):hover i {
