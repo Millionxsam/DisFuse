@@ -4186,7 +4186,7 @@ export default function getToolbox(blockPacks = []) {
           {
             kind: "category",
             name: "Scratch",
-            colour: "#0fbd8c",
+            colour: "#e6a53e",
             contents: [
               {
                 kind: "block",
