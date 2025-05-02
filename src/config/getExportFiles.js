@@ -13,7 +13,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
 
   const dependenciesObject = [...new Set(allDependencies)].reduce(
     (acc, dep) => {
-      acc[dep] = "@latest";
+      acc[dep] = "latest";
       return acc;
     },
     {}
