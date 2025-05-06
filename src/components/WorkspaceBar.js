@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import * as Blockly from "blockly";
+import UserTag from "./UserTag";
+import { userCache } from "../cache.ts";
 
-export default function WorkspaceBar({ workspace }) {
+export default function WorkspaceBar({ project, workspace, activeUsers = [] }) {
   const [active, setActive] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   function showSecrets() {
+    if (project.owner?.id !== userCache.user.id) return;
     document.querySelector(".secrets-view").showModal();
   }
 
@@ -89,13 +92,13 @@ export default function WorkspaceBar({ workspace }) {
                     <i className="fa-solid fa-upload"></i>
                     Load File
                   </button>
+                  <button onClick={toggleDropdown} id="showCode">
+                    <i className="fa-brands fa-square-js"></i>
+                    <div>Show Code</div>
+                  </button>
                 </div>
               </div>
-              <button id="showCode">
-                <i className="fa-brands fa-square-js"></i>
-                <div>Show Code</div>
-              </button>
-              <button onClick={showSecrets}>
+              <button className="secrets" onClick={showSecrets}>
                 <i className="fa-solid fa-key"></i>
                 <div>Secrets</div>
               </button>
@@ -103,27 +106,50 @@ export default function WorkspaceBar({ workspace }) {
                 <i className="fa-solid fa-shapes"></i>
                 <div>Templates</div>
               </button>
-              {/* <button id="blockBuddy">
-                <i className="fa-solid fa-robot"></i>
-                <div>BlockBuddy</div>
-              </button> */}
             </ul>
           </div>
           <div className="right">
             <ul>
+              {activeUsers.length >= 2 ? (
+                <div className="activeUsers">
+                  <div
+                    onClick={() =>
+                      document
+                        .querySelector(".activeUsers ul")
+                        .classList.toggle("active")
+                    }
+                  >
+                    {activeUsers.map((user) => (
+                      <img src={user.avatar} alt="" />
+                    ))}{" "}
+                    {activeUsers.length} Active User
+                    {activeUsers.length === 1 ? "" : "s"}
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                  <ul>
+                    {activeUsers.map((user) => (
+                      <li>
+                        <UserTag user={user} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                ""
+              )}
+
               <i className="indicator" id="blocks-indicator"></i>
               <i className="indicator" id="autosave-indicator">
                 Autosave
               </i>
+              <button className="invite">
+                <div>Invite</div>
+                <i className="fa-solid fa-share"></i>
+              </button>
               <button className="export">
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>
               </button>
-              <a rel="noreferrer" target="_blank" href="https://dsc.gg/disfuse">
-                <button>
-                  <i className="fa-brands fa-discord"></i>
-                </button>
-              </a>
             </ul>
           </div>
         </div>

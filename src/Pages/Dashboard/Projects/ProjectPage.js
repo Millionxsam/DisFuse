@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import UserTag from '../../../components/UserTag';
-import Swal from 'sweetalert2';
-import Comment from '../../../components/Comment';
-import LoadingAnim from '../../../components/LoadingAnim';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import UserTag from "../../../components/UserTag";
+import Swal from "sweetalert2";
+import Comment from "../../../components/Comment";
+import LoadingAnim from "../../../components/LoadingAnim";
 
-const { apiUrl, discordUrl } = require('../../../config/config.json');
+const { apiUrl, discordUrl } = require("../../../config/config.json");
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});
@@ -21,16 +21,16 @@ export default function ProjectPage() {
 
   useEffect(() => {
     axios
-      .get(discordUrl + '/users/@me', {
+      .get(discordUrl + "/users/@me", {
         headers: {
-          Authorization: localStorage.getItem('disfuse-token'),
+          Authorization: localStorage.getItem("disfuse-token"),
         },
       })
       .then(({ data }) => {
         axios
-          .get(apiUrl + '/users/' + data.id, {
+          .get(apiUrl + "/users/" + data.id, {
             headers: {
-              Authorization: localStorage.getItem('disfuse-token'),
+              Authorization: localStorage.getItem("disfuse-token"),
             },
           })
           .then(({ data: user }) => {
@@ -39,31 +39,29 @@ export default function ProjectPage() {
             axios
               .get(apiUrl + `/projects/${projectId}`, {
                 headers: {
-                  Authorization: localStorage.getItem('disfuse-token'),
+                  Authorization: localStorage.getItem("disfuse-token"),
                 },
               })
               .then(async ({ data: project }) => {
                 setProject(project);
 
-                axios
-                  .get(apiUrl + '/users')
-                  .then(({ data }) => {
-                    setAllUsers(data);
+                axios.get(apiUrl + "/users").then(({ data }) => {
+                  setAllUsers(data);
 
-                    axios
-                      .get(apiUrl + `/comments/${projectId}`)
-                      .then(({ data }) => {
-                        setComments(data);
-                        setLoading(false);
-                      });
-                  });
+                  axios
+                    .get(apiUrl + `/comments/${projectId}`)
+                    .then(({ data }) => {
+                      setComments(data);
+                      setLoading(false);
+                    });
+                });
               })
-              .catch(() => (window.location = '/explore'));
+              .catch(() => (window.location = "/explore"));
           });
       });
   }, [projectId]);
 
-  if (!project) return (window.location = '/explore');
+  if (!project) return (window.location = "/explore");
 
   var likeButtonEnabled = true;
   function toggleLike() {
@@ -76,7 +74,7 @@ export default function ProjectPage() {
     axios
       .patch(apiUrl + `/projects/${project._id}/likes`, null, {
         headers: {
-          Authorization: localStorage.getItem('disfuse-token'),
+          Authorization: localStorage.getItem("disfuse-token"),
         },
       })
       .then(({ data }) => {
@@ -99,7 +97,7 @@ export default function ProjectPage() {
         { favId },
         {
           headers: {
-            Authorization: localStorage.getItem('disfuse-token'),
+            Authorization: localStorage.getItem("disfuse-token"),
           },
         }
       )
@@ -113,9 +111,9 @@ export default function ProjectPage() {
     if (!project.name) return;
 
     const Queue = Swal.mixin({
-      progressSteps: ['1', '2', '3'],
+      progressSteps: ["1", "2", "3"],
       animation: false,
-      confirmButtonText: 'Next >',
+      confirmButtonText: "Next >",
     });
 
     (async () => {
@@ -123,14 +121,14 @@ export default function ProjectPage() {
       let cancelled = false;
 
       await Queue.fire({
-        title: 'Enter your project name',
-        input: 'text',
-        inputValue: project.name + ' Clone',
-        inputPlaceholder: 'DisFuse Project',
+        title: "Enter your project name",
+        input: "text",
+        inputValue: project.name + " Clone",
+        inputPlaceholder: "DisFuse Project",
         showCancelButton: true,
         inputValidator: (i) => {
           if (i.length >= 3) return false;
-          else return 'The name must be at least 3 characters';
+          else return "The name must be at least 3 characters";
         },
         animation: true,
         currentProgressStep: 0,
@@ -142,11 +140,11 @@ export default function ProjectPage() {
       if (cancelled) return;
 
       await Queue.fire({
-        title: 'Enter the description (optional)',
+        title: "Enter the description (optional)",
         currentProgressStep: 1,
-        input: 'text',
+        input: "text",
         showCancelButton: true,
-        inputPlaceholder: 'Some description',
+        inputPlaceholder: "Some description",
       }).then((result) => {
         if (result.isConfirmed) dsc = result.value;
         else cancelled = true;
@@ -155,17 +153,17 @@ export default function ProjectPage() {
       if (cancelled) return;
 
       await Queue.fire({
-        title: 'Project Visibility',
+        title: "Project Visibility",
         currentProgressStep: 2,
         showCancelButton: true,
-        confirmButtonText: 'Create',
-        input: 'select',
+        confirmButtonText: "Create",
+        input: "select",
         inputOptions: {
-          public: 'Public',
-          private: 'Private',
+          public: "Public",
+          private: "Private",
         },
       }).then((result) => {
-        if (result.isConfirmed) isPrivate = result.value === 'private';
+        if (result.isConfirmed) isPrivate = result.value === "private";
         else cancelled = true;
       });
 
@@ -173,7 +171,7 @@ export default function ProjectPage() {
 
       axios.patch(apiUrl + `/projects/${projectId}/clones`, null, {
         headers: {
-          Authorization: localStorage.getItem('disfuse-token'),
+          Authorization: localStorage.getItem("disfuse-token"),
         },
       });
 
@@ -188,7 +186,7 @@ export default function ProjectPage() {
           },
           {
             headers: {
-              Authorization: localStorage.getItem('disfuse-token'),
+              Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
@@ -203,14 +201,14 @@ export default function ProjectPage() {
     if (!project.name) return;
 
     const content = document
-      .querySelector('textarea.commentInput')
+      .querySelector("textarea.commentInput")
       .value.trim();
 
-    console.log(content)
+    console.log(content);
 
-    if (content === '' || !content) return;
+    if (content === "" || !content) return;
 
-    document.querySelector('textarea.commentInput').value = '';
+    document.querySelector("textarea.commentInput").value = "";
 
     axios
       .post(
@@ -219,7 +217,7 @@ export default function ProjectPage() {
           content,
         },
         {
-          headers: { Authorization: localStorage.getItem('disfuse-token') },
+          headers: { Authorization: localStorage.getItem("disfuse-token") },
         }
       )
       .then(({ data }) => {
@@ -233,7 +231,20 @@ export default function ProjectPage() {
       <div className="head">
         <div className="info">
           <h1>{isLoading ? <LoadingAnim /> : project.name}</h1>
-          {isLoading ? '' : <UserTag user={project.owner} />}
+          <div className="owner">
+            {isLoading ? (
+              ""
+            ) : (
+              <>
+                <UserTag user={project.owner} />
+                {project.collaborators?.length ? (
+                  <i>and {project.collaborators.length} more</i>
+                ) : (
+                  ""
+                )}
+              </>
+            )}
+          </div>
           <p>{project.description}</p>
         </div>
         <div className="buttons">
@@ -245,8 +256,9 @@ export default function ProjectPage() {
           </Link>
           <div
             onClick={toggleLike}
-            className={`darkBtn like${project.likes?.includes(user.id) ? ' active' : ''
-              }${newLike ? ' newLike' : ''}`}
+            className={`darkBtn like${
+              project.likes?.includes(user.id) ? " active" : ""
+            }${newLike ? " newLike" : ""}`}
           >
             <i className="fa-solid fa-heart"></i>
             <div>{project.likes?.length} Likes</div>
@@ -257,16 +269,29 @@ export default function ProjectPage() {
           </div>
           <div
             onClick={() => toggleFav(projectId)}
-            className={`darkBtn fav${user.favorites?.includes(projectId) ? ' active' : ''
-              }${newFav ? ' newFav' : ''}`}
+            className={`darkBtn fav${
+              user.favorites?.includes(projectId) ? " active" : ""
+            }${newFav ? " newFav" : ""}`}
           >
             <i className="fa-solid fa-star"></i>
             <div>
-              {user.favorites?.includes(projectId) ? 'Unfavorite' : 'Favorite'}
+              {user.favorites?.includes(projectId) ? "Unfavorite" : "Favorite"}
             </div>
           </div>
         </div>
       </div>
+      {project?.collaborators?.length ? (
+        <>
+          <h1>Collaborators</h1>
+          <ul className="collaborators">
+            {[project.owner.id, ...project.collaborators].map((id) => (
+              <UserTag userId={id} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        ""
+      )}
       <h1>Comments</h1>
       <div className="addComment">
         <textarea

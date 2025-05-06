@@ -18,7 +18,14 @@ export default function PubProject({ project }) {
           ) : (
             ""
           )}
-          <UserTag user={project.owner} />
+          <div className="owner">
+            <UserTag user={project.owner} />
+            {project.collaborators?.length ? (
+              <i>{project.collaborators.length} more</i>
+            ) : (
+              ""
+            )}
+          </div>
           <p>{project.description}</p>
         </div>
 

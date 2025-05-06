@@ -1138,6 +1138,14 @@ export default function getToolbox(blockPacks = []) {
         contents: [
           {
             kind: "label",
+            text: "Miscellaneous ↓",
+          },
+          {
+            kind: "block",
+            type: "javascript_typeof",
+          },
+          {
+            kind: "label",
             text: "Run raw javascript ↓",
           },
           {

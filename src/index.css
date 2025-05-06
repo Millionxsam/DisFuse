@@ -338,6 +338,7 @@ p.modal-text {
   min-height: 60px;
   padding: 2vh;
   color: white;
+  z-index: 50;
 }
 
 .workspace-navbar .content-container {
@@ -359,6 +360,8 @@ div.dropdown div.dropdown-content {
 div.dropdown div.dropdown-content button {
   background-color: transparent;
   border-radius: 1rem;
+  width: 100%;
+  justify-content: start;
 }
 
 div.dropdown div.dropdown-content button:hover {
@@ -542,6 +545,8 @@ i.workspacesMenuBtn:hover {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  position: relative;
+  z-index: 50;
   background-color: var(--foreground-color);
   border-left: 2px solid var(--border-color);
   transition: height 0.3s ease;
@@ -734,21 +739,23 @@ i.workspacesMenuBtn:hover {
   width: 100%;
 }
 
-.secrets-view::backdrop {
+dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.733);
 }
 
-.secrets-view {
+dialog {
   border-radius: 1.5rem;
   background-color: rgba(31, 31, 31, 0.897);
   padding: 2vh;
   height: 50vh;
-  width: 50%;
+  width: 40%;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+  color: white;
+  border: none;
 }
 
 .secrets-container {
@@ -1225,8 +1232,13 @@ i.workspacesMenuBtn:hover {
 .priProject .buttons button:first-child {
   border-radius: 1.5rem 5px 5px 1.5rem;
 }
+
 .priProject .buttons button:last-child {
   border-radius: 5px 1.5rem 1.5rem 5px;
+}
+
+.priProject .buttons button:only-child {
+  border-radius: 1.5rem;
 }
 
 .priProject .top {
@@ -1589,10 +1601,44 @@ input[type="search"]::-webkit-search-results-decoration {
   font-size: 50px;
 }
 
+.project-page-container .head .info .owner,
+.pubProject .info .owner {
+  display: flex;
+  align-items: center;
+}
+
+.project-page-container .head .info .owner .userTag,
+.pubProject .info .owner .userTag {
+  z-index: 2;
+}
+
+.project-page-container .head .info .owner .userTag:hover,
+.pubProject .info .owner .userTag:hover {
+  background-color: var(--foreground-color);
+}
+
+.project-page-container .head .info .owner i,
+.pubProject .info .owner i {
+  background-color: var(--border-color);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 2rem;
+  padding: 0 1rem 0 2.5rem;
+  position: relative;
+  right: 2rem;
+}
+
 .project-page-container .head .buttons,
 .blockPackPage .head .buttons {
   display: flex;
   gap: 1vw;
+}
+
+.project-page-container .collaborators {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .darkBtn {
@@ -1864,7 +1910,17 @@ select option {
   }
 }
 
+@media (max-width: 1250px) and (min-width: 930px) {
+  #blocks-indicator {
+    display: none;
+  }
+}
+
 @media (max-width: 1150px) and (min-width: 930px) {
+  #autosave-indicator {
+    display: none;
+  }
+
   .workspace-navbar .left {
     display: flex;
     margin-left: 1rem;
@@ -2364,6 +2420,28 @@ select option {
     filter 0.5s 0.75s ease;
 }
 
+.home-container .reviews {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 2rem;
+}
+
+.home-container .reviews .userReview {
+  background-color: var(--foreground-color);
+  padding: 1rem;
+  width: 60rem;
+  border: 2px solid var(--border-color);
+  border-radius: 1rem;
+}
+
+.home-container .reviews .reviewGroup {
+  display: flex;
+  gap: 2rem;
+  width: 60rem;
+}
+
 h2.hidden:not(.shown),
 button.hidden:not(.shown),
 div.hidden:not(.shown) {
@@ -2521,16 +2599,23 @@ div.hidden:not(.shown) {
   color: #50a4ff !important;
 }
 
+.swal2-popup {
+  border-radius: 1.5rem;
+}
+
 .swal2-popup button {
-  padding: 1vw;
-  padding-left: 1.7vw;
-  padding-right: 1.7vw;
-  border-radius: 10px;
+  color: white;
+  padding: 1.75vh;
+  padding-left: max(2vw, 1.5rem);
+  padding-right: max(2vw, 1.5rem);
+  border-radius: 1.5rem;
+  font-size: 20px;
   transition: all 0.2s ease;
 }
 
 .swal2-popup button:hover {
-  border-radius: 13px;
+  border-radius: 1.5rem !important;
+  opacity: 1 !important;
 }
 
 .swal2-deny {
@@ -3113,8 +3198,174 @@ div.hidden:not(.shown) {
   background-color: var(--main-color);
 }
 
+.blockBuddy-popup .blockBuddy-options div:active {
+  scale: 0.95;
+}
+
 .blockBuddy-popup .blockBuddy-options div h3 {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+.inviteContainer {
+  display: flex;
+  text-align: center;
+  height: 100%;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inviteContainer > div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inviteContainer > div button {
+  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
+}
+
+.inviteContainer > div button:hover {
+  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem !important;
+}
+
+.inviteContainer input {
+  color: white;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
+  font-size: 17px;
+  border: none;
+  background-color: var(--border-color);
+}
+
+.inviteContainer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inviteContainer ul div {
+  background-color: var(--foreground-color);
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.inviteContainer ul div img {
+  height: 5rem;
+  border-radius: 1.5rem;
+}
+
+.inviteContainer ul div > div {
+  display: flex;
+  margin-left: 1rem;
+  flex-direction: column;
+  align-items: start;
+}
+
+.inviteContainer ul div i {
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: auto;
+}
+
+.inviteContainer ul div i:hover {
+  color: rgb(255, 92, 92);
+}
+
+.inviteContainer .buttons {
+  margin-top: auto;
+  justify-content: center;
+}
+
+.inviteContainer .buttons button:first-child {
+  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
+}
+
+.inviteContainer .buttons button:last-child {
+  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
+}
+
+.inviteContainer .buttons button:first-child:hover {
+  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem !important;
+}
+
+.inviteContainer .buttons button:last-child:hover {
+  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem !important;
+}
+
+.workspace-navbar .activeUsers {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  position: relative;
+}
+
+.workspace-navbar .activeUsers div {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+  align-items: center;
+  background-color: var(--border-color);
+  padding: 5px;
+  padding-right: 10px;
+  border-radius: 1rem;
+}
+
+.workspace-navbar .activeUsers ul {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 3.5rem;
+  width: 100%;
+  padding: 10px;
+  z-index: 110;
+  background-color: #1b61a3;
+  border-radius: 1rem;
+  gap: 5px;
+}
+
+.workspace-navbar .activeUsers ul.active {
+  display: flex;
+}
+
+.workspace-navbar .activeUsers ul li {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
+}
+
+.workspace-navbar .activeUsers ul li .userTag {
+  width: 100%;
+}
+
+.workspace-navbar .activeUsers div img:not(:first-of-type) {
+  margin-left: -2rem;
+}
+
+.workspace-navbar .activeUsers img {
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 2px solid rgb(44, 192, 44);
+}
+
+.userLabel {
+  color: white;
+  background-color: var(--main-color);
+  position: absolute;
+  padding: 0.5rem;
+  border-radius: 1rem 1rem 0 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  user-select: none;
+}
+
+.userLabel img {
+  height: 1.5rem;
+  border-radius: 50%;
 }

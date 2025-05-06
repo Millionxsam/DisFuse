@@ -19,6 +19,7 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "remark-gfm": "^4.0.1",
+    "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.10.8"
   },
   "scripts": {

@@ -130,6 +130,19 @@ export default function InboxItem({ item, user, index }) {
         </>
       );
       break;
+
+    case "projectInvite":
+      link = `/@${alertProject.owner?.username}/${item.notification.projectId}/workspace`;
+      title = `${alertProject.owner?.username} invited you to a project`;
+      body = (
+        <>
+          <p>
+            {alertProject.owner?.username} invited you to work on their project:
+            "{alertProject.name}"
+          </p>
+        </>
+      );
+      break;
   }
 
   function clearItem(e) {

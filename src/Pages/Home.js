@@ -94,12 +94,12 @@ export default function Home() {
               blocks
             </div>
             <div className="hidden">
-              <i className="fa-solid fa-comments"></i>
-              View and comment on others' public projects
+              <i class="fa-solid fa-user-group"></i>
+              Multi-user Collaboration
             </div>
             <div className="hidden">
-              <i className="fa-solid fa-star"></i>
-              Like, clone, and add projects to your favorites
+              <i className="fa-solid fa-comments"></i>
+              View and comment on other projects
             </div>
             <div className="hidden">
               <i className="fa-solid fa-lock"></i>
@@ -119,6 +119,81 @@ export default function Home() {
             </div>
             <div className="hidden">
               <i className="fa-solid fa-gears"></i>Workspace settings
+            </div>
+          </div>
+          <h2 className="hidden">Reviews</h2>
+          <div className="reviews">
+            <div className="userReview hidden">
+              <h1>izorc</h1>
+              <p>
+                ⭐⭐⭐⭐⭐Disfuse is a very good platform to code your discord
+                bots. I'm getting good customer support and it has a great
+                userface. The management team actually listens to their
+                customers's suggestion.
+              </p>
+            </div>
+
+            <div className="reviewGroup">
+              <div className="userReview hidden" style={{ width: "55%" }}>
+                <h1>WhisPro</h1>
+                <p>
+                  Very epic! They listen to the community and update Disfuse
+                  very often :D ⭐ ⭐ ⭐ ⭐ ⭐
+                </p>
+              </div>
+
+              <div className="userReview hidden" style={{ width: "45%" }}>
+                <h1>Aggareth</h1>
+                <p>
+                  ⭐️⭐️⭐️⭐️⭐️ ["Great Service","Best Support","Friendly
+                  Community ","LOVE"]
+                </p>
+              </div>
+            </div>
+            <div className="userReview hidden">
+              <h1>bubbel</h1>
+              <p>
+                Definitely ⭐️⭐️⭐️⭐️⭐️. I wouldn’t have been able to make
+                this bot without it. I know it might be a bit unstable but it’s
+                a new project so it makes sense for bugs! I haven’t encountered
+                any myself yet so that’s good
+              </p>
+            </div>
+
+            <div className="reviewGroup">
+              <div className="userReview hidden" style={{ width: "45%" }}>
+                <h1>reem</h1>
+                <p>⭐️⭐️⭐️⭐️⭐️ It's much better than S4D</p>
+              </div>
+              <div className="userReview hidden" style={{ width: "55%" }}>
+                <h1>schvarts11</h1>
+                <p>⭐️⭐️⭐️⭐️⭐️ You are the best!!!!!!!!!!!!!</p>
+              </div>
+            </div>
+
+            <div className="reviewGroup">
+              <div className="userReview hidden">
+                <h1>flipflop99</h1>
+                <p>⭐⭐⭐⭐⭐ very good</p>
+              </div>
+              <div className="userReview hidden">
+                <h1>ItzCherokee</h1>
+                <p>⭐️⭐️⭐️⭐️⭐️ Just Great.</p>
+              </div>
+              <div className="userReview hidden">
+                <h1>Alejo.14</h1>
+                <p>⭐⭐⭐⭐⭐ cuz is cool</p>
+              </div>
+            </div>
+            <div className="userReview hidden">
+              <h1>Arci</h1>
+              <p>
+                Disfuse is an amazing community! The members are incredibly
+                helpful and friendly, and I've received a lot of valuable
+                support here. If you're into coding and looking for a welcoming
+                place to learn and collaborate, I highly recommend joining
+                Disfuse! ⭐ ⭐ ⭐ ⭐ ⭐
+              </p>
             </div>
           </div>
         </div>

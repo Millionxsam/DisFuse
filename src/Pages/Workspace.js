@@ -36,6 +36,8 @@ import registerCustomBlocks from "../functions/registerCustomBlocks";
 import Renderer from "../functions/render";
 import getExportFiles from "../config/getExportFiles";
 import { userCache } from "../cache.ts";
+import InviteModal from "../components/InviteModal.js";
+import { io } from "socket.io-client";
 Blockly.blockRendering.register("custom_zelos", Renderer);
 
 require
@@ -56,6 +58,14 @@ const requiredBlocks = [
   },
 ];
 
+const socket = io(apiUrl, {
+  auth: { token: localStorage.getItem("disfuse-token") },
+});
+
+socket.on("connect", () =>
+  console.log(`Connected to WebSocket with ID: ${socket.id}`)
+);
+
 export default function Workspace() {
   let { projectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,6 +73,7 @@ export default function Workspace() {
   const [project, setProject] = useState({});
   const [workspace, setWorkspace] = useState({});
   const [modalColors, setModalColors] = useState();
+  const [activeUsers, setActiveUsers] = useState([]);
   const currentWorkspace = useRef({});
 
   useEffect(() => {
@@ -96,14 +107,23 @@ export default function Workspace() {
 
               installedBlockPacks = responses.map((response) => response.data);
 
-              axios
-                .get(apiUrl + `/projects/${projectId}`, {
-                  headers: {
-                    Authorization: localStorage.getItem("disfuse-token"),
-                  },
-                })
-                .then(async ({ data: project }) => {
+              socket.emit(
+                "projectJoin",
+                { projectId },
+                async (project, activeUsers) => {
                   setProject(project);
+                  setActiveUsers(activeUsers);
+                  console.log(project);
+
+                  socket.on("projectJoin", ({ user }) => {
+                    setActiveUsers([...activeUsers, user]);
+                    activeUsers = [...activeUsers, user];
+                  });
+
+                  socket.on("projectLeave", ({ user }) => {
+                    setActiveUsers(activeUsers.filter((u) => u.id !== user.id));
+                    activeUsers = activeUsers.filter((u) => u.id !== user.id);
+                  });
 
                   if (localStorage.getItem("showTokenAlert") === "false") {
                     window.tokenAlertPopupAppeared = true;
@@ -440,8 +460,20 @@ export default function Workspace() {
                     currentWorkspace.current = project.workspaces[0];
                   }
 
-                  if (project.owner.id !== user.id)
+                  if (
+                    project.owner.id !== user.id &&
+                    !(project.collaborators || []).includes(user.id)
+                  )
                     return (window.location = "/projects");
+
+                  if (project.owner.id !== user.id) {
+                    document
+                      .querySelector("button.invite")
+                      .classList.add("disabled");
+                    document
+                      .querySelector("button.secrets")
+                      .classList.add("disabled");
+                  }
 
                   registerContextMenus(project, currentWorkspace.current);
 
@@ -475,7 +507,21 @@ export default function Workspace() {
                     );
                   }
 
-                  console.log(Object.values(Blockly.Blocks));
+                  let userLabels = new Map();
+
+                  socket.on("projectUpdate", ({ workspaceId, event }) => {
+                    if (currentWorkspace.current._id === workspaceId) {
+                      Blockly.Events.disable();
+
+                      try {
+                        Blockly.Events.fromJson(event, workspace).run(true);
+                      } catch {
+                      } finally {
+                        Blockly.Events.enable();
+                        handleUserLabels();
+                      }
+                    }
+                  });
 
                   // Initiating plugins
                   const backpack = new Backpack(workspace, {
@@ -514,6 +560,68 @@ export default function Workspace() {
 
                   setLoading(false);
 
+                  const handleUserLabels = () => {
+                    document
+                      .querySelectorAll(".userLabel")
+                      .forEach((e) => e.remove());
+
+                    userLabels.forEach((blockId, userId) => {
+                      const block = workspace
+                        .getAllBlocks()
+                        .find((b) => b.id === blockId);
+
+                      if (!block) return;
+
+                      const blockEle = document.querySelector(
+                        `g[data-id="${block.id}"]`
+                      );
+
+                      const ele = document.createElement("h4");
+
+                      const user = activeUsers.find((u) => u.id === userId);
+
+                      const avatar = document.createElement("img");
+
+                      avatar.src = activeUsers.find(
+                        (u) => u.id === userId
+                      ).avatar;
+                      ele.appendChild(avatar);
+
+                      ele.innerHTML = `<img src="${user.avatar}" /> ${user.displayName} is editing`;
+
+                      var rect = blockEle.getBoundingClientRect();
+
+                      ele.classList.add("userLabel");
+                      ele.style.top = `${rect.top.toFixed(0) - 40}px`;
+                      ele.style.left = `${rect.left.toFixed(0)}px`;
+                      document.body.appendChild(ele);
+                    });
+                  };
+
+                  socket.on("blockSelect", ({ user, blockId }) => {
+                    userLabels.set(user.id, blockId);
+                    handleUserLabels();
+                    workspace.removeChangeListener(handleUserLabels);
+                    workspace.addChangeListener(handleUserLabels);
+                  });
+
+                  workspace.addChangeListener(() => {
+                    const blocksIndicator = document.querySelector(
+                      ".workspace-navbar #blocks-indicator"
+                    );
+
+                    if (blocksIndicator)
+                      blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+  ${workspace.getAllBlocks().length ?? "??"} blocks
+  </div>`;
+                  });
+
+                  workspace.addChangeListener(async (e) => {
+                    if (e.type === Blockly.Events.SELECTED) {
+                      socket.emit("blockSelect", { blockId: e.newElementId });
+                    }
+                  });
+
                   workspace.addChangeListener(async (e) => {
                     let ignoredEvents = [
                       Blockly.Events.VIEWPORT_CHANGE,
@@ -523,7 +631,7 @@ export default function Workspace() {
                       Blockly.Events.TRASHCAN_OPEN,
                       Blockly.Events.FINISHED_LOADING,
                       Blockly.Events.BLOCK_DRAG,
-                      Blockly.Events.CHANGE,
+                      "backpack_change",
                     ];
 
                     if (ignoredEvents.includes(e.type)) return;
@@ -536,14 +644,29 @@ export default function Workspace() {
                     project = await autosave(
                       workspace,
                       projectId,
-                      currentWorkspace.current
-                    );
+                      currentWorkspace.current,
+                      socket,
+                      e.toJson()
+                    ).catch((e) => {
+                      console.error(e);
+
+                      document.querySelector(
+                        ".workspace-navbar #autosave-indicator"
+                      ).innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+
+                      Swal.fire({
+                        ...modalColors,
+                        title: "Autosave Error",
+                        icon: "error",
+                        text: e,
+                      });
+                    });
                   });
 
                   // New tab event
                   document
                     .querySelector(".workspace-tabs .newTab")
-                    .addEventListener("click", () => {
+                    ?.addEventListener("click", () => {
                       Swal.fire({
                         title: "Create New Workspace",
                         input: "text",
@@ -931,7 +1054,9 @@ export default function Workspace() {
                           const data = JSON.stringify(
                             Blockly.serialization.workspaces.save(workspace)
                           );
-                          const blob = new Blob([data], { type: "text/plain" });
+                          const blob = new Blob([data], {
+                            type: "text/plain",
+                          });
 
                           let url = window.URL.createObjectURL(blob);
                           let anchor = document.createElement("a");
@@ -966,7 +1091,8 @@ export default function Workspace() {
                         }
                       });
                     });
-                });
+                }
+              );
             })
             .catch((e) => {
               console.error(e);
@@ -981,9 +1107,14 @@ export default function Workspace() {
 
   return (
     <>
-      <WorkspaceBar workspace={workspace} />
+      <WorkspaceBar
+        project={project}
+        workspace={workspace}
+        activeUsers={activeUsers}
+      />
       <CodeView />
-      <SecretsView />
+      <SecretsView project={project} />
+      <InviteModal project={project} onSave={(p) => setProject(p)} />
 
       <div className="load-container">{isLoading ? <LoadingAnim /> : ""}</div>
 
@@ -997,6 +1128,7 @@ export default function Workspace() {
             project={project}
             workspace={workspace}
             modalColors={modalColors}
+            editable={project?.owner?.id === userCache.user?.id}
           />
           <div id="workspace"></div>
         </div>

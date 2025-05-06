@@ -2,6 +2,7 @@ import axios from "axios";
 import ms from "ms";
 import Swal from "sweetalert2";
 import modalThemeColor from "../functions/modalThemeColor";
+import { userCache } from "../cache.ts";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -19,26 +20,46 @@ export default function PriProject({ project }) {
           <div className="name-container">
             <h1>{project.name}</h1>
 
-            {project.private && <i className="fa-solid fa-lock" />}
-            <i
-              className="fa-solid fa-pen-to-square"
-              style={{ cursor: "pointer", marginLeft: "auto" }}
-              onClick={() => editProject(project)}
-            />
-          </div>
-          <i>
-            {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
-              <>
-                Edited{" "}
-                {ms(Date.now() - lastEdited.getTime(), {
-                  long: true,
-                })}{" "}
-                ago
-              </>
+            {project.private ? <i className="fa-solid fa-lock" /> : ""}
+
+            {project?.owner?.id === userCache.user.id ? (
+              <i
+                className="fa-solid fa-pen-to-square"
+                style={{ cursor: "pointer", marginLeft: "auto" }}
+                onClick={() => editProject(project)}
+              />
             ) : (
               ""
             )}
-          </i>
+          </div>
+          {project?.owner?.id === userCache.user.id ? (
+            <i>
+              {project?.lastEdited &&
+              lastEdited &&
+              lastEdited.getTime() !== 0 ? (
+                <>
+                  Edited{" "}
+                  {ms(Date.now() - lastEdited.getTime(), {
+                    long: true,
+                  })}{" "}
+                  ago
+                </>
+              ) : (
+                ""
+              )}
+            </i>
+          ) : (
+            <i>
+              {project?.owner?.id !== userCache.user.id ? (
+                <>
+                  <i class="fa-solid fa-share-from-square"></i> Shared by{" "}
+                  {project?.owner?.displayName}
+                </>
+              ) : (
+                ""
+              )}
+            </i>
+          )}
         </div>
         <p>{project.description || "No description"}</p>
         <div className="buttons">
@@ -50,10 +71,14 @@ export default function PriProject({ project }) {
             <i class="fa-solid fa-square-arrow-up-right"></i>
             Open
           </button>
-          <button onClick={() => deleteProject(project)} id="red">
-            <i class="fa-solid fa-trash"></i>
-            Delete
-          </button>
+          {project?.owner?.id === userCache.user.id ? (
+            <button onClick={() => deleteProject(project)} id="red">
+              <i class="fa-solid fa-trash"></i>
+              Delete
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

@@ -1,22 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 const { apiUrl } = require("../config/config.json");
 
-export default function SecretsView() {
-  const { projectId } = useParams();
-  const [project, setProject] = useState({});
+export default function SecretsView({ project: p }) {
+  const [project, setProject] = useState(p);
 
-  useEffect(() => {
-    axios
-      .get(apiUrl + `/projects/${projectId}`, {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      })
-      .then(({ data }) => setProject(data));
-  }, [projectId]);
+  useEffect(() => setProject(p), [p]);
 
   function addSecret() {
     const name = document.querySelector(".secrets-container #secret-key").value;
@@ -34,7 +24,7 @@ export default function SecretsView() {
 
     axios
       .patch(
-        apiUrl + `/projects/${projectId}/secrets`,
+        apiUrl + `/projects/${project._id}/secrets`,
         {
           secrets: project.secrets,
         },
@@ -64,7 +54,7 @@ export default function SecretsView() {
 
     axios
       .patch(
-        apiUrl + `/projects/${projectId}/secrets`,
+        apiUrl + `/projects/${project._id}/secrets`,
         {
           secrets: project.secrets,
         },

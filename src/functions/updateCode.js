@@ -18,9 +18,6 @@ export function updateCode(
 
   const workspaceCodeEle = document.querySelector(".workspace.code code");
   const projectCodeEle = document.querySelector(".project.code code");
-  const blocksIndicator = document.querySelector(
-    ".workspace-navbar #blocks-indicator"
-  );
 
   const tempWorkspace = getWholeProjectWorkspace(
     project,
@@ -30,11 +27,6 @@ export function updateCode(
 
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
-
-  if (blocksIndicator)
-    blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
-  ${projectBlocks?.length ?? "??"} blocks
-  </div>`;
 
   if (!onlyWarning) {
     projectCode = setUpCode(project, tempWorkspace, projectBlocks);
