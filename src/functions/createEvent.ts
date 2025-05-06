@@ -42,7 +42,7 @@ export function createEventBlock(options: EventBlockOptions): void {
     generator: JavascriptGenerator
   ) {
     const statements_code = generator.statementToCode(block, 'code');
-    const code = `client.on('${event}', async (${eventVariables}) => {\n${blockOutput}\n${statements_code}});\n`;
+    const code = `client.on('${event}', async (${eventVariables}) => {\n${blockOutput ?? ''}\n${statements_code ?? ''}});\n`;
     return code;
   };
 }
@@ -59,6 +59,6 @@ export function createEventVariable(options: EventVariableOptions): void {
   };
 
   javascriptGenerator[id] = function () {
-    return [blockOutput, Order.NONE];
+    return [blockOutput ?? '', Order.NONE];
   };
 }

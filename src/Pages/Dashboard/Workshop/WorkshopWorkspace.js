@@ -184,7 +184,7 @@ export default function WorkshopWorkspace() {
           </div>
           <h1 className="packName">{pack.name}</h1>
           <i className="blockCount">
-            <i class="fa-solid fa-cubes"></i> {blocks.length} block
+            <i className="fa-solid fa-cubes"></i> {blocks.length} block
             {blocks.length === 1 ? "" : "s"}
           </i>
         </div>

@@ -11,7 +11,7 @@ Blockly.Blocks["captcha_create"] = {
   },
 };
 
-javascriptGenerator.forBlock["captcha_create"] = () => "let captcha = new Captcha();\n";
+javascriptGenerator.forBlock["captcha_create"] = () => "let captcha = new _haileybot_captcha_generator();\n";
 
 Blockly.Blocks["captcha_send"] = {
   init: function () {

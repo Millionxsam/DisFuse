@@ -268,7 +268,7 @@ Blockly.Blocks["javascript_exit"] = {
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip(
-      "Forces the bot to quit instantly. Use this at your own risk!"
+      "Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!"
     );
     this.setHelpUrl("");
   },
@@ -296,6 +296,6 @@ javascriptGenerator.forBlock["javascript_typeof"] = function (
   block,
   generator
 ) {
-  const value = generator.valueToCode(block, "value", Order.NONE);
-  return [`typeof ${value}`, Order.NONE];
+  let value = generator.valueToCode(block, "value", Order.ATOMIC);
+  return [`typeof (${value})`, Order.NONE];
 };

@@ -21,7 +21,7 @@ javascriptGenerator.forBlock['music_findLyrics'] = function (block, generator) {
   var val_song = generator.valueToCode(block, 'song', Order.ATOMIC);
   var code_then = generator.statementToCode(block, 'then');
 
-  var code = `lyricsfinder(${val_artist}, ${val_song}).then(async (lyrics) => {
+  var code = `lyrics_finder(${val_artist}, ${val_song}).then(async (lyrics) => {
   ${code_then}});\n`;
 
   return code;

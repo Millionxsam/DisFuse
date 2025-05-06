@@ -5,9 +5,13 @@ import { userCache } from "../../cache.ts";
 
 const { discordUrl, apiUrl } = require("../../config/config.json");
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 export default function Sidebar() {
   const [active, setActive] = useState(false);
-  const [user, setUser] = useState(userCache.user || {});
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,19 +21,26 @@ export default function Sidebar() {
   }, [active]);
 
   useEffect(() => {
-    axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      })
-      .then(({ data }) => {
-        axios.get(apiUrl + "/users").then(({ data: users }) => {
-          let user = users.find((u) => u.id === data.id);
-          setUser(user);
+    if (!isEmpty(user)) return;
+
+    if (userCache.user !== null) {
+      setUser(userCache.user);
+    } else {
+      axios
+        .get(discordUrl + "/users/@me", {
+          headers: {
+            Authorization: localStorage.getItem("disfuse-token"),
+          },
+        })
+        .then(({ data }) => {
+          axios.get(apiUrl + "/users").then(({ data: users }) => {
+            let user = users.find((u) => u.id === data.id);
+            setUser(user);
+            userCache.user = user;
+          });
         });
-      });
-  }, []);
+    }
+  }, [user]);
 
   return (
     <>
@@ -87,7 +98,7 @@ export default function Sidebar() {
                 to="/workshop"
               >
                 <li>
-                  <i class="fa-solid fa-tools"></i> <div>Workshop</div>
+                  <i className="fa-solid fa-tools"></i> <div>Workshop</div>
                 </li>
               </Link>
               <Link
@@ -113,7 +124,7 @@ export default function Sidebar() {
                   <i className="fa-solid fa-gear"></i> <div>Settings</div>
                 </li>
               </Link>
-              {userCache.isStaff && (
+              {userCache?.isStaff && (
                 <Link
                   onClick={() => setActive(false)}
                   className="underline-effect"

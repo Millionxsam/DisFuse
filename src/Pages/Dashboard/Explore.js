@@ -111,7 +111,7 @@ export default function Explore() {
         {isLoading ? <LoadingAnim /> : ""}
         <div className="content">
           {shown.length > 0
-            ? shown.map((project) => <PubProject project={project} />)
+            ? shown.map((project, index) => <PubProject project={project} key={index} />)
             : !isLoading
             ? "No projects"
             : ""}

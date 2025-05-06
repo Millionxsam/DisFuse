@@ -1,4 +1,24 @@
-export default function getExportFiles(dependencies = []) {
+import beautify from "beautify";
+import packageDependenciesFromBlocks from "../functions/packageDependenciesFromBlocks";
+
+export default function getExportFiles(dependencies = [], blocks = []) {
+  const packageDependencies = packageDependenciesFromBlocks(blocks);
+  const allDependencies = [
+    "discord.js",
+    "process",
+    "dotenv",
+    ...dependencies,
+    ...packageDependencies,
+  ].sort();
+
+  const dependenciesObject = [...new Set(allDependencies)].reduce(
+    (acc, dep) => {
+      acc[dep] = "latest";
+      return acc;
+    },
+    {}
+  );
+
   return [
     {
       name: "instructions.txt",
@@ -158,57 +178,22 @@ export default function getExportFiles(dependencies = []) {
     },
     {
       name: "package.json",
-      content: `{
+      content: beautify(
+        `{
       "name": "disfuse-bot",
       "version": "1.0.0",
       "description": "A Discord bot created with DisFuse",
       "main": "index.js",
-      "dependencies": {
-        "asynckit": "^0.4.0",
-        "axios": "^1.7.7",
-        "combined-stream": "^1.0.8",
-        "delayed-stream": "^1.0.0",
-        "discord-api-types": "^0.33.5",
-        "discord-gamecord": "^4.4.2",
-        "discord-logs": "^2.2.1",
-        "discord.js": "^14.15.3",
-        "easy-json-database": "^1.5.1",
-        "fast-deep-equal": "^3.1.3",
-        "form-data": "^4.0.0",
-        "html-entities": "^2.5.2",
-        "lodash": "^4.17.21",
-        "lodash.snakecase": "^4.1.1",
-        "magic-bytes.js": "^1.10.0",
-        "mime-db": "^1.52.0",
-        "mime-types": "^2.1.35",
-        "moment": "^2.30.1",
-        "process": "^0.11.10",
-        "tr46": "^0.0.3",
-        "ts-mixer": "^6.0.4",
-        "tslib": "^2.6.2",
-        "undici": "^5.27.2",
-        "undici-types": "^5.26.5",
-        "webidl-conversions": "^3.0.1",
-        "whatwg-url": "^5.0.0",
-        "ws": "^8.17.0",
-        "dotenv": "^16.0.3",
-        "lyrics-finder": "^21.7.0",
-        "ms": "^2.1.3",
-        "@haileybot/captcha-generator": "^1.7.0"${
-          dependencies.length ? "," : ""
-        }
-          ${dependencies.map((d) => `"${d}": "@latest"`).join(`,\n`)}
-          },
-          "scripts": {
-            "start": "node index.js",
-            "test": "echo Error: no test specified && exit 1"
-            },
-            "keywords": [],
-            "author": "",
-            "license": "ISC"
-            }
-            
-            `,
+      "dependencies": ${JSON.stringify(dependenciesObject, null, 2)},
+      "scripts": {
+        "start": "node index.js",
+        "test": "echo Error: no test specified && exit 1"
+      },
+      "keywords": [],
+      "author": "",
+      "license": "ISC" }`,
+        { format: "json" }
+      ),
     },
   ];
 }

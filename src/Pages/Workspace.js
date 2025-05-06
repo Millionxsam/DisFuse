@@ -294,7 +294,7 @@ export default function Workspace() {
                     "Discord",
                     "moment",
                     "gamecord",
-                    "discordgamecord",
+                    "discord_gamecord",
                     "easyjsondatabase",
                     "Database",
                     "client",
@@ -945,7 +945,10 @@ export default function Workspace() {
                             missingBlocks.push(requiredBlock);
                         });
 
-                        exportingWs.getAllBlocks(false).forEach((block) => {
+                        const exportingWsBlocks =
+                          exportingWs.getAllBlocks(false);
+
+                        exportingWsBlocks.forEach((block) => {
                           if (block.data?.length)
                             warningBlocks.push({
                               message: block.data,
@@ -1010,9 +1013,11 @@ export default function Workspace() {
                           deps.push(...(bp.dependencies || []))
                         );
 
-                        getExportFiles(deps).forEach((file) => {
-                          zip.file(file.name, file.content);
-                        });
+                        getExportFiles(deps, exportingWsBlocks).forEach(
+                          (file) => {
+                            zip.file(file.name, file.content);
+                          }
+                        );
 
                         zip.file(
                           "index.js",

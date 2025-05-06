@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import "../hljs.css";
+import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
 
 hljs.registerLanguage("javascript", javascript);
 
@@ -46,6 +47,16 @@ export function updateCode(
   }
 
   tempWorkspace.dispose();
+}
+
+function fixPackageName(packageName = "") {
+  let validName = packageName.replace(/[-.@/]/g, "_");
+
+  if (/^\d/.test(validName)) {
+    validName = "_" + validName;
+  }
+
+  return validName;
 }
 
 function setUpCode(project, workspace, blocks, onlyWarning = false) {
@@ -93,29 +104,12 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     return;
   }
 
-  const blockImports = {
-    fs_: ["fs", "path"],
-    music_: "lyrics-finder",
-    db_: "easy-json-database",
-    game_: "discord-gamecord",
-    events_: { type: "code", value: 'require("discord-logs")(client);\n' },
-    captcha_: {
-      type: "code",
-      value: 'const Captcha = require("@haileybot/captcha-generator")',
-    },
-    fetch_: "axios",
-    time_: "ms",
-    canvas_: {
-      type: "code",
-      value: 'const canvasModule = require("canvas");\n',
-    },
-  };
+  let code = javascriptGenerator.workspaceToCode(workspace),
+    blockImportCode = "";
 
-  let blockImportCode = "";
+  const blockImports = packageDependenciesFromBlocks(blocks);
 
   const topBlocks = ["db_create"];
-
-  let code = javascriptGenerator.workspaceToCode(workspace);
 
   topBlocks.forEach((topBlock) => {
     let existingBlocks = blocks.filter((b) => b.type === topBlock);
@@ -131,27 +125,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     .map((b) => javascriptGenerator.blockToCode(b))
     .join("\n");
 
-  Object.keys(blockImports).forEach((importBlock) => {
-    let c = blocks.find((b) => b.type.startsWith(importBlock));
-    if (!c) return;
-
-    function fixImport(module = "") {
-      return module.replaceAll("-", "");
-    }
-
-    const importName = blockImports[importBlock];
-
-    if (Array.isArray(importName)) {
-      importName.forEach((i) => {
-        blockImportCode += `const ${fixImport(i)} = require("${i}");\n`;
-      });
-    } else if (typeof importName === "object") {
-      if (importName["type"] === "code") blockImportCode += importName["value"];
-    } else {
-      blockImportCode += `const ${fixImport(
-        importName
-      )} = require("${importName}");\n`;
-    }
+  blockImports.forEach((value) => {
+    let variable = fixPackageName(value);
+    blockImportCode += `const ${variable} = require("${value}");\n`;
   });
 
   tokenAlertCheck();
@@ -178,8 +154,8 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode !== "" ? "\n" + blockImportCode : ""} ${
-    topBlocksCode !== "" ? "\n" + topBlocksCode + "\n" : ""
+    ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""} ${
+    topBlocksCode?.length > 0 ? "\n" + topBlocksCode + "\n" : ""
   }
     client.setMaxListeners(0);
         

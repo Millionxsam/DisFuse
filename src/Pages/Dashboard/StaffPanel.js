@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { userCache } from "../../cache.ts";
 const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function StaffPanel() {
@@ -9,7 +10,21 @@ export default function StaffPanel() {
     const [staff, setStaff] = useState([]);
 
     useEffect(() => {
-        axios
+        if (localUser?.id !== null && staff?.users !== null && staff?.users?.length !== 0) return;
+
+        if (userCache.user && userCache.allStaff) {
+            setLocalUser(userCache.user);
+            setStaff(userCache.allStaff);
+
+            const staffUser = staff.users.find((u) => u.id === localUser.id);
+            if (!staffUser || (!staffUser.moderator && !staffUser.admin && !staffUser.owner)) {
+                window.location.replace("/projects");
+                return;
+            }
+
+            return;
+        } else {
+            axios
             .get(discordUrl + "/users/@me", {
                 headers: {
                     Authorization: localStorage.getItem("disfuse-token"),
@@ -33,11 +48,17 @@ export default function StaffPanel() {
                     }
                 });
             });
+        }
 
-        axios.get(apiUrl + "/users").then(({ data: allUsers }) => {
-            setUsers(allUsers);
-        });
-    }, []);
+        if (userCache.allUsers !== null) {
+            setUsers(userCache.allUsers);
+        } else {
+            axios.get(apiUrl + "/users").then(({ data: allUsers }) => {
+                userCache.allUsers = allUsers;
+                setUsers(allUsers);
+            });
+        }
+    }, [localUser?.id, staff?.users]);
 
     async function getIdByName(username) {
         return (users.find((u) => u.username === username) ?? { id: null }).id;
@@ -154,9 +175,9 @@ export default function StaffPanel() {
 
         if (!staffUser.admin && !staffUser.owner) {
             return await Swal.fire(
-                'Access Denied',
-                'You must be an admin to use this.',
-                'error'
+                "Access Denied",
+                "You must be an admin to use this.",
+                "error"
             );
         }
 
@@ -166,7 +187,7 @@ export default function StaffPanel() {
             icon: "warning",
             showCancelButton: true,
             animation: true,
-            confirmButtonText: "Confirm"
+            confirmButtonText: "Confirm",
         }).then((response) => {
             if (response.isConfirmed) {
                 axios

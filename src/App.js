@@ -48,22 +48,32 @@ export default function App() {
     }
   });
 
-  setInterval(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle("shown", entry.isIntersecting);
-      });
+  const intersection = new IntersectionObserver((entries, _) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle("shown", entry.isIntersecting);
     });
+  });
 
-    document.querySelectorAll(".hidden").forEach((e) => observer.observe(e));
-  }, 200);
+  setInterval(() => {
+    document
+      .querySelectorAll(".hidden")
+      .forEach((i) => {
+        if (i.dataset.observed !== true) {
+          intersection.observe(i);
+          i.dataset.observed = true;
+        }
+      });
+  }, 500);
 
   return (
     <>
       <Routes>
-        <Route path="/" element={[<Navbar />, <Home />]} />
-        <Route path="/staff" element={[<Navbar />, <Staff />]} />
-        <Route path="/tos" element={[<Navbar />, <Tos />]} />
+        <Route path="/" element={[<Navbar key={0} />, <Home key={1} />]} />
+        <Route
+          path="/staff"
+          element={[<Navbar key={0} />, <Staff key={1} />]}
+        />
+        <Route path="/tos" element={[<Navbar key={0} />, <Tos key={1} />]} />
 
         <Route
           path="/dashboard/projects"
@@ -82,39 +92,54 @@ export default function App() {
         <Route
           path="/"
           element={
-            <Auth>
-              <Sidebar />
+            <Auth key={-1}>
+              <Sidebar key={-2} />
             </Auth>
           }
         >
-          <Route path="projects" element={<MyProjects />} />
-          <Route path="explore" element={<Explore />} />
-          <Route path="favorites" element={<Favorites />} />
-          <Route path="workshop" element={<Workshop />} />
-          <Route path="workshop/library" element={<Library />} />
-          <Route path="workshop/:packId" element={<BlockPackPage />} />
-          <Route path="inbox" element={<Inbox />} />
-          <Route path="/:username" element={<UserPage />} />
-          <Route path="/:username/:projectId" element={<ProjectPage />} />
-          <Route path="settings" element={<Settings />}>
-            <Route index element={<Navigate to={"/settings/workspace"} />} />
-            <Route path="workspace" element={<WorkspaceSettings />} />
-            <Route path="notifications" element={<NotificationSettings />} />
-            <Route path="optimization" element={<OptimizationSettings />} />
+          <Route path="projects" element={<MyProjects key={0} />} />
+          <Route path="explore" element={<Explore key={0} />} />
+          <Route path="favorites" element={<Favorites key={0} />} />
+          <Route path="workshop" element={<Workshop key={0} />} />
+          <Route path="workshop/library" element={<Library key={0} />} />
+          <Route path="workshop/:packId" element={<BlockPackPage key={0} />} />
+          <Route path="inbox" element={<Inbox key={0} />} />
+          <Route path="/:username" element={<UserPage key={0} />} />
+          <Route
+            path="/:username/:projectId"
+            element={<ProjectPage key={0} />}
+          />
+          <Route path="settings" element={<Settings key={0} />}>
+            <Route
+              index
+              element={<Navigate to={"/settings/workspace"} key={0} />}
+            />
+            <Route path="workspace" element={<WorkspaceSettings key={0} />} />
+            <Route
+              path="notifications"
+              element={<NotificationSettings key={0} />}
+            />
+            <Route
+              path="optimization"
+              element={<OptimizationSettings key={0} />}
+            />
           </Route>
-          <Route path="staff/panel" element={<StaffPanel />} />
+          <Route path="staff/panel" element={<StaffPanel key={0} />} />
         </Route>
 
-        <Route path="/:username/:projectId/view" element={<ViewProject />} />
+        <Route
+          path="/:username/:projectId/view"
+          element={<ViewProject key={0} />}
+        />
 
         <Route
           path="/:username/:projectId/workspace"
-          element={[<Auth />, <Workspace />]}
+          element={[<Auth key={0} />, <Workspace key={1} />]}
         />
 
         <Route
           path="/workshop/:packId/workspace"
-          element={[<Auth />, <WorkshopWorkspace />]}
+          element={[<Auth key={0} />, <WorkshopWorkspace key={1} />]}
         />
       </Routes>
     </>
