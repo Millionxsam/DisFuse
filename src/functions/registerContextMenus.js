@@ -3,7 +3,7 @@ import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config.js");
 
 export default function registerContextMenus(project, currentWorkspace) {
   Blockly.ContextMenuRegistry.registry.register({

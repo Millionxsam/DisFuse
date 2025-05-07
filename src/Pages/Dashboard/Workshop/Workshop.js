@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const modalColors = modalThemeColor(null, true);
 
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+const { apiUrl, discordUrl } = require("../../../config/config.js");
 
 export default function Workshop() {
   const [packs, setPacks] = useState([]);

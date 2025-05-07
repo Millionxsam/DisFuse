@@ -2,7 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import * as Blockly from "blockly";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config.js");
 
 export default function WorkspaceTabs({
   currentTab,

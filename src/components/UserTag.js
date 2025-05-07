@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config.js");
 
 export default function UserTag({ user: u, userId }) {
   const [user, setUser] = useState(u || {});

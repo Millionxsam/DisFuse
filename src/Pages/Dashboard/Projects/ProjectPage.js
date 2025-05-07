@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import Comment from "../../../components/Comment";
 import LoadingAnim from "../../../components/LoadingAnim";
 
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+const { apiUrl, discordUrl } = require("../../../config/config.js");
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});

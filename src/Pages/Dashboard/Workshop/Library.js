@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingAnim from "../../../components/LoadingAnim";
 import WorkshopItem from "../../../components/WorkshopItem";
 
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+const { apiUrl, discordUrl } = require("../../../config/config.js");
 
 export default function Library() {
   const [packs, setPacks] = useState([]);

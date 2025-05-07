@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import Swal from "sweetalert2";
 
-const { apiUrl, discordUrl } = require("../../config/config.json");
+const { apiUrl, discordUrl } = require("../../config/config.js");
 
 export default function UserPage() {
   const { username } = useParams();

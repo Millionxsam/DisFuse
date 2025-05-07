@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { userCache } from "../cache.ts";
 
-const { apiUrl, discordUrl } = require("../config/config.json");
+const { apiUrl, discordUrl } = require("../config/config.js");
 
 export default function WorkshopItem({ pack: p, editable = false }) {
   const [pack, setPack] = useState(p);
