@@ -4,9 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import LoadingAnim from "./components/LoadingAnim";
 import { userCache } from "./cache.ts";
 
-const { apiUrl } = require("./config/config.json");
+const { apiUrl } = require("./config/config.js");
 
-const { authUrl, devAuthUrl } = require("./config/config.json");
+const { authUrl, devAuthUrl } = require("./config/config.js");
 
 export default function Auth({ children }) {
   const [params] = useSearchParams(window.location.hash.slice(1));

@@ -11,7 +11,7 @@ import remarkGfm from "remark-gfm";
 import axios from "axios";
 import javascript from "blockly/javascript";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config.js");
 
 export default function WorkspaceBar({
   project,
@@ -130,10 +130,10 @@ export default function WorkspaceBar({
                 <i className="fa-solid fa-key"></i>
                 <div>Secrets</div>
               </button>
-              <button id="templates">
+              {/* <button id="templates">
                 <i className="fa-solid fa-shapes"></i>
                 <div>Templates</div>
-              </button>
+              </button> */}
               <button id="blockbuddy" onClick={openBlockBuddy}>
                 <i className="fa-solid fa-robot"></i>
                 <div>BlockBuddy</div>

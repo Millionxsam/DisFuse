@@ -8,7 +8,7 @@ import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
 import WorkspaceTabs from "../../../components/WorkspaceTabs";
-const { apiUrl } = require("../../../config/config.json");
+const { apiUrl } = require("../../../config/config.js");
 
 export default function ViewProject() {
   let { projectId } = useParams();

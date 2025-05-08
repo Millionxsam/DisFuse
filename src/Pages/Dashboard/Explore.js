@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-const { apiUrl } = require("../../config/config.json");
+const { apiUrl } = require("../../config/config.js");
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);
@@ -111,7 +111,9 @@ export default function Explore() {
         {isLoading ? <LoadingAnim /> : ""}
         <div className="content">
           {shown.length > 0
-            ? shown.map((project, index) => <PubProject project={project} key={index} />)
+            ? shown.map((project, index) => (
+                <PubProject project={project} key={index} />
+              ))
             : !isLoading
             ? "No projects"
             : ""}

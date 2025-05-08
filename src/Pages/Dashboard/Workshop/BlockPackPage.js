@@ -11,7 +11,7 @@ import getToolbox from "../../../config/toolbox";
 import LoadingAnim from "../../../components/LoadingAnim";
 import remarkGfm from "remark-gfm";
 
-const { apiUrl, discordUrl } = require("../../../config/config.json");
+const { apiUrl, discordUrl } = require("../../../config/config.js");
 
 export default function BlockPackPage() {
   const [pack, setPack] = useState({});

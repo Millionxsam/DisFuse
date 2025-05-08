@@ -5,7 +5,7 @@ import ms from "ms";
 import { useNavigate } from "react-router-dom";
 import { userCache } from "../cache.ts";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config.js");
 
 export default function InboxItem({ item, user, index }) {
   const { allUsers } = userCache;

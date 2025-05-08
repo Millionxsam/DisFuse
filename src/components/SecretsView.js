@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config");
 
 export default function SecretsView({ project: p }) {
   const [project, setProject] = useState(p);

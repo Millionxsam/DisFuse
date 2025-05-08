@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import Swal from "sweetalert2";
 
-const { apiUrl, discordUrl } = require("../../config/config.json");
+const { apiUrl, discordUrl } = require("../../config/config.js");
 
 export default function UserPage() {
   const { username } = useParams();
@@ -108,8 +108,8 @@ export default function UserPage() {
               }
               alt=""
               onError={(e) => {
-                e.target.onerror = null; 
-                e.target.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+                e.target.onerror = null;
+                e.target.src = "https://cdn.discordapp.com/embed/avatars/0.png";
               }}
             />
             <div>
@@ -135,11 +135,11 @@ export default function UserPage() {
         <div className="body">
           {projects.length > 0
             ? projects.map((project) => (
-              <PubProject key={project.id} project={project} />
-            ))
+                <PubProject key={project.id} project={project} />
+              ))
             : !isLoading
-              ? "No public projects"
-              : null}
+            ? "No public projects"
+            : null}
         </div>
       </div>
     </>

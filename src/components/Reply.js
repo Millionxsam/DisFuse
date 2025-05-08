@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config");
 
 export default function Reply({ reply: r, user, allUsers, project, comment }) {
   const [author, setAuthor] = useState({});

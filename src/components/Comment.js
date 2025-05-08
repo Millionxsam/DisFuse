@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 import Reply from "./Reply";
 import Swal from "sweetalert2";
 
-const { apiUrl } = require("../config/config.json");
+const { apiUrl } = require("../config/config");
 
-export default function Comment({ project, comment: c, user, allUsers, index }) {
+export default function Comment({
+  project,
+  comment: c,
+  user,
+  allUsers,
+  index,
+}) {
   const [author, setAuthor] = useState({});
   const [newLike, setNewLike] = useState(false);
   const [comment, setComment] = useState(c);
@@ -29,7 +35,7 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
     if (!likeButtonEnabled) return;
 
     likeButtonEnabled = false;
-    setTimeout(() => likeButtonEnabled = true, 700);
+    setTimeout(() => (likeButtonEnabled = true), 700);
 
     axios
       .patch(apiUrl + `/comments/${project._id}/${comment._id}/likes`, null, {
@@ -49,9 +55,11 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
   }
 
   function postReply() {
-    const content = document.querySelectorAll("textarea.replyInput")[index].value.trim();
+    const content = document
+      .querySelectorAll("textarea.replyInput")
+      [index].value.trim();
 
-    if (content === '') return;
+    if (content === "") return;
 
     axios
       .post(
@@ -125,8 +133,9 @@ export default function Comment({ project, comment: c, user, allUsers, index }) 
       <div className="bottom">
         <div
           onClick={toggleLike}
-          className={`like${comment?.likes?.includes(user.id) ? " active" : ""
-            }${newLike ? " newLike" : ""}`}
+          className={`like${
+            comment?.likes?.includes(user.id) ? " active" : ""
+          }${newLike ? " newLike" : ""}`}
         >
           <i className="fa-solid fa-heart"></i>
           <div>{comment?.likes?.length}</div>
