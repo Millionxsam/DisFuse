@@ -1386,11 +1386,11 @@ input.search:focus {
 
 input.search::placeholder {
   transition: all 0.2s ease;
-  color: rgba(190, 190, 190, 0.534);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 input.search:focus::placeholder {
-  color: rgba(190, 190, 190, 0.288);
+  color: transparent;
 }
 
 input[type="search"]::-webkit-search-decoration,
