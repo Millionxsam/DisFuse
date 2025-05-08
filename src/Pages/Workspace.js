@@ -113,7 +113,22 @@ export default function Workspace() {
                 async (project, activeUsers) => {
                   setProject(project);
                   setActiveUsers(activeUsers);
-                  console.log(project);
+
+                  if (project.suspension?.status)
+                    return Swal.fire({
+                      ...modalThemeColor(userCache.user),
+                      title: "Project Suspended",
+                      icon: "error",
+                      html: `This project was detected to break our terms of service and has automatically been suspended for the reason:
+                                  <br />
+                                  <br />
+                                  ${project.suspension.reason}`,
+                      footer:
+                        '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord</a>',
+                      showConfirmButton: false,
+                      allowEscapeKey: false,
+                      allowOutsideClick: false,
+                    });
 
                   socket.on("projectJoin", ({ user }) => {
                     setActiveUsers([...activeUsers, user]);
@@ -663,42 +678,6 @@ export default function Workspace() {
                     });
                   });
 
-                  // New tab event
-                  document
-                    .querySelector(".workspace-tabs .newTab")
-                    ?.addEventListener("click", () => {
-                      Swal.fire({
-                        title: "Create New Workspace",
-                        input: "text",
-                        text: "Enter a name for your workspace",
-                        inputPlaceholder: "Workspace Name",
-                        inputValidator: (value) => {
-                          if (value.length >= 3) return false;
-                          else return "Name must be at least 3 characters";
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: "Create",
-                        ...modalColors,
-                      }).then((result) => {
-                        if (!result.isConfirmed) return;
-
-                        axios
-                          .post(
-                            apiUrl + `/projects/${project._id}/workspaces`,
-                            {
-                              name: result.value,
-                            },
-                            {
-                              headers: {
-                                Authorization:
-                                  localStorage.getItem("disfuse-token"),
-                              },
-                            }
-                          )
-                          .then(() => window.location.reload());
-                      });
-                    });
-
                   // Show code event
                   document
                     .querySelector("button#showCode")
@@ -1116,6 +1095,7 @@ export default function Workspace() {
         project={project}
         workspace={workspace}
         activeUsers={activeUsers}
+        currentWorkspace={currentWorkspace.current}
       />
       <CodeView />
       <SecretsView project={project} />
