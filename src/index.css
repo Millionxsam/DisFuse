@@ -2539,25 +2539,11 @@ div.hidden:not(.shown) {
   position: relative;
 }
 
-.inbox-container .notifications .inbox-item .clearBtn {
-  opacity: 0;
-  position: absolute;
-  left: 1rem;
-  font-size: 25px;
-  border-radius: 10px;
-  padding: 5px;
-  transition: opacity 0.2s ease;
-}
-
-.inbox-container .notifications .inbox-item .clearBtn:hover {
-  background-color: red;
-}
 
 .inbox-container .notifications .inbox-item .info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: all 0.2s ease;
 }
 
 .inbox-container .notifications .inbox-item p {
@@ -2567,7 +2553,7 @@ div.hidden:not(.shown) {
 }
 
 .inbox-container .notifications .inbox-item p .userTag {
-  padding: 0;
+  padding: 0.25rem;
 }
 
 .inbox-container .notifications .inbox-item.unread {
@@ -2578,12 +2564,44 @@ div.hidden:not(.shown) {
   background-color: var(--foreground-color);
 }
 
-.inbox-container .notifications .inbox-item:hover .info {
-  margin-left: 2.5rem;
+.inbox-container .notifications .inbox-item .info .date {
+  opacity: 0.5;
+}
+
+.inbox-container .notifications .inbox-item .info .title {
+  font-weight: bold;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  font-size: 24px;
+  transition: all 0.2s ease;
+}
+
+.inbox-container .notifications .inbox-item:hover .info .title {
+  margin-left: 2rem;
+}
+
+.inbox-container .notifications .inbox-item .clearBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  border-radius: 25%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  transition: all 0.2s ease;
+}
+
+.inbox-container .notifications .inbox-item .clearBtn:hover {
+  background-color: #ff2c2c;
 }
 
 .inbox-container .notifications .inbox-item:hover .clearBtn {
   opacity: 1;
+  margin-left: -2rem;
 }
 
 .inbox-container .notifications .inbox-item.unread:hover {

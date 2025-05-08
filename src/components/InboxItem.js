@@ -14,36 +14,33 @@ export default function InboxItem({ item, user, index }) {
 
   const token = localStorage.getItem("disfuse-token");
 
-  const [alertUser, setUser] = useState();
-  const [alertProject, setProject] = useState();
-  const [alertComment, setComment] = useState();
-  const [alertReply, setReply] = useState();
+  const [alertUser, setUser] = useState({});
+  const [alertProject, setProject] = useState({});
+  const [alertComment, setComment] = useState({});
+  const [alertReply, setReply] = useState({});
+  const [alreadyFetched, setFetched] = useState(false);
 
   const navigate = useNavigate();
 
   (async () => {
-    if (
-      alertUser !== null ||
-      alertProject !== null ||
-      alertComment !== null ||
-      alertReply !== null
-    )
-      return;
+    if (alreadyFetched) return;
+    else setFetched(true);
 
     if (item.notification.userId) {
-      if (allUsers !== null) {
-        if (allUsers.some((i) => i.id === item.notification.userId)) {
-          setUser(allUsers.find((i) => i.id === item.notification.userId));
-        }
+      if (
+        allUsers !== null &&
+        allUsers.some((i) => i.id === item.notification.userId)
+      ) {
+        setUser(allUsers.find((i) => i.id === item.notification.userId));
+      } else {
+        axios
+          .get(apiUrl + `/users/${item.notification.userId}`, {
+            headers: { Authorization: token },
+          })
+          .then(({ data: user }) => {
+            setUser(user);
+          });
       }
-
-      axios
-        .get(apiUrl + `/users/${item.notification.userId}`, {
-          headers: { Authorization: token },
-        })
-        .then(({ data: user }) => {
-          setUser(user);
-        });
     }
 
     if (item.notification.projectId) {
@@ -88,7 +85,7 @@ export default function InboxItem({ item, user, index }) {
           <UserTag user={alertUser} /> liked your project: "{alertProject.name}"
         </>
       ) : (
-        "Loading..."
+        <p>Loading...</p>
       );
       break;
 
@@ -98,11 +95,11 @@ export default function InboxItem({ item, user, index }) {
         ? `New comment on project: "${alertProject.name}"`
         : "Loading...";
       body = alertComment.content ? (
-        <>
+        <p>
           <UserTag user={alertUser} />: {alertComment.content}
-        </>
+        </p>
       ) : (
-        "Loading..."
+        <p>Loading...</p>
       );
       break;
 
@@ -112,12 +109,12 @@ export default function InboxItem({ item, user, index }) {
         ? `${alertUser.username} cloned your project!`
         : "Loading...";
       body = alertProject.name ? (
-        <>
+        <p>
           <UserTag user={alertUser} /> cloned your project: "{alertProject.name}
           "
-        </>
+        </p>
       ) : (
-        "Loading..."
+        <p>Loading...</p>
       );
       break;
 
@@ -127,11 +124,11 @@ export default function InboxItem({ item, user, index }) {
         ? `${alertUser.username} replied to your comment`
         : "Loading...";
       body = alertReply.content ? (
-        <>
+        <p>
           <UserTag user={alertUser} />: {alertReply.content}
-        </>
+        </p>
       ) : (
-        "Loading..."
+        <p>Loading...</p>
       );
       break;
 
@@ -139,12 +136,10 @@ export default function InboxItem({ item, user, index }) {
       link = `/tos`;
       title = "DisFuse's Terms of Service were updated";
       body = (
-        <>
-          <p>
-            We've made some changes to our Terms of Service. Please make sure to
-            review the updates to stay up to date with our rules.
-          </p>
-        </>
+        <p>
+          We've made some changes to our Terms of Service. Please make sure to
+          review the updates to stay up to date with our rules.
+        </p>
       );
       break;
 
@@ -152,12 +147,10 @@ export default function InboxItem({ item, user, index }) {
       link = `/@${alertProject.owner?.username}/${item.notification.projectId}/workspace`;
       title = `${alertProject.owner?.username} invited you to a project`;
       body = (
-        <>
-          <p>
-            {alertProject.owner?.username} invited you to work on their project:
-            "{alertProject.name}"
-          </p>
-        </>
+        <p>
+          <UserTag user={alertUser} /> invited you to work on their project: "
+          {alertProject.name}"
+        </p>
       );
       break;
   }
@@ -180,13 +173,15 @@ export default function InboxItem({ item, user, index }) {
       onClick={() => navigate(link)}
       className={`inbox-item${item.read ? "" : " unread"}`}
     >
-      <div className="clearBtn" onClick={clearItem}>
-        <i className="fa-solid fa-xmark"></i>
-      </div>
       <div className="info">
-        <h2>{title}</h2>
-        <p>{body}</p>
-        <i>
+        <div className="title">
+          <div className="clearBtn" onClick={clearItem}>
+            <i className="fa-solid fa-xmark"></i>
+          </div>
+          {title}
+        </div>
+        {body}
+        <i className="date">
           {ms(Date.now() - new Date(item.created).getTime(), { long: true })}{" "}
           ago
         </i>
