@@ -3,23 +3,40 @@ import { useState } from "react";
 import UserTag from "./UserTag";
 import ms from "ms";
 import { useNavigate } from "react-router-dom";
+import { userCache } from "../cache.ts";
 
 const { apiUrl } = require("../config/config.json");
 
 export default function InboxItem({ item, user, index }) {
+  const { allUsers } = userCache;
+
   let link, title, body;
 
   const token = localStorage.getItem("disfuse-token");
 
-  const [alertUser, setUser] = useState({});
-  const [alertProject, setProject] = useState({});
-  const [alertComment, setComment] = useState({});
-  const [alertReply, setReply] = useState({});
+  const [alertUser, setUser] = useState();
+  const [alertProject, setProject] = useState();
+  const [alertComment, setComment] = useState();
+  const [alertReply, setReply] = useState();
 
   const navigate = useNavigate();
 
   (async () => {
+    if (
+      alertUser !== null ||
+      alertProject !== null ||
+      alertComment !== null ||
+      alertReply !== null
+    )
+      return;
+
     if (item.notification.userId) {
+      if (allUsers !== null) {
+        if (allUsers.some((i) => i.id === item.notification.userId)) {
+          setUser(allUsers.find((i) => i.id === item.notification.userId));
+        }
+      }
+
       axios
         .get(apiUrl + `/users/${item.notification.userId}`, {
           headers: { Authorization: token },

@@ -11,7 +11,7 @@ import remarkGfm from "remark-gfm";
 import axios from "axios";
 import javascript from "blockly/javascript";
 
-const { apiUrl } = require("../config/config.js");
+const { apiUrl } = require("../config/config.json");
 
 export default function WorkspaceBar({
   project,
