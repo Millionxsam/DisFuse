@@ -3176,13 +3176,13 @@ div.hidden:not(.shown) {
   height: 50%;
 }
 
-.blockBuddy-popup .blockBuddy-options {
+.blockBuddy-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.blockBuddy-popup .blockBuddy-options div {
+.blockBuddy-container > div {
   background-color: var(--foreground-color);
   border-radius: 0.5rem;
   padding: 1rem;
@@ -3194,18 +3194,44 @@ div.hidden:not(.shown) {
   transition: all 0.2s ease;
 }
 
-.blockBuddy-popup .blockBuddy-options div:hover {
+.blockBuddy-container div div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blockBuddy-container > div:hover {
   background-color: var(--main-color);
 }
 
-.blockBuddy-popup .blockBuddy-options div:active {
+.blockBuddy-container > div:active {
   scale: 0.95;
 }
 
-.blockBuddy-popup .blockBuddy-options div h3 {
+dialog.blockBuddy-suggestions[open] {
+  padding: 2.5rem;
   display: flex;
-  gap: 0.5rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  height: fit-content;
+}
+
+dialog.blockBuddy-suggestions[open] ol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+dialog.blockBuddy-suggestions[open] ul li {
+  margin-left: 2rem;
+}
+
+dialog.blockBuddy-suggestions[open] button {
+  margin-top: auto;
+}
+
+input::placeholder {
+  opacity: 0.25;
 }
 
 .inviteContainer {

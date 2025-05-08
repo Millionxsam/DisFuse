@@ -123,6 +123,38 @@ export default function WorkspaceTabs({
     });
   }
 
+  function newWorkspace() {
+    Swal.fire({
+      title: "Create New Workspace",
+      input: "text",
+      text: "Enter a name for your workspace",
+      inputPlaceholder: "Workspace Name",
+      inputValidator: (value) => {
+        if (value.length >= 3) return false;
+        else return "Name must be at least 3 characters";
+      },
+      showCancelButton: true,
+      confirmButtonText: "Create",
+      ...modalColors,
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      axios
+        .post(
+          apiUrl + `/projects/${project._id}/workspaces`,
+          {
+            name: result.value,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("disfuse-token"),
+            },
+          }
+        )
+        .then(() => window.location.reload());
+    });
+  }
+
   return (
     <div className="workspace-tabs">
       {editable ? (
@@ -171,7 +203,7 @@ export default function WorkspaceTabs({
         </div>
       ))}
       {editable ? (
-        <div key={"unknown2"} className="newTab">
+        <div onClick={newWorkspace} key={"unknown2"} className="newTab">
           <i className="fa-solid fa-plus"></i>
         </div>
       ) : (

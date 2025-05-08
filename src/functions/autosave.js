@@ -1,4 +1,7 @@
 import * as Blockly from "blockly";
+import modalThemeColor from "./modalThemeColor";
+import { userCache } from "../cache.ts";
+import Swal from "sweetalert2";
 
 export default async function autosave(
   workspace,
@@ -22,7 +25,22 @@ export default async function autosave(
           workspaceId: currentWorkspace._id,
         },
         (response) => {
-          if (response.error) return reject(new Error(response.error));
+          if (response.error === "This project is suspended")
+            return Swal.fire({
+              ...modalThemeColor(userCache.user),
+              title: "Project Suspended",
+              icon: "error",
+              html: `This project was detected to break our terms of service and has automatically been suspended for the reason:
+              <br />
+              <br />
+              ${response.reason}`,
+              footer:
+                '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord</a>',
+              showConfirmButton: false,
+              allowEscapeKey: false,
+              allowOutsideClick: false,
+            });
+          else if (response.error) return reject(new Error(response.error));
 
           document.querySelector(
             ".workspace-navbar #autosave-indicator"
