@@ -130,14 +130,14 @@ export default function WorkspaceBar({
                 <i className="fa-solid fa-key"></i>
                 <div>Secrets</div>
               </button>
-              {/* <button id="templates">
+              <button id="templates">
                 <i className="fa-solid fa-shapes"></i>
                 <div>Templates</div>
-              </button> */}
-              <button id="blockbuddy" onClick={openBlockBuddy}>
+              </button>
+              {/* <button id="blockbuddy" onClick={openBlockBuddy}>
                 <i className="fa-solid fa-robot"></i>
                 <div>BlockBuddy</div>
-              </button>
+              </button> */}
             </ul>
           </div>
           <div className="right">
