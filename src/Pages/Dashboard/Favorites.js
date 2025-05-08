@@ -4,7 +4,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-const { apiUrl, discordUrl } = require("../../config/config.js");
+const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function Favorites() {
   const [projects, setProjects] = useState([]);

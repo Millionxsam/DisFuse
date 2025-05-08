@@ -6,7 +6,7 @@ import LoadingAnim from "../../../components/LoadingAnim";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 
-const { discordUrl, apiUrl } = require("../../../config/config.js");
+const { discordUrl, apiUrl } = require("../../../config/config.json");
 
 const modalColors = modalThemeColor(null, true);
 

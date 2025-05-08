@@ -22,7 +22,7 @@ require
     import(`./workshopBlocks/${key}`).catch(console.error);
   });
 
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+const { apiUrl, discordUrl } = require("../../../config/config.json");
 
 export default function WorkshopWorkspace() {
   const [pack, setPack] = useState({});

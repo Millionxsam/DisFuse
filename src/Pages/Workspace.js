@@ -49,7 +49,7 @@ require
     import(`../blocks/${key}`).catch(console.error);
   });
 
-const { apiUrl, discordUrl } = require("../config/config.js");
+const { apiUrl, discordUrl } = require("../config/config.json");
 
 const requiredBlocks = [
   {

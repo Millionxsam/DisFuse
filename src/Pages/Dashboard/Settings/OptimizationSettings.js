@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import LoadingAnim from '../../../components/LoadingAnim';
 
-let { discordUrl, apiUrl } = require('../../../config/config.js');
+let { discordUrl, apiUrl } = require('../../../config/config.json');
 
 export default function OptimizationSettings() {
     const token = localStorage.getItem('disfuse-token');

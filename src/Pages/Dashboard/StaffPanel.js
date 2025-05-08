@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { userCache } from "../../cache.ts";
-const { apiUrl, discordUrl } = require("../../config/config.js");
+const { apiUrl, discordUrl } = require("../../config/config.json");
 
 export default function StaffPanel() {
     const [localUser, setLocalUser] = useState();

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { userCache } from "../../cache.ts";
 
-const { discordUrl, apiUrl } = require("../../config/config.js");
+const { discordUrl, apiUrl } = require("../../config/config.json");
 
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;

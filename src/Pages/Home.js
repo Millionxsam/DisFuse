@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { userCache } from "../cache.ts";
-const { apiUrl } = require("../config/config.js");
+const { apiUrl } = require("../config/config.json");
 
 export default function Home() {
   const [users, setUsers] = useState(null);

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingAnim from "../../../components/LoadingAnim";
 
-const { discordUrl, apiUrl } = require("../../../config/config.js");
+const { discordUrl, apiUrl } = require("../../../config/config.json");
 
 export default function NotificationSettings() {
   const token = localStorage.getItem("disfuse-token");

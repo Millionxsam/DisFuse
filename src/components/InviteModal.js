@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { userCache } from "../cache.ts";
 
-const { apiUrl } = require("../config/config.js");
+const { apiUrl } = require("../config/config.json");
 
 export default function InviteModal({ project, onSave }) {
   const [collaborators, setCollaborators] = useState([]);

@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-const { apiUrl } = require("../../config/config.js");
+const { apiUrl } = require("../../config/config.json");
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);

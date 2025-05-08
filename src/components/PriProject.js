@@ -6,7 +6,7 @@ import { userCache } from "../cache.ts";
 
 const modalColors = modalThemeColor(null, true);
 
-const { apiUrl } = require("../config/config.js");
+const { apiUrl } = require("../config/config.json");
 
 export default function PriProject({ project }) {
   if (!project) return;
