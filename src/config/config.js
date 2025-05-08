@@ -1,9 +1,6 @@
 const settings = {
   discordUrl: "https://discord.com/api/v6",
-  apiUrl:
-    window.location.hostname === "localhost"
-      ? "http://localhost:80"
-      : "https://disfuse-api.onrender.com",
+  apiUrl: "https://disfuse-api.onrender.com",
   devAuthUrl:
     "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=email+identify",
   authUrl:
