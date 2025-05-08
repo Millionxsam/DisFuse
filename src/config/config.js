@@ -1,13 +1,10 @@
-const settings = {
-  discordUrl: "https://discord.com/api/v6",
-  apiUrl:
-    window.location.hostname === "localhost"
-      ? "http://localhost:80"
-      : "https://disfuse-api.onrender.com",
-  devAuthUrl:
-    "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=email+identify",
-  authUrl:
-    "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=https%3A%2F%2Fdisfuse.vercel.app%2Fprojects&scope=identify+email",
-};
+export const discordUrl = "https://discord.com/api/v6";
+export const apiUrl =
+  window.location.hostname === "localhost"
+    ? "http://localhost:80"
+    : "https://disfuse-api.onrender.com";
 
-export default settings;
+export const devAuthUrl =
+  "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=email+identify";
+export const authUrl =
+  "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=https%3A%2F%2Fdisfuse.vercel.app%2Fprojects&scope=identify+email";
