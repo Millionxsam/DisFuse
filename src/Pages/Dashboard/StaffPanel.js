@@ -29,8 +29,6 @@ export default function StaffPanel() {
         window.location.replace("/projects");
         return;
       }
-
-      return;
     } else {
       axios
         .get(discordUrl + "/users/@me", {

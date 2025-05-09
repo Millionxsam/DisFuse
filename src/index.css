@@ -1431,6 +1431,10 @@ input[type="search"]::-webkit-search-results-decoration {
   text-overflow: ellipsis;
 }
 
+.priProject i.info {
+  opacity: 0.5;
+}
+
 .pubProject .name-container {
   display: flex;
   align-items: center;
@@ -2546,13 +2550,14 @@ div.hidden:not(.shown) {
   gap: 0.5rem;
 }
 
-.inbox-container .notifications .inbox-item p {
+.inbox-container .notifications .inbox-item .body {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 0.25rem;
 }
 
-.inbox-container .notifications .inbox-item p .userTag {
+.inbox-container .notifications .inbox-item .body .userTag {
   padding: 0.25rem;
 }
 

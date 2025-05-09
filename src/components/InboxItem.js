@@ -8,7 +8,7 @@ import { userCache } from "../cache.ts";
 const { apiUrl } = require("../config/config.js");
 
 export default function InboxItem({ item, user, index }) {
-  const { allUsers } = userCache;
+  const { allUsers, allProjects } = userCache;
 
   let link, title, body;
 
@@ -44,13 +44,24 @@ export default function InboxItem({ item, user, index }) {
     }
 
     if (item.notification.projectId) {
-      axios
-        .get(apiUrl + `/projects/${item.notification.projectId}`, {
-          headers: { Authorization: token },
-        })
-        .then(({ data: project }) => {
-          setProject(project);
-        });
+      if (
+        allProjects !== null &&
+        allProjects.some((i) => i._id === item.notification.projectId)
+      ) {
+        setProject(
+          allProjects.find((i) => i._id === item.notification.projectId)
+        );
+      } else {
+        axios
+          .get(apiUrl + `/projects`, {
+            headers: { Authorization: token },
+          })
+          .then(({ data: projects }) => {
+            setProject(
+              projects.find((i) => i._id === item.notification.projectId)
+            );
+          });
+      }
     }
 
     if (item.notification.commentId) {
@@ -82,10 +93,13 @@ export default function InboxItem({ item, user, index }) {
         : "Loading...";
       body = alertProject.name ? (
         <>
-          <UserTag user={alertUser} /> liked your project: "{alertProject.name}"
+          <UserTag user={alertUser} />
+          <p> liked your project: "{alertProject.name}"</p>
         </>
       ) : (
-        <p>Loading...</p>
+        <>
+          <p>Loading...</p>
+        </>
       );
       break;
 
@@ -95,11 +109,14 @@ export default function InboxItem({ item, user, index }) {
         ? `New comment on project: "${alertProject.name}"`
         : "Loading...";
       body = alertComment.content ? (
-        <p>
-          <UserTag user={alertUser} />: {alertComment.content}
-        </p>
+        <>
+          <UserTag user={alertUser} />
+          <p>: {alertComment.content}</p>
+        </>
       ) : (
-        <p>Loading...</p>
+        <>
+          <p>Loading...</p>
+        </>
       );
       break;
 
@@ -109,12 +126,14 @@ export default function InboxItem({ item, user, index }) {
         ? `${alertUser.username} cloned your project!`
         : "Loading...";
       body = alertProject.name ? (
-        <p>
-          <UserTag user={alertUser} /> cloned your project: "{alertProject.name}
-          "
-        </p>
+        <>
+          <UserTag user={alertUser} />
+          <p> cloned your project: "{alertProject.name}"</p>
+        </>
       ) : (
-        <p>Loading...</p>
+        <>
+          <p>Loading...</p>
+        </>
       );
       break;
 
@@ -124,11 +143,14 @@ export default function InboxItem({ item, user, index }) {
         ? `${alertUser.username} replied to your comment`
         : "Loading...";
       body = alertReply.content ? (
-        <p>
-          <UserTag user={alertUser} />: {alertReply.content}
-        </p>
+        <>
+          <UserTag user={alertUser} />
+          <p>: {alertReply.content}</p>
+        </>
       ) : (
-        <p>Loading...</p>
+        <>
+          <p>Loading...</p>
+        </>
       );
       break;
 
@@ -136,10 +158,12 @@ export default function InboxItem({ item, user, index }) {
       link = `/tos`;
       title = "DisFuse's Terms of Service were updated";
       body = (
-        <p>
-          We've made some changes to our Terms of Service. Please make sure to
-          review the updates to stay up to date with our rules.
-        </p>
+        <>
+          <p>
+            We've made some changes to our Terms of Service. Please make sure to
+            review the updates to stay up to date with our rules.
+          </p>
+        </>
       );
       break;
 
@@ -147,10 +171,10 @@ export default function InboxItem({ item, user, index }) {
       link = `/@${alertProject.owner?.username}/${item.notification.projectId}/workspace`;
       title = `${alertProject.owner?.username} invited you to a project`;
       body = (
-        <p>
-          <UserTag user={alertUser} /> invited you to work on their project: "
-          {alertProject.name}"
-        </p>
+        <>
+          <UserTag user={alertUser} />
+          <p> invited you to work on their project: "{alertProject.name}"</p>
+        </>
       );
       break;
   }
@@ -180,7 +204,7 @@ export default function InboxItem({ item, user, index }) {
           </div>
           {title}
         </div>
-        {body}
+        <div className="body">{body}</div>
         <i className="date">
           {ms(Date.now() - new Date(item.created).getTime(), { long: true })}{" "}
           ago
