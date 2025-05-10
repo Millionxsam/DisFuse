@@ -93,7 +93,13 @@ button#red {
   background-color: #c42222;
 }
 
-button:not(.disabled):hover {
+button.disabled, button:disabled {
+  pointer-events: none !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:hover {
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 1.3rem;
   box-shadow: 0 0 10px 3px var(--border-color);
@@ -111,18 +117,10 @@ button:hover i:not(.noRotate) {
   animation: spin 0.5s 1 ease;
 }
 
-button.disabled:hover i {
+button:hover i {
   animation: none;
 }
 
-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-button.disabled:active {
-  scale: 1;
-}
 
 input[type="number"] {
   background-color: transparent;
@@ -133,6 +131,7 @@ input[type="number"] {
 }
 
 input:disabled {
+  pointer-events: none !important;
   opacity: 0.25;
   cursor: not-allowed;
 }
@@ -219,6 +218,7 @@ input[type="number"]:hover {
 .switch input:disabled + .slider {
   opacity: 0.25;
   cursor: not-allowed;
+  pointer-events: none !important;
 }
 
 .switch:active .slider:before {
@@ -291,6 +291,7 @@ input:checked + .slider:before {
   border: 2px solid rgba(152, 174, 196, 0.466);
   color: rgba(255, 255, 255, 0.432);
   cursor: not-allowed;
+  pointer-events: none !important;
 }
 
 .button.disabled:hover {
