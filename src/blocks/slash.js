@@ -74,7 +74,7 @@ javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `interaction.editReply({
+  var code = `await interaction.editReply({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   components: [
@@ -88,7 +88,7 @@ javascriptGenerator.forBlock["slash_reply"] = function (block, generator) {
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  var code = `interaction.reply({
+  var code = `await interaction.reply({
     content: ${value_content || "''"},
     embeds: [${value_embeds.replaceAll("'", "")}],
     ephemeral: ${value_ephemeral || "false"}
@@ -102,7 +102,7 @@ javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `interaction.reply({
+  var code = `await interaction.reply({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   ephemeral: ${value_ephemeral || "false"},

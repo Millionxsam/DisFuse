@@ -143,7 +143,7 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
   if (rows) options.push(`components: [\n${rows}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
 
-  return `interaction.reply({
+  return `await interaction.reply({
   ${options.join(",\n  ")}
 });\n`;
 };
@@ -157,7 +157,7 @@ javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  var code = `interaction.reply({
+  var code = `await interaction.reply({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   ephemeral: ${value_ephemeral || "false"}
@@ -175,7 +175,7 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `interaction.reply({
+  var code = `await interaction.reply({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   ephemeral: ${value_ephemeral || "false"},
@@ -209,7 +209,7 @@ javascript.javascriptGenerator.forBlock["misc_int_edit"] = function (
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `interaction.editReply({
+  var code = `await interaction.editReply({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   components: [${rows}]
@@ -329,7 +329,9 @@ javascript.javascriptGenerator.forBlock["misc_int_deferReply"] = function (
 ) {
   var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  return `interaction.deferReply({ ephemeral: ${ephemeral || "false"} });\n`;
+  return `await interaction.deferReply({ ephemeral: ${
+    ephemeral || "false"
+  } });\n`;
 };
 
 Blockly.Blocks["misc_permission"] = {
