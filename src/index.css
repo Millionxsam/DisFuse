@@ -93,7 +93,13 @@ button#red {
   background-color: #c42222;
 }
 
-button:not(.disabled):hover {
+button.disabled, button:disabled {
+  pointer-events: none !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:hover {
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 1.3rem;
   box-shadow: 0 0 10px 3px var(--border-color);
@@ -111,18 +117,10 @@ button:hover i:not(.noRotate) {
   animation: spin 0.5s 1 ease;
 }
 
-button.disabled:hover i {
+button:hover i {
   animation: none;
 }
 
-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-button.disabled:active {
-  scale: 1;
-}
 
 input[type="number"] {
   background-color: transparent;
@@ -133,6 +131,7 @@ input[type="number"] {
 }
 
 input:disabled {
+  pointer-events: none !important;
   opacity: 0.25;
   cursor: not-allowed;
 }
@@ -219,6 +218,7 @@ input[type="number"]:hover {
 .switch input:disabled + .slider {
   opacity: 0.25;
   cursor: not-allowed;
+  pointer-events: none !important;
 }
 
 .switch:active .slider:before {
@@ -291,6 +291,7 @@ input:checked + .slider:before {
   border: 2px solid rgba(152, 174, 196, 0.466);
   color: rgba(255, 255, 255, 0.432);
   cursor: not-allowed;
+  pointer-events: none !important;
 }
 
 .button.disabled:hover {
@@ -1202,7 +1203,6 @@ dialog {
 
 .projects-container .projects {
   display: grid;
-  padding: 1rem;
   grid-template-columns: repeat(4, 20rem);
   gap: 2rem;
 }
@@ -1309,7 +1309,6 @@ dialog {
 .projects-container > .buttons {
   display: flex;
   gap: 1rem;
-  margin-left: 1rem;
 }
 
 .project-create-modal {
@@ -1366,8 +1365,10 @@ dialog {
   gap: 1rem;
 }
 
+input[type="search"],
 input.search,
 .adminDashboard-container * input[type="text"] {
+  margin-left: 0 !important;
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 1.5rem;
@@ -1378,19 +1379,21 @@ input.search,
   transition: all 0.2s ease;
 }
 
+input[type="search"]:focus,
 input.search:focus {
   outline: none;
   padding-right: 5rem;
   border-radius: 1.2rem;
 }
-
+input[type="search"]::placeholder,
 input.search::placeholder {
   transition: all 0.2s ease;
-  color: rgba(190, 190, 190, 0.534);
+  color: rgba(255, 255, 255, 0.7);
 }
 
+input[type="search"]:focus::placeholder,
 input.search:focus::placeholder {
-  color: rgba(190, 190, 190, 0.288);
+  color: transparent;
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -1429,6 +1432,10 @@ input[type="search"]::-webkit-search-results-decoration {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.priProject i.info {
+  opacity: 0.5;
 }
 
 .pubProject .name-container {
@@ -1586,7 +1593,6 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 1rem;
 }
 
 .project-page-container .head .info,
@@ -2546,13 +2552,14 @@ div.hidden:not(.shown) {
   gap: 0.5rem;
 }
 
-.inbox-container .notifications .inbox-item p {
+.inbox-container .notifications .inbox-item .body {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 0.25rem;
 }
 
-.inbox-container .notifications .inbox-item p .userTag {
+.inbox-container .notifications .inbox-item .body .userTag {
   padding: 0.25rem;
 }
 

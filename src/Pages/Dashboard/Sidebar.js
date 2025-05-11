@@ -5,13 +5,10 @@ import { userCache } from "../../cache.ts";
 
 const { discordUrl, apiUrl } = require("../../config/config.js");
 
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
-
 export default function Sidebar() {
   const [active, setActive] = useState(false);
   const [user, setUser] = useState({});
+  const [isStaff, setIsStaff] = useState(userCache?.isStaff ?? false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,9 +18,7 @@ export default function Sidebar() {
   }, [active]);
 
   useEffect(() => {
-    if (!isEmpty(user)) return;
-
-    if (userCache.user !== null) {
+    if (userCache.user) {
       setUser(userCache.user);
     } else {
       axios
@@ -34,13 +29,17 @@ export default function Sidebar() {
         })
         .then(({ data }) => {
           axios.get(apiUrl + "/users").then(({ data: users }) => {
-            let user = users.find((u) => u.id === data.id);
-            setUser(user);
-            userCache.user = user;
+            const foundUser = users.find((u) => u.id === data.id);
+            setUser(foundUser);
+            userCache.user = foundUser;
           });
         });
     }
-  }, [user]);
+
+    setTimeout(() => {
+      setIsStaff(userCache?.isStaff ?? false);
+    }, 2000); 
+  }, []); 
 
   return (
     <>
@@ -124,7 +123,7 @@ export default function Sidebar() {
                   <i className="fa-solid fa-gear"></i> <div>Settings</div>
                 </li>
               </Link>
-              {userCache?.isStaff && (
+              {isStaff && (
                 <Link
                   onClick={() => setActive(false)}
                   className="underline-effect"

@@ -189,7 +189,8 @@ export default function WorkspaceBar({
       </div>
     </>
   );
-
+  
+  // eslint-disable-next-line
   function openBlockBuddy() {
     const modalColors = modalThemeColor(userCache.user);
 
@@ -287,7 +288,6 @@ export default function WorkspaceBar({
               },
             }).then((response) => {
               if (!response.isConfirmed) return;
-              console.log(response.value);
 
               Blockly.defineBlocksWithJsonArray(
                 response.value.map((b) => b.definition)

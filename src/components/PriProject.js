@@ -32,36 +32,34 @@ export default function PriProject({ project }) {
               ""
             )}
           </div>
-          {project?.owner?.id === userCache.user.id ? (
-            <i>
-              {project?.lastEdited &&
-              lastEdited &&
-              lastEdited.getTime() !== 0 ? (
-                <>
-                  Edited{" "}
-                  {ms(Date.now() - lastEdited.getTime(), {
-                    long: true,
-                  })}{" "}
-                  ago
-                </>
-              ) : (
-                ""
-              )}
-            </i>
-          ) : (
-            <i>
-              {project?.owner?.id !== userCache.user.id ? (
-                <>
-                  <i class="fa-solid fa-share-from-square"></i> Shared by{" "}
-                  {project?.owner?.displayName}
-                </>
-              ) : (
-                ""
-              )}
-            </i>
-          )}
         </div>
         <p>{project.description || "No description"}</p>
+        {project?.owner?.id === userCache.user.id ? (
+          <i className="info">
+            {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
+              <>
+                Edited{" "}
+                {ms(Date.now() - lastEdited.getTime(), {
+                  long: true,
+                })}{" "}
+                ago
+              </>
+            ) : (
+              ""
+            )}
+          </i>
+        ) : (
+          <i className="info">
+            {project?.owner?.id !== userCache.user.id ? (
+              <>
+                <i class="fa-solid fa-share-from-square"></i> Shared by{" "}
+                {project?.owner?.displayName}
+              </>
+            ) : (
+              ""
+            )}
+          </i>
+        )}
         <div className="buttons">
           <button
             onClick={() =>

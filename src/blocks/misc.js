@@ -2,6 +2,93 @@ import * as Blockly from "blockly";
 import javascript, { Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
+Blockly.Blocks["misc_int_reply_mutator_options"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("include embeds")
+      .appendField(new Blockly.FieldCheckbox("FALSE"), "embeds");
+    this.appendDummyInput()
+      .appendField("include rows")
+      .appendField(new Blockly.FieldCheckbox("FALSE"), "rows");
+    this.setColour("#4192E9");
+    this.setInputsInline(false);
+    this.contextMenu = false;
+  },
+};
+
+Blockly.Blocks["misc_int_reply_mutator"] = {
+  init() {
+    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("ephemeral")
+      .setCheck("Boolean")
+      .appendField("visible only to the user?");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#4192E9");
+
+    this.setMutator(new Blockly.icons.MutatorIcon([], this));
+    this.settings_ = { embeds: false, rows: false };
+    this.update_();
+  },
+  mutationToDom() {
+    const mutation = document.createElement("mutation");
+    mutation.setAttribute("embed", this.settings_.embeds);
+    mutation.setAttribute("rows", this.settings_.rows);
+    return mutation;
+  },
+  domToMutation(xml) {
+    this.settings_ = {
+      embeds: xml.getAttribute("embed") === "true",
+      rows: xml.getAttribute("rows") === "true",
+    };
+    this.update_();
+  },
+  decompose(ws) {
+    const block = ws.newBlock("misc_int_reply_mutator_options");
+    block.initSvg();
+    block.setFieldValue(this.settings_.embeds ? "TRUE" : "FALSE", "embeds");
+    block.setFieldValue(this.settings_.rows ? "TRUE" : "FALSE", "rows");
+    return block;
+  },
+  compose(opt) {
+    this.settings_ = {
+      embeds: opt.getFieldValue("embeds") === "TRUE",
+      rows: opt.getFieldValue("rows") === "TRUE",
+    };
+    this.update_();
+  },
+  update_() {
+    const saved = {
+      embeds: this.getInput("embeds")?.connection?.targetConnection || null,
+      rows: this.getInput("rows")?.connection?.targetConnection || null,
+    };
+
+    if (this.getInput("embeds")) this.removeInput("embeds");
+    if (this.getInput("rows")) this.removeInput("rows");
+
+    if (this.settings_.embeds) {
+      const input = this.appendValueInput("embeds")
+        .setCheck("String")
+        .appendField("embed name(s):");
+
+      if (saved.embeds) input.connection.connect(saved.embeds);
+    }
+
+    if (this.settings_.rows) {
+      const input = this.appendStatementInput("rows")
+        .setCheck("rows")
+        .appendField("rows:");
+
+      if (saved.rows) input.connection.connect(saved.rows);
+    }
+
+    this._saved = null;
+  },
+};
+
+/* deprecated */
 Blockly.Blocks["misc_int_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply to the interaction");
@@ -21,8 +108,122 @@ Blockly.Blocks["misc_int_reply"] = {
   },
 };
 
+/* deprecated */
+Blockly.Blocks["misc_int_reply_rows"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendValueInput("ephemeral")
+      .setCheck("Boolean")
+      .appendField("visible only to the user?");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#4192E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
+  block,
+  generator
+) {
+  const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
+  const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  const rows = generator.statementToCode(block, "rows");
+
+  const options = [`content: ${content}`];
+  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
+  if (rows) options.push(`components: [\n${rows}]`);
+  if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
+
+  return `await interaction.reply({
+  ${options.join(",\n  ")}
+});\n`;
+};
+
+/* deprecated */
+javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+
+  var code = `await interaction.reply({
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  ephemeral: ${value_ephemeral || "false"}
+});\n`;
+  return code;
+};
+
+/* deprecated */
+javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `await interaction.reply({
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  ephemeral: ${value_ephemeral || "false"},
+  components: [${rows}]
+});\n`;
+  return code;
+};
+
+Blockly.Blocks["misc_int_edit"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Edit the reply");
+    this.appendValueInput("content").setCheck("String").appendField("content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
+    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#4192E9");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  },
+};
+
+javascript.javascriptGenerator.forBlock["misc_int_edit"] = function (
+  block,
+  generator
+) {
+  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  var rows = generator.statementToCode(block, "rows");
+
+  var code = `await interaction.editReply({
+  content: ${value_content || "''"},
+  embeds: [${value_embeds.replaceAll("'", "")}],
+  components: [${rows}]
+});\n`;
+  return code;
+};
+
 createRestrictions(
-  ["misc_int_reply", "misc_int_reply_rows", "misc_int_edit"],
+  [
+    "misc_int_reply",
+    "misc_int_reply_rows",
+    "misc_int_reply_mutator",
+    "misc_int_edit",
+  ],
   [
     {
       type: "validator",
@@ -92,95 +293,6 @@ createRestrictions(
   ]
 );
 
-Blockly.Blocks["misc_int_reply_rows"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-Blockly.Blocks["misc_int_edit"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_edit"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `interaction.editReply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    components: [
-    ${rows}]
-  });`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-
-  var code = `interaction.reply({
-    content: ${value_content || "''"},
-    embeds: [${value_embeds.replaceAll("'", "")}],
-    ephemeral: ${value_ephemeral || "false"}
-  });`;
-  return code;
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `interaction.reply({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}],
-  ephemeral: ${value_ephemeral || "false"},
-  components: [
-  ${rows}]
-  });`;
-  return code;
-};
-
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
     this.appendDummyInput().appendField("Add a row");
@@ -217,10 +329,9 @@ javascript.javascriptGenerator.forBlock["misc_int_deferReply"] = function (
 ) {
   var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
-  var code = `await interaction.deferReply({ ephemeral: ${
+  return `await interaction.deferReply({ ephemeral: ${
     ephemeral || "false"
-  } });`;
-  return code;
+  } });\n`;
 };
 
 Blockly.Blocks["misc_permission"] = {
@@ -314,12 +425,14 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: [
+        "msg_reply_mutator",
         "msg_reply_rows",
         "misc_reply_rows",
         "channel_send_rows",
         "member_dm_rows",
         "misc_int_reply_rows",
         "misc_int_edit",
+        "misc_int_reply_mutator",
         "slash_editreply",
       ],
       message: "This block must be under a block that has a 'rows' section",

@@ -1509,12 +1509,16 @@ export default function getToolbox(blockPacks = []) {
                 type: "msg_received",
               },
               {
+                kind: "block",
+                type: "msg_msg",
+              },
+              {
                 kind: "label",
                 text: "Actions ↓",
               },
               {
                 kind: "block",
-                type: "msg_reply",
+                type: "msg_reply_mutator",
                 inputs: {
                   content: {
                     shadow: {
@@ -1525,14 +1529,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "msg_reply_rows",
-                inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
+                type: "misc_addrow",
               },
               {
                 kind: "block",
@@ -3061,7 +3058,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply",
+                type: "misc_int_reply_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                   ephemeral: {
@@ -3084,19 +3081,6 @@ export default function getToolbox(blockPacks = []) {
                 kind: "block",
                 type: "misc_int_deferReply",
                 inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_reply_rows",
-                inputs: {
-                  content: { shadow: { type: "text" } },
                   ephemeral: {
                     shadow: {
                       type: "logic_boolean",
@@ -3217,7 +3201,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply",
+                type: "misc_int_reply_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                   ephemeral: {
@@ -3230,16 +3214,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply_rows",
-                inputs: {
-                  content: { shadow: { type: "text" } },
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
+                type: "misc_addrow",
               },
               {
                 kind: "label",
@@ -3363,20 +3338,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply",
-                inputs: {
-                  content: { shadow: { type: "text" } },
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_reply_rows",
+                type: "misc_int_reply_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                   ephemeral: {
@@ -3747,20 +3709,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  content: { shadow: { type: "text" } },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_reply_rows",
+                type: "misc_int_reply_mutator",
                 inputs: {
                   ephemeral: {
                     shadow: {
@@ -3838,20 +3787,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_reply",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  content: { shadow: { type: "text" } },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_reply_rows",
+                type: "misc_int_reply_mutator",
                 inputs: {
                   ephemeral: {
                     shadow: {

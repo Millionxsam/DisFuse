@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Reply from "./Reply";
 import Swal from "sweetalert2";
+import UserTag from "./UserTag";
 
 const { apiUrl } = require("../config/config");
 
@@ -117,10 +117,9 @@ export default function Comment({
   return (
     <div id={`${comment?._id}`} className="comment">
       <div className="top">
-        <Link to={`/@${author.username}`}>
-          <img src={author.avatar} alt="" />
-          <h3>{author.username}</h3>
-        </Link>
+        <UserTag user={author} />
+
+        
         <i>
           {new Date(comment.created).toLocaleString([], {
             dateStyle: "long",

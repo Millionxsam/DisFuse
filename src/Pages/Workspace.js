@@ -340,6 +340,7 @@ export default function Workspace() {
                     "AddServer",
                     "messageDeleted",
                     "messageReaction",
+                    "messageSent",
                     "role",
                     "roles",
                     "createdThread",
@@ -1086,6 +1087,11 @@ export default function Workspace() {
         },
         [projectId, searchParams, setSearchParams]
       );
+
+    return () => {
+      socket.disconnect();
+    };
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
