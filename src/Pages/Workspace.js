@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import * as Blockly from "blockly";
-import { javascriptGenerator } from "blockly/javascript";
+import javascript, { javascriptGenerator } from "blockly/javascript";
 import { Backpack } from "@blockly/workspace-backpack";
 import beautify from "beautify";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
@@ -58,14 +58,6 @@ const requiredBlocks = [
   },
 ];
 
-const socket = io(apiUrl, {
-  auth: { token: localStorage.getItem("disfuse-token") },
-});
-
-socket.on("connect", () =>
-  console.log(`Connected to WebSocket with ID: ${socket.id}`)
-);
-
 export default function Workspace() {
   let { projectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -77,6 +69,14 @@ export default function Workspace() {
   const currentWorkspace = useRef({});
 
   useEffect(() => {
+    const socket = io(apiUrl, {
+      auth: { token: localStorage.getItem("disfuse-token") },
+    });
+
+    socket.on("connect", () =>
+      console.log(`Connected to WebSocket with ID: ${socket.id}`)
+    );
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
