@@ -85,7 +85,7 @@ export default function Inbox() {
             ?.slice()
             .reverse()
             .map((item, index) => (
-              <InboxItem item={item} user={user} index={index} />
+              <InboxItem item={item} user={user} index={index} key={index} />
             ))
         ) : (
           "No notifications"

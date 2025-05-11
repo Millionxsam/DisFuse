@@ -1203,7 +1203,6 @@ dialog {
 
 .projects-container .projects {
   display: grid;
-  padding: 1rem;
   grid-template-columns: repeat(4, 20rem);
   gap: 2rem;
 }
@@ -1310,7 +1309,6 @@ dialog {
 .projects-container > .buttons {
   display: flex;
   gap: 1rem;
-  margin-left: 1rem;
 }
 
 .project-create-modal {
@@ -1367,8 +1365,10 @@ dialog {
   gap: 1rem;
 }
 
+input[type="search"],
 input.search,
 .adminDashboard-container * input[type="text"] {
+  margin-left: 0 !important;
   background-color: transparent;
   border: 2px solid slategray;
   border-radius: 1.5rem;
@@ -1379,17 +1379,19 @@ input.search,
   transition: all 0.2s ease;
 }
 
+input[type="search"]:focus,
 input.search:focus {
   outline: none;
   padding-right: 5rem;
   border-radius: 1.2rem;
 }
-
+input[type="search"]::placeholder,
 input.search::placeholder {
   transition: all 0.2s ease;
   color: rgba(255, 255, 255, 0.7);
 }
 
+input[type="search"]:focus::placeholder,
 input.search:focus::placeholder {
   color: transparent;
 }
@@ -1591,7 +1593,6 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 1rem;
 }
 
 .project-page-container .head .info,

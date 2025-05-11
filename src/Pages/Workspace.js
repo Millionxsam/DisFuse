@@ -340,6 +340,7 @@ export default function Workspace() {
                     "AddServer",
                     "messageDeleted",
                     "messageReaction",
+                    "messageSent",
                     "role",
                     "roles",
                     "createdThread",

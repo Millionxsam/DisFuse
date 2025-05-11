@@ -204,8 +204,6 @@ export default function ProjectPage() {
       .querySelector("textarea.commentInput")
       .value.trim();
 
-    console.log(content);
-
     if (content === "" || !content) return;
 
     document.querySelector("textarea.commentInput").value = "";
