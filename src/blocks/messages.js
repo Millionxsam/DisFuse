@@ -36,41 +36,6 @@ Blockly.Blocks["msg_received"] = {
   },
 };
 
-/* deprecated */
-Blockly.Blocks["msg_reply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the message");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendStatementInput("then").appendField("then:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#336EFF");
-  },
-};
-
-/* deprecated */
-Blockly.Blocks["msg_reply_rows"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the message");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.appendStatementInput("then").appendField("then:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
 Blockly.Blocks["msg_reply_mutator_options"] = {
   init() {
     this.appendDummyInput()
@@ -293,35 +258,6 @@ javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   var code = `client.on("messageCreate", async (message) => {
 ${codeState}});\n`;
 
-  return code;
-};
-
-javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
-  var content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-  var then = generator.statementToCode(block, "then");
-
-  var code = `message.reply({
-  content: ${content || "''"},
-  embeds: [${embeds.replaceAll("'", "") || ""}],
-  components: [
-  ${rows}]
-}).then((messageSent) => {
-  ${then}});\n`;
-  return code;
-};
-
-javascriptGenerator.forBlock["msg_reply"] = function (block, generator) {
-  var content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var then = generator.statementToCode(block, "then");
-
-  var code = `message.reply({
-  content: ${content || "''"},
-  embeds: [${embeds.replaceAll("'", "")}]
-}).then((messageSent) => {
-  ${then}});\n`;
   return code;
 };
 
