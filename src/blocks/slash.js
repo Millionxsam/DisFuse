@@ -57,7 +57,7 @@ createMutatorBlock({
   nextStatement: ["slashCreate", "contextMenuCreate"],
 });
 
-javascriptGenerator.forBlock["slash_create_muutator"] = function (block, generator) {
+javascriptGenerator.forBlock["slash_create_mutator"] = function (block, generator) {
   var name = generator.valueToCode(block, "name", Order.ATOMIC);
   var dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
   var options = generator.statementToCode(block, "options");
