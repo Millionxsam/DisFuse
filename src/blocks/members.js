@@ -615,7 +615,7 @@ javascriptGenerator.forBlock["member_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var foreach = generator.statementToCode(block, "code");
 
-  var code = `${server}.members.cache.forEach(member => {
+  var code = `${server}.members.cache.forEach(async (member) => {
 ${foreach}});`;
   return code;
 };

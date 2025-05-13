@@ -23,7 +23,7 @@ javascriptGenerator.forBlock["emoji_getallinserver"] = function (
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "code");
 
-  const code = `${server}.emojis.cache.forEach((ForEachemojiInServer) => {
+  const code = `${server}.emojis.cache.forEach(async (ForEachemojiInServer) => {
   ${statements_code}});\n`;
   return code;
 };

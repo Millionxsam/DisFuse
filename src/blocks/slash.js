@@ -57,6 +57,33 @@ createMutatorBlock({
   nextStatement: ["slashCreate", "contextMenuCreate"],
 });
 
+javascriptGenerator.forBlock["slash_create_muutator"] = function (block, generator) {
+  var name = generator.valueToCode(block, "name", Order.ATOMIC);
+  var dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
+  var options = generator.statementToCode(block, "options");
+  var nsfw = generator.valueToCode(block, "nsfw", Order.ATOMIC);
+  var perm = generator.valueToCode(block, "perms", Order.ATOMIC);
+  var dm = generator.valueToCode(block, "dm", Order.ATOMIC);
+
+  var code = `\n{
+        name: ${name},
+        type: Discord.ApplicationCommandType.ChatInput,
+        description: ${dsc},
+        nsfw: ${nsfw || false},
+        dmPermission: ${dm || true},
+        options: [${options}],
+        ${
+          perm.length > 0
+            ? `defaultMemberPermissions: ${
+                perm.startsWith("[") && perm.endsWith("]") ? perm : `[${perm}]`
+              }`
+            : ""
+        }
+      },`;
+
+  return code;
+};
+
 Blockly.Blocks["slash_addoption"] = {
   init: function () {
     this.appendDummyInput()

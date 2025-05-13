@@ -405,7 +405,7 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
 javascriptGenerator.forBlock["server_getall"] = function (block, generator) {
   var statements_code = generator.statementToCode(block, "code");
 
-  var code = `client.guilds.cache.forEach(guild => {
+  var code = `client.guilds.cache.forEach(async (guild) => {
     ${statements_code}
   });`;
   return code;
