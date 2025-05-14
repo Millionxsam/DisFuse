@@ -86,7 +86,7 @@ javascriptGenerator.forBlock['fs_readdir'] = function (block, generator) {
   var code = `fs.readdir(${path}, (err, files) => {
   if (err) throw err;
 
-  files.forEach(file => {
+  files.forEach(async (file) => {
     const filePath = path.join(${path}, file);
 
     ${doo}});

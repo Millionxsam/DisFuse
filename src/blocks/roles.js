@@ -52,7 +52,7 @@ javascriptGenerator.forBlock["roles_foreachMember"] = function (
   var role = generator.valueToCode(block, "role", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${role}.members.cache.forEach(member => {
+  var code = `${role}.members.cache.forEach(async (member) => {
     ${codeVal}
   });`;
   return code;
@@ -62,7 +62,7 @@ javascriptGenerator.forBlock["roles_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${server}.roles.cache.forEach(role => {
+  var code = `${server}.roles.cache.forEach(async (role) => {
     ${codeVal}
   });`;
   return code;

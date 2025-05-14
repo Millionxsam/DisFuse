@@ -109,18 +109,6 @@ Blockly.Blocks["main_ping"] = {
   },
 };
 
-// deprecated
-Blockly.Blocks["main_amountservers"] = {
-  init: function () {
-    this.appendDummyInput().appendField("number of servers of the bot");
-    this.setOutput(true, "Number");
-    this.setColour("#FF6E33");
-    this.setInputsInline(true);
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
 Blockly.Blocks["main_numberof"] = {
   init: function () {
     this.appendDummyInput()
@@ -150,13 +138,6 @@ Blockly.Blocks["main_destroy"] = {
     this.setPreviousStatement(true, "default");
     this.setColour("#FF6E33");
   },
-};
-
-javascriptGenerator.forBlock["main_amountservers"] = function (
-  block,
-  generator
-) {
-  return ["client.guilds.cache.size", Order.NONE];
 };
 
 javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {

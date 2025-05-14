@@ -2976,16 +2976,8 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "slash_create",
+                type: "slash_create_mutator",
                 inputs: {
-                  nsfw: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: {
-                        BOOL: "FALSE",
-                      },
-                    },
-                  },
                   name: {
                     shadow: {
                       type: "text",
@@ -2994,11 +2986,6 @@ export default function getToolbox(blockPacks = []) {
                   dsc: {
                     shadow: {
                       type: "text",
-                    },
-                  },
-                  dm: {
-                    shadow: {
-                      type: "logic_boolean",
                     },
                   },
                 },
@@ -3095,7 +3082,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_edit",
+                type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                 },
@@ -3114,19 +3101,19 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "slash_member",
+                type: "misc_int_member",
               },
               {
                 kind: "block",
-                type: "slash_user",
+                type: "misc_int_user",
               },
               {
                 kind: "block",
-                type: "slash_channel",
+                type: "misc_int_channel",
               },
               {
                 kind: "block",
-                type: "slash_server",
+                type: "misc_int_server",
               },
             ],
           },
@@ -3181,19 +3168,19 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "buttons_member",
+                type: "misc_int_member",
               },
               {
                 kind: "block",
-                type: "buttons_user",
+                type: "misc_int_user",
               },
               {
                 kind: "block",
-                type: "buttons_channel",
+                type: "misc_int_channel",
               },
               {
                 kind: "block",
-                type: "buttons_server",
+                type: "misc_int_server",
               },
               {
                 kind: "label",
@@ -3238,7 +3225,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_edit",
+                type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                 },
@@ -3371,7 +3358,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_edit",
+                type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                 },
@@ -3669,19 +3656,19 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "menus_member",
+                type: "misc_int_member",
               },
               {
                 kind: "block",
-                type: "menus_user",
+                type: "misc_int_user",
               },
               {
                 kind: "block",
-                type: "menus_channel",
+                type: "misc_int_channel",
               },
               {
                 kind: "block",
-                type: "menus_server",
+                type: "misc_int_server",
               },
               {
                 kind: "label",
@@ -3722,7 +3709,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_edit",
+                type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                 },
@@ -3820,7 +3807,7 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "misc_int_edit",
+                type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
                 },
@@ -3843,19 +3830,19 @@ export default function getToolbox(blockPacks = []) {
               },
               {
                 kind: "block",
-                type: "contextMenu_member",
+                type: "misc_int_member",
               },
               {
                 kind: "block",
-                type: "contextMenu_user",
+                type: "misc_int_user",
               },
               {
                 kind: "block",
-                type: "contextMenu_channel",
+                type: "misc_int_channel",
               },
               {
                 kind: "block",
-                type: "contextMenu_server",
+                type: "misc_int_server",
               },
               {
                 kind: "label",

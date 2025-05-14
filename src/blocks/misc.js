@@ -1,133 +1,41 @@
 import * as Blockly from "blockly";
-import javascript, { Order } from "blockly/javascript";
+import javascript, { javascriptGenerator, Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { createMutatorBlock } from "../functions/createMutator.ts";
 
-Blockly.Blocks["misc_int_reply_mutator_options"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("include embeds")
-      .appendField(new Blockly.FieldCheckbox("FALSE"), "embeds");
-    this.appendDummyInput()
-      .appendField("include rows")
-      .appendField(new Blockly.FieldCheckbox("FALSE"), "rows");
-    this.setColour("#4192E9");
-    this.setInputsInline(false);
-    this.contextMenu = false;
-  },
-};
-
-Blockly.Blocks["misc_int_reply_mutator"] = {
-  init() {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-
-    this.setMutator(new Blockly.icons.MutatorIcon([], this));
-    this.settings_ = { embeds: false, rows: false };
-    this.update_();
-  },
-  mutationToDom() {
-    const mutation = document.createElement("mutation");
-    mutation.setAttribute("embed", this.settings_.embeds);
-    mutation.setAttribute("rows", this.settings_.rows);
-    return mutation;
-  },
-  domToMutation(xml) {
-    this.settings_ = {
-      embeds: xml.getAttribute("embed") === "true",
-      rows: xml.getAttribute("rows") === "true",
-    };
-    this.update_();
-  },
-  decompose(ws) {
-    const block = ws.newBlock("misc_int_reply_mutator_options");
-    block.initSvg();
-    block.setFieldValue(this.settings_.embeds ? "TRUE" : "FALSE", "embeds");
-    block.setFieldValue(this.settings_.rows ? "TRUE" : "FALSE", "rows");
-    return block;
-  },
-  compose(opt) {
-    this.settings_ = {
-      embeds: opt.getFieldValue("embeds") === "TRUE",
-      rows: opt.getFieldValue("rows") === "TRUE",
-    };
-    this.update_();
-  },
-  update_() {
-    const saved = {
-      embeds: this.getInput("embeds")?.connection?.targetConnection || null,
-      rows: this.getInput("rows")?.connection?.targetConnection || null,
-    };
-
-    if (this.getInput("embeds")) this.removeInput("embeds");
-    if (this.getInput("rows")) this.removeInput("rows");
-
-    if (this.settings_.embeds) {
-      const input = this.appendValueInput("embeds")
-        .setCheck("String")
-        .appendField("embed name(s):");
-
-      if (saved.embeds) input.connection.connect(saved.embeds);
-    }
-
-    if (this.settings_.rows) {
-      const input = this.appendStatementInput("rows")
-        .setCheck("rows")
-        .appendField("rows:");
-
-      if (saved.rows) input.connection.connect(saved.rows);
-    }
-
-    this._saved = null;
-  },
-};
-
-/* deprecated */
-Blockly.Blocks["misc_int_reply"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-/* deprecated */
-Blockly.Blocks["misc_int_reply_rows"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
+createMutatorBlock({
+  id: "misc_int_reply_mutator",
+  optionsBlockId: "misc_int_reply_mutator_options",
+  colour: "#4192E9",
+  inputs: [
+    { type: "dummy", label: "Reply to the interaction" },
+    { type: "value", name: "content", check: "String", label: "content:" },
+    {
+      type: "value",
+      name: "ephemeral",
+      check: "Boolean",
+      label: "visible only to the user?",
+    },
+  ],
+  mutatorFields: [
+    {
+      name: "embeds",
+      label: "include embeds",
+      default: false,
+      inputType: "value",
+      inputLabel: "embed name(s):",
+    },
+    {
+      name: "rows",
+      label: "include rows",
+      default: false,
+      inputType: "statement",
+      inputLabel: "rows:",
+    },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+});
 
 javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
   block,
@@ -148,73 +56,49 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
 });\n`;
 };
 
-/* deprecated */
-javascript.javascriptGenerator.forBlock["misc_int_reply"] = function (
+createMutatorBlock({
+  id: "misc_int_edit_mutator",
+  optionsBlockId: "misc_int_edit_mutator_options",
+  colour: "#4192E9",
+  inputs: [
+    { type: "dummy", label: "Edit the reply" },
+    { type: "value", name: "content", check: "String", label: "content:" },
+  ],
+  mutatorFields: [
+    {
+      name: "embeds",
+      label: "include embeds",
+      default: false,
+      inputType: "value",
+      inputLabel: "embed name(s):",
+    },
+    {
+      name: "rows",
+      label: "include rows",
+      default: false,
+      inputType: "statement",
+      inputLabel: "rows:",
+    },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+});
+
+javascript.javascriptGenerator.forBlock["misc_int_edit_mutator"] = function (
   block,
   generator
 ) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
+  const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  const rows = generator.statementToCode(block, "rows");
 
-  var code = `await interaction.reply({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}],
-  ephemeral: ${value_ephemeral || "false"}
+  const options = [`content: ${content}`];
+  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
+  if (rows) options.push(`components: [\n${rows}]`);
+
+  return `await interaction.editReply({
+  ${options.join(",\n  ")}
 });\n`;
-  return code;
-};
-
-/* deprecated */
-javascript.javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `await interaction.reply({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}],
-  ephemeral: ${value_ephemeral || "false"},
-  components: [${rows}]
-});\n`;
-  return code;
-};
-
-Blockly.Blocks["misc_int_edit"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
-    this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
-  },
-};
-
-javascript.javascriptGenerator.forBlock["misc_int_edit"] = function (
-  block,
-  generator
-) {
-  var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-  var rows = generator.statementToCode(block, "rows");
-
-  var code = `await interaction.editReply({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}],
-  components: [${rows}]
-});\n`;
-  return code;
 };
 
 createRestrictions(
@@ -223,13 +107,14 @@ createRestrictions(
     "misc_int_reply_rows",
     "misc_int_reply_mutator",
     "misc_int_edit",
+    "misc_int_edit_mutator",
   ],
   [
     {
       type: "validator",
       blockTypes: ["content"],
       check: (val) => val.length <= 2000,
-      message: "Content cannot be greator than 2,000 characters",
+      message: "The content cannot be greater than 2,000 characters",
     },
     {
       type: "hasHat",
@@ -277,7 +162,15 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["misc_int_deferReply"],
+  [
+    "misc_int_reply_mutator",
+    "misc_int_edit_mutator",
+    "misc_int_deferReply",
+    "misc_int_user",
+    "misc_int_member",
+    "misc_int_channel",
+    "misc_int_server",
+  ],
   [
     {
       type: "hasHat",
@@ -596,4 +489,79 @@ javascript.javascriptGenerator.forBlock["misc_channelType"] = (
   generator
 ) => {
   return [`Discord.ChannelType.${block.getFieldValue("type")}`, Order.NONE];
+};
+
+Blockly.Blocks["misc_int_id"] = {
+  init: function () {
+    this.appendDummyInput().appendField("id of the interaction");
+    this.setInputsInline(false);
+    this.setOutput(true, "String");
+    this.setColour("#4192E9");
+    this.setTooltip("Returns the unique ID of the interaction.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["misc_int_id"] = function (block, generator) {
+  return ["interaction.id", Order.NONE];
+};
+
+Blockly.Blocks["misc_int_user"] = {
+  init: function () {
+    this.appendDummyInput().appendField("user of the interaction");
+    this.setInputsInline(false);
+    this.setOutput(true, "user");
+    this.setColour("#4192E9");
+    this.setTooltip("Returns the user who triggered the interaction.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["misc_int_user"] = function (block, generator) {
+  return ["interaction.user", Order.NONE];
+};
+
+Blockly.Blocks["misc_int_member"] = {
+  init: function () {
+    this.appendDummyInput().appendField("member of the interaction");
+    this.setInputsInline(false);
+    this.setOutput(true, "member");
+    this.setColour("#4192E9");
+    this.setTooltip(
+      "Returns the member who triggered the interaction (only available in servers)."
+    );
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["misc_int_member"] = function (block, generator) {
+  return ["interaction.member", Order.NONE];
+};
+
+Blockly.Blocks["misc_int_channel"] = {
+  init: function () {
+    this.appendDummyInput().appendField("channel of the interaction");
+    this.setInputsInline(false);
+    this.setOutput(true, "channel");
+    this.setColour("#4192E9");
+    this.setTooltip("Returns the channel where the interaction was invoked.");
+    this.setHelpUrl("");
+  },
+};
+javascriptGenerator.forBlock["misc_int_channel"] = function (block, generator) {
+  return ["interaction.channel", Order.NONE];
+};
+
+Blockly.Blocks["misc_int_server"] = {
+  init: function () {
+    this.appendDummyInput().appendField("server of the interaction");
+    this.setInputsInline(false);
+    this.setOutput(true, "server");
+    this.setColour("#4192E9");
+    this.setTooltip("Returns the server where the interaction occurred.");
+    this.setHelpUrl("");
+  },
+};
+javascriptGenerator.forBlock["misc_int_server"] = function (block, generator) {
+  return ["interaction.guild", Order.NONE];
 };

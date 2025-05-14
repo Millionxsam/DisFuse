@@ -20,7 +20,6 @@ Blockly.Blocks["menus_add"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents the whole menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -45,7 +44,6 @@ Blockly.Blocks["menus_addChannelMenu"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents the whole menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -101,7 +99,6 @@ Blockly.Blocks["menus_addRoleMenu"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents the whole menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -151,7 +148,6 @@ Blockly.Blocks["menus_addMentionableMenu"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents the whole menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -197,7 +193,6 @@ Blockly.Blocks["menus_addUserMenu"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents the whole menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -242,7 +237,6 @@ Blockly.Blocks["menus_addoption"] = {
     this.setNextStatement(true, "default");
     this.setColour("26A483");
     this.setTooltip("This represents one clickable option inside the menu");
-    this.setHelpUrl("");
   },
 };
 
@@ -252,8 +246,6 @@ Blockly.Blocks["menus_event"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#26A483");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -262,8 +254,6 @@ Blockly.Blocks["menus_id"] = {
     this.appendDummyInput().appendField("ID of the clicked menu");
     this.setColour("#26A483");
     this.setOutput(true, "String");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -271,9 +261,7 @@ Blockly.Blocks["menus_value"] = {
   init: function () {
     this.appendDummyInput().appendField("the value of the selected option");
     this.setColour("#26A483");
-    this.setOutput(true, "String");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    this.setOutput(true, ["String", "user", "role", "channel"]);
   },
 };
 
@@ -282,8 +270,6 @@ Blockly.Blocks["menus_member"] = {
     this.appendDummyInput().appendField("member who clicked the menu");
     this.setColour("#26A483");
     this.setOutput(true, "member");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -292,8 +278,6 @@ Blockly.Blocks["menus_user"] = {
     this.appendDummyInput().appendField("user who clicked the menu");
     this.setColour("#26A483");
     this.setOutput(true, "user");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -302,8 +286,6 @@ Blockly.Blocks["menus_channel"] = {
     this.appendDummyInput().appendField("channel of the menu");
     this.setColour("#26A483");
     this.setOutput(true, "channel");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -312,8 +294,6 @@ Blockly.Blocks["menus_server"] = {
     this.appendDummyInput().appendField("server of the menu");
     this.setColour("#26A483");
     this.setOutput(true, "server");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -325,8 +305,7 @@ Blockly.Blocks["menus_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");
-    this.setTooltip("");
-    this.setHelpUrl("");
+
     this.setInputsInline(false);
   },
 };
@@ -339,8 +318,6 @@ Blockly.Blocks["menus_edit"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
@@ -354,8 +331,6 @@ Blockly.Blocks["menus_update"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
@@ -366,8 +341,7 @@ Blockly.Blocks["menus_del"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");
-    this.setTooltip("");
-    this.setHelpUrl("");
+
     this.setInputsInline(false);
   },
 };

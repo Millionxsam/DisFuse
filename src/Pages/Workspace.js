@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import * as Blockly from "blockly";
-import javascript, { javascriptGenerator } from "blockly/javascript";
+import { javascriptGenerator } from "blockly/javascript";
 import { Backpack } from "@blockly/workspace-backpack";
 import beautify from "beautify";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";

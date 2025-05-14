@@ -226,7 +226,7 @@ javascriptGenerator.forBlock["invite_foreach"] = function (block, generator) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${value_server}.invites.cache.forEach(inviteForEachInLoop => {
+  var code = `${value_server}.invites.cache.forEach(async (inviteForEachInLoop) => {
     ${codeVal}
 });\n`;
   return code;
