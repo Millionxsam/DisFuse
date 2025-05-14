@@ -93,7 +93,8 @@ button#red {
   background-color: #c42222;
 }
 
-button.disabled, button:disabled {
+button.disabled,
+button:disabled {
   pointer-events: none !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -120,7 +121,6 @@ button:hover i:not(.noRotate) {
 button:hover i {
   animation: none;
 }
-
 
 input[type="number"] {
   background-color: transparent;
@@ -449,7 +449,7 @@ i.workspacesMenuBtn:hover {
 
 .workspace-navbar .logo img,
 .workshopWorkspaceNavbar .logo img {
-  width: 3.5rem;
+  width: 35px;
 }
 
 .workspace-navbar .left ul {
@@ -2545,7 +2545,6 @@ div.hidden:not(.shown) {
   position: relative;
 }
 
-
 .inbox-container .notifications .inbox-item .info {
   display: flex;
   flex-direction: column;
@@ -3209,7 +3208,7 @@ div.hidden:not(.shown) {
 
 .blockBuddy-container > div {
   background-color: var(--foreground-color);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   padding: 1rem;
   text-align: left;
   cursor: pointer;
@@ -3419,4 +3418,11 @@ input::placeholder {
 .userLabel img {
   height: 1.5rem;
   border-radius: 50%;
+}
+
+.newLabel {
+  background-color: rgb(255, 27, 27);
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 15px;
 }
