@@ -6,19 +6,19 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 <url>
-  <loc>https://disfuse.vercel.app/</loc>
+  <loc>https://disfuse.xyz/</loc>
 </url>
 <url>
-  <loc>https://disfuse.vercel.app/projects</loc>
+  <loc>https://disfuse.xyz/projects</loc>
 </url>
 <url>
-  <loc>https://disfuse.vercel.app/favorites</loc>
+  <loc>https://disfuse.xyz/favorites</loc>
 </url>
 <url>
-  <loc>https://disfuse.vercel.app/settings</loc>
+  <loc>https://disfuse.xyz/settings</loc>
 </url>
 <url>
-  <loc>https://disfuse.vercel.app/staff</loc>
+  <loc>https://disfuse.xyz/staff</loc>
 </url>
 
 </urlset>
