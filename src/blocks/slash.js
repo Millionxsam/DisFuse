@@ -398,7 +398,11 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_create", "slash_addsubcommand"],
+      blockTypes: [
+        "slash_create",
+        "slash_addsubcommand",
+        "slash_create_mutator",
+      ],
       message:
         'This block must be under "add slash command" OR "add subcommand" block',
     },
