@@ -1,4 +1,4 @@
-export default function getToolbox(blockPacks = []) {
+export default function getToolbox(blockPacks = [], user) {
   return {
     kind: "categoryToolbox",
     contents: [
@@ -1077,54 +1077,60 @@ export default function getToolbox(blockPacks = []) {
       },
       {
         kind: "category",
-        name: "Data",
+        name: "Variables",
         categorystyle: "variable_category",
-        contents: [
-          {
-            kind: "category",
-            name: "Variables",
-            categorystyle: "variable_category",
-            custom: "VARIABLE",
-          },
-          {
-            kind: "category",
-            name: "Local Variables",
-            colour: "#d98e2b",
-            contents: [
-              {
-                kind: "label",
-                text: "Local variables are like normal variables",
-              },
-              {
-                kind: "label",
-                text: "Except you can only use them on the same block/event they were defined on",
-              },
-              {
-                kind: "block",
-                type: "localVars_set",
-              },
-              {
-                kind: "block",
-                type: "localVars_change",
-                inputs: {
-                  value: {
-                    shadow: {
-                      type: "math_number",
-                      fields: {
-                        NUM: 1,
-                      },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "localVars_get",
-              },
-            ],
-          },
-        ],
+        custom: "VARIABLE",
       },
+      // {
+      //   kind: "category",
+      //   name: "Data",
+      //   categorystyle: "variable_category",
+      //   contents: [
+      //     {
+      //       kind: "category",
+      //       name: "Variables",
+      //       categorystyle: "variable_category",
+      //       custom: "VARIABLE",
+      //     },
+      //     {
+      //       kind: "category",
+      //       name: "Local Variables",
+      //       colour: "#d98e2b",
+      //       contents: [
+      //         {
+      //           kind: "label",
+      //           text: "Local variables are like normal variables",
+      //         },
+      //         {
+      //           kind: "label",
+      //           text: "Except you can only use them on the same block/event they were defined on",
+      //         },
+      //         {
+      //           kind: "block",
+      //           type: "localVars_set",
+      //         },
+      //         {
+      //           kind: "block",
+      //           type: "localVars_change",
+      //           inputs: {
+      //             value: {
+      //               shadow: {
+      //                 type: "math_number",
+      //                 fields: {
+      //                   NUM: 1,
+      //                 },
+      //               },
+      //             },
+      //           },
+      //         },
+      //         {
+      //           kind: "block",
+      //           type: "localVars_get",
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
       {
         kind: "category",
         name: "Functions",
@@ -4663,6 +4669,21 @@ export default function getToolbox(blockPacks = []) {
                   })
                 )
               : [],
+          })),
+        ],
+      },
+      {
+        kind: "category",
+        name: "BlockBuddy",
+        colour: "#014f98",
+        contents: [
+          {
+            kind: "label",
+            text: "Click BlockBuddy > Create to make new custom blocks",
+          },
+          ...(user?.customBlocks || []).map((block) => ({
+            kind: "block",
+            type: block.definition.type,
           })),
         ],
       },

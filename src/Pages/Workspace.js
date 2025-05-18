@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import * as Blockly from "blockly";
-import { javascriptGenerator } from "blockly/javascript";
+import javascript, { javascriptGenerator } from "blockly/javascript";
 import { Backpack } from "@blockly/workspace-backpack";
 import beautify from "beautify";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
@@ -232,18 +232,51 @@ export default function Workspace() {
                     );
                   });
 
-                  registerCustomBlocks(
-                    user.blockBuddyBlocks || [],
-                    undefined,
-                    true,
-                    true
-                  );
+                  const customBlocks = [];
+
+                  const owner = (
+                    await axios.get(apiUrl + `/users/${project.owner.id}`, {
+                      headers: {
+                        Authorization: localStorage.getItem("disfuse-token"),
+                      },
+                    })
+                  ).data;
+
+                  customBlocks.push(...(owner.customBlocks || []));
+
+                  for (let id of project.collaborators) {
+                    const collaborator = (
+                      await axios.get(apiUrl + `/users/${id}`, {
+                        headers: {
+                          Authorization: localStorage.getItem("disfuse-token"),
+                        },
+                      })
+                    ).data;
+
+                    customBlocks.push(...(collaborator.customBlocks || []));
+                  }
+
+                  if (customBlocks.length) {
+                    Blockly.defineBlocksWithJsonArray(
+                      customBlocks.map((b) => b.definition)
+                    );
+
+                    customBlocks.forEach((customBlock) => {
+                      // eslint-disable-next-line no-new-func
+                      const genCode = new Function(
+                        "javascript",
+                        customBlock.javascriptGenerator
+                      );
+
+                      genCode(javascript);
+                    });
+                  }
 
                   // Inject workspace
                   const workspace = Blockly.inject(
                     document.getElementById("workspace"),
                     {
-                      toolbox: getToolbox(installedBlockPacks),
+                      toolbox: getToolbox(installedBlockPacks, user),
                       theme,
                       move: {
                         wheel: true,
@@ -1091,7 +1124,7 @@ export default function Workspace() {
     return () => {
       socket.disconnect();
     };
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

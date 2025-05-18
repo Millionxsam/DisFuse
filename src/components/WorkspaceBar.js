@@ -9,7 +9,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import axios from "axios";
-import javascript from "blockly/javascript";
+import javascript, { javascriptGenerator } from "blockly/javascript";
+import getToolbox from "../config/toolbox.js";
 
 const { apiUrl } = require("../config/config.js");
 
@@ -20,8 +21,9 @@ export default function WorkspaceBar({
   activeUsers = [],
 }) {
   const [active, setActive] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [blockbuddySuggestRes, setBlockbuddyRes] = useState("");
+  const [fileDropdownOpen, setFileDropdown] = useState(false);
+  const [utilDropdownOpen, setUtilDropdown] = useState(false);
 
   function showSecrets() {
     if (project.owner?.id !== userCache.user.id) return;
@@ -48,10 +50,6 @@ export default function WorkspaceBar({
 
       setActive(false);
     }
-  }
-
-  function toggleDropdown() {
-    setDropdownOpen(!dropdownOpen);
   }
 
   return (
@@ -88,12 +86,15 @@ export default function WorkspaceBar({
           <div className="left">
             <ul>
               <div className="dropdown" style={{ position: "relative" }}>
-                <button className="dropdown-button" onClick={toggleDropdown}>
+                <button
+                  className="dropdown-button"
+                  onClick={() => setFileDropdown(!fileDropdownOpen)}
+                >
                   <i className="fa-solid fa-file"></i>
                   <div>File</div>
                   <i
                     className={`fa-solid fa-chevron-${
-                      dropdownOpen ? "up" : "down"
+                      fileDropdownOpen ? "up" : "down"
                     } noRotate`}
                   ></i>
                 </button>
@@ -109,35 +110,77 @@ export default function WorkspaceBar({
                     justifyItems: "center",
                     justifyContent: "center",
                     gap: "5px",
-                    display: dropdownOpen ? "flex" : "none",
+                    display: fileDropdownOpen ? "flex" : "none",
                   }}
                 >
-                  <button id="save" onClick={toggleDropdown}>
+                  <button id="save" onClick={() => setFileDropdown(false)}>
                     <i className="fa-solid fa-floppy-disk"></i>
                     Save File
                   </button>
-                  <button id="load" onClick={toggleDropdown}>
+                  <button id="load" onClick={() => setFileDropdown(false)}>
                     <i className="fa-solid fa-upload"></i>
                     Load File
                   </button>
-                  <button onClick={toggleDropdown} id="showCode">
+                  <button onClick={() => setFileDropdown(false)} id="showCode">
                     <i className="fa-brands fa-square-js"></i>
                     <div>Show Code</div>
                   </button>
                 </div>
               </div>
-              <button className="secrets" onClick={showSecrets}>
-                <i className="fa-solid fa-key"></i>
-                <div>Secrets</div>
-              </button>
-              <button id="templates">
-                <i className="fa-solid fa-shapes"></i>
-                <div>Templates</div>
-              </button>
-              {/* <button id="blockbuddy" onClick={openBlockBuddy}>
+              <div className="dropdown" style={{ position: "relative" }}>
+                <button
+                  className="dropdown-button"
+                  onClick={() => setUtilDropdown(!utilDropdownOpen)}
+                >
+                  <i className="fa-solid fa-wrench"></i>
+                  <div>Utilities</div>
+                  <i
+                    className={`fa-solid fa-chevron-${
+                      utilDropdownOpen ? "up" : "down"
+                    } noRotate`}
+                  ></i>
+                </button>
+                <div
+                  className="dropdown-content"
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 5px)",
+                    zIndex: 1000,
+                    flexDirection: "column",
+                    alignContent: "center",
+                    alignItems: "center",
+                    justifyItems: "center",
+                    justifyContent: "center",
+                    gap: "5px",
+                    display: utilDropdownOpen ? "flex" : "none",
+                  }}
+                >
+                  <button
+                    className="secrets"
+                    onClick={() => {
+                      setUtilDropdown(false);
+                      showSecrets();
+                    }}
+                  >
+                    <i className="fa-solid fa-key"></i>
+                    <div>Secrets</div>
+                  </button>
+                  <button id="templates" onClick={() => setUtilDropdown(false)}>
+                    <i className="fa-solid fa-shapes"></i>
+                    <div>Templates</div>
+                  </button>
+                </div>
+              </div>
+
+              <button id="blockbuddy" onClick={openBlockBuddy}>
                 <i className="fa-solid fa-robot"></i>
                 <div>BlockBuddy</div>
-              </button> */}
+                {localStorage.getItem("blockBuddy-discovered") ? (
+                  ""
+                ) : (
+                  <i className="newLabel noRotate">New</i>
+                )}
+              </button>
             </ul>
           </div>
           <div className="right">
@@ -189,7 +232,7 @@ export default function WorkspaceBar({
       </div>
     </>
   );
-  
+
   // eslint-disable-next-line
   function openBlockBuddy() {
     const modalColors = modalThemeColor(userCache.user);
@@ -199,6 +242,7 @@ export default function WorkspaceBar({
       title: "BlockBuddy",
       showConfirmButton: false,
       showCancelButton: true,
+      footer: "BlockBuddy is only for simple tasks; it may make mistakes",
       didOpen: () => {
         document
           .querySelector(".blockBuddy-container #suggest")
@@ -286,7 +330,7 @@ export default function WorkspaceBar({
                   )
                 ).data;
               },
-            }).then((response) => {
+            }).then(async (response) => {
               if (!response.isConfirmed) return;
 
               Blockly.defineBlocksWithJsonArray(
@@ -307,6 +351,146 @@ export default function WorkspaceBar({
 
                 genCode(javascript);
               });
+
+              let installedBlockPacks = [];
+
+              const responses = await Promise.all(
+                userCache.user.installedBlockPacks?.map((packId) =>
+                  axios.get(apiUrl + `/workshop/${packId}`, {
+                    headers: {
+                      Authorization: localStorage.getItem("disfuse-token"),
+                    },
+                  })
+                )
+              );
+
+              installedBlockPacks = responses.map((response) => response.data);
+
+              userCache.user.customBlocks = [
+                ...(userCache.user.customBlocks || []),
+                ...response.value,
+              ];
+
+              workspace.updateToolbox(
+                getToolbox(installedBlockPacks, userCache.user)
+              );
+            });
+          });
+        document
+          .querySelector(".blockBuddy-container #complete")
+          .addEventListener("click", async () => {
+            Swal.fire({
+              ...modalColors,
+              title: "BlockBuddy Complete",
+              confirmButtonText: "Generate",
+              showCancelButton: true,
+              inputPlaceholder: "Create a simple help command",
+              html: "Describe a command or feature to create",
+              input: "text",
+              showLoaderOnConfirm: true,
+              preConfirm: async (prompt) => {
+                const blockTypes = Object.keys(Blockly.Blocks);
+                const blockSchemas = blockTypes
+                  .map(getBlockMetadata)
+                  .filter(Boolean);
+
+                return (
+                  await axios.post(
+                    apiUrl + `/projects/${project._id}/blockbuddy/complete`,
+                    {
+                      prompt,
+                      availableBlocks: blockSchemas,
+                    },
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("disfuse-token"),
+                      },
+                    }
+                  )
+                ).data;
+              },
+            }).then((response) => {
+              if (!response.isConfirmed) return;
+
+              try {
+                Blockly.Xml.domToWorkspace(
+                  Blockly.utils.xml.textToDom(response.value.xml),
+                  workspace
+                );
+
+                Swal.fire({
+                  ...modalColors,
+                  title: "BlockBuddy Complete",
+                  text: response.value.completionText,
+                });
+              } catch (e) {
+                console.error(e);
+
+                Swal.fire({
+                  ...modalColors,
+                  title: "There was a problem",
+                  icon: "error",
+                  text: "There was a problem generating the blocks. Please try again.",
+                });
+              }
+            });
+          });
+        document
+          .querySelector(".blockBuddy-container #convert")
+          .addEventListener("click", async () => {
+            Swal.fire({
+              ...modalColors,
+              title: "BlockBuddy Convert",
+              confirmButtonText: "Convert",
+              showCancelButton: true,
+              html: "Insert the contents of your index.js file below",
+              input: "textarea",
+              showLoaderOnConfirm: true,
+              preConfirm: async (code) => {
+                const blockTypes = Object.keys(Blockly.Blocks);
+                const blockSchemas = blockTypes
+                  .map(getBlockMetadata)
+                  .filter(Boolean);
+
+                return (
+                  await axios.post(
+                    apiUrl + `/projects/${project._id}/blockbuddy/convert`,
+                    {
+                      code,
+                      availableBlocks: blockSchemas,
+                    },
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("disfuse-token"),
+                      },
+                    }
+                  )
+                ).data;
+              },
+            }).then((response) => {
+              if (!response.isConfirmed) return;
+
+              try {
+                Blockly.Xml.domToWorkspace(
+                  Blockly.utils.xml.textToDom(response.value.xml),
+                  workspace
+                );
+
+                Swal.fire({
+                  ...modalColors,
+                  title: "BlockBuddy Convert",
+                  text: response.value.completionText,
+                });
+              } catch (e) {
+                console.error(e);
+
+                Swal.fire({
+                  ...modalColors,
+                  title: "There was a problem",
+                  icon: "error",
+                  text: "There was a problem generating the blocks. Please try again.",
+                });
+              }
             });
           });
       },
@@ -344,8 +528,64 @@ export default function WorkspaceBar({
           </div>
         </>
       ),
-    });
+    }).then(() => localStorage.setItem("blockBuddy-discovered", true));
   }
+}
+
+function getBlockMetadata(blockType) {
+  const blockDef = Blockly.Blocks[blockType];
+  if (!blockDef) return null;
+
+  const workspace = Blockly.inject(document.createElement("div"), {
+    toolbox: null,
+  });
+  const block = workspace.newBlock(blockType);
+
+  const metadata = {
+    type: blockType,
+    inputs: {},
+    fields: {},
+    output: block.outputConnection?.check_ ?? null,
+    hasPreviousStatement: block.previousConnection !== null,
+    hasNextStatement: block.nextConnection !== null,
+    code: null,
+  };
+
+  for (const input of block.inputList) {
+    metadata.inputs[input.name] = {
+      inputType:
+        input.type === Blockly.INPUT_VALUE
+          ? "value"
+          : input.type === Blockly.NEXT_STATEMENT
+          ? "statement"
+          : "dummy",
+      check: input.connection?.check_ ?? null,
+    };
+  }
+
+  for (const input of block.inputList) {
+    for (const field of input.fieldRow) {
+      metadata.fields[field.name] = {
+        type: field.constructor.name,
+        value: field.getValue(),
+      };
+    }
+  }
+
+  try {
+    const generatedCode = javascriptGenerator.blockToCode(block);
+    metadata.code = Array.isArray(generatedCode)
+      ? generatedCode[0]
+      : generatedCode;
+  } catch (e) {
+    console.error(e);
+    metadata.code = "// Code generation failed";
+  }
+
+  block.dispose();
+  workspace.dispose();
+
+  return metadata;
 }
 
 function openWorkspaceTabs(workspace) {

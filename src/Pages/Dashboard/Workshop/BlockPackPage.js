@@ -112,7 +112,7 @@ export default function BlockPackPage() {
             previewWs.updateToolbox(getToolbox([pack]));
           });
       });
-  }, [packId]);
+  }, [packId, user]);
 
   return loading ? (
     <LoadingAnim />
