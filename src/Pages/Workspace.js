@@ -68,15 +68,15 @@ export default function Workspace() {
   const [activeUsers, setActiveUsers] = useState([]);
   const currentWorkspace = useRef({});
 
+  const socket = io(apiUrl, {
+    auth: { token: localStorage.getItem("disfuse-token") },
+  });
+
+  socket.on("connect", () =>
+    console.log(`Connected to WebSocket with ID: ${socket.id}`)
+  );
+
   useEffect(() => {
-    const socket = io(apiUrl, {
-      auth: { token: localStorage.getItem("disfuse-token") },
-    });
-
-    socket.on("connect", () =>
-      console.log(`Connected to WebSocket with ID: ${socket.id}`)
-    );
-
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -1177,6 +1177,10 @@ export default function Workspace() {
     });
 
     reloadContextMenus(project, currentWorkspace.current);
+
+    socket.disconnect();
+    socket.connect();
+    socket.emit("projectJoin", { projectId });
 
     if (p.workspaces[index].data?.length)
       Blockly.serialization.workspaces.load(
