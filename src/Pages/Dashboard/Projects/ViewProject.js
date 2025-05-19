@@ -86,7 +86,7 @@ export default function ViewProject() {
   return (
     <>
       <div className="previewWorkspaceNavbar">
-        <Link to={`/@${project.author?.username}/${project._id}`}>
+        <Link to={`/@${project.owner?.username}/${project._id}`}>
           <button style={{ fontSize: "17px" }}>
             <i className="fa-solid fa-arrow-left"></i>
             <p>Back to project info</p>

@@ -68,15 +68,15 @@ export default function Workspace() {
   const [activeUsers, setActiveUsers] = useState([]);
   const currentWorkspace = useRef({});
 
-  const socket = io(apiUrl, {
-    auth: { token: localStorage.getItem("disfuse-token") },
-  });
-
-  socket.on("connect", () =>
-    console.log(`Connected to WebSocket with ID: ${socket.id}`)
-  );
-
   useEffect(() => {
+    const socket = io(apiUrl, {
+      auth: { token: localStorage.getItem("disfuse-token") },
+    });
+
+    socket.on("connect", () =>
+      console.log(`Connected to WebSocket with ID: ${socket.id}`)
+    );
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
