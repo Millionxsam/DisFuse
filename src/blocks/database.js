@@ -272,7 +272,7 @@ createRestrictions(
       message: "You must specify the key",
     },
     {
-      type: "blockExists",
+      type: "blockNotFound",
       blockTypes: ["db_create"],
       message:
         "You must create a database first with the 'create database' block",
@@ -294,7 +294,7 @@ createRestrictions(
       message: "You must specify the value",
     },
     {
-      type: "blockExists",
+      type: "blockNotFound",
       blockTypes: ["db_create"],
       message:
         "You must create a database first with the 'create database' block",
@@ -306,7 +306,7 @@ createRestrictions(
   ["db_clear"],
   [
     {
-      type: "blockExists",
+      type: "blockNotFound",
       blockTypes: ["db_create"],
       message:
         "You must create a database first with the 'create database' block",

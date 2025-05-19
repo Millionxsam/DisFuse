@@ -88,7 +88,10 @@ export default function WorkspaceBar({
               <div className="dropdown" style={{ position: "relative" }}>
                 <button
                   className="dropdown-button"
-                  onClick={() => setFileDropdown(!fileDropdownOpen)}
+                  onClick={() => {
+                    setFileDropdown(!fileDropdownOpen);
+                    setUtilDropdown(false);
+                  }}
                 >
                   <i className="fa-solid fa-file"></i>
                   <div>File</div>
@@ -113,15 +116,33 @@ export default function WorkspaceBar({
                     display: fileDropdownOpen ? "flex" : "none",
                   }}
                 >
-                  <button id="save" onClick={() => setFileDropdown(false)}>
+                  <button
+                    id="save"
+                    onClick={() => {
+                      setFileDropdown(false);
+                      setUtilDropdown(false);
+                    }}
+                  >
                     <i className="fa-solid fa-floppy-disk"></i>
                     Save File
                   </button>
-                  <button id="load" onClick={() => setFileDropdown(false)}>
+                  <button
+                    id="load"
+                    onClick={() => {
+                      setFileDropdown(false);
+                      setUtilDropdown(false);
+                    }}
+                  >
                     <i className="fa-solid fa-upload"></i>
                     Load File
                   </button>
-                  <button onClick={() => setFileDropdown(false)} id="showCode">
+                  <button
+                    onClick={() => {
+                      setFileDropdown(false);
+                      setUtilDropdown(false);
+                    }}
+                    id="showCode"
+                  >
                     <i className="fa-brands fa-square-js"></i>
                     <div>Show Code</div>
                   </button>
@@ -130,7 +151,10 @@ export default function WorkspaceBar({
               <div className="dropdown" style={{ position: "relative" }}>
                 <button
                   className="dropdown-button"
-                  onClick={() => setUtilDropdown(!utilDropdownOpen)}
+                  onClick={() => {
+                    setUtilDropdown(!utilDropdownOpen);
+                    setFileDropdown(false);
+                  }}
                 >
                   <i className="fa-solid fa-wrench"></i>
                   <div>Utilities</div>
@@ -158,6 +182,7 @@ export default function WorkspaceBar({
                   <button
                     className="secrets"
                     onClick={() => {
+                      setFileDropdown(false);
                       setUtilDropdown(false);
                       showSecrets();
                     }}
@@ -165,7 +190,13 @@ export default function WorkspaceBar({
                     <i className="fa-solid fa-key"></i>
                     <div>Secrets</div>
                   </button>
-                  <button id="templates" onClick={() => setUtilDropdown(false)}>
+                  <button
+                    id="templates"
+                    onClick={() => {
+                      setFileDropdown(false);
+                      setUtilDropdown(false);
+                    }}
+                  >
                     <i className="fa-solid fa-shapes"></i>
                     <div>Templates</div>
                   </button>
@@ -214,7 +245,7 @@ export default function WorkspaceBar({
               )}
 
               <i className="indicator" id="blocks-indicator"></i>
-              <i className="indicator" id="autosave-indicator">
+              <i className="indicator" id="autosave-indicator" style={{ display:'none' }}>
                 Autosave
               </i>
               <button className="invite">

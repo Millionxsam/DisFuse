@@ -124,7 +124,7 @@ export default function Workspace() {
                                   <br />
                                   ${project.suspension.reason}`,
                       footer:
-                        '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord</a>',
+                        '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
                       showConfirmButton: false,
                       allowEscapeKey: false,
                       allowOutsideClick: false,
@@ -330,12 +330,12 @@ export default function Workspace() {
                       <br />
                       Reason: ${project.status?.reason || "None"}
                       `,
-                      showConfirmButton: false,
-                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord</a>`,
+                      showConfirmButton: true,
+                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
                       allowEscapeKey: false,
                       allowOutsideClick: false,
                       ...modalThemeColor(userCache.user),
-                    });
+                    }).then(() => { window.location.replace('/projects') ;});
                   }
 
                   [

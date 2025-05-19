@@ -20,6 +20,7 @@ export default function Sidebar() {
   useEffect(() => {
     if (userCache.user) {
       setUser(userCache.user);
+      setIsStaff(userCache?.isStaff ?? false);
     } else {
       axios
         .get(discordUrl + "/users/@me", {
@@ -30,15 +31,19 @@ export default function Sidebar() {
         .then(({ data }) => {
           axios.get(apiUrl + "/users").then(({ data: users }) => {
             const foundUser = users.find((u) => u.id === data.id);
-            setUser(foundUser);
+            setUser(foundUser)
             userCache.user = foundUser;
+
+            axios
+              .get(apiUrl + "/users/staff")
+              .then(({ data: staff }) => {
+                let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
+                setIsStaff(isStaff);
+                userCache.isStaff = isStaff;
+              });
           });
         });
     }
-
-    setTimeout(() => {
-      setIsStaff(userCache?.isStaff ?? false);
-    }, 2000); 
   }, []); 
 
   return (

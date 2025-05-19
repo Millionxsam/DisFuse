@@ -163,8 +163,6 @@ createRestrictions(
 
 createRestrictions(
   [
-    "misc_int_reply_mutator",
-    "misc_int_edit_mutator",
     "misc_int_deferReply",
     "misc_int_user",
     "misc_int_member",
@@ -352,6 +350,23 @@ Blockly.Blocks["misc_createcontainer"] = {
   },
 };
 
+Blockly.Blocks["misc_createcontainer_global"] = {
+  init: function () {
+    this.appendDummyInput().appendField(
+      "Create slash commands / context menus"
+    );
+    this.appendValueInput("guild")
+      .setCheck("String")
+      .appendField("test guild ID (blank = global commands and menus):");
+    this.appendStatementInput("code").setCheck([
+      "contextMenuCreate",
+      "slashCreate",
+    ]);
+    this.setInputsInline(false);
+    this.setColour("4192E9");
+  },
+};
+
 javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
   block,
   generator
@@ -370,6 +385,19 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
 
   return code;
 };
+
+javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
+  function (block, generator) {
+    let guild = generator.valueToCode(block, "guild", Order.ATOMIC);
+    let setCode = generator.statementToCode(block, "code");
+
+    let code =
+      guild && guild.length > 5
+        ? `client.guilds.cache.get(${guild})`
+        : "client.application";
+
+    return code + `.commands.set([${setCode}\n]);\n`;
+  };
 
 Blockly.Blocks["misc_everyone"] = {
   init: function () {

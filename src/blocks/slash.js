@@ -57,7 +57,10 @@ createMutatorBlock({
   nextStatement: ["slashCreate", "contextMenuCreate"],
 });
 
-javascriptGenerator.forBlock["slash_create_mutator"] = function (block, generator) {
+javascriptGenerator.forBlock["slash_create_mutator"] = function (
+  block,
+  generator
+) {
   var name = generator.valueToCode(block, "name", Order.ATOMIC);
   var dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
   var options = generator.statementToCode(block, "options");
@@ -363,13 +366,29 @@ javascriptGenerator.forBlock["slash_name"] = function (block, generator) {
 };
 
 createRestrictions(
+  ["misc_createcontainer_global"],
+  [
+    {
+      type: "blockAlreadyExists",
+      blockTypes: ["misc_createcontainer_global"],
+      message:
+        'It is recommended you use this block only once',
+    },
+  ]
+);
+
+createRestrictions(
   ["slash_create"],
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_createcontainer", "misc_createcontainer"],
+      blockTypes: [
+        "slash_createcontainer",
+        "misc_createcontainer",
+        "misc_createcontainer_global",
+      ],
       message:
-        'This block must be under "Set slash commands / context menus" block',
+        'This block must be under a "Create slash commands / context menus" block',
     },
     {
       type: "validator",

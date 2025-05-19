@@ -53,12 +53,23 @@ export function executeRestrictions(workspace) {
           if (!restriction.blockTypes.includes(block.getRootBlock().type))
             errors.push(restriction.message);
           break;
-        case "blockExists":
-          let passBE = false;
-          blocks.forEach((b) => {
-            if (restriction.blockTypes.includes(b.type)) passBE = true;
-          });
-          if (!passBE) errors.push(restriction.message);
+        case "blockAlreadyExists":
+          if (
+            blocks.some(
+              (b) =>
+                b.id !== block.id && restriction.blockTypes.includes(b.type)
+            )
+          )
+            errors.push(restriction.message);
+          break;
+        case "blockNotFound":
+          if (
+            !blocks.some(
+              (b) =>
+                b.id !== block.id && restriction.blockTypes.includes(b.type)
+            )
+          )
+            errors.push(restriction.message);
           break;
         case "validator":
           let passValidator = true;

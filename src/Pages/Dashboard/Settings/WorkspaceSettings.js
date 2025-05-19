@@ -136,6 +136,18 @@ export default function WorkspaceSettings() {
             id="workspace-toolboxBtIcons"
           />
         </div>
+        <div className="option">
+          <p>Show Autosave on toolbar:</p>
+          <Switch
+            defaultChecked={
+              user.settings?.workspace.toolboxAutosaveLabel ?? true
+            }
+            onChange={(e) => {
+              updateSetting("toolboxAutosaveLabel", e.currentTarget.checked);
+            }}
+            id="workspace-toolboxAutosaveLabel"
+          />
+        </div>
       </div>
     </>
   );

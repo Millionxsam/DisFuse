@@ -22,60 +22,65 @@ export default function PriProject({ project }) {
 
             {project.private ? <i className="fa-solid fa-lock" /> : ""}
 
-            {project?.owner?.id === userCache.user.id ? (
-              <i
-                className="fa-solid fa-pen-to-square"
-                style={{ cursor: "pointer", marginLeft: "auto" }}
-                onClick={() => editProject(project)}
-              />
-            ) : (
-              ""
-            )}
+            {project?.owner?.id === userCache?.user?.id &&
+              project?.suspension?.status !== true && (
+                <i
+                  className="fa-solid fa-pen-to-square"
+                  style={{ cursor: "pointer", marginLeft: "auto" }}
+                  onClick={() => editProject(project)}
+                />
+              )}
           </div>
         </div>
+
         <p>{project.description || "No description"}</p>
-        {project?.owner?.id === userCache.user.id ? (
-          <i className="info">
-            {project?.lastEdited && lastEdited && lastEdited.getTime() !== 0 ? (
-              <>
+
+        <div className="info">
+          {project?.owner?.id === userCache.user.id &&
+            project?.lastEdited &&
+            lastEdited &&
+            lastEdited.getTime() !== 0 && (
+              <p>
                 Edited{" "}
                 {ms(Date.now() - lastEdited.getTime(), {
                   long: true,
                 })}{" "}
                 ago
-              </>
-            ) : (
-              ""
+              </p>
             )}
-          </i>
-        ) : (
-          <i className="info">
-            {project?.owner?.id !== userCache.user.id ? (
-              <>
-                <i class="fa-solid fa-share-from-square"></i> Shared by{" "}
-                {project?.owner?.displayName}
-              </>
-            ) : (
-              ""
-            )}
-          </i>
-        )}
+
+          {project?.owner?.id !== userCache.user.id && (
+            <p>
+              <i className="fa-solid fa-share-from-square"></i> Shared by{" "}
+              {project?.owner?.displayName}
+            </p>
+          )}
+
+          {project?.suspension?.status === true && (
+            <p className="suspended">
+              Suspended,{" "}
+              <span onClick={() => openSuspendedReason(project)}>
+                check why
+              </span>
+            </p>
+          )}
+        </div>
+
         <div className="buttons">
           <button
             onClick={() =>
               (window.location = `/@${project.owner.username}/${project._id}/workspace`)
             }
+            disabled={project?.suspension?.status === true}
           >
             <i className="fa-solid fa-square-arrow-up-right"></i>
             Open
           </button>
-          {project?.owner?.id === userCache.user.id ? (
+          {project?.owner?.id === userCache.user.id && (
             <button onClick={() => deleteProject(project)} id="red">
               <i className="fa-solid fa-trash"></i>
               Delete
             </button>
-          ) : (
-            ""
           )}
         </div>
       </div>
@@ -248,4 +253,23 @@ function editProject(project) {
       )
       .then(() => window.location.reload());
   })();
+}
+
+function openSuspendedReason(project) {
+  if (project?.suspension?.status !== true) return;
+
+  Swal.fire({
+    ...modalThemeColor(userCache.user),
+    title: "Project Suspended",
+    icon: "error",
+    html: `This project was detected to break our terms of service and has automatically been suspended for the reason:
+      <br />
+      <br />
+      ${project.suspension.reason}`,
+    footer:
+      '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+    showConfirmButton: true,
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+  });
 }

@@ -2970,15 +2970,15 @@ export default function getToolbox(blockPacks = [], user) {
             contents: [
               {
                 kind: "label",
-                text: "Create a slash command first ↓",
-              },
-              {
-                kind: "label",
-                text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+                text: "Setup slash commands ↓",
               },
               {
                 kind: "block",
-                type: "misc_createcontainer",
+                type: "misc_createcontainer_global",
+              },
+              {
+                kind: "label",
+                text: "Add a slash command ↓",
               },
               {
                 kind: "block",
@@ -3740,15 +3740,15 @@ export default function getToolbox(blockPacks = [], user) {
             contents: [
               {
                 kind: "label",
-                text: "Create a context menu first ↓",
-              },
-              {
-                kind: "label",
-                text: "It is recommended that you put the block below inside the 'when the bot is logged in' event ↓",
+                text: "Setup context menus ↓",
               },
               {
                 kind: "block",
-                type: "misc_createcontainer",
+                type: "misc_createcontainer_global",
+              },
+              {
+                kind: "label",
+                text: "Add a context menu ↓",
               },
               {
                 kind: "block",

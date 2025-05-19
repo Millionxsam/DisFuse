@@ -35,18 +35,25 @@ export default async function autosave(
               <br />
               ${response.reason}`,
               footer:
-                '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord</a>',
+                '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
               showConfirmButton: false,
               allowEscapeKey: false,
               allowOutsideClick: false,
             });
           else if (response.error) return reject(new Error(response.error));
 
-          document.querySelector(
-            ".workspace-navbar #autosave-indicator"
-          ).innerHTML = `<i class="fa-solid fa-cloud"></i><div>
+          if (
+            userCache?.user?.settings?.workspace?.toolboxAutosaveLabel !== false
+          ) {
+            const autosaveIndicator = document.querySelector(
+              ".workspace-navbar #autosave-indicator"
+            );
+
+            autosaveIndicator.style.display = "flex";
+            autosaveIndicator.innerHTML = `<i class="fa-solid fa-cloud"></i><div>
               ${new Date().toLocaleTimeString([], { timeStyle: "short" })}
             </div>`;
+          }
 
           console.log("Autosaved");
           resolve(response);

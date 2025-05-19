@@ -477,7 +477,7 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["msg_reply", "msg_reply_rows", "msg_edit"],
+  ["msg_reply", "msg_reply_rows", "msg_edit", "msg_reply_mutator"],
   [
     {
       type: "hasHat",

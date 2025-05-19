@@ -23,7 +23,6 @@ export default function MyProjects() {
       setProjects(userCache.projects);
       setShown(userCache.projects);
       setLoading(false);
-      return;
     } else
       axios
         .get(discordUrl + "/users/@me", {
