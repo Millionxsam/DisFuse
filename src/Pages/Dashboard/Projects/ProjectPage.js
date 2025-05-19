@@ -245,7 +245,10 @@ export default function ProjectPage() {
           </div>
           <p>{project.description}</p>
         </div>
-        <div className="buttons">
+        <div
+          className="buttons"
+          style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
+        >
           <Link to={`/@${project.owner?.username}/${project._id}/view`}>
             <div className="darkBtn">
               <i className="fa-solid fa-eye"></i>

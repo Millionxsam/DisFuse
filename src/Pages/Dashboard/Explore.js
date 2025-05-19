@@ -8,44 +8,46 @@ import { userCache } from "../../cache.ts";
 const { apiUrl } = require("../../config/config.js");
 
 export default function Explore() {
-  const [projects, setProjects] = useState([]);
-  const [shown, setShown] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const [projects, setProjects] = useState([...(userCache?.explore ?? [])]);
+  const [shown, setShown] = useState([...(userCache?.explore ?? [])]);
+  const [isLoading, setLoading] = useState(projects.length === 0);
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
-    if (userCache.explore) {
-      setProjects(userCache.explore);
-      setShown(userCache.explore);
-      setLoading(false);
-      return;
-    } else
+    if (!userCache?.explore) {
       axios
-        .get(apiUrl + "/projects", {
+        .get(`${apiUrl}/projects`, {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
         })
         .then(({ data }) => {
-          let projects = data.sort((a, b) => b.likes.length - a.likes.length);
-
-          userCache.explore = projects;
-
-          setProjects(projects);
-          setShown(projects);
+          const sorted = data.sort((a, b) => b.likes.length - a.likes.length);
+          userCache.explore = sorted;
+          setProjects(sorted);
+          setShown(sorted);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching projects:", err);
           setLoading(false);
         });
+    }
   }, []);
 
-  function search() {
-    const query = document.querySelector("input.search").value;
+  useEffect(() => {
+    setPage(1);
+  }, [shown]);
 
-    setShown(
-      projects.filter(
-        (p) =>
-          p?.name?.toLowerCase().includes(query.toLowerCase()) ||
-          p?.description?.toLowerCase().includes(query.toLowerCase())
-      )
+  function search() {
+    const query = document.querySelector("input.search").value.toLowerCase();
+    const filtered = projects.filter(
+      (p) =>
+        p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query)
     );
+    setShown(filtered);
   }
 
   function sort() {
@@ -62,33 +64,35 @@ export default function Explore() {
       showCancelButton: true,
       confirmButtonText: "Sort",
       inputValidator: (value) => {
-        if (!value) {
-          return "You need to choose a sorting order!";
-        }
+        if (!value) return "You need to choose a sorting order!";
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        let sortedProjects = [...projects];
-
-        if (result.value === "oldest") {
-          sortedProjects.sort(
-            (a, b) => new Date(a.created) - new Date(b.created)
-          );
-        } else if (result.value === "newest") {
-          sortedProjects.sort(
-            (a, b) => new Date(b.created) - new Date(a.created)
-          );
-        } else if (result.value === "mostLiked") {
-          sortedProjects.sort((a, b) => b.likes.length - a.likes.length);
-        } else if (result.value === "mostCloned") {
-          sortedProjects.sort((a, b) => b.clones.length - a.clones.length);
+        let sorted = [...projects];
+        switch (result.value) {
+          case "oldest":
+            sorted.sort((a, b) => new Date(a.created) - new Date(b.created));
+            break;
+          default:
+          case "newest":
+            sorted.sort((a, b) => new Date(b.created) - new Date(a.created));
+            break;
+          case "mostLiked":
+            sorted.sort((a, b) => b.likes.length - a.likes.length);
+            break;
+          case "mostCloned":
+            sorted.sort((a, b) => b.clones.length - a.clones.length);
+            break;
         }
-
-        setShown(sortedProjects);
-        setProjects(sortedProjects);
+        setProjects(sorted);
+        setShown(sorted);
       }
     });
   }
+
+  const totalPages = Math.ceil(shown.length / pageSize);
+  const startIdx = (page - 1) * pageSize;
+  const displayed = shown.slice(startIdx, startIdx + pageSize);
 
   return (
     <div className="explore-container">
@@ -108,16 +112,33 @@ export default function Explore() {
       </div>
       <div className="exploration">
         <h1>Featured</h1>
-        {isLoading ? <LoadingAnim /> : ""}
+        {isLoading && <LoadingAnim />}
         <div className="content">
-          {shown.length > 0
-            ? shown.map((project, index) => (
-                <PubProject project={project} key={index} />
-              ))
-            : !isLoading
-            ? "No projects"
-            : ""}
+          {!isLoading && displayed.length === 0 && "No projects"}
+          {displayed.map((project, _) => (
+            <PubProject project={project} key={project._id} />
+          ))}
         </div>
+
+        {!isLoading && totalPages > 1 && (
+          <div className="pagination">
+            <button
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              disabled={page === 1}
+            >
+              Prev
+            </button>
+            <span>
+              Page {page} of {totalPages}
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+              disabled={page === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

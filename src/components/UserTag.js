@@ -5,38 +5,29 @@ import { userCache } from "../cache.ts";
 const { apiUrl } = require("../config/config");
 
 export default function UserTag({ user: u, userId }) {
-  const [user, setUser] = useState(typeof u === "object" ? u : {});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    let cancelled = false;
-
-    const fetchUser = async () => {
-      if (userId && userId.trim() !== "") {
-        if (
-          userCache.allUsers !== null &&
-          userCache.allUsers.some((i) => i.id === userId)
-        ) {
-          const cachedUser = userCache.allUsers.find((i) => i.id === userId);
-          if (!cancelled) setUser(cachedUser);
-        } else {
-          try {
-            const { data } = await axios.get(apiUrl + "/users/" + userId, {
-              headers: { Authorization: localStorage.getItem("disfuse-token") },
-            });
-            if (!cancelled) setUser(data);
-          } catch (err) {
-            console.error("failed to fetch user", err);
-          }
-        }
+    if (typeof u === "object" && "id" in u) {
+      setUser(u);
+    } else if (userId && userId.trim() !== "") {
+      if (
+        userCache.allUsers !== null &&
+        userCache.allUsers.some((i) => i.id === userId)
+      ) {
+        setUser(userCache.allUsers.find((i) => i.id === userId));
+      } else {
+        axios
+          .get(apiUrl + "/users/" + userId, {
+            headers: {
+              Authorization: localStorage.getItem("disfuse-token"),
+            },
+          })
+          .then((response) => setUser(response.data))
+          .catch(console.error);
       }
-    };
-
-    fetchUser();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [userId]);
+    }
+  }, [userId, u]);
 
   return (
     <div
@@ -47,6 +38,7 @@ export default function UserTag({ user: u, userId }) {
         src={user?.avatar}
         alt=""
         onError={(e) => {
+          e.preventDefault();
           e.target.onerror = null;
           e.target.src = "https://cdn.discordapp.com/embed/avatars/0.png";
         }}

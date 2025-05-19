@@ -115,7 +115,7 @@ export default function Home() {
               Custom & community-made blocks
             </div>
             <div className="hidden">
-              <i class="fa-solid fa-user-group"></i>
+              <i className="fa-solid fa-user-group"></i>
               Multi-user Collaboration
             </div>
             <div className="hidden">
@@ -148,7 +148,7 @@ export default function Home() {
             <div className="userReview hidden">
               <h1>izorc</h1>
               <p>
-                ⭐⭐⭐⭐⭐Disfuse is a very good platform to code your discord
+                ⭐⭐⭐⭐⭐ Disfuse is a very good platform to code your discord
                 bots. I'm getting good customer support and it has a great
                 userface. The management team actually listens to their
                 customers's suggestion.

@@ -119,7 +119,6 @@ export default function Comment({
       <div className="top">
         <UserTag user={author} />
 
-        
         <i>
           {new Date(comment.created).toLocaleString([], {
             dateStyle: "long",

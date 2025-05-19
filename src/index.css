@@ -93,6 +93,8 @@ button#red {
   background-color: #c42222;
 }
 
+a.disabled,
+a:disabled,
 button.disabled,
 button:disabled {
   pointer-events: none !important;
@@ -1408,6 +1410,14 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   flex-direction: column;
   gap: 1.7rem;
+}
+
+.exploration .pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .explore-container .exploration .content,
