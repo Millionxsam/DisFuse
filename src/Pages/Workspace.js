@@ -682,10 +682,11 @@ export default function Workspace() {
                       Blockly.Events.TRASHCAN_OPEN,
                       Blockly.Events.FINISHED_LOADING,
                       Blockly.Events.BLOCK_DRAG,
-                      "backpack_change",
                     ];
 
                     if (ignoredEvents.includes(e.type)) return;
+
+                    javascriptGenerator.init(workspace);
 
                     reloadContextMenus(project, currentWorkspace.current);
                     setBackpackStorage();
@@ -1180,12 +1181,18 @@ export default function Workspace() {
 
     reloadContextMenus(project, currentWorkspace.current);
 
-    if (p.workspaces[index].data?.length)
-      Blockly.serialization.workspaces.load(
-        JSON.parse(p.workspaces[index].data),
-        workspace
-      );
-    else workspace.clear();
+    Blockly.Events.disable();
+
+    try {
+      if (p.workspaces[index].data?.length)
+        Blockly.serialization.workspaces.load(
+          JSON.parse(p.workspaces[index].data),
+          workspace
+        );
+      else workspace.clear();
+    } finally {
+      Blockly.Events.enable();
+    }
   }
 
   function reloadContextMenus(project, currentWorkspace) {
