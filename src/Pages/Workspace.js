@@ -335,7 +335,9 @@ export default function Workspace() {
                       allowEscapeKey: false,
                       allowOutsideClick: false,
                       ...modalThemeColor(userCache.user),
-                    }).then(() => { window.location.replace('/projects') ;});
+                    }).then(() => {
+                      window.location.replace("/projects");
+                    });
                   }
 
                   [
@@ -1177,10 +1179,6 @@ export default function Workspace() {
     });
 
     reloadContextMenus(project, currentWorkspace.current);
-
-    socket.disconnect();
-    socket.connect();
-    socket.emit("projectJoin", { projectId });
 
     if (p.workspaces[index].data?.length)
       Blockly.serialization.workspaces.load(

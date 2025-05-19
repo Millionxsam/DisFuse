@@ -8,7 +8,7 @@ export default function UserTag({ user: u, userId }) {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    if (typeof u === "object" && "id" in u) {
+    if (u && typeof u === "object" && "id" in u) {
       setUser(u);
     } else if (userId && userId.trim() !== "") {
       if (
