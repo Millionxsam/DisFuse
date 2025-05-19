@@ -42,7 +42,7 @@ export default function Auth({ children }) {
 
     async function fetchData() {
       const now = Date.now();
-      if (now - lastFetchTime < 20000) return;
+      if (now - lastFetchTime < 20000) return setLoading(false);
 
       lastFetchTime = now;
 
@@ -65,19 +65,18 @@ export default function Auth({ children }) {
         setLoading(false);
       } catch (err) {
         console.error("Auth fetch error:", err);
-      }      
+      }
     }
 
     fetchData();
   }, [params]);
 
-  if (loading) {
+  if (loading)
     return (
       <div className="load-container">
         <LoadingAnim />
       </div>
     );
-  }
 
   return children;
 }
