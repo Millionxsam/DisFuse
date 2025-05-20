@@ -226,7 +226,13 @@ export default function WorkspaceBar({
                     }
                   >
                     {activeUsers.map((user) => (
-                      <img src={user.avatar} alt="" />
+                      <img
+                        src={
+                          user?.avatar ??
+                          "https://cdn.discordapp.com/embed/avatars/0.png"
+                        }
+                        alt=""
+                      />
                     ))}{" "}
                     {activeUsers.length} Active User
                     {activeUsers.length === 1 ? "" : "s"}
@@ -245,7 +251,11 @@ export default function WorkspaceBar({
               )}
 
               <i className="indicator" id="blocks-indicator"></i>
-              <i className="indicator" id="autosave-indicator" style={{ display:'none' }}>
+              <i
+                className="indicator"
+                id="autosave-indicator"
+                style={{ display: "none" }}
+              >
                 Autosave
               </i>
               <button className="invite">
