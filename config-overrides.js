@@ -12,7 +12,7 @@ module.exports = function override(config, env) {
 
   // Disable source maps in development for faster startup
   if (env === "development") {
-    config.devtool = false;
+    config.devtool = "cheap-module-source-map";
   }
 
   // Remove CRA's default source-map-loader and re-add excluding node_modules

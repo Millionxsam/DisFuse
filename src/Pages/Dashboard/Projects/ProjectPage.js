@@ -285,7 +285,7 @@ export default function ProjectPage() {
         <>
           <h1>Collaborators</h1>
           <ul className="collaborators">
-            {[project.owner.id, ...project.collaborators].map((id) => (
+            {[project.owner?.id, ...project.collaborators].map((id) => (
               <UserTag userId={id} />
             ))}
           </ul>

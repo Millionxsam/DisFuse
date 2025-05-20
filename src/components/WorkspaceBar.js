@@ -619,6 +619,8 @@ function getBlockMetadata(blockType) {
     }
   }
 
+  javascriptGenerator.init(workspace);
+
   try {
     const generatedCode = javascriptGenerator.blockToCode(block);
     metadata.code = Array.isArray(generatedCode)

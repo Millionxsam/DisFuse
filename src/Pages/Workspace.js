@@ -58,6 +58,16 @@ const requiredBlocks = [
   },
 ];
 
+console.warn = function (...args) {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes("CodeGenerator init was not called before blockToCode")
+  ) {
+    return;
+  }
+  console.warn.apply(console, args);
+};
+
 export default function Workspace() {
   let { projectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -107,10 +117,30 @@ export default function Workspace() {
 
               installedBlockPacks = responses.map((response) => response.data);
 
+              socket.on('disconnect', (reason) => {
+                console.log('Disconnected from socket, reason:', reason);
+              });
               socket.emit(
                 "projectJoin",
                 { projectId },
                 async (project, activeUsers) => {
+                  if (project?.error || activeUsers?.error) {
+                    socket.disconnect();
+
+                    let error = project?.error || activeUsers?.error;
+                    if (error === "You have already joined this project") {
+                      return Swal.fire({
+                        title: "Already in Project",
+                        icon: "info",
+                        text: "You're already part of this project from another tab or device.",
+                        confirmButtonText: "OK",
+                        ...modalThemeColor(userCache?.user),
+                      }).then(() => {
+                        window.location.replace("/projects");
+                      });
+                    }
+                  }
+
                   setProject(project);
                   setActiveUsers(activeUsers);
 
@@ -238,7 +268,7 @@ export default function Workspace() {
                   const customBlocks = [];
 
                   const owner = (
-                    await axios.get(apiUrl + `/users/${project.owner.id}`, {
+                    await axios.get(apiUrl + `/users/${project.owner?.id}`, {
                       headers: {
                         Authorization: localStorage.getItem("disfuse-token"),
                       },
@@ -515,12 +545,12 @@ export default function Workspace() {
                   }
 
                   if (
-                    project.owner.id !== user.id &&
+                    project.owner?.id !== user.id &&
                     !(project.collaborators || []).includes(user.id)
                   )
                     return (window.location = "/projects");
 
-                  if (project.owner.id !== user.id) {
+                  if (project.owner?.id !== user.id) {
                     document
                       .querySelector("button.invite")
                       .classList.add("disabled");

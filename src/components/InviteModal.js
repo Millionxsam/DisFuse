@@ -55,10 +55,10 @@ export default function InviteModal({ project, onSave }) {
           {collaborators.length ? (
             collaborators.map((u, index) => (
               <div>
-                <img src={u.avatar} alt="" />
+                <img src={u?.avatar} alt="" />
                 <div>
-                  <h2>{u.displayName}</h2>
-                  <p>@{u.username}</p>
+                  <h2>{u?.displayName}</h2>
+                  <p>@{u?.username}</p>
                 </div>
                 <i
                   onClick={() => removeUser(index)}

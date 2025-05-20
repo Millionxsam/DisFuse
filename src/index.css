@@ -166,6 +166,7 @@ input[type="number"]:hover {
   gap: 0.25vw;
   cursor: pointer;
   transition: all 0.2s ease;
+  max-width: 100%;
 }
 
 .userTag:hover {
@@ -179,7 +180,10 @@ input[type="number"]:hover {
 
 .userTag p {
   padding-right: 0.25rem;
+  margin: 0;
+  overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .underline-effect {
