@@ -142,6 +142,8 @@ export default function WorkshopWorkspace() {
                       ];
                       if (ignoredEvents.includes(e.type)) return;
 
+                      javascriptGenerator.init(workspace);
+
                       let blockList = workspace
                         .getAllBlocks(false)
                         .filter((b) => b.type === "main_blockcreator")

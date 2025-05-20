@@ -58,6 +58,16 @@ const requiredBlocks = [
   },
 ];
 
+console.warn = function (...args) {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes("CodeGenerator init was not called before blockToCode")
+  ) {
+    return;
+  }
+  console.warn.apply(console, args);
+};
+
 export default function Workspace() {
   let { projectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -107,28 +117,51 @@ export default function Workspace() {
 
               installedBlockPacks = responses.map((response) => response.data);
 
+              socket.on('disconnect', (reason) => {
+                console.log('Disconnected from socket, reason:', reason);
+              });
               socket.emit(
                 "projectJoin",
                 { projectId },
                 async (project, activeUsers) => {
+                  if (project?.error || activeUsers?.error) {
+                    socket.disconnect();
+
+                    let error = project?.error || activeUsers?.error;
+                    if (error === "You have already joined this project") {
+                      return Swal.fire({
+                        title: "Already in Project",
+                        icon: "info",
+                        text: "You're already part of this project from another tab or device.",
+                        confirmButtonText: "OK",
+                        ...modalThemeColor(userCache?.user),
+                      }).then(() => {
+                        window.location.replace("/projects");
+                      });
+                    }
+                  }
+
                   setProject(project);
                   setActiveUsers(activeUsers);
 
-                  if (project.suspension?.status)
+                  if (project?.suspension?.status) {
                     return Swal.fire({
-                      ...modalThemeColor(userCache.user),
                       title: "Project Suspended",
                       icon: "error",
-                      html: `This project was detected to break our terms of service and has automatically been suspended for the reason:
-                                  <br />
-                                  <br />
-                                  ${project.suspension.reason}`,
-                      footer:
-                        '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
-                      showConfirmButton: false,
+                      html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
+                      <br />
+                      <br />
+                      Reason: ${project.status?.reason || "None"}
+                      `,
+                      showConfirmButton: true,
+                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
                       allowEscapeKey: false,
                       allowOutsideClick: false,
+                      ...modalThemeColor(userCache.user),
+                    }).then(() => {
+                      window.location.replace("/projects");
                     });
+                  }
 
                   socket.on("projectJoin", ({ user }) => {
                     setActiveUsers([...activeUsers, user]);
@@ -235,7 +268,7 @@ export default function Workspace() {
                   const customBlocks = [];
 
                   const owner = (
-                    await axios.get(apiUrl + `/users/${project.owner.id}`, {
+                    await axios.get(apiUrl + `/users/${project.owner?.id}`, {
                       headers: {
                         Authorization: localStorage.getItem("disfuse-token"),
                       },
@@ -321,7 +354,7 @@ export default function Workspace() {
                     ".workspace-navbar .projectName p"
                   ).innerText = project.name;
 
-                  if (project.status?.suspended) {
+                  if (project?.suspension?.status) {
                     return Swal.fire({
                       title: "Project Suspended",
                       icon: "error",
@@ -512,12 +545,12 @@ export default function Workspace() {
                   }
 
                   if (
-                    project.owner.id !== user.id &&
+                    project.owner?.id !== user.id &&
                     !(project.collaborators || []).includes(user.id)
                   )
                     return (window.location = "/projects");
 
-                  if (project.owner.id !== user.id) {
+                  if (project.owner?.id !== user.id) {
                     document
                       .querySelector("button.invite")
                       .classList.add("disabled");
@@ -638,7 +671,9 @@ export default function Workspace() {
                       ).avatar;
                       ele.appendChild(avatar);
 
-                      ele.innerHTML = `<img src="${user?.avatar}" /> ${user?.displayName ?? 'someone'} is editing`;
+                      ele.innerHTML = `<img src="${user?.avatar}" /> ${
+                        user?.displayName ?? "someone"
+                      } is editing`;
 
                       var rect = blockEle.getBoundingClientRect();
 
@@ -799,74 +834,6 @@ export default function Workspace() {
                       fileInput.click();
                       fileInput.remove();
                     });
-
-                  // AI Generate button event (UNRELEASED)
-                  // document
-                  //   .querySelector("button#blockBuddy")
-                  //   .addEventListener("click", () => {
-                  //     Swal.fire({
-                  //       ...modalColors,
-                  //       title: "BlockBuddy",
-                  //       showCancelButton: false,
-                  //       showConfirmButton: false,
-                  //       customClass: {
-                  //         popup: "blockBuddy-popup",
-                  //       },
-                  //       html: `
-                  //       <div class="blockBuddy-options">
-                  //         <div id="complete">
-                  //           <h3><i class="fa-solid fa-cubes-stacked"></i> Complete</h3>
-                  //           <p>Describe a command or feature to make</p>
-                  //         </div>
-                  //         <div id="suggest">
-                  //           <h3><i class="fa-solid fa-list-check"></i> Suggest</h3>
-                  //           <p>Suggest changes for your bot</p>
-                  //         </div>
-                  //         <div id="create">
-                  //           <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Create</h3>
-                  //           <p>Describe custom blocks to create</p>
-                  //         </div>
-                  //       </div>
-                  //       `,
-                  //       didOpen: () => {
-                  //         document
-                  //           .getElementById("create")
-                  //           .addEventListener("click", () => {
-                  //             Swal.fire({
-                  //               ...modalColors,
-                  //               title: "Create Blocks",
-                  //               text: "Describe the blocks you want to create",
-                  //               input: "textarea",
-                  //               customClass: {
-                  //                 input: "customBlockPrompt",
-                  //               },
-                  //               confirmButtonText: "Generate",
-                  //               inputPlaceholder:
-                  //                 "A block that logs something in the console...",
-                  //               showCancelButton: true,
-                  //               showLoaderOnConfirm: true,
-                  //               preConfirm: async (value) => {
-                  //                 axios.post(
-                  //                   apiUrl +
-                  //                     `/users/${user.id}/blockBuddyBlocks`,
-                  //                   {
-                  //                     prompt: value,
-                  //                   },
-                  //                   {
-                  //                     headers: {
-                  //                       Authorization:
-                  //                         localStorage.getItem("disfuse-token"),
-                  //                     },
-                  //                   }
-                  //                 );
-                  //               },
-                  //             });
-                  //           });
-                  //       },
-                  //     }).then((result) => {
-                  //       if (!result.isConfirmed) return;
-                  //     });
-                  //   });
 
                   // Templates button event
                   document

@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import axios from "axios";
 import javascript, { javascriptGenerator } from "blockly/javascript";
 import getToolbox from "../config/toolbox.js";
+import LoadingAnim from "./LoadingAnim";
 
 const { apiUrl } = require("../config/config.js");
 
@@ -56,9 +57,14 @@ export default function WorkspaceBar({
     <>
       <dialog className="blockBuddy-suggestions">
         <h1>Suggestions</h1>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {blockbuddySuggestRes}
-        </ReactMarkdown>
+        {blockbuddySuggestRes === "" ? (
+          <LoadingAnim />
+        ) : (
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {blockbuddySuggestRes}
+          </ReactMarkdown>
+        )}
+
         <button
           onClick={() =>
             document.querySelector("dialog.blockBuddy-suggestions").close()
@@ -612,6 +618,8 @@ function getBlockMetadata(blockType) {
       };
     }
   }
+
+  javascriptGenerator.init(workspace);
 
   try {
     const generatedCode = javascriptGenerator.blockToCode(block);
