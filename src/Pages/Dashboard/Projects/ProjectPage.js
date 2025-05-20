@@ -169,20 +169,13 @@ export default function ProjectPage() {
 
       if (cancelled) return;
 
-      axios.patch(apiUrl + `/projects/${projectId}/clones`, null, {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      });
-
       axios
         .post(
-          apiUrl + `/projects`,
+          apiUrl + `/projects/${projectId}/clones`,
           {
             name,
             description: dsc,
             private: isPrivate,
-            data: project.data,
           },
           {
             headers: {
