@@ -104,7 +104,7 @@ export default function UserPage() {
           <div className="nametag">
             <img
               src={
-                user.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
+                user?.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
               }
               alt=""
               onError={(e) => {

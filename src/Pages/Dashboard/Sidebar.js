@@ -146,8 +146,8 @@ export default function Sidebar() {
               className="nametag"
               onClick={() => navigate(`/@${user.username}`)}
             >
-              <img src={user.avatar} alt="" />
-              <div>{user.username}</div>
+              <img src={user?.avatar} alt="" />
+              <div>{user?.username}</div>
               <i
                 onClick={logout}
                 className="fa-solid fa-arrow-right-from-bracket"

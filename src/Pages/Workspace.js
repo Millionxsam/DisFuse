@@ -638,7 +638,7 @@ export default function Workspace() {
                       ).avatar;
                       ele.appendChild(avatar);
 
-                      ele.innerHTML = `<img src="${user.avatar}" /> ${user.displayName} is editing`;
+                      ele.innerHTML = `<img src="${user?.avatar}" /> ${user?.displayName ?? 'someone'} is editing`;
 
                       var rect = blockEle.getBoundingClientRect();
 
