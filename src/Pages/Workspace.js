@@ -87,6 +87,10 @@ export default function Workspace() {
       console.log(`Connected to WebSocket with ID: ${socket.id}`)
     );
 
+    socket.on("disconnect", (reason) => {
+      console.log("Disconnected from socket, reason:", reason);
+    });
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -117,9 +121,6 @@ export default function Workspace() {
 
               installedBlockPacks = responses.map((response) => response.data);
 
-              socket.on('disconnect', (reason) => {
-                console.log('Disconnected from socket, reason:', reason);
-              });
               socket.emit(
                 "projectJoin",
                 { projectId },
@@ -138,7 +139,7 @@ export default function Workspace() {
                       }).then(() => {
                         window.location.replace("/projects");
                       });
-                    }
+                    } else console.error(error);
                   }
 
                   setProject(project);
@@ -1094,9 +1095,7 @@ export default function Workspace() {
     return () => {
       socket.disconnect();
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [projectId, searchParams, setSearchParams]);
 
   return (
     <>
