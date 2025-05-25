@@ -58,6 +58,8 @@ const requiredBlocks = [
   },
 ];
 
+const originalWarn = console.warn;
+
 console.warn = function (...args) {
   if (
     typeof args[0] === "string" &&
@@ -65,7 +67,8 @@ console.warn = function (...args) {
   ) {
     return;
   }
-  console.warn.apply(console, args);
+
+  originalWarn(...args);
 };
 
 export default function Workspace() {
