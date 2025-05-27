@@ -11,12 +11,14 @@
 Have you ever wanted to create your own Discord bot, but you're not very good at coding?
 With DisFuse, making Discord bots has never been easier. Use a scratch-like environment to make your own advanced bot with no coding knowledge at all!
 
-Official website: https://disfuse.xyz
+Official website: https://disfuse.xyz/
+Official docs: https://docs.disfuse.xyz/
 
 ## Features
 
 - Private/public projects
 - View, comment, like, clone, and add others' projects to your favorites
+- Multi-user collaboration
 - Built-in secrets (environment variables)
 - Advanced Discord features
 - Built-in and user-made templates
