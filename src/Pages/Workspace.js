@@ -1098,7 +1098,8 @@ export default function Workspace() {
     return () => {
       socket.disconnect();
     };
-  }, [projectId, searchParams, setSearchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
