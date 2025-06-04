@@ -44,6 +44,24 @@ javascriptGenerator.forBlock["emoji_getallinserver_value"] = function (
   return ["emoji", Order.NONE];
 };
 
+Blockly.Blocks["emoji_getguild"] = {
+  init: function () {
+    this.appendValueInput("emoji")
+      .setCheck("emoji")
+      .appendField("server of emoji:");
+    this.setOutput(true, "string");
+    this.setColour("DEB144");
+    this.setTooltip("Gets the server of an emoji.");
+    this.setHelpUrl("");
+  },
+};
+
+javascriptGenerator.forBlock["emoji_getguild"] = function (block, generator) {
+  var emoji = generator.valueToCode(block, "emoji", Order.ATOMIC);
+
+  return [`${emoji}.guild`, Order.NONE];
+};
+
 Blockly.Blocks["emoji_getname"] = {
   init: function () {
     this.appendValueInput("emoji")
