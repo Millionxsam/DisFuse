@@ -2901,6 +2901,10 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
+                type: "emoji_getguild",
+              },
+              {
+                kind: "block",
                 type: "emoji_getid",
               },
               {
