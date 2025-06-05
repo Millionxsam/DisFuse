@@ -396,7 +396,11 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
         ? `client.guilds.cache.get(${guild})`
         : "client.application";
 
-    return code + `.commands.set([${setCode}\n]);\n`;
+    code = code + `.commands.set([${setCode}\n]);\n`;
+
+    return `client.on("ready", () => {
+      ${code}  
+    });`;
   };
 
 Blockly.Blocks["misc_everyone"] = {
