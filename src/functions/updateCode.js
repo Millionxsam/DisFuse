@@ -157,6 +157,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""} ${
     topBlocksCode?.length > 0 ? "\n" + topBlocksCode + "\n" : ""
   }
+
+  ${blockImports.includes("discord-logs") ? "discord_logs();" : ""}
+
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
