@@ -104,8 +104,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     return;
   }
 
-  let code = javascriptGenerator.workspaceToCode(workspace),
-    blockImportCode = "";
+  let code = javascriptGenerator.workspaceToCode(workspace);
 
   const blockImports = packageDependenciesFromBlocks(blocks);
 
@@ -125,12 +124,14 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     .map((b) => javascriptGenerator.blockToCode(b))
     .join("\n");
 
-  blockImports.forEach((value) => {
-    let variable = fixPackageName(value);
-    blockImportCode += `const ${variable} = require("${value}");\n`;
-  });
+  const blockImportCode = blockImports
+    .map((value) => `const ${fixPackageName(value)} = require("${value}");`)
+    .join("\n");
 
   tokenAlertCheck();
+
+  console.log(blockImportCode);
+  console.log(blockImportCode.includes("const discord_logs ="));
 
   let mobilePresenceBot = false;
   let mainTokenBlock = blocks.find((b) => b.type === "main_token");
@@ -154,13 +155,13 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
-    ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""} ${
-    topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""
-  } ${
-    blocks.filter((b) => b.type.startsWith("events_")).length > 0
-      ? "\ndiscord_logs(client);"
-      : ""
-  }
+    ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""}
+    ${topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""} 
+    ${
+      blockImportCode.includes("const discord_logs =")
+        ? "\ndiscord_logs(client);"
+        : ""
+    }
   
     client.setMaxListeners(0);
         
