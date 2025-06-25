@@ -155,11 +155,9 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
       console.error(e);
     });
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""} ${
-    topBlocksCode?.length > 0 ? "\n" + topBlocksCode + "\n" : ""
-  }
-
-  ${blockImports.includes("discord-logs") ? "discord_logs();" : ""}
-
+    topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""
+  }${blockImports.includes("discord-logs") ? "\ndiscord_logs(client);" : ""}
+  
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
