@@ -156,7 +156,11 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     });
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""} ${
     topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""
-  }${blockImports.includes("discord-logs") ? "\ndiscord_logs(client);" : ""}
+  } ${
+    blocks.filter((b) => b.type.startsWith("events_")).length > 0
+      ? "\ndiscord_logs(client);"
+      : ""
+  }
   
     client.setMaxListeners(0);
         
