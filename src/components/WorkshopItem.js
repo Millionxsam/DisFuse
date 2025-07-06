@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import UserTag from "./UserTag";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { userCache } from "../cache.ts";
 
 const { apiUrl, discordUrl } = require("../config/config.js");
 
@@ -13,23 +12,22 @@ export default function WorkshopItem({ pack: p, editable = false }) {
 
   useEffect(() => {
     (async () => {
-      if (userCache.user !== null) {
-        setLocalUser(userCache.user);
-      } else {
-        const { data } = await axios.get(discordUrl + "/users/@me", {
+      const { data: discordUser } = await axios.get(discordUrl + "/users/@me", {
+        headers: {
+          Authorization: localStorage.getItem("disfuse-token"),
+        },
+      });
+
+      const { data: user } = await axios.get(
+        apiUrl + "/users/" + discordUser.id,
+        {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        });
+        }
+      );
 
-        const { data: user } = await axios.get(apiUrl + "/users/" + data.id, {
-          headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
-          },
-        });
-
-        setLocalUser(user);
-      }
+      setLocalUser(user);
 
       const { data } = await axios.get(apiUrl + `/users/${pack.owner}`, {
         headers: {
@@ -51,7 +49,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
       .then((res) => {
         setPack(res.data);
 
-        if (res.data.users.includes(user.id)) {
+        if (res.data.users.includes(localUser.id)) {
           Swal.fire({
             toast: true,
             text: "Added to your library",
