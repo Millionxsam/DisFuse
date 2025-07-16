@@ -6,13 +6,47 @@ Blockly.Blocks["main_token"] = {
   init: function () {
     this.appendValueInput("token")
       .setCheck("String")
-      .appendField("Log in to bot with the token:");
+      .appendField("Log in to bot with token:");
     this.appendDummyInput()
       .appendField("Mobile:")
       .appendField(new Blockly.FieldCheckbox("FALSE"), "mobile");
     this.setInputsInline(false);
     this.setColour("#FF6E33");
   },
+};
+
+javascriptGenerator.forBlock["main_token"] = function (block, generator) {
+  const token = generator.valueToCode(block, "token", Order.ATOMIC);
+
+  const code = `client.login(${token});\n`;
+  return code;
+};
+
+Blockly.Blocks["main_botStart"] = {
+  init: function () {
+    this.appendValueInput("token")
+      .setCheck("String")
+      .appendField("Start bot with token:");
+    this.appendDummyInput()
+      .appendField("Mobile:")
+      .appendField(new Blockly.FieldCheckbox("FALSE"), "mobile");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#FF6E33");
+  },
+};
+
+javascriptGenerator.forBlock["main_botStart"] = function (block, generator) {
+  const token = generator.valueToCode(block, "token", Order.ATOMIC);
+
+  const code = `
+  client = new Discord.Client({
+    intents: 3276799
+  });
+  
+  client.login(${token});\n`;
+  return code;
 };
 
 Blockly.Blocks["main_ready"] = {
@@ -146,13 +180,6 @@ javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {
   return [`client.${property}.cache.size`, Order.NONE];
 };
 
-javascriptGenerator.forBlock["main_token"] = function (block, generator) {
-  const token = generator.valueToCode(block, "token", Order.ATOMIC);
-
-  const code = `client.login(${token});\n`;
-  return code;
-};
-
 javascriptGenerator.forBlock["main_ready"] = function (block, generator) {
   var code_statement = generator.statementToCode(block, "event");
 
@@ -199,7 +226,7 @@ javascriptGenerator.forBlock["main_ping"] = function (block, generator) {
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["main_destroy"] = () => "client.destroy();";
+javascriptGenerator.forBlock["main_destroy"] = () => "await client.destroy();";
 
 createRestrictions(
   ["main_token"],

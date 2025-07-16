@@ -1329,6 +1329,14 @@ export default function getToolbox(blockPacks = [], user) {
             kind: "block",
             type: "main_destroy",
           },
+          {
+            kind: "label",
+            text: "ONLY use the block below if you shutdown the bot first ↓",
+          },
+          {
+            kind: "block",
+            type: "main_botStart",
+          },
         ],
       },
       {

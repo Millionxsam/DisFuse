@@ -33,12 +33,10 @@ import modalThemeColor from "../functions/modalThemeColor";
 import WorkspaceTabs from "../components/WorkspaceTabs";
 import WorkspaceBar from "../components/WorkspaceBar";
 import registerCustomBlocks from "../functions/registerCustomBlocks";
-import Renderer from "../functions/render";
 import getExportFiles from "../config/getExportFiles";
 import { userCache } from "../cache.ts";
 import InviteModal from "../components/InviteModal.js";
 import { io } from "socket.io-client";
-Blockly.blockRendering.register("custom_zelos", Renderer);
 
 require
   .context("../blocks", true, /\.js$/)
@@ -226,9 +224,7 @@ export default function Workspace() {
                     },
                   };
 
-                  let renderer =
-                    user.settings?.workspace.renderer ?? "custom_zelos";
-                  if (renderer === "zelos") renderer = "custom_zelos";
+                  let renderer = user.settings?.workspace.renderer ?? "zelos";
                   let sounds = user.settings?.workspace.sounds ?? true;
                   let showGrid = user.settings?.workspace.grid.enabled ?? true;
                   let snapToGrid = user.settings?.workspace.grid.snap ?? false;

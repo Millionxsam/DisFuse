@@ -140,7 +140,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
 
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
-    const client = new Discord.Client({
+    let client = new Discord.Client({
       intents: 3276799
     });
     ${
