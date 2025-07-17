@@ -5,11 +5,59 @@ import {
 } from "../../functions/createEvent.ts";
 
 createEventBlock({
+  id: "events_message_pinned",
+  text: "When a message is pinned",
+  colour: "#FF4F4F",
+  event: "messagePinned",
+  variables: "pinnedMessage",
+});
+
+createEventVariable({
+  id: "events_message_pinned_message",
+  text: "pinned message",
+  blockOutput: "pinnedMessage",
+  blockType: "message",
+  colour: "#FF4F4F",
+});
+
+createEventBlock({
+  id: "events_message_edited",
+  text: "When a message is edited",
+  colour: "#FF4F4F",
+  event: "messageContentEdited",
+  variables: ["messageEdited", "oldContent", "newContent"],
+});
+
+createEventVariable({
+  id: "events_message_edited_message",
+  text: "edited message",
+  blockOutput: "messageEdited",
+  blockType: "message",
+  colour: "#FF4F4F",
+});
+
+createEventVariable({
+  id: "events_message_edited_oldContent",
+  text: "old content",
+  blockOutput: "oldContent",
+  blockType: "String",
+  colour: "#FF4F4F",
+});
+
+createEventVariable({
+  id: "events_message_edited_newContent",
+  text: "new content",
+  blockOutput: "newContent",
+  blockType: "String",
+  colour: "#FF4F4F",
+});
+
+createEventBlock({
   id: "events_message_deleted",
   text: "When a message gets deleted",
   colour: "#FF4F4F",
   event: "messageDelete",
-  variables: "messageDeleted"
+  variables: "messageDeleted",
 });
 
 createEventVariable({
@@ -37,7 +85,7 @@ createEventBlock({
   colour: "#FF4F4F",
   event: "messageReactionAdd",
   variables: ["messageReaction", "user"],
-  blockOutput: "if (messageReaction.partial) await messageReaction.fetch();"
+  blockOutput: "if (messageReaction.partial) await messageReaction.fetch();",
 });
 
 createEventVariable({
@@ -73,7 +121,12 @@ createEventVariable({
 });
 
 createRestrictions(
-  ["events_message_ReactionAdd_user", "events_message_ReactionAdd_msg", "events_message_ReactionAdd_emoji", "events_message_ReactionAdd_count"],
+  [
+    "events_message_ReactionAdd_user",
+    "events_message_ReactionAdd_msg",
+    "events_message_ReactionAdd_emoji",
+    "events_message_ReactionAdd_count",
+  ],
   [
     {
       type: "hasHat",

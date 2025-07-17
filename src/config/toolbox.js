@@ -3905,8 +3905,8 @@ export default function getToolbox(blockPacks = [], user) {
                 type: "events_guild_memberAdd_server",
               },
               {
-                kind: "sep",
-                gap: "50",
+                kind: "label",
+                text: "------------------------------------------------",
               },
               {
                 kind: "block",
@@ -3921,8 +3921,8 @@ export default function getToolbox(blockPacks = [], user) {
                 type: "events_remove_guildmemberremove_server",
               },
               {
-                kind: "sep",
-                gap: "50",
+                kind: "label",
+                text: "------------------------------------------------",
               },
               {
                 kind: "block",
@@ -3956,8 +3956,8 @@ export default function getToolbox(blockPacks = [], user) {
                 type: "events_message_deleted_message",
               },
               {
-                kind: "sep",
-                gap: "50",
+                kind: "label",
+                text: "------------------------------------------------",
               },
               {
                 kind: "block",
@@ -3979,6 +3979,38 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "events_message_ReactionAdd_count",
               },
+              {
+                kind: "label",
+                text: "------------------------------------------------",
+              },
+              {
+                kind: "block",
+                type: "events_message_edited",
+              },
+              {
+                kind: "block",
+                type: "events_message_edited_message",
+              },
+              {
+                kind: "block",
+                type: "events_message_edited_oldContent",
+              },
+              {
+                kind: "block",
+                type: "events_message_edited_newContent",
+              },
+              {
+                kind: "label",
+                text: "------------------------------------------------",
+              },
+              {
+                kind: "block",
+                type: "events_message_pinned",
+              },
+              {
+                kind: "block",
+                type: "events_message_pinned_message",
+              },
             ],
           },
           {
@@ -3999,6 +4031,10 @@ export default function getToolbox(blockPacks = [], user) {
                 type: "events_members_addRole_role",
               },
               {
+                kind: "label",
+                text: "------------------------------------------------",
+              },
+              {
                 kind: "block",
                 type: "events_members_removeRole",
               },
@@ -4009,6 +4045,26 @@ export default function getToolbox(blockPacks = [], user) {
               {
                 kind: "block",
                 type: "events_members_removeRole_role",
+              },
+              {
+                kind: "label",
+                text: "------------------------------------------------",
+              },
+              {
+                kind: "block",
+                type: "events_members_nickname",
+              },
+              {
+                kind: "block",
+                type: "events_members_nickname_member",
+              },
+              {
+                kind: "block",
+                type: "events_members_nickname_oldNickname",
+              },
+              {
+                kind: "block",
+                type: "events_members_nickname_newNickname",
               },
             ],
           },

@@ -1,23 +1,39 @@
 import {
   createEventBlock,
   createEventVariable,
-} from '../../functions/createEvent.ts';
-import { createRestrictions } from '../../functions/restrictions';
+} from "../../functions/createEvent.ts";
+import { createRestrictions } from "../../functions/restrictions";
 
 createEventBlock({
-  id: "events_joins_guildmemberadd",
-  text: "When a member joins a server",
+  id: "events_members_nickname",
+  text: "When a member's nickname changes",
   colour: "#FF4F4F",
-  event: "guildMemberAdd",
-  variables: "joinedMember",
+  event: "guildMemberNicknameUpdate",
+  variables: ["member", "oldNickname", "newNickname"],
 });
 
 createEventVariable({
-  id: "events_joins_guildmemberadd_member",
-  text: "joining member",
+  id: "events_members_nickname_member",
+  text: "member whose nickname has changed",
   colour: "#FF4F4F",
   blockType: "member",
-  blockOutput: "joinedMember",
+  blockOutput: "member",
+});
+
+createEventVariable({
+  id: "events_members_nickname_oldNickname",
+  text: "old nickname",
+  colour: "#FF4F4F",
+  blockType: "String",
+  blockOutput: "oldNickname",
+});
+
+createEventVariable({
+  id: "events_members_nickname_newNickname",
+  text: "new nickname",
+  colour: "#FF4F4F",
+  blockType: "String",
+  blockOutput: "newNickname",
 });
 
 createEventBlock({
@@ -69,11 +85,11 @@ createEventVariable({
 });
 
 createRestrictions(
-  ['events_members_addRole_member', 'events_members_addRole_role'],
+  ["events_members_addRole_member", "events_members_addRole_role"],
   [
     {
-      type: 'hasHat',
-      blockTypes: ['events_members_addRole'],
+      type: "hasHat",
+      blockTypes: ["events_members_addRole"],
       message:
         "This block must be in the 'When a member is given a role' event",
     },
@@ -81,11 +97,11 @@ createRestrictions(
 );
 
 createRestrictions(
-  ['events_members_removeRole_member', 'events_members_removeRole_role'],
+  ["events_members_removeRole_member", "events_members_removeRole_role"],
   [
     {
-      type: 'hasHat',
-      blockTypes: ['events_members_removeRole'],
+      type: "hasHat",
+      blockTypes: ["events_members_removeRole"],
       message:
         "This block must be in the 'When a member is removed from a role' event",
     },
