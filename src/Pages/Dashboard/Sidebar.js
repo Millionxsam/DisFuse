@@ -31,20 +31,18 @@ export default function Sidebar() {
         .then(({ data }) => {
           axios.get(apiUrl + "/users").then(({ data: users }) => {
             const foundUser = users.find((u) => u.id === data.id);
-            setUser(foundUser)
+            setUser(foundUser);
             userCache.user = foundUser;
 
-            axios
-              .get(apiUrl + "/users/staff")
-              .then(({ data: staff }) => {
-                let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
-                setIsStaff(isStaff);
-                userCache.isStaff = isStaff;
-              });
+            axios.get(apiUrl + "/users/staff").then(({ data: staff }) => {
+              let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
+              setIsStaff(isStaff);
+              userCache.isStaff = isStaff;
+            });
           });
         });
     }
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -147,7 +145,7 @@ export default function Sidebar() {
               onClick={() => navigate(`/@${user.username}`)}
             >
               <img src={user?.avatar} alt="" />
-              <div>{user?.username}</div>
+              <div>{user?.displayName}</div>
               <i
                 onClick={logout}
                 className="fa-solid fa-arrow-right-from-bracket"
