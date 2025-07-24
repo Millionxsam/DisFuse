@@ -256,11 +256,16 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["avatar"],
-      check: (val) =>
-        /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$|^$/.test(
-          val
-        ),
-      message: "URL must be a valid URL",
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+      message: "Avatar URL must be a valid URL",
     },
   ]
 );
@@ -325,11 +330,16 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["avatar"],
-      check: (val) =>
-        /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$|^$/.test(
-          val
-        ),
-      message: "URL must be a valid URL",
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+      message: "Avatar URL must be a valid URL",
     },
   ]
 );
