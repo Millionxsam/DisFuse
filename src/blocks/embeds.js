@@ -119,10 +119,11 @@ createRestrictions(
       type: "validator",
       blockTypes: ["value"],
       check: (val) => {
+        if (val === "") return true;
         try {
           new URL(val);
           return true;
-        } catch (error) {
+        } catch (_) {
           return false;
         }
       },
@@ -158,19 +159,29 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["icon"],
-      check: (val) =>
-        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
-          val
-        ),
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
       message: "Icon must be a valid URL",
     },
     {
       type: "validator",
       blockTypes: ["url"],
-      check: (val) =>
-        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
-          val
-        ),
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
       message: "Click URL must be a valid URL",
     },
   ]
@@ -221,11 +232,16 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["value"],
-      check: (val) =>
-        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
-          val
-        ),
-      message: "URL must be a valid URL",
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+      message: "Image URL must be a valid URL",
     },
   ]
 );
@@ -249,11 +265,16 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["value"],
-      check: (val) =>
-        /^(https?:\/\/(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)?$/.test(
-          val
-        ),
-      message: "URL must be a valid URL",
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+      message: "Thumbnail URL must be a valid URL",
     },
   ]
 );

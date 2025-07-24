@@ -301,10 +301,15 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["invite"],
-      check: (val) =>
-        /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/.test(
-          val
-        ),
+      check: (val) => {
+        if (val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
       message: "You must include a valid URL",
     },
   ]
