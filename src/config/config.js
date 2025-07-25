@@ -5,5 +5,5 @@ export const apiUrl =
     : "https://api.disfuse.xyz";
 export const authUrl =
   window.location.hostname === "localhost"
-    ? "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=identify+guilds.join"
-    : "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=https%3A%2F%2Fdisfuse.xyz%2Fprojects&scope=identify+guilds.join";
+    ? "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprojects&scope=identify"
+    : "https://discord.com/oauth2/authorize?client_id=1234163623081934889&response_type=token&redirect_uri=https%3A%2F%2Fdisfuse.xyz%2Fprojects&scope=identify";
