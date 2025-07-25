@@ -262,7 +262,7 @@ function openSuspendedReason(project) {
     ...modalThemeColor(userCache.user),
     title: "Project Suspended",
     icon: "error",
-    html: `This project was detected to break our terms of service and has automatically been suspended for the reason:
+    html: `This project was detected to break our terms of service and has been suspended for the following reason:
       <br />
       <br />
       ${project.suspension.reason}`,

@@ -1343,7 +1343,7 @@ dialog {
   width: 100%;
 }
 
-.adminDashboard-container .inline {
+.adminDashboard-container .inline, .adminDashboard-container .tabs {
   display: flex;
   flex-direction: row;
   gap: 0.7rem;
