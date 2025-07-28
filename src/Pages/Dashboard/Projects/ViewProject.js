@@ -64,7 +64,9 @@ export default function ViewProject() {
           }
         );
 
-        setCurrentWorkspace(project.workspaces[0] || {});
+        setCurrentWorkspace(
+          project.workspaces?.length ? project.workspaces[0] : {}
+        );
 
         if (!project.workspaces?.length && project.data?.length > 0) {
           // for old projects that haven't migrated to subworkspaces yet
