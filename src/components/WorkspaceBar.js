@@ -26,6 +26,8 @@ export default function WorkspaceBar({
   const [fileDropdownOpen, setFileDropdown] = useState(false);
   const [utilDropdownOpen, setUtilDropdown] = useState(false);
 
+  // exportBlockInfo();
+
   function showSecrets() {
     if (project.owner?.id !== userCache.user.id) return;
     document.querySelector(".secrets-view").showModal();
@@ -577,6 +579,28 @@ export default function WorkspaceBar({
       ),
     }).then(() => localStorage.setItem("blockBuddy-discovered", true));
   }
+
+  // This function is used to export the information of all blocks to a json file.
+  // This file is used in the DisFuse bot in order to provide support in the Discord server using AI.
+
+  // function exportBlockInfo() {
+  //   const blockTypes = Object.keys(Blockly.Blocks);
+  //   const blockSchemas = blockTypes.map(getBlockMetadata).filter(Boolean);
+
+  //   const zip = new JSZip();
+  //   zip.file("f.json", JSON.stringify(blockSchemas));
+
+  //   zip.generateAsync({ type: "blob" }).then((content) => {
+  //     let url = window.URL.createObjectURL(content);
+  //     let anchor = document.createElement("a");
+  //     anchor.href = url;
+  //     anchor.download = `test.zip`;
+
+  //     anchor.click();
+
+  //     window.URL.revokeObjectURL(url);
+  //   });
+  // }
 }
 
 function getBlockMetadata(blockType) {

@@ -72,7 +72,10 @@ export default function ViewProject() {
             JSON.parse(project.data),
             workspace
           );
-        } else
+        } else if (
+          project.workspaces?.length > 0 &&
+          project.workspaces[0].data?.length > 0
+        )
           Blockly.serialization.workspaces.load(
             JSON.parse(project.workspaces[0].data),
             workspace
