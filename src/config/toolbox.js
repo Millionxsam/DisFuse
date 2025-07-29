@@ -4456,6 +4456,80 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
+                type: "canvas_setFont",
+                inputs: {
+                  FONT: {
+                    shadow: {
+                      type: "text",
+                      fields: {
+                        TEXT: "20px Arial",
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_fillText",
+                inputs: {
+                  TEXT: {
+                    shadow: {
+                      type: "text",
+                      fields: {
+                        TEXT: "Hello!",
+                      },
+                    },
+                  },
+                  X: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 10,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 50,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_strokeText",
+                inputs: {
+                  TEXT: {
+                    shadow: {
+                      type: "text",
+                      fields: {
+                        TEXT: "Outlined!",
+                      },
+                    },
+                  },
+                  X: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 10,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 90,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
                 type: "canvas_drawRectangle",
                 inputs: {
                   X: {
@@ -4474,7 +4548,7 @@ export default function getToolbox(blockPacks = [], user) {
                       },
                     },
                   },
-                  WIDTH: {
+                  W: {
                     shadow: {
                       type: "math_number",
                       fields: {
@@ -4482,7 +4556,7 @@ export default function getToolbox(blockPacks = [], user) {
                       },
                     },
                   },
-                  HEIGHT: {
+                  H: {
                     shadow: {
                       type: "math_number",
                       fields: {
@@ -4512,7 +4586,7 @@ export default function getToolbox(blockPacks = [], user) {
                       },
                     },
                   },
-                  RADIUS: {
+                  R: {
                     shadow: {
                       type: "math_number",
                       fields: {
@@ -4562,7 +4636,101 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
+                type: "canvas_drawImage",
+                inputs: {
+                  SRC: {
+                    shadow: {
+                      type: "text",
+                      fields: {
+                        TEXT: "https://www.disfuse.xyz/media/disfuse.png",
+                      },
+                    },
+                  },
+                  X: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  W: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 128,
+                      },
+                    },
+                  },
+                  H: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 128,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
                 type: "canvas_clearCanvas",
+              },
+              {
+                kind: "label",
+                text: "Transforms ↓",
+              },
+              {
+                kind: "block",
+                type: "canvas_save",
+              },
+              {
+                kind: "block",
+                type: "canvas_restore",
+              },
+              {
+                kind: "block",
+                type: "canvas_translate",
+                inputs: {
+                  DX: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                  DY: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_rotate",
+                inputs: {
+                  ANGLE: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 0.5,
+                      },
+                    },
+                  },
+                },
               },
             ],
           },
