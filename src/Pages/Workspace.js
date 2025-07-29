@@ -265,17 +265,7 @@ export default function Workspace() {
                     );
                   });
 
-                  const customBlocks = [];
-
-                  const owner = (
-                    await axios.get(apiUrl + `/users/${project.owner?.id}`, {
-                      headers: {
-                        Authorization: localStorage.getItem("disfuse-token"),
-                      },
-                    })
-                  ).data;
-
-                  customBlocks.push(...(owner.customBlocks || []));
+                  const customBlocks = [...(project.owner.customBlocks || [])];
 
                   for (let id of project.collaborators) {
                     const collaborator = (
@@ -295,13 +285,15 @@ export default function Workspace() {
                     );
 
                     customBlocks.forEach((customBlock) => {
-                      // eslint-disable-next-line no-new-func
-                      const genCode = new Function(
-                        "javascript",
-                        customBlock.javascriptGenerator
-                      );
+                      try {
+                        // eslint-disable-next-line no-new-func
+                        const genCode = new Function(
+                          "javascript",
+                          customBlock.javascriptGenerator
+                        );
 
-                      genCode(javascript);
+                        genCode(javascript);
+                      } catch {}
                     });
                   }
 

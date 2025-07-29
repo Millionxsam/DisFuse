@@ -8,6 +8,7 @@ import { DFTheme } from "../../../components/themes/DFTheme";
 import axios from "axios";
 import UserTag from "../../../components/UserTag";
 import WorkspaceTabs from "../../../components/WorkspaceTabs";
+import javascript from "blockly/javascript.js";
 const { apiUrl } = require("../../../config/config.js");
 
 export default function ViewProject() {
@@ -22,8 +23,40 @@ export default function ViewProject() {
       .get(apiUrl + `/projects/${projectId}`, {
         headers: { Authorization: localStorage.getItem("disfuse-token") },
       })
-      .then(({ data: project }) => {
+      .then(async ({ data: project }) => {
         setProject(project);
+
+        const customBlocks = [...(project.owner.customBlocks || [])];
+
+        for (let id of project.collaborators) {
+          const collaborator = (
+            await axios.get(apiUrl + `/users/${id}`, {
+              headers: {
+                Authorization: localStorage.getItem("disfuse-token"),
+              },
+            })
+          ).data;
+
+          customBlocks.push(...(collaborator.customBlocks || []));
+        }
+
+        if (customBlocks.length) {
+          Blockly.defineBlocksWithJsonArray(
+            customBlocks.map((b) => b.definition)
+          );
+
+          customBlocks.forEach((customBlock) => {
+            try {
+              // eslint-disable-next-line no-new-func
+              const genCode = new Function(
+                "javascript",
+                customBlock.javascriptGenerator
+              );
+
+              genCode(javascript);
+            } catch {}
+          });
+        }
 
         const workspace = Blockly.inject(
           document.getElementById("previewWorkspace"),
