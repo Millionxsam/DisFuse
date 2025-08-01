@@ -1071,6 +1071,22 @@ export default function Workspace() {
                         }
                       });
                     });
+
+                  if (localStorage.getItem("isNew") !== "false") {
+                    Swal.fire({
+                      title: "New to DisFuse?",
+                      html: `
+                      <p>Welcome! Here are some useful links to help you use DisFuse:</p>
+                      <ul style="text-align: left;">
+                        <li><a href="https://docs.disfuse.com" target="_blank">📘 DisFuse Documentation</a></li>
+                        <li><a href="https://www.youtube.com/watch?v=OOrapVifGoE" target="_blank">▶️ DisFuse's YouTube Channel</a></li>
+                        <li><a href="https://dsc.gg/disfuse" target="_blank">💬 Join the Discord Server</a></li>
+                      </ul>`,
+                      ...modalColors,
+                    }).then(() => {
+                      localStorage.setItem("isNew", "true");
+                    });
+                  }
                 }
               );
             })
