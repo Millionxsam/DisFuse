@@ -1,29 +1,43 @@
-import * as Blockly from 'blockly/core';
-import { javascriptGenerator, Order } from 'blockly/javascript';
+import * as Blockly from "blockly/core";
+import { javascriptGenerator, Order } from "blockly/javascript";
 
-Blockly.Blocks['colour_hex'] = {
-    init: function () {
-        var validator = function (newValue) {
-            let regExp = /^#([0-9a-fA-F]{3}){1,2}$/i;
-            if (regExp.test(newValue)) {
-                return newValue;
-            } else {
-                return null;
-            }
-        };
+Blockly.Blocks["colour_hex"] = {
+  init: function () {
+    var validator = function (newValue) {
+      let regExp = /^#([0-9a-fA-F]{3}){1,2}$/i;
+      if (regExp.test(newValue)) {
+        return newValue;
+      } else {
+        return null;
+      }
+    };
 
-        var field = new Blockly.FieldTextInput("#ffffff");
-        field.setValidator(validator);
+    var field = new Blockly.FieldTextInput("#ffffff");
+    field.setValidator(validator);
 
-        this.appendDummyInput()
-            .appendField('hex colour')
-            .appendField(field, 'colour');
-        this.setColour('#ad794c');
-        this.setOutput(true, 'Colour');
-    }
+    this.appendDummyInput()
+      .appendField("hex colour")
+      .appendField(field, "colour");
+    this.setColour("#ad794c");
+    this.setOutput(true, "Colour");
+  },
 };
 
-javascriptGenerator.forBlock['colour_hex'] = function (block) {
-    var colour = block.getFieldValue('colour');
-    return [colour, Order.ATOMIC];
+javascriptGenerator.forBlock["colour_hex"] = function (block) {
+  var colour = block.getFieldValue("colour");
+  return [colour, Order.ATOMIC];
+};
+
+Blockly.Blocks["colour_convert"] = {
+  init: function () {
+    this.appendValueInput("value");
+    this.appendDummyInput().appendField("to colour");
+    this.setColour("#ad794c");
+    this.setOutput(true, "Colour");
+  },
+};
+
+javascriptGenerator.forBlock["colour_convert"] = function (block, generator) {
+  var colour = generator.valueToCode(block, "value", Order.ATOMIC);
+  return [colour, Order.ATOMIC];
 };

@@ -3,7 +3,9 @@ const blockImports = {
   music_: "lyrics-finder",
   db_: "easy-json-database",
   game_: "discord-gamecord",
-  captcha_: "@haileybot/captcha-generator",
+  captcha_: {
+    code: `const { Captcha } = require("@ddededodediamante/captcha-generator");`,
+  },
   fetch_: "axios",
   time_: "ms",
   canvas_: "@napi-rs/canvas",

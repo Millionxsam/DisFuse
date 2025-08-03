@@ -222,8 +222,9 @@ javascriptGenerator.forBlock["canvas_drawImage"] = (block) => {
   const w = javascriptGenerator.valueToCode(block, "W", Order.ATOMIC) || null;
   const h = javascriptGenerator.valueToCode(block, "H", Order.ATOMIC) || null;
   return `{
-  const img = await _napi_rs_canvas.loadImage(${src});
-  ctx.drawImage(img, ${x}, ${y}${w ? `, ${w}, ${h}` : ""});
+  ctx.drawImage(await _napi_rs_canvas.loadImage(${src}), ${x}, ${y}${
+    w ? `, ${w}, ${h}` : ""
+  });
 }\n`;
 };
 
@@ -314,6 +315,31 @@ javascriptGenerator.forBlock["canvas_height"] = () => [
   Order.ATOMIC,
 ];
 
+Blockly.Blocks["canvas_addFile"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add canvas as file");
+    this.setPreviousStatement(true, "files");
+    this.setNextStatement(true, "files");
+    this.setColour("#4C9F70");
+  },
+};
+
+javascriptGenerator.forBlock["canvas_addFile"] = function () {
+  return `new Discord.AttachmentBuilder(canvas.toBuffer('image/png'), { name: "canvas.png" }),\n`;
+};
+
+Blockly.Blocks["canvas_asData"] = {
+  init: function () {
+    this.appendDummyInput().appendField("get canvas as data");
+    this.setOutput(true, ["String", "buffer"]);
+    this.setColour("#4C9F70");
+  },
+};
+
+javascriptGenerator.forBlock["canvas_asData"] = function () {
+  return ["canvas.toBuffer('image/png')", Order.NONE];
+};
+
 createRestrictions(
   [
     "canvas_setFillColor",
@@ -333,6 +359,8 @@ createRestrictions(
     "canvas_clearCanvas",
     "canvas_width",
     "canvas_height",
+    "canvas_addFile",
+    "canvas_asData"
   ],
   [
     {

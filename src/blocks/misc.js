@@ -24,6 +24,7 @@ createMutatorBlock({
       default: false,
       inputType: "value",
       inputLabel: "embed name(s):",
+      valueCheck: "String",
     },
     {
       name: "rows",
@@ -31,6 +32,15 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "rows:",
+      valueCheck: "rows",
+    },
+    {
+      name: "files",
+      label: "include files",
+      default: false,
+      inputType: "statement",
+      inputLabel: "files:",
+      valueCheck: "files",
     },
   ],
   previousStatement: "default",
@@ -45,10 +55,12 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
   const rows = generator.statementToCode(block, "rows");
+  const files = generator.statementToCode(block, "files");
 
   const options = [`content: ${content}`];
   if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
   if (rows) options.push(`components: [\n${rows}]`);
+  if (files) options.push(`files: [\n${files}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
 
   return `await interaction.reply({
@@ -71,6 +83,7 @@ createMutatorBlock({
       default: false,
       inputType: "value",
       inputLabel: "embed name(s):",
+      valueCheck: "String"
     },
     {
       name: "rows",
@@ -78,6 +91,15 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "rows:",
+      valueCheck: "rows"
+    },
+    {
+      name: "files",
+      label: "include files",
+      default: false,
+      inputType: "statement",
+      inputLabel: "files:",
+      valueCheck: "files",
     },
   ],
   previousStatement: "default",
@@ -91,10 +113,12 @@ javascript.javascriptGenerator.forBlock["misc_int_edit_mutator"] = function (
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   const rows = generator.statementToCode(block, "rows");
+  const files = generator.statementToCode(block, "files");
 
   const options = [`content: ${content}`];
   if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
   if (rows) options.push(`components: [\n${rows}]`);
+  if (files) options.push(`files: [\n${files}]`);
 
   return `await interaction.editReply({
   ${options.join(",\n  ")}
@@ -193,8 +217,6 @@ Blockly.Blocks["misc_addrow"] = {
     this.setPreviousStatement(true, "rows");
     this.setNextStatement(true, "rows");
     this.setColour("4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -327,6 +349,33 @@ createRestrictions(
         "slash_editreply",
       ],
       message: "This block must be under a block that has a 'rows' section",
+    },
+  ]
+);
+
+Blockly.Blocks["misc_addFile"] = {
+  init: function () {
+    this.appendValueInput("path")
+      .setCheck("String")
+      .appendField("Add file from path:");
+    this.setPreviousStatement(true, "files");
+    this.setNextStatement(true, "files");
+    this.setColour("4192E9");
+  },
+};
+
+javascriptGenerator.forBlock["misc_addFile"] = function (block, generator) {
+  var path = generator.valueToCode(block, "path", Order.ATOMIC);
+  return `new Discord.AttachmentBuilder(${path}),\n`;
+};
+
+createRestrictions(
+  ["fs_addFile"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["path"],
+      message: "You must specify a valid path",
     },
   ]
 );

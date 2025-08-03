@@ -1,6 +1,75 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { createMutatorBlock } from "../functions/createMutator.ts";
+
+createMutatorBlock({
+  id: "channel_send_mutator",
+  optionsBlockId: "channel_send_mutator_options",
+  colour: "#AD509B",
+  inputs: [
+    { type: "dummy", label: "Send a message" },
+    { type: "value", name: "channel", check: "channel", label: "in channel:" },
+    { type: "value", name: "content", check: "String", label: "content:" },
+  ],
+  mutatorFields: [
+    {
+      name: "embeds",
+      label: "include embeds",
+      default: false,
+      inputType: "value",
+      inputLabel: "embed name(s):",
+      valueCheck: "String",
+    },
+    {
+      name: "rows",
+      label: "include rows",
+      default: false,
+      inputType: "statement",
+      inputLabel: "rows:",
+      valueCheck: "rows",
+    },
+    {
+      name: "files",
+      label: "include files",
+      default: false,
+      inputType: "statement",
+      inputLabel: "files:",
+      valueCheck: "files",
+    },
+    {
+      name: "then",
+      label: 'include "then"',
+      default: false,
+      inputType: "statement",
+      inputLabel: "then:",
+      valueCheck: "default",
+    },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+});
+
+javascriptGenerator.forBlock["channel_send_mutator"] = function (block, generator) {
+  const channel =
+    generator.valueToCode(block, "channel", Order.ATOMIC) || "null";
+  const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
+  const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  const rows = generator.statementToCode(block, "rows");
+  const files = generator.statementToCode(block, "files");
+  const then = generator.statementToCode(block, "then");
+  let thenCode = ";\n";
+
+  const options = [`content: ${content}`];
+  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
+  if (rows) options.push(`components: [\n${rows}]`);
+  if (files) options.push(`files: [\n${files}]`);
+  if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
+
+  return `await ${channel}.send({
+  ${options.join(",\n  ")}
+})${thenCode}`;
+};
 
 Blockly.Blocks["channel_send"] = {
   init: function () {
@@ -956,7 +1025,7 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
 };
 
 createRestrictions(
-  ["channel_send", "channel_send_rows"],
+  ["channel_send", "channel_send_rows", "channel_send_mutator"],
   [
     {
       type: "notEmpty",

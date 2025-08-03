@@ -141,7 +141,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
               .appendField(f.inputLabel);
           } else {
             input = this.appendStatementInput(f.name)
-              .setCheck(null)
+              .setCheck(f.valueCheck || null)
               .appendField(f.inputLabel);
           }
 

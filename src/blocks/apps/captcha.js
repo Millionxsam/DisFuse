@@ -1,25 +1,171 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../../functions/restrictions";
+import { createMutatorBlock } from "../../functions/createMutator.ts";
 
 Blockly.Blocks["captcha_create"] = {
   init: function () {
-    this.appendDummyInput().appendField("Create new random captcha");
+    this.appendDummyInput().appendField("Create new captcha");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#0fbd8c");
   },
 };
 
-javascriptGenerator.forBlock["captcha_create"] = () => "let captcha = new _haileybot_captcha_generator();\n";
+javascriptGenerator.forBlock["captcha_create"] = () =>
+  "let captcha = new Captcha().generate('image/png');\n";
+
+createMutatorBlock({
+  id: "captcha_create_mutator",
+  optionsBlockId: "captcha_create_mutator_options",
+  colour: "#0fbd8c",
+  inputs: [{ type: "dummy", label: "Create new captcha" }],
+  mutatorFields: [
+    {
+      name: "width",
+      label: "include width",
+      inputType: "value",
+      inputLabel: "width:",
+      valueCheck: "Number",
+    },
+    {
+      name: "height",
+      label: "include height",
+      inputType: "value",
+      inputLabel: "height:",
+      valueCheck: "Number",
+    },
+    {
+      name: "backgroundcolor",
+      label: "include background color",
+      inputType: "value",
+      inputLabel: "background color:",
+      valueCheck: "Colour",
+    },
+    {
+      name: "textcolor",
+      label: "include text color",
+      inputType: "value",
+      inputLabel: "text color:",
+      valueCheck: "Colour",
+    },
+    {
+      name: "font",
+      label: "include font",
+      inputType: "value",
+      inputLabel: "font:",
+      valueCheck: "String",
+    },
+    {
+      name: "fontsize",
+      label: "include font size",
+      inputType: "value",
+      inputLabel: "font size:",
+      valueCheck: "Number",
+    },
+    {
+      name: "characters",
+      label: "include characters",
+      inputType: "value",
+      inputLabel: "characters:",
+      valueCheck: "String",
+    },
+    {
+      name: "charlength",
+      label: "include character length",
+      inputType: "value",
+      inputLabel: "amount of characters:",
+      valueCheck: "Number",
+    },
+    {
+      name: "noiselines",
+      label: "include noise lines",
+      inputType: "value",
+      inputLabel: "noise lines:",
+      valueCheck: "Number",
+    },
+    {
+      name: "noisedots",
+      label: "include noise dots",
+      inputType: "value",
+      inputLabel: "noise dots:",
+      valueCheck: "Number",
+    },
+    {
+      name: "noisecolor",
+      label: "include noise color",
+      inputType: "value",
+      inputLabel: "noise color:",
+      valueCheck: "Colour",
+    },
+  ],
+  nextStatement: "default",
+  previousStatement: "default",
+});
+
+javascriptGenerator.forBlock["captcha_create_mutator"] = function (
+  block,
+  generator
+) {
+  const width = generator.valueToCode(block, "width", Order.NONE);
+  const height = generator.valueToCode(block, "height", Order.NONE);
+  const backgroundColor = generator.valueToCode(
+    block,
+    "backgroundcolor",
+    Order.NONE
+  );
+  const textColor = generator.valueToCode(block, "textcolor", Order.NONE);
+  const font = generator.valueToCode(block, "font", Order.NONE);
+  const fontSize = generator.valueToCode(block, "fontsize", Order.NONE);
+  const characters = generator.valueToCode(block, "characters", Order.NONE);
+  const charLength = generator.valueToCode(block, "charlength", Order.NONE);
+  const noiseLines = generator.valueToCode(block, "noiselines", Order.NONE);
+  const noiseDots = generator.valueToCode(block, "noisedots", Order.NONE);
+  const noiseColor = generator.valueToCode(block, "noisecolor", Order.NONE);
+
+  const options = [
+    width && `width: ${width}`,
+    height && `height: ${height}`,
+    backgroundColor && `backgroundColor: ${backgroundColor}`,
+    textColor && `textColor: ${textColor}`,
+    font && `font: ${font}`,
+    fontSize && `fontSize: ${fontSize}`,
+    characters && `characters: ${characters}`,
+    charLength && `charLength: ${charLength}`,
+    noiseLines && `noiseLines: ${noiseLines}`,
+    noiseDots && `noiseDots: ${noiseDots}`,
+    noiseColor && `noiseColor: ${noiseColor}`,
+  ].filter(Boolean);
+
+  return `let captcha = new Captcha(${
+    options.length !== 0 ? '{' + options.join(',\n  ') + '}' : ''
+  }).generate('image/png');\n`;
+};
+
+Blockly.Blocks["captcha_addFile"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Add captcha as file");
+    this.setPreviousStatement(true, "files");
+    this.setNextStatement(true, "files");
+    this.setColour("#0fbd8c");
+  },
+};
+
+javascriptGenerator.forBlock["captcha_addFile"] = function () {
+  return `new Discord.AttachmentBuilder(captcha.buffer, { name: "captcha.png" }),\n`;
+};
 
 Blockly.Blocks["captcha_send"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("Send captcha to channel:");
-    this.appendValueInput("content").setCheck("String").appendField("with content:");
-    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
+    this.appendValueInput("content")
+      .setCheck("String")
+      .appendField("with content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setPreviousStatement(true, "default");
@@ -36,7 +182,7 @@ javascriptGenerator.forBlock["captcha_send"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   const code = `${channel}.send({
-  files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
+  files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
   components: [
@@ -51,8 +197,12 @@ Blockly.Blocks["captcha_reply"] = {
     this.appendValueInput("message")
       .setCheck("message")
       .appendField("Reply captcha to message:");
-    this.appendValueInput("content").setCheck("String").appendField("with content:");
-    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
+    this.appendValueInput("content")
+      .setCheck("String")
+      .appendField("with content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -68,7 +218,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `${message}.reply({
-  files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
+  files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
   components: [
@@ -79,8 +229,12 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
 Blockly.Blocks["captcha_replyInteraction"] = {
   init: function () {
     this.appendDummyInput().appendField("Reply captcha to interaction");
-    this.appendValueInput("content").setCheck("String").appendField("with content:");
-    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
+    this.appendValueInput("content")
+      .setCheck("String")
+      .appendField("with content:");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -92,14 +246,17 @@ Blockly.Blocks["captcha_replyInteraction"] = {
   },
 };
 
-javascriptGenerator.forBlock["captcha_replyInteraction"] = function (block, generator) {
+javascriptGenerator.forBlock["captcha_replyInteraction"] = function (
+  block,
+  generator
+) {
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   return `interaction.reply({
-  files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
+  files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
   ephemeral: ${value_ephemeral || "false"}
@@ -127,22 +284,25 @@ createRestrictions(
 
 Blockly.Blocks["captcha_value"] = {
   init: function () {
-    this.appendDummyInput().appendField("get value of captcha");
+    this.appendDummyInput().appendField("get text of captcha");
     this.setOutput(true, "String");
     this.setColour("#0fbd8c");
-    this.setTooltip("Gets the value of the captcha");
+    this.setTooltip("Gets the text of the captcha");
   },
 };
 
-javascriptGenerator.forBlock["captcha_value"] = () => ["captcha.value", Order.NONE];
+javascriptGenerator.forBlock["captcha_value"] = () => [
+  "captcha.text",
+  Order.NONE,
+];
 
 createRestrictions(
-  ["captcha_value", "captcha_send", "captcha_reply"],
+  ["captcha_value", "captcha_send", "captcha_reply", "captcha_addFile"],
   [
     {
       type: "hasBlockInParent",
-      blockTypes: ["captcha_create"],
-      message: 'This block must be used AFTER "create new random captcha" block',
+      blockTypes: ["captcha_create", "captcha_create_mutator"],
+      message: 'This block must be used AFTER a "Create new captcha" block',
     },
   ]
 );

@@ -155,10 +155,10 @@ javascriptGenerator.forBlock["javascript_consoleerror"] = function (
 
 Blockly.Blocks["javascript_consoleinput"] = {
   init: function () {
-    this.appendDummyInput().appendField("Ask for input:");
+    this.appendDummyInput().appendField("ask for input");
     this.appendValueInput("prompt")
       .setCheck(null)
-      .appendField("Prompt message");
+      .appendField("prompt message:");
     this.setOutput(true, "String");
     this.setColour("#c93a5e");
     this.setTooltip("Asks the user for input and returns it as text.");
@@ -263,12 +263,11 @@ javascriptGenerator.forBlock["javascript_trycatch_error"] = () => [
 
 Blockly.Blocks["javascript_exit"] = {
   init: function () {
-    this.appendDummyInput().appendField("Forcequit");
-    this.appendValueInput("code").setCheck("Number").appendField("Code:");
+    this.appendValueInput("code").setCheck("Number").appendField("Forcequit with code:");
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip(
-      "Forces the bot to quit instantly, possible data loss! !!USE THIS AT YOUR OWN RISK!!"
+      "Forces the bot to quit instantly, possible data loss!"
     );
     this.setHelpUrl("");
   },

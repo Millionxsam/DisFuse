@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { createMutatorBlock } from "../functions/createMutator.ts";
 
 Blockly.Blocks["msg_getone"] = {
   init: function () {
@@ -36,105 +37,51 @@ Blockly.Blocks["msg_received"] = {
   },
 };
 
-Blockly.Blocks["msg_reply_mutator_options"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("include embeds")
-      .appendField(new Blockly.FieldCheckbox("FALSE"), "embeds");
-    this.appendDummyInput()
-      .appendField("include rows")
-      .appendField(new Blockly.FieldCheckbox("FALSE"), "rows");
-    this.appendDummyInput()
-      .appendField('include "then" statement')
-      .appendField(new Blockly.FieldCheckbox("FALSE"), "then");
-    this.setColour("#336EFF");
-    this.setInputsInline(false);
-    this.contextMenu = false;
-  },
-};
-
-Blockly.Blocks["msg_reply_mutator"] = {
-  init() {
-    this.appendDummyInput().appendField("Reply to the message");
-    this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#336EFF");
-
-    this.setMutator(new Blockly.icons.MutatorIcon([], this));
-    this.settings_ = { embeds: false, rows: false };
-    this.update_();
-  },
-  mutationToDom() {
-    const mutation = document.createElement("mutation");
-    mutation.setAttribute("embed", this.settings_.embeds);
-    mutation.setAttribute("rows", this.settings_.rows);
-    mutation.setAttribute("then", this.settings_.then);
-    return mutation;
-  },
-  domToMutation(xml) {
-    this.settings_ = {
-      embeds: xml.getAttribute("embed") === "true",
-      rows: xml.getAttribute("rows") === "true",
-      then: xml.getAttribute("then") === "true",
-    };
-    this.update_();
-  },
-  decompose(ws) {
-    const block = ws.newBlock("msg_reply_mutator_options");
-    block.initSvg();
-    block.setFieldValue(this.settings_.embeds ? "TRUE" : "FALSE", "embeds");
-    block.setFieldValue(this.settings_.rows ? "TRUE" : "FALSE", "rows");
-    block.setFieldValue(this.settings_.then ? "TRUE" : "FALSE", "then");
-    return block;
-  },
-  compose(opt) {
-    this.settings_ = {
-      embeds: opt.getFieldValue("embeds") === "TRUE",
-      rows: opt.getFieldValue("rows") === "TRUE",
-      then: opt.getFieldValue("then") === "TRUE",
-    };
-    this.update_();
-  },
-  update_() {
-    const saved = {
-      embeds: this.getInput("embeds")?.connection?.targetConnection || null,
-      rows: this.getInput("rows")?.connection?.targetConnection || null,
-      then: this.getInput("then")?.connection?.targetConnection || null,
-    };
-
-    if (this.getInput("embeds")) this.removeInput("embeds");
-    if (this.getInput("rows")) this.removeInput("rows");
-    if (this.getInput("then")) this.removeInput("then");
-
-    if (this.settings_.embeds) {
-      const input = this.appendValueInput("embeds")
-        .setCheck("String")
-        .appendField("embed name(s):");
-
-      if (saved.embeds) input.connection.connect(saved.embeds);
-    }
-
-    if (this.settings_.rows) {
-      const input = this.appendStatementInput("rows")
-        .setCheck("rows")
-        .appendField("rows:");
-
-      if (saved.rows) input.connection.connect(saved.rows);
-    }
-
-    if (this.settings_.then) {
-      const input = this.appendStatementInput("then")
-        .setCheck("default")
-        .appendField("then:");
-
-      if (saved.then) input.connection.connect(saved.then);
-    }
-
-    this._saved = null;
-  },
-};
+createMutatorBlock({
+  id: "msg_reply_mutator",
+  optionsBlockId: "msg_reply_mutator_options",
+  colour: "#336EFF",
+  inputs: [
+    { type: "dummy", label: "Reply to the message" },
+    { type: "value", name: "content", check: "String", label: "content:" },
+  ],
+  mutatorFields: [
+    {
+      name: "embeds",
+      label: "include embeds",
+      default: false,
+      inputType: "value",
+      inputLabel: "embed name(s):",
+      valueCheck: "String",
+    },
+    {
+      name: "rows",
+      label: "include rows",
+      default: false,
+      inputType: "statement",
+      inputLabel: "rows:",
+      valueCheck: "rows",
+    },
+    {
+      name: "files",
+      label: "include files",
+      default: false,
+      inputType: "statement",
+      inputLabel: "files:",
+      valueCheck: "files",
+    },
+    {
+      name: "then",
+      label: 'include "then"',
+      default: false,
+      inputType: "statement",
+      inputLabel: "then:",
+      valueCheck: "default",
+    },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+});
 
 javascriptGenerator.forBlock["msg_reply_mutator"] = function (
   block,
@@ -144,16 +91,18 @@ javascriptGenerator.forBlock["msg_reply_mutator"] = function (
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
   const rows = generator.statementToCode(block, "rows");
+  const files = generator.statementToCode(block, "files");
   const then = generator.statementToCode(block, "then");
   let thenCode = ";\n";
 
   const options = [`content: ${content}`];
   if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
   if (rows) options.push(`components: [\n${rows}]`);
+  if (files) options.push(`files: [\n${files}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
   if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
 
-  return `message.reply({
+  return `await message.reply({
   ${options.join(",\n  ")}
 })${thenCode}`;
 };

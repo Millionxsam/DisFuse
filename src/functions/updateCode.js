@@ -125,13 +125,10 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     .join("\n");
 
   const blockImportCode = blockImports
-    .map((value) => `const ${fixPackageName(value)} = require("${value}");`)
+    .map((value) => value.code ? value.code : `const ${fixPackageName(value)} = require("${value}");`)
     .join("\n");
 
   tokenAlertCheck();
-
-  console.log(blockImportCode);
-  console.log(blockImportCode.includes("const discord_logs ="));
 
   let mobilePresenceBot = false;
   let mainTokenBlock = blocks.find((b) => b.type === "main_token");
@@ -162,7 +159,6 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
         ? "\ndiscord_logs(client);"
         : ""
     }
-  
     client.setMaxListeners(0);
         
     client.on("ready", async () => {

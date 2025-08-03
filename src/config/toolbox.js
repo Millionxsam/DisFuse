@@ -1004,6 +1004,10 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "block",
+            type: "colour_convert",
+          },
+          {
+            kind: "block",
             type: "colour_hex",
           },
           {
@@ -1547,6 +1551,13 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
+                type: "misc_addFile",
+                inputs: {
+                  path: { shadow: { type: "text" } },
+                },
+              },
+              {
+                kind: "block",
                 type: "misc_messageSent",
               },
               {
@@ -2079,7 +2090,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
-                type: "channel_send",
+                type: "channel_send_mutator",
                 inputs: {
                   content: {
                     shadow: {
@@ -2090,13 +2101,13 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
-                type: "channel_send_rows",
+                type: "misc_addrow",
+              },
+              {
+                kind: "block",
+                type: "misc_addFile",
                 inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
+                  path: { shadow: { type: "text" } },
                 },
               },
               {
@@ -3100,6 +3111,13 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
+                type: "misc_addFile",
+                inputs: {
+                  path: { shadow: { type: "text" } },
+                },
+              },
+              {
+                kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
                   content: { shadow: { type: "text" } },
@@ -3220,6 +3238,13 @@ export default function getToolbox(blockPacks = [], user) {
               {
                 kind: "block",
                 type: "misc_addrow",
+              },
+              {
+                kind: "block",
+                type: "misc_addFile",
+                inputs: {
+                  path: { shadow: { type: "text" } },
+                },
               },
               {
                 kind: "label",
@@ -4224,7 +4249,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
-                type: "captcha_create",
+                type: "captcha_create_mutator",
               },
               {
                 kind: "block",
@@ -4236,16 +4261,20 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
-                type: "captcha_send",
+                type: "channel_send_mutator",
+                extraState:
+                  '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
                 inputs: {
-                  content: { shadow: { type: "text" } },
-                },
-              },
-              {
-                kind: "block",
-                type: "captcha_reply",
-                inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                  files: {
+                    block: {
+                      type: "captcha_addFile",
+                    },
+                  },
                 },
               },
             ],
@@ -4401,6 +4430,32 @@ export default function getToolbox(blockPacks = [], user) {
                     },
                   },
                 },
+              },
+              {
+                kind: "label",
+                text: "Export the Canvas ↓",
+              },
+              {
+                kind: "block",
+                type: "channel_send_mutator",
+                extraState:
+                  '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
+                inputs: {
+                  content: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                  files: {
+                    block: {
+                      type: "canvas_addFile",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "canvas_asData",
               },
               {
                 kind: "label",
@@ -4861,10 +4916,28 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "block",
-            type: "fs_sendFile",
+            type: "channel_send_mutator",
+            extraState:
+              '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
             inputs: {
-              path: { shadow: { type: "text" } },
-              content: { shadow: { type: "text" } },
+              content: {
+                shadow: {
+                  type: "text",
+                },
+              },
+              files: {
+                block: {
+                  type: "misc_addFile",
+                  inputs: {
+                    path: {
+                      shadow: {
+                        type: "text",
+                        fields: { TEXT: "./file.txt" },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         ],
