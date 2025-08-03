@@ -1573,7 +1573,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "block",
-                type: "msg_edit",
+                type: "msg_edit_mutator",
                 inputs: {
                   message: {
                     shadow: {

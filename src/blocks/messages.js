@@ -107,6 +107,66 @@ javascriptGenerator.forBlock["msg_reply_mutator"] = function (
 })${thenCode}`;
 };
 
+createMutatorBlock({
+  id: "msg_edit_mutator",
+  optionsBlockId: "msg_edit_mutator_options",
+  colour: "#336EFF",
+  inputs: [
+    { type: "value", name: "message", check: "message", label: "Edit message:" },
+    { type: "value", name: "content", check: "String", label: "content:" },
+  ],
+  mutatorFields: [
+    {
+      name: "embeds",
+      label: "include embeds",
+      default: false,
+      inputType: "value",
+      inputLabel: "embed name(s):",
+      valueCheck: "String",
+    },
+    {
+      name: "rows",
+      label: "include rows",
+      default: false,
+      inputType: "statement",
+      inputLabel: "rows:",
+      valueCheck: "rows",
+    },
+    {
+      name: "files",
+      label: "include files",
+      default: false,
+      inputType: "statement",
+      inputLabel: "files:",
+      valueCheck: "files",
+    },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+});
+
+javascriptGenerator.forBlock["msg_edit_mutator"] = function (
+  block,
+  generator
+) {
+  const message = generator.valueToCode(block, "message", Order.NONE);
+  const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
+  const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+  const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
+  const rows = generator.statementToCode(block, "rows");
+  const files = generator.statementToCode(block, "files");
+
+  const options = [`content: ${content}`];
+  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
+  if (rows) options.push(`components: [\n${rows}]`);
+  if (files) options.push(`files: [\n${files}]`);
+  if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
+
+  return `await ${message}.edit({
+  ${options.join(",\n  ")}
+});\n`;
+};
+
 Blockly.Blocks["msg_msg"] = {
   init: function () {
     this.appendDummyInput().appendField("message received");
@@ -288,9 +348,8 @@ Blockly.Blocks["msg_edit"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip(
-      "Edit a message with content, embeds or rows (only works on messages the bot sent)"
+      "Edits a message sent by the bot."
     );
-    this.setHelpUrl("");
   },
 };
 
