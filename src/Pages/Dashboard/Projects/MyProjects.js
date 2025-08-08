@@ -50,7 +50,7 @@ export default function MyProjects() {
         });
   }, [token]);
 
-  function newProject() {
+  function newProject(data) {
     const Queue = Swal.mixin({
       progressSteps: ["1", "2", "3"],
       animation: false,
@@ -124,6 +124,7 @@ export default function MyProjects() {
             name,
             description: dsc,
             private: isPrivate,
+            data,
           },
           {
             headers: {
@@ -150,94 +151,8 @@ export default function MyProjects() {
       let reader = new FileReader();
 
       reader.onload = async (event) => {
-        let data = event.target.result;
-
-        const Queue = Swal.mixin({
-          progressSteps: ["1", "2", "3"],
-          animation: false,
-          confirmButtonText: "Next >",
-          ...modalColors,
-        });
-
-        let name, dsc, isPrivate;
-        let cancelled = false;
-
-        await Queue.fire({
-          title: "Enter your project name",
-          input: "text",
-          inputValue: file.name.replace(".df", ""),
-          showCancelButton: true,
-          inputPlaceholder: "DisFuse Project",
-          inputValidator: (i) => {
-            if (i.length < 2) return "The name must be at least 2 characters";
-            if (i.length > 18) return "The name must be below 18 characters";
-            return false;
-          },
-          animation: true,
-          currentProgressStep: 0,
-        }).then((result) => {
-          if (result.isConfirmed) name = result.value;
-          else cancelled = true;
-        });
-
-        if (cancelled) return;
-
-        await Queue.fire({
-          title: "Enter the description (optional)",
-          currentProgressStep: 1,
-          showCancelButton: true,
-          input: "text",
-          inputPlaceholder: "Some description",
-          inputValidator: (i) => {
-            if (i.length > 500)
-              return "The description must be below 500 characters";
-            else return false;
-          },
-        }).then((result) => {
-          if (result.isConfirmed) dsc = result.value;
-          else cancelled = true;
-        });
-
-        if (cancelled) return;
-
-        await Queue.fire({
-          title: "Project visibility",
-          currentProgressStep: 2,
-          showCancelButton: true,
-          confirmButtonText: "Create",
-          input: "select",
-          inputOptions: {
-            private: "Private",
-            public: "Public",
-          },
-        }).then((result) => {
-          if (result.isConfirmed) isPrivate = result.value === "private";
-          else cancelled = true;
-        });
-
-        if (cancelled) return;
-
-        axios
-          .post(
-            apiUrl + `/projects`,
-            {
-              name,
-              description: dsc,
-              private: isPrivate,
-              data,
-            },
-            {
-              headers: {
-                Authorization: token,
-              },
-            }
-          )
-          .then(
-            ({ data }) =>
-              (window.location = `/@${user.username}/${data._id}/workspace`)
-          );
+        newProject(event.target.result);
       };
-
       reader.readAsText(file);
     });
 

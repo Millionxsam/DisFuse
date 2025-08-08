@@ -186,9 +186,13 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_createcontainer", "misc_createcontainer"],
+      blockTypes: [
+        "slash_createcontainer",
+        "misc_createcontainer",
+        "misc_createcontainer_global",
+      ],
       message:
-        'This block must be under "Set slash commands / context menus" block',
+        'This block must be under a "Create slash commands / context menus" block',
     },
     {
       type: "validator",
