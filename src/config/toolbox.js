@@ -2979,6 +2979,99 @@ export default function getToolbox(blockPacks = [], user) {
               },
             ],
           },
+          {
+            kind: "category",
+            name: "Stickers",
+            colour: "#7a9e37",
+            contents: [
+              {
+                kind: "label",
+                text: "Get a sticker ↓",
+              },
+              {
+                kind: "block",
+                type: "sticker_getwith",
+                inputs: {
+                  equal: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
+                text: "Get all stickers ↓",
+              },
+              {
+                kind: "block",
+                type: "sticker_getallinserver",
+              },
+              {
+                kind: "block",
+                type: "sticker_getallinserver_value",
+              },
+              {
+                kind: "label",
+                text: "Information about a sticker ↓",
+              },
+              {
+                kind: "block",
+                type: "sticker_getname",
+              },
+              {
+                kind: "block",
+                type: "sticker_getguild",
+              },
+              {
+                kind: "block",
+                type: "sticker_getid",
+              },
+              {
+                kind: "block",
+                type: "sticker_geturl",
+              },
+              {
+                kind: "block",
+                type: "sticker_created",
+              },
+              {
+                kind: "label",
+                text: "Sticker actions ↓",
+              },
+              {
+                kind: "block",
+                type: "sticker_create",
+                inputs: {
+                  name: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                  file: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "sticker_delete",
+              },
+              {
+                kind: "block",
+                type: "sticker_setname",
+                inputs: {
+                  name: {
+                    shadow: {
+                      type: "text",
+                    },
+                  },
+                },
+              },
+            ],
+          },
         ],
       },
       {

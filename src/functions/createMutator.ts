@@ -1,32 +1,72 @@
 import * as Blockly from "blockly";
 
+/**
+ * Configuration for a basic input field in a block.
+ */
 interface BaseInput {
+  /** The type of input:
+   *  - "dummy": no connections, just a label
+   *  - "value": an input for a single value (expression)
+   *  - "statement": an input for a stack of blocks (statement list)
+   */
   type: "dummy" | "value" | "statement";
+  /** The internal name for the input (used in Blockly to identify it). */
   name?: string;
+  /** Allowed types for connected blocks.
+   *  Can be a single string type, an array of types, or null for no restriction.
+   */
   check?: string | string[] | null;
+  /** Optional text label shown next to the input. */
   label?: string;
+  /** Whether the input label should align to the right side of the block. */
   inputAlignRight?: boolean;
 }
 
+/**
+ * Configuration for a single field inside a mutator's options UI.
+ */
 interface MutatorFieldConfig {
+  /** Internal name of the field (used to store/retrieve its value). */
   name: string;
+  /** Label text shown in the mutator's options block. */
   label: string;
+  /** Default checked state for the field (true or false). */
   default?: boolean;
+  /** The type of input this field controls:
+   *  - "value": expression input
+   *  - "statement": statement input
+   */
   inputType: "value" | "statement";
+  /** The label shown next to the input when it is visible in the main block. */
   inputLabel: string;
+  /** Allowed types for blocks connected to this input. */
   valueCheck?: string;
 }
 
+/**
+ * Configuration for creating a block with a mutator.
+ */
 interface MutatorBlockConfig {
+  /** Unique ID for the main block. */
   id: string;
+  /** ID for the "options" block shown in the mutator workspace. */
   optionsBlockId: string;
+  /** Colour of the block (Blockly hex colour string). */
   colour: string;
+  /** Static inputs to add to the main block (optional). */
   inputs?: BaseInput[];
+  /** List of fields that can be toggled on/off via the mutator. */
   mutatorFields: MutatorFieldConfig[];
+  /** Type name allowed for blocks connected below this one (null for none). */
   nextStatement: string | null;
+  /** Type name allowed for blocks connected above this one (null for none). */
   previousStatement: string | null;
 }
 
+/**
+ * Creates a Blockly block with a mutator that can toggle inputs.
+ * @param config - Configuration for the block and its mutator.
+ */
 export function createMutatorBlock(config: MutatorBlockConfig) {
   const {
     id,

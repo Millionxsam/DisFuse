@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import beautify from "beautify";
+import { js as beautifyJs } from "js-beautify";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import hljs from "highlight.js/lib/core";
@@ -125,7 +125,11 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     .join("\n");
 
   const blockImportCode = blockImports
-    .map((value) => value.code ? value.code : `const ${fixPackageName(value)} = require("${value}");`)
+    .map((value) =>
+      value.code
+        ? value.code
+        : `const ${fixPackageName(value)} = require("${value}");`
+    )
     .join("\n");
 
   tokenAlertCheck();
@@ -166,8 +170,11 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     });
         
     ${code}`;
-
-  return beautify(js, { format: "js" });
+  return beautifyJs(js, {
+    indent_size: 2,
+    preserve_newlines: true,
+    max_preserve_newlines: 2,
+  });
 }
 
 export function getWholeProjectWorkspace(
