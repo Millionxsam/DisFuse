@@ -50,7 +50,7 @@ export default function MyProjects() {
         });
   }, [token]);
 
-  function newProject(data = "") {
+  function newProject(data) {
     const Queue = Swal.mixin({
       progressSteps: ["1", "2", "3"],
       animation: false,
@@ -124,7 +124,7 @@ export default function MyProjects() {
             name,
             description: dsc,
             private: isPrivate,
-            data,
+            ...(data != null && { data }),
           },
           {
             headers: {
@@ -268,7 +268,7 @@ export default function MyProjects() {
           <i className="fa-solid fa-cubes"></i> My Projects
         </div>
         <div className="buttons">
-          <button onClick={newProject}>
+          <button onClick={() => newProject()}>
             <i className="fa-solid fa-plus"></i> New Project
           </button>
           <button onClick={loadFile}>
