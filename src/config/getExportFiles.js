@@ -1,4 +1,3 @@
-import { json as beautifyJson } from 'js-beautify';
 import packageDependenciesFromBlocks from "../functions/packageDependenciesFromBlocks";
 
 export default function getExportFiles(dependencies = [], blocks = []) {
@@ -178,8 +177,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
     },
     {
       name: "package.json",
-      content: beautifyJson(
-        `{
+      content: `{
         "name": "disfuse-bot",
         "version": "1.0.0",
         "description": "A Discord bot created with DisFuse",
@@ -192,11 +190,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
         "keywords": [],
         "author": "",
         "license": "ISC"
-      }`, {
-        indent_size: 2,
-        preserve_newlines: true,
-        max_preserve_newlines: 2,
-      }),
+      }`,
     },
   ];
 }
