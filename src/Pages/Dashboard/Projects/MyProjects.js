@@ -50,7 +50,7 @@ export default function MyProjects() {
         });
   }, [token]);
 
-  function newProject(data) {
+  function newProject(data = "") {
     const Queue = Swal.mixin({
       progressSteps: ["1", "2", "3"],
       animation: false,
