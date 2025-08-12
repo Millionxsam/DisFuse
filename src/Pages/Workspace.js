@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import javascript, { javascriptGenerator } from "blockly/javascript";
 import { Backpack } from "@blockly/workspace-backpack";
-import { js as beautifyJs } from 'js-beautify';
+import { js as beautifyJs } from "js-beautify";
 
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
@@ -674,8 +674,7 @@ export default function Workspace() {
 
                       document.querySelector(
                         ".workspace-navbar #autosave-indicator"
-                      ).innerHTML =
-                        `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+                      ).innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
 
                       Swal.fire({
                         ...modalColors,
@@ -1076,7 +1075,11 @@ export default function Workspace() {
             currentTab={currentWorkspace.current}
             onClick={loadTab}
             project={project}
+            setProject={setProject}
             workspace={workspace}
+            setWorkspace={() => {
+              currentWorkspace.current = project.workspaces[0];
+            }}
             modalColors={modalColors}
             editable={project?.owner?.id === userCache.user?.id}
           />

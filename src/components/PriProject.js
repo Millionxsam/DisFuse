@@ -8,7 +8,10 @@ const modalColors = modalThemeColor(null, true);
 
 const { apiUrl } = require("../config/config.js");
 
-export default function PriProject({ project }) {
+export default function PriProject({
+  project,
+  onDelete = () => window.location.reload(),
+}) {
   if (!project) return;
 
   let lastEdited = new Date(project?.lastEdited);
@@ -77,7 +80,7 @@ export default function PriProject({ project }) {
             Open
           </button>
           {project?.owner?.id === userCache.user.id && (
-            <button onClick={() => deleteProject(project)} id="red">
+            <button onClick={() => deleteProject(project, onDelete)} id="red">
               <i className="fa-solid fa-trash"></i>
               Delete
             </button>
@@ -88,7 +91,7 @@ export default function PriProject({ project }) {
   );
 }
 
-function deleteProject(project) {
+function deleteProject(project, onDelete) {
   const token = localStorage.getItem("disfuse-token");
 
   Swal.fire({
@@ -111,7 +114,9 @@ function deleteProject(project) {
           Authorization: token,
         },
       })
-      .then(() => window.location.reload());
+      .then(() => {
+        onDelete();
+      });
   });
 }
 

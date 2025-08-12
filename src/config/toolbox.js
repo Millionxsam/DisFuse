@@ -24,6 +24,10 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "block",
+            type: "logic_equalsExactly",
+          },
+          {
+            kind: "block",
             type: "logic_operation",
           },
           {
@@ -1532,6 +1536,21 @@ export default function getToolbox(blockPacks = [], user) {
               },
               {
                 kind: "label",
+                text: "Information about a message ↓",
+              },
+              {
+                kind: "block",
+                type: "message_property",
+                inputs: {
+                  message: {
+                    shadow: {
+                      type: "msg_msg",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "label",
                 text: "Actions ↓",
               },
               {
@@ -1602,21 +1621,6 @@ export default function getToolbox(blockPacks = [], user) {
                       fields: {
                         TEXT: "😋",
                       },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "label",
-                text: "Information about a message ↓",
-              },
-              {
-                kind: "block",
-                type: "message_property",
-                inputs: {
-                  message: {
-                    shadow: {
-                      type: "msg_msg",
                     },
                   },
                 },
@@ -4890,7 +4894,7 @@ export default function getToolbox(blockPacks = [], user) {
       {
         kind: "category",
         name: "Comments",
-        colour: "#364759",
+        colour: "#476586",
         contents: [
           {
             kind: "label",
@@ -4898,7 +4902,7 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "block",
-            type: "comment_stack",
+            type: "comment_multiline",
           },
           {
             kind: "block",
@@ -4907,6 +4911,20 @@ export default function getToolbox(blockPacks = [], user) {
           {
             kind: "block",
             type: "comment_float",
+          },
+          {
+            kind: "block",
+            type: "comment_value",
+            inputs: {
+              VALUE: {
+                block: {
+                  type: "text",
+                  fields: {
+                    TEXT: "value",
+                  },
+                },
+              },
+            },
           },
           {
             kind: "block",

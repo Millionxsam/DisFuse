@@ -409,9 +409,10 @@ Blockly.Blocks["message_property"] = {
       .appendField(
         new Blockly.FieldDropdown([
           ["content", "content"],
+          ["files (list)", "attachments"],
           ["ID", "id"],
-          ["author as member", "member"],
-          ["author as user", "author"],
+          ["author (member)", "member"],
+          ["author (user)", "author"],
           ["channel", "channel"],
           ["server", "guild"],
           ["creation date", "createdAt"],
@@ -427,9 +428,8 @@ Blockly.Blocks["message_property"] = {
 
       switch (type) {
         case "content":
-          this.setOutput(true, "String");
-          break;
         case "id":
+        case "url":
           this.setOutput(true, "String");
           break;
         case "member":
@@ -447,8 +447,8 @@ Blockly.Blocks["message_property"] = {
         case "createdAt":
           this.setOutput(true, "date");
           break;
-        case "url":
-          this.setOutput(true, "String");
+        case "attachments":
+          this.setOutput(true, "Array");
           break;
         default:
           this.setOutput(true, null);
@@ -459,10 +459,17 @@ Blockly.Blocks["message_property"] = {
 };
 
 javascriptGenerator.forBlock["message_property"] = function (block, generator) {
-  var val_message = generator.valueToCode(block, "message", Order.ATOMIC);
-  var field_property = block.getFieldValue("property");
-  var code = `${val_message}.${field_property}`;
-  return [code, Order.NONE];
+  const message = generator.valueToCode(block, "message", Order.ATOMIC);
+  const property = block.getFieldValue("property");
+
+  let code;
+  if (property === "attachments") {
+    code = `[...${message}.attachments.values()]`;
+  } else {
+    code = `${message}.${property}`;
+  }
+
+  return [code, Order.ATOMIC];
 };
 
 createRestrictions(

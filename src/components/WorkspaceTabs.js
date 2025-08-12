@@ -8,7 +8,9 @@ export default function WorkspaceTabs({
   currentTab,
   onClick,
   project,
+  setProject,
   workspace,
+  setWorkspace,
   modalColors,
   editable = true,
 }) {
@@ -60,7 +62,9 @@ export default function WorkspaceTabs({
             },
           }
         )
-        .then(() => window.location.reload());
+        .then((res) => {
+          setProject(res.data);
+        });
     });
   }
 
@@ -79,14 +83,17 @@ export default function WorkspaceTabs({
 
       axios
         .delete(
-          apiUrl + `/projects/${project._id}/workspaces/${workspace._id}`,
+          `${apiUrl}/projects/${project._id}/workspaces/${workspace._id}`,
           {
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
-        .then(() => window.location.reload());
+        .then((res) => {
+          setProject(res.data);
+          setWorkspace();
+        });
     });
   }
 
@@ -108,7 +115,7 @@ export default function WorkspaceTabs({
 
       axios
         .post(
-          apiUrl + `/projects/${project._id}/workspaces`,
+          `${apiUrl}/projects/${project._id}/workspaces`,
           {
             name: response.value ?? workspace.name,
             data: workspace.data,
@@ -119,7 +126,9 @@ export default function WorkspaceTabs({
             },
           }
         )
-        .then(() => window.location.reload());
+        .then((res) => {
+          setProject(res.data);
+        });
     });
   }
 
@@ -141,17 +150,17 @@ export default function WorkspaceTabs({
 
       axios
         .post(
-          apiUrl + `/projects/${project._id}/workspaces`,
-          {
-            name: result.value,
-          },
+          `${apiUrl}/projects/${project._id}/workspaces`,
+          { name: result.value },
           {
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
           }
         )
-        .then(() => window.location.reload());
+        .then((res) => {
+          setProject(res.data);
+        });
     });
   }
 

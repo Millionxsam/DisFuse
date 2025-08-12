@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
@@ -17,6 +17,25 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
+  const fetchProjects = useCallback(
+    (userData = user) => {
+      axios
+        .get(apiUrl + `/users/${userData.id}/projects`, {
+          headers: { Authorization: localStorage.getItem("disfuse-token") },
+        })
+        .then(({ data: projects }) => {
+          let sortedProjects = projects.sort(
+            (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+          );
+          userCache.projects = sortedProjects;
+          setProjects(sortedProjects);
+          setShown(sortedProjects);
+          setLoading(false);
+        });
+    },
+    [user] 
+  );
+
   useEffect(() => {
     if (userCache.user && userCache.projects) {
       setUser(userCache.user);
@@ -30,25 +49,11 @@ export default function MyProjects() {
             Authorization: token,
           },
         })
-        .then(({ data }) => {
-          setUser(data);
-
-          axios
-            .get(apiUrl + `/users/${data.id}/projects`, {
-              headers: { Authorization: localStorage.getItem("disfuse-token") },
-            })
-            .then(({ data: p }) => {
-              let sortedProjects = p.sort(
-                (a, b) =>
-                  new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
-              );
-              userCache.projects = sortedProjects;
-              setProjects(sortedProjects);
-              setShown(sortedProjects);
-              setLoading(false);
-            });
+        .then(({ data: userData }) => {
+          setUser(userData);
+          fetchProjects(userData);
         });
-  }, [token]);
+  }, [token, fetchProjects]);
 
   function newProject(data) {
     const Queue = Swal.mixin({
@@ -288,16 +293,26 @@ export default function MyProjects() {
           className="search"
           style={{ marginLeft: "1rem" }}
         />
-        {isLoading ? <LoadingAnim /> : ""}
-        <div className="projects">
-          {shown.length > 0
-            ? shown.map((project, index) => (
-                <PriProject project={project} key={index} />
-              ))
-            : !isLoading
-            ? "No projects"
-            : ""}
-        </div>
+        {isLoading ? (
+          <LoadingAnim />
+        ) : (
+          <div className="projects">
+            {shown.length > 0
+              ? shown.map((project, index) => (
+                  <PriProject
+                    project={project}
+                    onDelete={() => {
+                      setLoading(true);
+                      fetchProjects();
+                    }}
+                    key={index}
+                  />
+                ))
+              : !isLoading
+              ? "No projects"
+              : ""}
+          </div>
+        )}
       </div>
     </>
   );
