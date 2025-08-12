@@ -277,7 +277,7 @@ export default function WorkspaceBar({
                 <div>Invite</div>
                 <i className="fa-solid fa-share"></i>
               </button>
-              {/* <button
+              <button
                 className="host"
                 style={{
                   borderRadius: "1.5rem .25rem .25rem 1.5rem",
@@ -290,13 +290,13 @@ export default function WorkspaceBar({
                 )}
                 <div>Host</div>
                 <i className="fa-solid fa-server"></i>
-              </button> */}
+              </button>
               <button
                 className="export"
-                // style={{
-                //   borderRadius: ".25rem 1.5rem 1.5rem .25rem",
-                //   marginLeft: "-.35vw",
-                // }}
+                style={{
+                  borderRadius: ".25rem 1.5rem 1.5rem .25rem",
+                  marginLeft: "-.35vw",
+                }}
               >
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>
