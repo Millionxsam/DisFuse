@@ -20,9 +20,6 @@ export default function Navbar() {
           <li key="staff" className="underline-effect">
             <Link to="/staff">Staff</Link>
           </li>
-          <li key="tos" className="underline-effect">
-            <Link to="/tos">TOS</Link>
-          </li>
         </ul>
         <ul className="buttons">
           <li key="discord" id="discord">

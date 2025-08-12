@@ -25,6 +25,8 @@ import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
 import WorkshopWorkspace from "./Pages/Dashboard/Workshop/WorkshopWorkspace";
 import "./index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import Footer from "./components/Footer";
 
 export default function App() {
   window.addEventListener("unhandledrejection", function (event) {
@@ -55,25 +57,37 @@ export default function App() {
   });
 
   setInterval(() => {
-    document
-      .querySelectorAll(".hidden")
-      .forEach((i) => {
-        if (i.dataset.observed !== true) {
-          intersection.observe(i);
-          i.dataset.observed = true;
-        }
-      });
+    document.querySelectorAll(".hidden").forEach((i) => {
+      if (i.dataset.observed !== true) {
+        intersection.observe(i);
+        i.dataset.observed = true;
+      }
+    });
   }, 500);
 
   return (
     <>
       <Routes>
-        <Route path="/" element={[<Navbar key={0} />, <Home key={1} />]} />
+        <Route
+          path="/"
+          element={[<Navbar key={0} />, <Home key={1} />, <Footer key={2} />]}
+        />
         <Route
           path="/staff"
-          element={[<Navbar key={0} />, <Staff key={1} />]}
+          element={[<Navbar key={0} />, <Staff key={1} />, <Footer key={2} />]}
         />
-        <Route path="/tos" element={[<Navbar key={0} />, <Tos key={1} />]} />
+        <Route
+          path="/tos"
+          element={[<Navbar key={0} />, <Tos key={1} />, <Footer key={2} />]}
+        />
+        <Route
+          path="/pp"
+          element={[
+            <Navbar key={0} />,
+            <PrivacyPolicy key={1} />,
+            <Footer key={2} />,
+          ]}
+        />
 
         <Route
           path="/dashboard/projects"

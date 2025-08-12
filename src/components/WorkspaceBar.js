@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as Blockly from "blockly";
 import UserTag from "./UserTag";
@@ -12,8 +12,10 @@ import axios from "axios";
 import javascript, { javascriptGenerator } from "blockly/javascript";
 import getToolbox from "../config/toolbox.js";
 import LoadingAnim from "./LoadingAnim";
+import { io } from "socket.io-client";
+import HostModal from "./HostModal.js";
 
-const { apiUrl } = require("../config/config.js");
+const { apiUrl, hostUrl } = require("../config/config.js");
 
 export default function WorkspaceBar({
   project,
@@ -25,6 +27,15 @@ export default function WorkspaceBar({
   const [blockbuddySuggestRes, setBlockbuddyRes] = useState("");
   const [fileDropdownOpen, setFileDropdown] = useState(false);
   const [utilDropdownOpen, setUtilDropdown] = useState(false);
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    setSocket(
+      io(hostUrl, {
+        auth: { token: localStorage.getItem("disfuse-token") },
+      })
+    );
+  }, []);
 
   // exportBlockInfo();
 
@@ -57,6 +68,7 @@ export default function WorkspaceBar({
 
   return (
     <>
+      <HostModal socket={socket} project={project} workspace={workspace} />
       <dialog className="blockBuddy-suggestions">
         <h1>Suggestions</h1>
         {blockbuddySuggestRes === "" ? (
@@ -214,11 +226,6 @@ export default function WorkspaceBar({
               <button id="blockbuddy" onClick={openBlockBuddy}>
                 <i className="fa-solid fa-robot"></i>
                 <div>BlockBuddy</div>
-                {localStorage.getItem("blockBuddy-discovered") ? (
-                  ""
-                ) : (
-                  <i className="newLabel noRotate">New</i>
-                )}
               </button>
             </ul>
           </div>
@@ -270,7 +277,27 @@ export default function WorkspaceBar({
                 <div>Invite</div>
                 <i className="fa-solid fa-share"></i>
               </button>
-              <button className="export">
+              <button
+                className="host"
+                style={{
+                  borderRadius: "1.5rem .25rem .25rem 1.5rem",
+                }}
+              >
+                {localStorage.getItem("hostingOnboardingComplete") ? (
+                  ""
+                ) : (
+                  <i className="newLabel noRotate">New</i>
+                )}
+                <div>Host</div>
+                <i className="fa-solid fa-server"></i>
+              </button>
+              <button
+                className="export"
+                style={{
+                  borderRadius: ".25rem 1.5rem 1.5rem .25rem",
+                  marginLeft: "-.35vw",
+                }}
+              >
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>
               </button>

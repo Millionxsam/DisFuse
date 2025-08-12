@@ -22,8 +22,8 @@ export default function Home() {
           setProjects(data.projects);
         })
         .catch(() => {
-          setUsers(228);
-          setProjects(348);
+          setUsers(694);
+          setProjects(843);
         });
     }
   }, [users, projects]);

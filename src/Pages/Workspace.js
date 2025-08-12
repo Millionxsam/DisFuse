@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import javascript, { javascriptGenerator } from "blockly/javascript";
 import { Backpack } from "@blockly/workspace-backpack";
-import { js as beautifyJs } from 'js-beautify';
+import { js as beautifyJs } from "js-beautify";
 
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
@@ -674,8 +674,7 @@ export default function Workspace() {
 
                       document.querySelector(
                         ".workspace-navbar #autosave-indicator"
-                      ).innerHTML =
-                        `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+                      ).innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
 
                       Swal.fire({
                         ...modalColors,
@@ -802,6 +801,36 @@ export default function Workspace() {
 
                         Blockly.serialization.workspaces.load(data, workspace);
                       });
+                    });
+
+                  document
+                    .querySelector("button.host")
+                    .addEventListener("click", () => {
+                      updateCode(
+                        workspace,
+                        project,
+                        currentWorkspace.current._id
+                      );
+
+                      if (
+                        localStorage.getItem("hostingOnboardingComplete") !==
+                        "true"
+                      ) {
+                        Swal.fire({
+                          ...modalColors,
+                          title: "Introducing DisFuse hosting!",
+                          icon: "info",
+                          footer:
+                            'By hosting your bot on DisFuse, you agree to our new <a target="_blank" rel="noopener" href="/tos">terms of service</a> for hosting',
+                          text: "You can run your bot on DisFuse to test features before deploying it to your own hosting service. The bot will go offline when you close this page, so this is not meant to be a permanent host.",
+                        }).then(() => {
+                          localStorage.setItem(
+                            "hostingOnboardingComplete",
+                            "true"
+                          );
+                          document.querySelector(".hostModal").showModal();
+                        });
+                      } else document.querySelector(".hostModal").showModal();
                     });
 
                   // Export button event

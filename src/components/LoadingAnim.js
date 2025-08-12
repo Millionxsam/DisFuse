@@ -1,8 +1,8 @@
-export default function LoadingAnim() {
+export default function LoadingAnim({ onlySpinner = false }) {
   return (
     <div className="loadingAnim">
       <div className="spinner"></div>
-      <div>Loading...</div>
+      {onlySpinner ? null : <div>Loading...</div>}
     </div>
   );
 }
