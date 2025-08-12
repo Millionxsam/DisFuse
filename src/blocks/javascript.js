@@ -14,7 +14,7 @@ Blockly.Blocks["javascript_raw"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Inserts raw javascript code.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -32,7 +32,7 @@ Blockly.Blocks["javascript_raw_float"] = {
       );
     this.setColour("#c93a5e");
     this.setTooltip("Inserts raw javascript code.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -48,7 +48,7 @@ Blockly.Blocks["javascript_raw_value"] = {
     this.setOutput(true, null);
     this.setColour("#c93a5e");
     this.setTooltip("Inserts raw javascript code.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -69,7 +69,7 @@ Blockly.Blocks["javascript_wait"] = {
     this.setTooltip(
       "Waits for an specific amount of time before continuing the code."
     );
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -85,7 +85,7 @@ Blockly.Blocks["javascript_consoleclear"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Clears the terminal console.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -100,7 +100,7 @@ Blockly.Blocks["javascript_consolelog"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Logs something to the console.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -120,7 +120,7 @@ Blockly.Blocks["javascript_consolewarn"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Logs a warn to the console.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -140,7 +140,7 @@ Blockly.Blocks["javascript_consoleerror"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Logs an error to the console.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -162,7 +162,7 @@ Blockly.Blocks["javascript_consoleinput"] = {
     this.setOutput(true, "String");
     this.setColour("#c93a5e");
     this.setTooltip("Asks the user for input and returns it as text.");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -199,7 +199,7 @@ Blockly.Blocks["javascript_trycatch"] = {
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -228,7 +228,7 @@ Blockly.Blocks["javascript_trycatchfinally"] = {
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -252,7 +252,7 @@ Blockly.Blocks["javascript_trycatch_error"] = {
     this.setColour("#c93a5e");
     this.setOutput(true, ["error", "String"]);
     this.setTooltip("");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -269,7 +269,7 @@ Blockly.Blocks["javascript_exit"] = {
     this.setTooltip(
       "Forces the bot to quit instantly, possible data loss!"
     );
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -287,7 +287,7 @@ Blockly.Blocks["javascript_typeof"] = {
     this.setTooltip(
       "Detects the type (string, number, object, etc.) that a value is"
     );
-    this.setHelpUrl("");
+    
   },
 };
 

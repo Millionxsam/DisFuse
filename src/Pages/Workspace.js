@@ -1105,7 +1105,11 @@ export default function Workspace() {
             currentTab={currentWorkspace.current}
             onClick={loadTab}
             project={project}
+            setProject={setProject}
             workspace={workspace}
+            setWorkspace={() => {
+              currentWorkspace.current = project.workspaces[0];
+            }}
             modalColors={modalColors}
             editable={project?.owner?.id === userCache.user?.id}
           />

@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript, { Order } from "blockly/javascript";
+import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["logic_switch"] = {
@@ -9,7 +9,6 @@ Blockly.Blocks["logic_switch"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("4192E9");
-    this.setHelpUrl("");
   },
 };
 
@@ -20,7 +19,6 @@ Blockly.Blocks["logic_case"] = {
     this.setPreviousStatement(true, "case");
     this.setNextStatement(true, "case");
     this.setColour("4192E9");
-    this.setHelpUrl("");
   },
 };
 
@@ -31,11 +29,10 @@ Blockly.Blocks["logic_default"] = {
     this.setPreviousStatement(true, "case");
     this.setNextStatement(true, "case");
     this.setColour("4192E9");
-    this.setHelpUrl("");
   },
 };
 
-javascript.javascriptGenerator.forBlock["logic_switch"] = function (
+javascriptGenerator.forBlock["logic_switch"] = function (
   block,
   generator
 ) {
@@ -48,7 +45,7 @@ javascript.javascriptGenerator.forBlock["logic_switch"] = function (
   return code;
 };
 
-javascript.javascriptGenerator.forBlock["logic_case"] = function (
+javascriptGenerator.forBlock["logic_case"] = function (
   block,
   generator
 ) {
@@ -62,7 +59,7 @@ javascript.javascriptGenerator.forBlock["logic_case"] = function (
   return code;
 };
 
-javascript.javascriptGenerator.forBlock["logic_default"] = function (
+javascriptGenerator.forBlock["logic_default"] = function (
   block,
   generator
 ) {
@@ -105,12 +102,12 @@ Blockly.Blocks["logic_nullishOperator"] = {
     this.setTooltip(
       "Returns the second value if the first value is nullish; otherwise, it returns the first value."
     );
-    this.setHelpUrl("");
+
     this.setOutput(true, null);
   },
 };
 
-javascript.javascriptGenerator.forBlock["logic_nullishOperator"] = function (
+javascriptGenerator.forBlock["logic_nullishOperator"] = function (
   block,
   generator
 ) {
@@ -138,3 +135,25 @@ createRestrictions(
     },
   ]
 );
+
+Blockly.Blocks["logic_equalsExactly"] = {
+  init: function () {
+    this.appendValueInput("A").setCheck(null);
+    this.appendValueInput("B").setCheck(null).appendField("exactly equals");
+    this.setInputsInline(true);
+    this.setColour("#4192E9");
+    this.setTooltip("tooltip");
+    this.setHelpUrl("url");
+    this.setOutput(true, "Boolean");
+  },
+};
+
+javascriptGenerator.forBlock["logic_equalsExactly"] = function (
+  block,
+  generator
+) {
+  var A = generator.valueToCode(block, "A", Order.ATOMIC);
+  var B = generator.valueToCode(block, "B", Order.ATOMIC);
+  var code = `${A} === ${B}`;
+  return [code, Order.NONE];
+};
