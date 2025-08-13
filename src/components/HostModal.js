@@ -14,6 +14,7 @@ export default function HostModal({ socket, workspace, project }) {
 
   useEffect(() => {
     if (!socket) return;
+    if (!project._id) return;
 
     socket.emit("botJoin", { projectId: project._id }, (status) =>
       setStatus(status)
