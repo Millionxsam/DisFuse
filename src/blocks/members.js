@@ -20,8 +20,6 @@ Blockly.Blocks["member_getone"] = {
       .appendField("on the server");
     this.setOutput(true, "member");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -40,8 +38,6 @@ Blockly.Blocks["member_getuser"] = {
       .appendField("equal to");
     this.setOutput(true, "user");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -54,8 +50,6 @@ Blockly.Blocks["member_foreach"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -64,8 +58,6 @@ Blockly.Blocks["member_member"] = {
     this.appendDummyInput().appendField("current member in loop");
     this.setOutput(true, "member");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -78,8 +70,6 @@ Blockly.Blocks["member_ban"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -93,8 +83,6 @@ Blockly.Blocks["member_timeout"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -107,8 +95,6 @@ Blockly.Blocks["member_kick"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -125,8 +111,6 @@ Blockly.Blocks["member_dm"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -144,8 +128,6 @@ Blockly.Blocks["member_dm_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -174,8 +156,6 @@ Blockly.Blocks["member_setnick"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -189,8 +169,6 @@ Blockly.Blocks["member_removetimeout"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -201,8 +179,6 @@ Blockly.Blocks["member_bannable"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -213,8 +189,6 @@ Blockly.Blocks["member_kickable"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -225,8 +199,6 @@ Blockly.Blocks["member_timedout"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -238,8 +210,6 @@ Blockly.Blocks["member_color"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -251,7 +221,6 @@ Blockly.Blocks["member_status"] = {
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
     this.setTooltip('Returns "idle", "online", "dnd", or "offline" as a text');
-    this.setHelpUrl("");
   },
 };
 
@@ -293,8 +262,6 @@ Blockly.Blocks["member_id"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -314,8 +281,6 @@ Blockly.Blocks["member_joined"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -327,8 +292,6 @@ Blockly.Blocks["member_nickname"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -340,8 +303,6 @@ Blockly.Blocks["member_user"] = {
     this.setInputsInline(true);
     this.setOutput(true, "user");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -353,8 +314,6 @@ Blockly.Blocks["member_username"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -366,8 +325,6 @@ Blockly.Blocks["member_avatarURL"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -379,8 +336,6 @@ Blockly.Blocks["member_bannerURL"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -391,8 +346,6 @@ Blockly.Blocks["member_bot"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -403,8 +356,6 @@ Blockly.Blocks["member_system"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -416,8 +367,6 @@ Blockly.Blocks["member_accent"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -437,8 +386,6 @@ Blockly.Blocks["member_created"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -624,10 +571,11 @@ javascriptGenerator.forBlock["member_getuser"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.users.cache${dropdown_type === "id"
+  var code = `client.users.cache${
+    dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(u => u.username == ${value_value})`
-    }`;
+  }`;
   return [code, Order.NONE];
 };
 
@@ -636,10 +584,11 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
-  var code = `${value_server}.members.cache${dropdown_type === "id"
+  var code = `${value_server}.members.cache${
+    dropdown_type === "id"
       ? `.get(${value_value})`
       : `.find(m => m.username == ${value_value})`
-    }`;
+  }`;
   return [code, Order.NONE];
 };
 
@@ -654,8 +603,6 @@ Blockly.Blocks["member_hasPermission"] = {
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

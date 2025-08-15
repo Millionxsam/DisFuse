@@ -27,7 +27,6 @@ Blockly.Blocks["poll_create"] = {
     this.setNextStatement(true, "default");
     this.setColour("#656b75");
     this.setTooltip("Creates a new Discord poll.");
-    this.setHelpUrl("");
   },
 };
 
@@ -81,7 +80,6 @@ Blockly.Blocks["poll_choice"] = {
     this.setNextStatement(true, "pollChoicesBlock");
     this.setColour("#656b75");
     this.setTooltip("Creates a choice for a poll.");
-    this.setHelpUrl("");
   },
 };
 
@@ -129,8 +127,6 @@ Blockly.Blocks["poll_sendchannel"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#656b75");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -166,7 +162,6 @@ Blockly.Blocks["poll_whenvoteadded"] = {
     this.setTooltip(
       "Runs the code inside when a vote is added to any poll the bot can access to."
     );
-    this.setHelpUrl("");
   },
 };
 
@@ -187,7 +182,6 @@ Blockly.Blocks["poll_whenvoteaddedvotetext"] = {
     this.setColour("#656b75");
     this.setOutput(true, "String");
     this.setTooltip("The text of the vote.");
-    this.setHelpUrl("");
   },
 };
 
@@ -202,7 +196,6 @@ Blockly.Blocks["poll_whenvoteaddedvoteemoji"] = {
     this.setColour("#656b75");
     this.setOutput(true, ["String", "emoji"]);
     this.setTooltip("The emoji of the vote.");
-    this.setHelpUrl("");
   },
 };
 
@@ -217,7 +210,6 @@ Blockly.Blocks["poll_whenvoteaddedvoteuser"] = {
     this.setColour("#656b75");
     this.setOutput(true, "user");
     this.setTooltip("The user that added the vote to the poll.");
-    this.setHelpUrl("");
   },
 };
 

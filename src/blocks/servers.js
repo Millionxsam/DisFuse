@@ -19,8 +19,6 @@ Blockly.Blocks["server_getone"] = {
     this.setInputsInline(true);
     this.setOutput(true, "server");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -31,8 +29,6 @@ Blockly.Blocks["server_getall"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -41,8 +37,6 @@ Blockly.Blocks["server_guild"] = {
     this.appendDummyInput().appendField("current server in the loop");
     this.setOutput(true, "server");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -54,8 +48,6 @@ Blockly.Blocks["server_name"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -67,8 +59,6 @@ Blockly.Blocks["server_membercount"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Number");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -80,8 +70,6 @@ Blockly.Blocks["server_id"] = {
     this.setInputsInline(true);
     this.setOutput(true, ["String", "Number"]);
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -93,8 +81,6 @@ Blockly.Blocks["server_banner"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -106,8 +92,6 @@ Blockly.Blocks["server_icon"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -119,8 +103,6 @@ Blockly.Blocks["server_ownerid"] = {
     this.setInputsInline(true);
     this.setOutput(true, ["String", "Number"]);
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -132,8 +114,6 @@ Blockly.Blocks["server_dsc"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -145,8 +125,6 @@ Blockly.Blocks["server_afkchannel"] = {
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -158,8 +136,6 @@ Blockly.Blocks["server_creationdate"] = {
     this.setInputsInline(true);
     this.setOutput(true, "date");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -170,8 +146,6 @@ Blockly.Blocks["server_verified"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -183,8 +157,6 @@ Blockly.Blocks["server_vanityurl"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -196,8 +168,6 @@ Blockly.Blocks["server_systemchannel"] = {
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -209,8 +179,6 @@ Blockly.Blocks["server_ruleschannel"] = {
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -230,8 +198,6 @@ Blockly.Blocks["server_disableinvites"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -243,8 +209,6 @@ Blockly.Blocks["server_leave"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#A33DAC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -392,12 +356,13 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
 
-  var code = `client.guilds.cache${dropdown_type === "name"
+  var code = `client.guilds.cache${
+    dropdown_type === "name"
       ? `.find(s => s.name === ${value_value})`
       : dropdown_type === "id"
-        ? `.get(${value_value})`
-        : ""
-    }`;
+      ? `.get(${value_value})`
+      : ""
+  }`;
 
   return [code, Order.NONE];
 };

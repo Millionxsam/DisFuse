@@ -32,8 +32,8 @@ Blockly.Blocks["msg_received"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -172,8 +172,8 @@ Blockly.Blocks["msg_msg"] = {
     this.appendDummyInput().appendField("message received");
     this.setOutput(true, "message");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -182,8 +182,8 @@ Blockly.Blocks["msg_content"] = {
     this.appendDummyInput().appendField("content of the message");
     this.setOutput(true, "String");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -192,8 +192,8 @@ Blockly.Blocks["msg_member"] = {
     this.appendDummyInput().appendField("member who sent the message");
     this.setOutput(true, "member");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -202,8 +202,8 @@ Blockly.Blocks["msg_user"] = {
     this.appendDummyInput().appendField("user who sent the message");
     this.setOutput(true, "user");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -212,8 +212,8 @@ Blockly.Blocks["msg_channel"] = {
     this.appendDummyInput().appendField("channel of the message");
     this.setOutput(true, "channel");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -222,8 +222,8 @@ Blockly.Blocks["msg_server"] = {
     this.appendDummyInput().appendField("server of the message");
     this.setOutput(true, "server");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
+    ;
+    
   },
 };
 
@@ -311,7 +311,7 @@ Blockly.Blocks["msg_delete"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete the message received");
-    this.setHelpUrl("");
+    
   },
 };
 
@@ -324,7 +324,7 @@ Blockly.Blocks["msg_deleteOther"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete a message");
-    this.setHelpUrl("");
+    
   },
 };
 

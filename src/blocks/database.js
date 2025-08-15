@@ -11,8 +11,6 @@ Blockly.Blocks["db_create"] = {
       .appendField(new Blockly.FieldTextInput("database"), "path")
       .appendField(".json");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -25,8 +23,6 @@ Blockly.Blocks["db_get"] = {
     this.setInputsInline(true);
     this.setOutput(true, null);
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -40,8 +36,6 @@ Blockly.Blocks["db_has"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -53,8 +47,6 @@ Blockly.Blocks["db_all"] = {
     this.setInputsInline(true);
     this.setOutput(true, "Array");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -69,8 +61,6 @@ Blockly.Blocks["db_set"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -84,8 +74,6 @@ Blockly.Blocks["db_del"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -100,8 +88,6 @@ Blockly.Blocks["db_add"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -116,8 +102,6 @@ Blockly.Blocks["db_sub"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -132,8 +116,6 @@ Blockly.Blocks["db_push"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -146,8 +128,6 @@ Blockly.Blocks["db_clear"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("C66953");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

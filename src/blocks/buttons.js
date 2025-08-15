@@ -1,5 +1,5 @@
-import * as Blockly from 'blockly/core';
-import { Order, javascriptGenerator } from 'blockly/javascript';
+import * as Blockly from "blockly/core";
+import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["buttons_add"] = {
@@ -29,8 +29,6 @@ Blockly.Blocks["buttons_add"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("2677AF");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
@@ -41,8 +39,6 @@ Blockly.Blocks["buttons_event"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#2677AF");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -59,8 +55,6 @@ Blockly.Blocks["buttons_id"] = {
     this.appendDummyInput().appendField("ID of the clicked button");
     this.setColour("#2677AF");
     this.setOutput(true, "String");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -69,8 +63,6 @@ Blockly.Blocks["buttons_member"] = {
     this.appendDummyInput().appendField("member who clicked the button");
     this.setColour("#2677AF");
     this.setOutput(true, "member");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -79,8 +71,6 @@ Blockly.Blocks["buttons_user"] = {
     this.appendDummyInput().appendField("user who clicked the button");
     this.setColour("#2677AF");
     this.setOutput(true, "user");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -89,8 +79,6 @@ Blockly.Blocks["buttons_channel"] = {
     this.appendDummyInput().appendField("channel of the button");
     this.setColour("#2677AF");
     this.setOutput(true, "channel");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -99,8 +87,6 @@ Blockly.Blocks["buttons_server"] = {
     this.appendDummyInput().appendField("server of the button");
     this.setColour("#2677AF");
     this.setOutput(true, "server");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -114,8 +100,6 @@ Blockly.Blocks["slash_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("2677AF");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
@@ -130,8 +114,6 @@ Blockly.Blocks["slash_edit"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("2677AF");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
@@ -142,16 +124,11 @@ Blockly.Blocks["buttons_del"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("2677AF");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setInputsInline(false);
   },
 };
 
-javascriptGenerator.forBlock["buttons_del"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_del"] = function (block, generator) {
   var code = `interaction.deleteReply();`;
   return code;
 };
@@ -161,50 +138,32 @@ javascriptGenerator.forBlock["buttons_message"] = () => [
   Order.NONE,
 ];
 
-javascriptGenerator.forBlock["buttons_server"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_server"] = function (block, generator) {
   var code = `interaction.guild`;
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["buttons_channel"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_channel"] = function (block, generator) {
   var code = `interaction.channel`;
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["buttons_user"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_user"] = function (block, generator) {
   var code = `interaction.member.user`;
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["buttons_member"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_member"] = function (block, generator) {
   var code = `interaction.member`;
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["buttons_id"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_id"] = function (block, generator) {
   var code = `interaction.customId`;
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["buttons_event"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_event"] = function (block, generator) {
   var code = generator.statementToCode(block, "event");
 
   var codeEvent = `client.on("interactionCreate", async (interaction) => {
@@ -214,31 +173,25 @@ javascriptGenerator.forBlock["buttons_event"] = function (
   return codeEvent;
 };
 
-javascriptGenerator.forBlock["buttons_add"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["buttons_add"] = function (block, generator) {
   var label = generator.valueToCode(block, "label", Order.ATOMIC);
   var emoji = generator.valueToCode(block, "emoji", Order.ATOMIC);
   var style = block.getFieldValue("style");
   var id = generator.valueToCode(block, "id", Order.ATOMIC);
-  var disabled = generator.valueToCode(
-    block,
-    "disabled",
-    Order.ATOMIC
-  );
+  var disabled = generator.valueToCode(block, "disabled", Order.ATOMIC);
   var url = generator.valueToCode(block, "url", Order.ATOMIC);
-  
-  const resultCode = ['new Discord.ButtonBuilder()'];
+
+  const resultCode = ["new Discord.ButtonBuilder()"];
   resultCode.push(`.setLabel(${label || "''"})`);
   resultCode.push(`.setStyle(${style ?? "'1'"})`);
   resultCode.push(`.setDisabled(${disabled ?? false})`);
   resultCode.push(`.setLabel(${label || "''"})`);
   if (Number(style) !== 5) resultCode.push(`.setCustomId(${id})`);
-  if (Number(style) === 5 && String(url).trim() !== "''") resultCode.push(`.setURL(${url})`);
+  if (Number(style) === 5 && String(url).trim() !== "''")
+    resultCode.push(`.setURL(${url})`);
   if (String(emoji).trim() !== "''") resultCode.push(`.setEmoji(${emoji})`);
 
-  return resultCode.join('') + ',\n';
+  return resultCode.join("") + ",\n";
 };
 
 createRestrictions(
@@ -297,7 +250,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["emoji"],
-      check: (val) => (/^\p{Emoji}$/u).test(val),
+      check: (val) => /^\p{Emoji}$/u.test(val),
       message: "Emoji must be a single valid emoji",
     },
     {

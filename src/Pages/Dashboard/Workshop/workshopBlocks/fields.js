@@ -8,8 +8,6 @@ Blockly.Blocks["field_label"] = {
       .appendField(new Blockly.FieldTextInput("label"), "label");
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b9ca5");
   },
 };
@@ -35,8 +33,6 @@ Blockly.Blocks["field_textInput"] = {
       .appendField(new Blockly.FieldTextInput("default"), "default");
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b9ca5");
   },
 };
@@ -76,8 +72,6 @@ Blockly.Blocks["field_numericInput"] = {
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
     this.setInputsInline(false);
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b9ca5");
   },
 };
@@ -117,8 +111,6 @@ Blockly.Blocks["field_checkbox"] = {
       .appendField(new Blockly.FieldCheckbox("TRUE"), "default");
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b9ca5");
   },
 };
@@ -147,8 +139,6 @@ Blockly.Blocks["field_variable"] = {
       .appendField(new Blockly.FieldTextInput("variable"), "default");
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b9ca5");
   },
 };
@@ -176,8 +166,6 @@ Blockly.Blocks["field_dropdown"] = {
       .setCheck("dropdownChoice")
       .appendField("with choices");
     this.setColour("#5b9ca5");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
   },
@@ -212,8 +200,6 @@ Blockly.Blocks["field_dropdownChoice"] = {
       .appendField("and display")
       .appendField(new Blockly.FieldTextInput("display"), "display");
     this.setColour("#65b8a4");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setPreviousStatement(true, "dropdownChoice");
     this.setNextStatement(true, "dropdownChoice");
   },

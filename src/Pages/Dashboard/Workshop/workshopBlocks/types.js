@@ -14,8 +14,6 @@ Blockly.Blocks["type_dropdown"] = {
       "DROPDOWN"
     );
     this.setOutput(true, "OutputType");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5ba55b");
   },
 };
@@ -33,8 +31,6 @@ Blockly.Blocks["type_custom"] = {
       .appendField("type")
       .appendField(new Blockly.FieldTextInput("custom"), "type");
     this.setColour("#5ba55b");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setOutput(true, "OutputType");
   },
 };

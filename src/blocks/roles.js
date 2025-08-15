@@ -11,8 +11,6 @@ Blockly.Blocks["roles_foreach"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -25,8 +23,6 @@ Blockly.Blocks["roles_foreachMember"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -35,8 +31,6 @@ Blockly.Blocks["roles_currentLoopMember"] = {
     this.appendDummyInput().appendField("current member in loop");
     this.setColour("#B76489");
     this.setOutput("member");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -101,8 +95,6 @@ Blockly.Blocks["roles_name"] = {
   init: function () {
     this.appendValueInput("role").setCheck("role").appendField("name of role:");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setOutput(true, "String");
   },
 };
@@ -119,8 +111,6 @@ Blockly.Blocks["roles_position"] = {
       .setCheck("role")
       .appendField("position of role:");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setOutput(true, "Number");
   },
 };
@@ -137,8 +127,6 @@ Blockly.Blocks["roles_hexColor"] = {
       .setCheck("role")
       .appendField("hex color of role:");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setOutput(true, "String");
   },
 };
@@ -169,8 +157,6 @@ Blockly.Blocks["roles_createdAt"] = {
       .setCheck("role")
       .appendField("creation date of role:");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setOutput(true, "date");
   },
 };
@@ -250,8 +236,6 @@ Blockly.Blocks["roles_getone"] = {
       .appendField("on the server");
     this.setOutput(true, "role");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -387,8 +371,6 @@ Blockly.Blocks["roles_hasRole"] = {
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
     this.setColour("#B76489");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

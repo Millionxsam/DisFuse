@@ -11,7 +11,7 @@ Blockly.Blocks["embed_create"] = {
           if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
           else return val;
         }),
-        'name'
+        "name"
       );
     this.appendStatementInput("config")
       .setCheck("embedBlockCreatorBlock")
@@ -19,8 +19,6 @@ Blockly.Blocks["embed_create"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -32,8 +30,6 @@ Blockly.Blocks["embed_settitle"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -57,8 +53,6 @@ Blockly.Blocks["embed_setdsc"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -82,8 +76,6 @@ Blockly.Blocks["embed_setcolor"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -93,7 +85,9 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["value"],
-      check: (val) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(val) || String(val).toLowerCase() === "Random",
+      check: (val) =>
+        /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(val) ||
+        String(val).toLowerCase() === "Random",
       message: 'Color must be a valid hex color, or "Random"',
     },
   ]
@@ -107,8 +101,6 @@ Blockly.Blocks["embed_seturl"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -142,8 +134,6 @@ Blockly.Blocks["embed_setauthor"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -196,8 +186,6 @@ Blockly.Blocks["embed_setfooter"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -221,8 +209,6 @@ Blockly.Blocks["embed_setimage"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -254,8 +240,6 @@ Blockly.Blocks["embed_setthumb"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -288,8 +272,6 @@ Blockly.Blocks["embed_addfield"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -317,8 +299,6 @@ Blockly.Blocks["embed_settimestamp"] = {
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -326,48 +306,47 @@ javascriptGenerator.forBlock["embed_settimestamp"] = function (
   block,
   generator
 ) {
-  var code = `.setTimestamp()`;
-  return code;
+  return `.setTimestamp()`;
 };
 
 javascriptGenerator.forBlock["embed_addfield"] = function (block, generator) {
-  var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
-  var value_val = generator.valueToCode(block, "val", Order.ATOMIC);
-  var value_inline = generator.valueToCode(block, "inline", Order.ATOMIC);
-
-  var code = `.addFields({ name: ${value_name}, value: ${value_val}, inline: ${value_inline} })`;
-  return code;
+  const value_name = generator.valueToCode(block, "name", Order.ATOMIC);
+  const value_val = generator.valueToCode(block, "val", Order.ATOMIC);
+  const value_inline =
+    generator.valueToCode(block, "inline", Order.ATOMIC) ?? false;
+  return `.addFields({ name: ${value_name}, value: ${value_val}, inline: ${value_inline} })`;
 };
 
 javascriptGenerator.forBlock["embed_setthumb"] = function (block, generator) {
-  var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
-
-  var code = `.setThumbnail(${value_value})`;
-  return code;
+  const value = generator.valueToCode(block, "value", Order.ATOMIC);
+  return `.setThumbnail(${value})`;
 };
 
 javascriptGenerator.forBlock["embed_setimage"] = function (block, generator) {
-  var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
-
-  var code = `.setImage(${value_value})`;
-  return code;
+  const value = generator.valueToCode(block, "value", Order.ATOMIC);
+  return `.setImage(${value})`;
 };
 
 javascriptGenerator.forBlock["embed_setfooter"] = function (block, generator) {
-  var value_text = generator.valueToCode(block, "text", Order.ATOMIC);
-  var value_icon = generator.valueToCode(block, "icon", Order.ATOMIC);
+  const text = generator.valueToCode(block, "text", Order.ATOMIC);
+  const icon = generator.valueToCode(block, "icon", Order.ATOMIC);
 
-  var code = `.setFooter({ text: ${value_text}, iconURL: ${value_icon} })`;
-  return code;
+  const options = [`text: ${text}`];
+  if (icon && icon !== "") options.push(`iconURL: ${icon}`);
+
+  return `.setFooter({ ${options.join(", ")} })`;
 };
 
 javascriptGenerator.forBlock["embed_setauthor"] = function (block, generator) {
-  var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
-  var value_icon = generator.valueToCode(block, "icon", Order.ATOMIC);
-  var value_url = generator.valueToCode(block, "url", Order.ATOMIC);
+  const name = generator.valueToCode(block, "name", Order.ATOMIC);
+  const icon = generator.valueToCode(block, "icon", Order.ATOMIC);
+  const url = generator.valueToCode(block, "url", Order.ATOMIC);
 
-  var code = `.setAuthor({ name: ${value_name}, ${value_icon ? `\niconURL: ${value_icon},` : ''} ${value_url ? `\nurl: ${value_url},` : ''} })`;
-  return code;
+  const options = [`name: ${name}`];
+  if (icon && icon !== "") options.push(`iconURL: ${icon}`);
+  if (url && url !== "") options.push(`url: ${url}`);
+
+  return `.setAuthor({ ${options.join(", ")} })`;
 };
 
 javascriptGenerator.forBlock["embed_seturl"] = function (block, generator) {

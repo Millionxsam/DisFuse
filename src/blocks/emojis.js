@@ -11,7 +11,7 @@ Blockly.Blocks["emoji_getallinserver"] = {
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Runs a code for each emoji on a server.");
-    this.setHelpUrl("");
+
     this.setInputsInline(true);
   },
 };
@@ -52,7 +52,6 @@ Blockly.Blocks["emoji_getguild"] = {
     this.setOutput(true, "string");
     this.setColour("DEB144");
     this.setTooltip("Gets the server of an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -70,7 +69,6 @@ Blockly.Blocks["emoji_getname"] = {
     this.setOutput(true, "string");
     this.setColour("DEB144");
     this.setTooltip("Gets the name of an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -88,7 +86,6 @@ Blockly.Blocks["emoji_getimageurl"] = {
     this.setOutput(true, "string");
     this.setColour("DEB144");
     this.setTooltip("Gets the image/gif URL of an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -120,7 +117,6 @@ Blockly.Blocks["emoji_getemojiwith"] = {
     this.setOutput(true, "emoji");
     this.setColour("DEB144");
     this.setTooltip("Gets an emoji with a specific name/id on a server.");
-    this.setHelpUrl("");
   },
 };
 
@@ -150,7 +146,6 @@ Blockly.Blocks["emoji_getid"] = {
     this.setOutput(true, "string");
     this.setColour("DEB144");
     this.setTooltip("Gets the ID of an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -167,7 +162,6 @@ Blockly.Blocks["emoji_isanimated"] = {
     this.setOutput(true, "Boolean");
     this.setColour("DEB144");
     this.setTooltip("Checks if an emoji is animated.");
-    this.setHelpUrl("");
   },
 };
 
@@ -192,7 +186,6 @@ Blockly.Blocks["emoji_create"] = {
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Creates an emoji in the specified server.");
-    this.setHelpUrl("");
   },
 };
 
@@ -214,7 +207,6 @@ Blockly.Blocks["emoji_delete"] = {
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Deletes an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -240,8 +232,6 @@ Blockly.Blocks["emoji_created"] = {
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("DEB144");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -263,7 +253,6 @@ Blockly.Blocks["emoji_setname"] = {
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
     this.setTooltip("Renames an emoji.");
-    this.setHelpUrl("");
   },
 };
 
@@ -294,7 +283,6 @@ Blockly.Blocks["emoji_author"] = {
     this.setOutput(true, "user");
     this.setColour("DEB144");
     this.setTooltip("Gets the user that created the emoji.");
-    this.setHelpUrl("");
   },
 };
 

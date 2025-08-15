@@ -13,7 +13,6 @@ Blockly.Blocks["invite_create"] = {
     this.setOutput(true, "invite");
     this.setColour("#CA8A67");
     this.setTooltip("Creates an invite URL for a channel.");
-    this.setHelpUrl("");
   },
 };
 
@@ -21,8 +20,9 @@ javascriptGenerator.forBlock["invite_create"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var uses = generator.valueToCode(block, "uses", Order.ATOMIC);
 
-  const code = `await ${channel}.createInvite({ maxAge: 0, maxUses: ${uses || "null"
-    }, unique: true })`;
+  const code = `await ${channel}.createInvite({ maxAge: 0, maxUses: ${
+    uses || "null"
+  }, unique: true })`;
   return [code, Order.AWAIT];
 };
 
@@ -34,20 +34,25 @@ Blockly.Blocks["invite_createGuild"] = {
     this.appendValueInput("uses")
       .appendField("amount of uses:")
       .setCheck("Number");
-    this.setWarningText('This block is broken, use "create invite for channel" instead')
+    this.setWarningText(
+      'This block is broken, use "create invite for channel" instead'
+    );
     this.setOutput(true, "invite");
     this.setColour("#CA8A67");
     this.setTooltip("Creates an invite URL for a server.");
-    this.setHelpUrl("");
   },
 };
 
-javascriptGenerator.forBlock["invite_createGuild"] = function (block, generator) {
+javascriptGenerator.forBlock["invite_createGuild"] = function (
+  block,
+  generator
+) {
   var guild = generator.valueToCode(block, "guild", Order.ATOMIC);
   var uses = generator.valueToCode(block, "uses", Order.ATOMIC);
 
-  const code = `await ${guild}.invites.create({ maxAge: 0, maxUses: ${uses || "null"
-    }, unique: true })`;
+  const code = `await ${guild}.invites.create({ maxAge: 0, maxUses: ${
+    uses || "null"
+  }, unique: true })`;
   return [code, Order.AWAIT];
 };
 
@@ -59,7 +64,6 @@ Blockly.Blocks["invite_get"] = {
     this.setOutput(true, "invite");
     this.setColour("#CA8A67");
     this.setTooltip("Gets an invite from an URL.");
-    this.setHelpUrl("");
   },
 };
 
@@ -79,7 +83,6 @@ Blockly.Blocks["invite_delete"] = {
     this.setNextStatement(true, "default");
     this.setColour("#CA8A67");
     this.setTooltip("Deletes an invite.");
-    this.setHelpUrl("");
   },
 };
 
@@ -97,7 +100,6 @@ Blockly.Blocks["invite_url"] = {
     this.setOutput(true, "String");
     this.setColour("#CA8A67");
     this.setTooltip("Gets the URL of an invite.");
-    this.setHelpUrl("");
   },
 };
 
@@ -116,7 +118,6 @@ Blockly.Blocks["invite_channel"] = {
     this.setOutput(true, "channel");
     this.setColour("#CA8A67");
     this.setTooltip("Gets the channel of an invite.");
-    this.setHelpUrl("");
   },
 };
 
@@ -135,7 +136,6 @@ Blockly.Blocks["invite_author"] = {
     this.setOutput(true, "user");
     this.setColour("#CA8A67");
     this.setTooltip("Gets the user that created the invite.");
-    this.setHelpUrl("");
   },
 };
 
@@ -153,7 +153,6 @@ Blockly.Blocks["invite_invitecreated"] = {
     this.setInputsInline(false);
     this.setColour("#CA8A67");
     this.setTooltip("Runs the code inside when an invite is created.");
-    this.setHelpUrl("");
   },
 };
 
@@ -176,7 +175,6 @@ Blockly.Blocks["invite_invitedeleted"] = {
     this.setInputsInline(false);
     this.setColour("#CA8A67");
     this.setTooltip("Runs the code inside when an invite is deleted.");
-    this.setHelpUrl("");
   },
 };
 
@@ -198,8 +196,6 @@ Blockly.Blocks["invite_event_var"] = {
     this.setInputsInline(false);
     this.setColour("#CA8A67");
     this.setOutput(true, "invite");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -217,8 +213,6 @@ Blockly.Blocks["invite_foreach"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#CA8A67");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -237,8 +231,6 @@ Blockly.Blocks["invite_foreach_var"] = {
     this.appendDummyInput().appendField("current invite on the loop");
     this.setOutput(true, "invite");
     this.setColour("#CA8A67");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -259,8 +251,6 @@ Blockly.Blocks["invite_channel_foreach"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#CA8A67");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 javascriptGenerator.forBlock["invite_channel_foreach"] = function (

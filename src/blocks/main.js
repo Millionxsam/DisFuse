@@ -106,8 +106,6 @@ Blockly.Blocks["main_presence"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#FF6E33");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -118,8 +116,6 @@ Blockly.Blocks["main_env"] = {
       .appendField("get secret with name:");
     this.setOutput(true, null);
     this.setColour("#FF6E33");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -128,8 +124,6 @@ Blockly.Blocks["main_bot"] = {
     this.appendDummyInput().appendField("bot");
     this.setOutput(true, "user");
     this.setColour("#FF6E33");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -138,8 +132,6 @@ Blockly.Blocks["main_ping"] = {
     this.appendDummyInput().appendField("current bot latency ping");
     this.setOutput(true, "Number");
     this.setColour("#FF6E33");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -160,8 +152,6 @@ Blockly.Blocks["main_numberof"] = {
     this.setOutput(true, "Number");
     this.setInputsInline(true);
     this.setColour("#FF6E33");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

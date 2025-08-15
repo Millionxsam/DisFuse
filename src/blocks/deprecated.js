@@ -15,8 +15,6 @@ Blockly.Blocks["slash_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -35,8 +33,6 @@ Blockly.Blocks["slash_reply_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -52,8 +48,6 @@ Blockly.Blocks["slash_editreply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -69,8 +63,6 @@ Blockly.Blocks["slash_createcontainer"] = {
     ]);
     this.setInputsInline(false);
     this.setColour("#3366CC");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
   },
@@ -93,8 +85,6 @@ Blockly.Blocks["slash_create"] = {
       .appendField("option(s):");
     this.setInputsInline(false);
     this.setColour("#3366CC");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setPreviousStatement(true, ["slashCreate", "contextMenuCreate"]);
     this.setNextStatement(true, ["slashCreate", "contextMenuCreate"]);
   },
@@ -128,8 +118,6 @@ Blockly.Blocks["msg_reply_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#336EFF");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -147,8 +135,6 @@ Blockly.Blocks["misc_int_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -167,8 +153,6 @@ Blockly.Blocks["misc_int_reply_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -184,8 +168,6 @@ Blockly.Blocks["misc_int_edit"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -195,8 +177,6 @@ Blockly.Blocks["main_amountservers"] = {
     this.setOutput(true, "Number");
     this.setColour("#FF6E33");
     this.setInputsInline(true);
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

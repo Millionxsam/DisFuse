@@ -16,7 +16,6 @@ Blockly.Blocks["modal_create"] = {
     this.setOutput(true, "modal");
     this.setColour("#1A8793");
     this.setTooltip("Creates a modal.");
-    this.setHelpUrl("");
   },
 };
 
@@ -58,7 +57,6 @@ Blockly.Blocks["modal_add_text_input"] = {
     this.setNextStatement(true, "Array");
     this.setColour("#1A8793");
     this.setTooltip("Adds a text input to a modal.");
-    this.setHelpUrl("");
   },
 };
 
@@ -115,7 +113,6 @@ Blockly.Blocks["modal_add_text_input_advanced"] = {
     this.setNextStatement(true, "Array");
     this.setColour("#1A8793");
     this.setTooltip("Adds a text input to a modal. (Advanced creation)");
-    this.setHelpUrl("");
   },
 };
 
@@ -149,7 +146,6 @@ Blockly.Blocks["modal_show"] = {
     this.setNextStatement(true, "default");
     this.setColour("#1A8793");
     this.setTooltip("Shows the modal on the interaction.");
-    this.setHelpUrl("");
   },
 };
 
@@ -168,7 +164,6 @@ Blockly.Blocks["modal_handle_interaction"] = {
     this.appendStatementInput("code").setCheck("default");
     this.setColour("#1A8793");
     this.setTooltip("Runs the code when a modal is sub");
-    this.setHelpUrl("");
   },
 };
 
@@ -194,7 +189,6 @@ Blockly.Blocks["modal_get_input_value"] = {
     this.setOutput(true, "String");
     this.setColour("#1A8793");
     this.setTooltip("Gets the value of a text input in a modal.");
-    this.setHelpUrl("");
   },
 };
 
@@ -214,7 +208,6 @@ Blockly.Blocks["modal_get_author"] = {
     this.setOutput(true, "user");
     this.setColour("#1A8793");
     this.setTooltip("Gets the author that submited the modal.");
-    this.setHelpUrl("");
   },
 };
 
@@ -228,7 +221,6 @@ Blockly.Blocks["modal_get_customId"] = {
     this.setOutput(true, "String");
     this.setColour("#1A8793");
     this.setTooltip("Gets the custom ID of the modal.");
-    this.setHelpUrl("");
   },
 };
 

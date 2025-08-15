@@ -25,8 +25,7 @@ Blockly.Blocks["input_value"] = {
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
     this.setInputsInline(false);
-    this.setTooltip("");
-    this.setHelpUrl("");
+
     this.setColour("#5b80a5");
   },
 };
@@ -82,8 +81,6 @@ Blockly.Blocks["input_statement"] = {
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
     this.setInputsInline(false);
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b80a5");
   },
 };
@@ -134,8 +131,6 @@ Blockly.Blocks["input_dummy"] = {
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
     this.setInputsInline(false);
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b80a5");
   },
 };
@@ -180,8 +175,6 @@ Blockly.Blocks["input_endrow"] = {
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
     this.setInputsInline(false);
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setColour("#5b80a5");
   },
 };

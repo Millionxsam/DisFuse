@@ -57,9 +57,6 @@ Blockly.Blocks["main_blockcreator"] = {
       .appendField("Set output code to:");
     this.setInputsInline(false);
     this.setColour("#00a5ce");
-    this.setTooltip("");
-    this.setHelpUrl("");
-
     this.onchange = function () {
       var type = this.getFieldValue("TYPE");
       var fieldType = this.getInput("OUTPUT");

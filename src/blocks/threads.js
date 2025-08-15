@@ -41,8 +41,9 @@ javascriptGenerator.forBlock["threads_msgCreateThread"] = function (
 
   var code = `${val_message}.startThread({
   name: ${val_name},
-  type: '${val_type}',${val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
-    }
+  type: '${val_type}',${
+    val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
+  }
 })`;
 
   if (then) code += `.then(async (createdThread) => {\n${then}})`;
@@ -91,8 +92,9 @@ javascriptGenerator.forBlock["threads_channelCreateThread"] = function (
 
   var code = `${val_channel}.threads.create({
   name: ${val_name},
-  type: Discord.ChannelType.${val_type},${val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
-    }
+  type: Discord.ChannelType.${val_type},${
+    val_slowmode ? `\n  rateLimitPerUser: ${val_slowmode}` : ""
+  }
 })`;
 
   if (then) code += `.then(async (createdThread) => {\n${then}})`;
@@ -430,8 +432,6 @@ Blockly.Blocks["threads_getone"] = {
       .appendField("in the channel");
     this.setOutput(true, "channel");
     this.setColour("#5b67a5");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -440,10 +440,11 @@ javascriptGenerator.forBlock["threads_getone"] = function (block, generator) {
   var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
   var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
-  var code = `${value_channel}.threads.cache${dropdown_type === "id"
-    ? `.get(${value_value})`
-    : `.find(t => t.name == ${value_value})`
-    }`;
+  var code = `${value_channel}.threads.cache${
+    dropdown_type === "id"
+      ? `.get(${value_value})`
+      : `.find(t => t.name == ${value_value})`
+  }`;
   return [code, Order.NONE];
 };
 
@@ -454,8 +455,6 @@ Blockly.Blocks["threads_msgThread"] = {
       .appendField("get thread of message:");
     this.setOutput(true, "channel");
     this.setColour("#5b67a5");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -477,8 +476,6 @@ Blockly.Blocks["threads_msgHasThread"] = {
     this.appendDummyInput().appendField("have a thread?");
     this.setOutput(true, "Boolean");
     this.setColour("#5b67a5");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 
@@ -502,7 +499,6 @@ Blockly.Blocks["threads_addUser"] = {
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
     this.setTooltip("Add a user to a thread.");
-    this.setHelpUrl("");
   },
 };
 
@@ -523,7 +519,6 @@ Blockly.Blocks["threads_removeUser"] = {
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
     this.setTooltip("Remove a user from a thread.");
-    this.setHelpUrl("");
   },
 };
 

@@ -12,7 +12,6 @@ Blockly.Blocks["fs_readFile"] = {
     this.setNextStatement(true, "default");
     this.setColour("#eb8334");
     this.setTooltip("Reads content from a file.");
-    this.setHelpUrl("");
   },
 };
 
@@ -29,7 +28,6 @@ Blockly.Blocks["fs_readFile_data"] = {
     this.setOutput(true, "String");
     this.setColour("#eb8334");
     this.setTooltip("The content read from the file.");
-    this.setHelpUrl("");
   },
 };
 
@@ -181,7 +179,6 @@ Blockly.Blocks["fs_sendFile"] = {
     this.setNextStatement(true, "default");
     this.setColour("#eb8334");
     this.setTooltip("Sends a file to a specific channel.");
-    this.setHelpUrl("");
   },
 };
 

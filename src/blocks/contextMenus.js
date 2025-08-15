@@ -47,8 +47,6 @@ Blockly.Blocks["contextMenu_received"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#00A859");
-    this.setTooltip("");
-    this.setHelpUrl("");
   },
 };
 

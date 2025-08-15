@@ -83,7 +83,7 @@ createMutatorBlock({
       default: false,
       inputType: "value",
       inputLabel: "embed name(s):",
-      valueCheck: "String"
+      valueCheck: "String",
     },
     {
       name: "rows",
@@ -91,7 +91,7 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "rows:",
-      valueCheck: "rows"
+      valueCheck: "rows",
     },
     {
       name: "files",
@@ -232,7 +232,6 @@ Blockly.Blocks["misc_int_deferReply"] = {
     this.setTooltip(
       'This displays the "Bot is thinking..." message. Use this when you need to allow more time for your bot to reply to a command.'
     );
-    this.setHelpUrl("");
   },
 };
 
@@ -392,8 +391,6 @@ Blockly.Blocks["misc_createcontainer"] = {
     ]);
     this.setInputsInline(false);
     this.setColour("4192E9");
-    this.setTooltip("");
-    this.setHelpUrl("");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
   },
@@ -581,7 +578,6 @@ Blockly.Blocks["misc_int_id"] = {
     this.setOutput(true, "String");
     this.setColour("#4192E9");
     this.setTooltip("Returns the unique ID of the interaction.");
-    this.setHelpUrl("");
   },
 };
 
@@ -596,7 +592,6 @@ Blockly.Blocks["misc_int_user"] = {
     this.setOutput(true, "user");
     this.setColour("#4192E9");
     this.setTooltip("Returns the user who triggered the interaction.");
-    this.setHelpUrl("");
   },
 };
 
@@ -613,7 +608,6 @@ Blockly.Blocks["misc_int_member"] = {
     this.setTooltip(
       "Returns the member who triggered the interaction (only available in servers)."
     );
-    this.setHelpUrl("");
   },
 };
 
@@ -628,7 +622,6 @@ Blockly.Blocks["misc_int_channel"] = {
     this.setOutput(true, "channel");
     this.setColour("#4192E9");
     this.setTooltip("Returns the channel where the interaction was invoked.");
-    this.setHelpUrl("");
   },
 };
 javascriptGenerator.forBlock["misc_int_channel"] = function (block, generator) {
@@ -642,7 +635,6 @@ Blockly.Blocks["misc_int_server"] = {
     this.setOutput(true, "server");
     this.setColour("#4192E9");
     this.setTooltip("Returns the server where the interaction occurred.");
-    this.setHelpUrl("");
   },
 };
 javascriptGenerator.forBlock["misc_int_server"] = function (block, generator) {
