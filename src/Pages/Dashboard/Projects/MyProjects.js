@@ -18,19 +18,6 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-  Swal.fire({
-    ...modalThemeColor(userCache.user, true),
-    title: "DisFuse is Currently Unavailable",
-    text: "We are currently experiencing some technical difficulties that are causing some parts of the website to be unavailable. Please be patient while we work to resolve this issue (started August 15). We're sorry for the inconvenience.",
-    icon: "error",
-    showCloseButton: false,
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    showConfirmButton: false,
-  });
-  }, []);
-
   const navigate = useNavigate();
 
   const fetchProjects = useCallback((userData) => {

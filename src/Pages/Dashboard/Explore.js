@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
-import modalThemeColor from "../../functions/modalThemeColor.js";
 
 const { apiUrl } = require("../../config/config.js");
 
@@ -16,17 +15,6 @@ export default function Explore() {
   const pageSize = 10;
 
   useEffect(() => {
-  Swal.fire({
-    ...modalThemeColor(userCache.user, true),
-    title: "DisFuse is Currently Unavailable",
-    text: "We are currently experiencing some technical difficulties that are causing some parts of the website to be unavailable. Please be patient while we work to resolve this issue (started August 15). We're sorry for the inconvenience.",
-    icon: "error",
-    showCloseButton: false,
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    showConfirmButton: false,
-  });
-
     if (!userCache.explore) {
       axios
         .get(`${apiUrl}/projects`, {
