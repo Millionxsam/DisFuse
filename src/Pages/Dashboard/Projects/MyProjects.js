@@ -17,6 +17,19 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
+  Swal.fire({
+    ...modalThemeColor(userCache.user, true),
+    title: "DisFuse is Currently Unavailable",
+    text: "We are currently experiencing some technical difficulties that are causing some parts of the website to be unavailable. Please be patient while we work to resolve this issue (started August 15). We're sorry for the inconvenience.",
+    icon: "error",
+    showCloseButton: false,
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    showConfirmButton: false,
+  });
+
+  const navigate = useNavigate();
+
   const fetchProjects = useCallback((userData) => {
     if (!userData?.id) return;
     axios
@@ -39,7 +52,13 @@ export default function MyProjects() {
   }, []);
 
   useEffect(() => {
-    if (userCache.user && userCache.projects) {
+    if (!(userCache.user && userCache.projects)) {
+      axios
+        .get(discordUrl + "/users/@me", { headers: { Authorization: token } })
+        .then(({ data: userData }) => {
+          setUser(userData);
+        });
+    } else {
       setUser(userCache.user);
       setProjects(userCache.projects);
       setShown(userCache.projects);

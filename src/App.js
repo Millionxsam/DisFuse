@@ -30,16 +30,6 @@ import Footer from "./components/Footer";
 import Swal from "sweetalert2";
 
 export default function App() {
-  Swal.fire({
-    title: "DisFuse is Currently Unavailable",
-    text: "We are currently experiencing some technical difficulties that are causing some parts of the website to be unavailable. Please be patient while we work to resolve this issue (started August 15). We're sorry for the inconvenience.",
-    icon: "error",
-    showCloseButton: false,
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    showConfirmButton: false,
-  });
-
   window.addEventListener("unhandledrejection", function (event) {
     if (event?.reason?.response && event?.reason?.response?.data?.error) {
       const data = event.reason.response.data;
