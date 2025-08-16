@@ -8,14 +8,14 @@ import { userCache } from "../../cache.ts";
 const { apiUrl } = require("../../config/config.js");
 
 export default function Explore() {
-  const [projects, setProjects] = useState([...(userCache?.explore ?? [])]);
-  const [shown, setShown] = useState([...(userCache?.explore ?? [])]);
+  const [projects, setProjects] = useState([]);
+  const [shown, setShown] = useState([]);
   const [isLoading, setLoading] = useState(projects.length === 0);
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
   useEffect(() => {
-    if (!userCache?.explore) {
+    if (!userCache.explore) {
       axios
         .get(`${apiUrl}/projects`, {
           headers: {
@@ -33,6 +33,11 @@ export default function Explore() {
           console.error("Error fetching projects:", err);
           setLoading(false);
         });
+    } else {
+      const sorted = userCache.explore.sort(
+        (a, b) => b.likes.length - a.likes.length
+      );
+      setProjects(sorted);
     }
   }, []);
 

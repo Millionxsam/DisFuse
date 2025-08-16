@@ -17,24 +17,26 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
-  const fetchProjects = useCallback(
-    (userData = user) => {
-      axios
-        .get(apiUrl + `/users/${userData.id}/projects`, {
-          headers: { Authorization: localStorage.getItem("disfuse-token") },
-        })
-        .then(({ data: projects }) => {
-          let sortedProjects = projects.sort(
-            (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
-          );
-          userCache.projects = sortedProjects;
-          setProjects(sortedProjects);
-          setShown(sortedProjects);
-          setLoading(false);
-        });
-    },
-    [user] 
-  );
+  const fetchProjects = useCallback((userData) => {
+    if (!userData?.id) return;
+    axios
+      .get(apiUrl + `/users/${userData.id}/projects`, {
+        headers: { Authorization: localStorage.getItem("disfuse-token") },
+      })
+      .then(({ data: projects }) => {
+        let sortedProjects = projects.sort(
+          (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+        );
+        userCache.projects = sortedProjects;
+        setProjects(sortedProjects);
+        setShown(sortedProjects);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (userCache.user && userCache.projects) {
@@ -42,17 +44,22 @@ export default function MyProjects() {
       setProjects(userCache.projects);
       setShown(userCache.projects);
       setLoading(false);
-    } else
-      axios
-        .get(discordUrl + "/users/@me", {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then(({ data: userData }) => {
-          setUser(userData);
-          fetchProjects(userData);
-        });
+      return;
+    }
+
+    axios
+      .get(discordUrl + "/users/@me", {
+        headers: { Authorization: token },
+      })
+      .then(({ data: userData }) => {
+        setUser(userData);
+        userCache.user = userData;
+        fetchProjects(userData);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [token, fetchProjects]);
 
   function newProject(data) {
@@ -140,7 +147,10 @@ export default function MyProjects() {
         .then(
           ({ data }) =>
             (window.location = `/@${user.username}/${data._id}/workspace`)
-        );
+        )
+        .catch((err) => {
+          console.error(err);
+        });
     })();
   }
 
@@ -187,7 +197,7 @@ export default function MyProjects() {
       ...modalColors,
     }).then((result) => {
       if (result.isConfirmed) {
-        let sortedProjects = projects;
+        let sortedProjects = [...projects];
 
         if (result.value === "a-z") {
           sortedProjects.sort((a, b) => a.name.localeCompare(b.name));
@@ -303,14 +313,12 @@ export default function MyProjects() {
                     project={project}
                     onDelete={() => {
                       setLoading(true);
-                      fetchProjects();
+                      fetchProjects(user);
                     }}
                     key={index}
                   />
                 ))
-              : !isLoading
-              ? "No projects"
-              : ""}
+              : "No projects"}
           </div>
         )}
       </div>
