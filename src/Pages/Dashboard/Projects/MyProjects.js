@@ -18,6 +18,7 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
+  useEffect(() => {
   Swal.fire({
     ...modalThemeColor(userCache.user, true),
     title: "DisFuse is Currently Unavailable",
@@ -28,6 +29,7 @@ export default function MyProjects() {
     allowOutsideClick: false,
     showConfirmButton: false,
   });
+  }, []);
 
   const navigate = useNavigate();
 

@@ -15,6 +15,7 @@ export default function Explore() {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
+  useEffect(() => {
   Swal.fire({
     ...modalThemeColor(userCache.user, true),
     title: "DisFuse is Currently Unavailable",
@@ -26,7 +27,6 @@ export default function Explore() {
     showConfirmButton: false,
   });
 
-  useEffect(() => {
     if (!userCache.explore) {
       axios
         .get(`${apiUrl}/projects`, {

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingAnim from "../../../components/LoadingAnim";
 import { Link, useNavigate } from "react-router-dom";
+import { userCache } from "../../../cache.ts";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -20,6 +21,17 @@ export default function Workshop() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    Swal.fire({
+      ...modalThemeColor(userCache.user, true),
+      title: "DisFuse is Currently Unavailable",
+      text: "We are currently experiencing some technical difficulties that are causing some parts of the website to be unavailable. Please be patient while we work to resolve this issue (started August 15). We're sorry for the inconvenience.",
+      icon: "error",
+      showCloseButton: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+    });
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
