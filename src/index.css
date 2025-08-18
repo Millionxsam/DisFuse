@@ -1688,6 +1688,15 @@ input[type="search"]::-webkit-search-results-decoration {
 .project-page-container .head .info h1,
 .blockPackPage .head .info h1 {
   font-size: 50px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-page-container .head .info h1 i,
+.blockPackPage .head .info h1 i {
+  font-size: 40px;
+  opacity: 0.75;
 }
 
 .project-page-container .head .info .owner,

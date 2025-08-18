@@ -221,7 +221,10 @@ export default function ProjectPage() {
     <div className="project-page-container">
       <div className="head">
         <div className="info">
-          <h1>{isLoading ? <LoadingAnim /> : project.name}</h1>
+          <h1>
+            {isLoading ? <LoadingAnim /> : project.name}
+            {project?.private ? <i class="fa-solid fa-lock"></i> : ""}
+          </h1>
           <div className="owner">
             {isLoading ? (
               ""
