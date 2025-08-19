@@ -261,7 +261,7 @@ export default function StaffPanel() {
             <input type="date" id="dateBan" />
           </div>
           <div className="inline">
-            <button onClick={banUser} id="red">
+            <button onClick={banUser} className="red">
               <i className="fa-solid fa-ban"></i> Ban User
             </button>
             <button onClick={unbanUser}>

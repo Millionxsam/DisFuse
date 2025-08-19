@@ -5,7 +5,6 @@ import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
-import { useNavigate } from "react-router-dom";
 
 const { discordUrl, apiUrl } = require("../../../config/config.js");
 
@@ -17,8 +16,6 @@ export default function MyProjects() {
   const [shown, setShown] = useState([]);
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   const fetchProjects = useCallback((userData) => {
     if (!userData?.id) return;
