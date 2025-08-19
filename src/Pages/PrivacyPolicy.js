@@ -67,6 +67,17 @@ export default function PrivacyPolicy() {
         </li>
         <li>
           <strong>2e.</strong> Monitor abuse or suspicious activity
+          <ul>
+            <li>
+              All project creations, edits, and deletions are logged
+              automatically.
+            </li>
+            <li>AI moderation assists in detecting potential issues.</li>
+            <li>
+              Staff members review and take action on flagged or reported
+              projects.
+            </li>
+          </ul>
         </li>
         <li>
           <strong>2f.</strong> Improve BlockBuddy and AI features
@@ -139,13 +150,13 @@ export default function PrivacyPolicy() {
       <h2>5. Cookies &amp; Tracking Technologies</h2>
       <ul>
         <li>
-          <strong>4a.</strong> Keep you logged in
+          <strong>5a.</strong> Keep you logged in
         </li>
         <li>
-          <strong>4b.</strong> Remember your preferences
+          <strong>5b.</strong> Remember your preferences
         </li>
         <li>
-          <strong>4c.</strong> Track usage for analytics
+          <strong>5c.</strong> Track usage for analytics
         </li>
       </ul>
       <p>
@@ -156,10 +167,10 @@ export default function PrivacyPolicy() {
       <h2>6. AI &amp; BlockBuddy</h2>
       <ul>
         <li>
-          <strong>5a.</strong> Your prompts may be logged.
+          <strong>6a.</strong> Your prompts may be logged.
         </li>
         <li>
-          <strong>5b.</strong> This data is used to provide responses, train and
+          <strong>6b.</strong> This data is used to provide responses, train and
           improve the system, and detect abuse.
         </li>
       </ul>
@@ -168,18 +179,18 @@ export default function PrivacyPolicy() {
       <h2>7. Hosting &amp; Security</h2>
       <ul>
         <li>
-          <strong>6a.</strong> We do not share your bot files when you host your
+          <strong>7a.</strong> We do not share your bot files when you host your
           bot on DisFuse. However, we cannot guarantee the security of your
           files.
         </li>
         <li>
-          <strong>6b.</strong> Users are advised to use appropriate measures to
+          <strong>7b.</strong> Users are advised to use appropriate measures to
           secure their bot tokens in their public projects (like built-in
           secrets). DisFuse is not responsible for any security breaches in your
           bot caused by exposed tokens in your project.
         </li>
         <li>
-          <strong>6c.</strong> You are responsible for safeguarding your account
+          <strong>7c.</strong> You are responsible for safeguarding your account
           credentials and ensuring your projects do not contain sensitive or
           dangerous code.
         </li>
@@ -189,13 +200,13 @@ export default function PrivacyPolicy() {
       <h2>8. Data Retention</h2>
       <ul>
         <li>
-          <strong>7a.</strong> Account data as long as your account is active
+          <strong>8a.</strong> Account data as long as your account is active
         </li>
         <li>
-          <strong>7b.</strong> Project data until deleted by the user
+          <strong>8b.</strong> Project data until deleted by the user
         </li>
         <li>
-          <strong>7c.</strong> Logs (such as hosting logs or BlockBuddy prompts)
+          <strong>8c.</strong> Logs (such as hosting logs or BlockBuddy prompts)
           for a limited time to improve performance and detect abuse
         </li>
       </ul>
@@ -210,16 +221,16 @@ export default function PrivacyPolicy() {
       <p>Depending on your location, you may have rights to:</p>
       <ul>
         <li>
-          <strong>8a.</strong> Access or download your data
+          <strong>9a.</strong> Access or download your data
         </li>
         <li>
-          <strong>8b.</strong> Correct inaccurate information
+          <strong>9b.</strong> Correct inaccurate information
         </li>
         <li>
-          <strong>8c.</strong> Delete your account and associated data
+          <strong>9c.</strong> Delete your account and associated data
         </li>
         <li>
-          <strong>8d.</strong> Opt out of certain data uses (e.g., analytics)
+          <strong>9d.</strong> Opt out of certain data uses (e.g., analytics)
         </li>
       </ul>
       <p>
@@ -229,11 +240,11 @@ export default function PrivacyPolicy() {
       </p>
       <hr />
 
-      <h2>10. Children’s Privacy</h2>
+      <h2>10. Children's Privacy</h2>
       <p>
         Disfuse is not intended for children under <strong>13</strong>. If we
         become aware that a child under 13 has created an account, we will
-        delete it.
+        terminate it.
       </p>
       <hr />
 
