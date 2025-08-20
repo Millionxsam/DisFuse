@@ -4,8 +4,9 @@ import { apiUrl } from "../config/config";
 import getExportFiles from "../config/getExportFiles";
 import { useEffect, useState } from "react";
 import LoadingAnim from "./LoadingAnim.js";
+import { getWholeProjectWorkspace } from "../functions/updateCode.js";
 
-export default function HostModal({ socket, workspace, project }) {
+export default function HostModal({ socket, workspace, project, workspaceId }) {
   const [loading, setLoading] = useState(false);
   const [consoleLogs, setConsoleLogs] = useState([
     "Click the run button to start your bot",
@@ -136,8 +137,10 @@ export default function HostModal({ socket, workspace, project }) {
 
     installedBlockPacks.forEach((bp) => deps.push(...(bp.dependencies || [])));
 
+    const fullWs = getWholeProjectWorkspace(project, workspace, workspaceId);
+
     const code = document.querySelector(".project.code code").innerText;
-    const packageJson = getExportFiles(deps, workspace.getAllBlocks(false))[1]
+    const packageJson = getExportFiles(deps, fullWs.getAllBlocks(false))[1]
       .content;
     const envFile = `${project.secrets
       .map((s) => `${s.name}=${s.value}`)

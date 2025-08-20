@@ -203,7 +203,7 @@ createRestrictions(
       blockTypes: ["name"],
       check: (val) => /^[a-z0-9_-]+$/.test(val),
       message:
-        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+        "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
   ]
 );

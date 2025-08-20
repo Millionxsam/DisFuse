@@ -68,7 +68,12 @@ export default function WorkspaceBar({
 
   return (
     <>
-      <HostModal socket={socket} project={project} workspace={workspace} />
+      <HostModal
+        socket={socket}
+        project={project}
+        workspace={workspace}
+        workspaceId={currentWorkspace._id}
+      />
       <dialog className="blockBuddy-suggestions">
         <h1>Suggestions</h1>
         {blockbuddySuggestRes === "" ? (

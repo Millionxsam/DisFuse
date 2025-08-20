@@ -372,7 +372,7 @@ createRestrictions(
       blockTypes: ["name"],
       check: (val) => /^[a-z0-9_-]+$/.test(val),
       message:
-        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+        "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
     {
       type: "validator",
@@ -407,7 +407,7 @@ createRestrictions(
       blockTypes: ["name"],
       check: (val) => /^[a-z0-9_-]+$/.test(val),
       message:
-        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+        "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
     {
       type: "validator",
@@ -436,7 +436,7 @@ createRestrictions(
       blockTypes: ["name"],
       check: (val) => /^[a-z0-9_-]+$/.test(val),
       message:
-        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+        "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
     {
       type: "validator",
@@ -457,7 +457,11 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_create", "slash_addsubcommandgroup"],
+      blockTypes: [
+        "slash_create",
+        "slash_addsubcommandgroup",
+        "slash_create_mutator",
+      ],
       message:
         'This block must be under "add slash command" OR "add subcommand group" block',
     },
@@ -466,7 +470,7 @@ createRestrictions(
       blockTypes: ["name"],
       check: (val) => /^[a-z0-9_-]+$/.test(val),
       message:
-        "The name only have lowercase letters, numbers, hyphens, and/or underscores",
+        "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
     {
       type: "validator",
@@ -487,7 +491,7 @@ createRestrictions(
   [
     {
       type: "surroundParent",
-      blockTypes: ["slash_create"],
+      blockTypes: ["slash_create", "slash_create_mutator"],
       message: 'This block must be under "add slash command" block',
     },
   ]
