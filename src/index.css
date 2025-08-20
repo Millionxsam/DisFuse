@@ -89,7 +89,7 @@ input[type="date"] {
   transition: all 0.2s ease;
 }
 
-button#red {
+button.red {
   background-color: #c42222;
 }
 
@@ -108,7 +108,7 @@ button:hover {
   box-shadow: 0 0 10px 3px var(--border-color);
 }
 
-button#red:hover {
+button.red:hover {
   background-color: #ff2c2c;
 }
 
@@ -419,7 +419,6 @@ i.workspacesMenuBtn:hover {
 }
 
 .projectName p {
-  cursor: pointer;
   font-family: "Poetsen One";
   font-size: 20px;
   overflow: hidden;
@@ -3580,6 +3579,12 @@ input::placeholder {
   padding: 1rem;
 }
 
+.hostContainer .infoBox.consoleHeader {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -15px;
+}
+
 .hostContainer .infoBox .info {
   display: flex;
   flex-direction: column;
@@ -3601,6 +3606,7 @@ input::placeholder {
 
 .hostContainer .infoBox .buttons button {
   border-radius: 1.5rem;
+  padding: 1rem;
 }
 
 .hostContainer .infoBox .buttons button .spinner {

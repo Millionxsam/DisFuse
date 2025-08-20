@@ -80,7 +80,7 @@ export default function PriProject({
             Open
           </button>
           {project?.owner?.id === userCache.user.id && (
-            <button onClick={() => deleteProject(project, onDelete)} id="red">
+            <button onClick={() => deleteProject(project, onDelete)} className="red">
               <i className="fa-solid fa-trash"></i>
               Delete
             </button>

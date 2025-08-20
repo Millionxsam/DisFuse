@@ -91,8 +91,8 @@ export default function HostModal({ socket, workspace, project, workspaceId }) {
               className={
                 status === "offline" ||
                 project?.owner?.id !== userCache?.user?.id
-                  ? "disabled"
-                  : ""
+                  ? "red disabled"
+                  : "red"
               }
               onClick={stopBot}
             >
@@ -101,11 +101,27 @@ export default function HostModal({ socket, workspace, project, workspaceId }) {
             </button>
           </div>
         </div>
-        <h2 className="consoleLabel">Console</h2>
+        <div className="infoBox consoleHeader">
+          <div className="info">
+            <h2>Console</h2>
+          </div>
+
+          <div className="buttons">
+            <button onClick={() => setConsoleLogs([])}>
+              <i className="fa-solid fa-broom" />
+              Clear
+            </button>
+          </div>
+        </div>
+
         <div className="console">
-          {consoleLogs.map((log) => (
-            <div>{log}</div>
-          ))}
+          <div className="consoleLogs">
+            {consoleLogs.map((log, i) => (
+              <div key={i} className="consoleLine">
+                {log}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </dialog>

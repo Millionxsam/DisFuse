@@ -72,7 +72,7 @@ export default function Inbox() {
       </div>
 
       <div className="buttons">
-        <button onClick={clearAll} id="red">
+        <button onClick={clearAll} className="red">
           <i className="fa-solid fa-trash"></i> Clear All
         </button>
       </div>

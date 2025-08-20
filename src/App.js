@@ -27,7 +27,6 @@ import "./index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Footer from "./components/Footer";
-import Swal from "sweetalert2";
 
 export default function App() {
   window.addEventListener("unhandledrejection", function (event) {
