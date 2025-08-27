@@ -8,6 +8,7 @@
   --main-color: #014f98;
   --border-color: rgba(112, 128, 144, 0.233);
   --foreground-color: #001222;
+  --button-radius: 1.3rem;
 }
 
 ::-webkit-scrollbar {
@@ -81,7 +82,7 @@ input[type="date"] {
   justify-content: center;
   border: none;
   padding: 1.75vh;
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
   font-size: 20px;
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
@@ -104,7 +105,6 @@ button:disabled {
 
 button:hover {
   background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 1.3rem;
   box-shadow: 0 0 10px 3px var(--border-color);
 }
 
@@ -279,7 +279,7 @@ input:checked + .slider:before {
   cursor: pointer;
   background-color: slategray;
   padding: 1vh;
-  border-radius: 10px;
+  border-radius: var(--button-radius);
   border: 2px solid rgb(152, 174, 196);
   transition: all 0.2s ease;
   align-items: center;
@@ -366,7 +366,7 @@ div.dropdown div.dropdown-content {
 
 div.dropdown div.dropdown-content button {
   background-color: transparent;
-  border-radius: 1rem;
+  border-radius: var(--button-radius);
   width: 100%;
   justify-content: start;
 }
@@ -489,7 +489,7 @@ i.workspacesMenuBtn:hover {
 }
 
 .workspace-navbar .right ul a button:hover {
-  border-radius: 1rem;
+  border-radius: var(--button-radius);
 }
 
 .workspace-navbar .right .indicator {
@@ -715,7 +715,7 @@ i.workspacesMenuBtn:hover {
 .secrets-view .top button#close {
   background-color: rgb(163, 0, 0);
   position: absolute;
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
   left: 100%;
   transform: translateX(-120%);
 }
@@ -833,7 +833,7 @@ dialog {
 
 .secrets-view input {
   padding: 0.75rem;
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
   border: 2px solid var(--border-color);
   font-size: 20px;
   background-color: rgb(88, 88, 88);
@@ -1292,15 +1292,15 @@ dialog {
 }
 
 .priProject .buttons button:first-child {
-  border-radius: 1.5rem 5px 5px 1.5rem;
+  border-radius: var(--button-radius) 5px 5px var(--button-radius);
 }
 
 .priProject .buttons button:last-child {
-  border-radius: 5px 1.5rem 1.5rem 5px;
+  border-radius: 5px var(--button-radius) var(--button-radius) 5px;
 }
 
 .priProject .buttons button:only-child {
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
 }
 
 .priProject .top {
@@ -2723,13 +2723,12 @@ div.hidden:not(.shown) {
   padding: 1.75vh;
   padding-left: max(2vw, 1.5rem);
   padding-right: max(2vw, 1.5rem);
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
   font-size: 20px;
   transition: all 0.2s ease;
 }
 
 .swal2-popup button:hover {
-  border-radius: 1.5rem !important;
   opacity: 1 !important;
 }
 
@@ -2892,11 +2891,11 @@ div.hidden:not(.shown) {
 }
 
 .workshop-item .buttons button:first-child {
-  border-radius: 1.5rem 5px 5px 1.5rem;
+  border-radius: var(--button-radius) 5px 5px var(--button-radius);
 }
 
 .workshop-item .buttons button:last-child {
-  border-radius: 5px 1.5rem 1.5rem 5px;
+  border-radius: 5px var(--button-radius) var(--button-radius) 5px;
   background-color: var(--main-color);
 }
 
@@ -3363,18 +3362,18 @@ input::placeholder {
 }
 
 .inviteContainer > div button {
-  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
+  border-radius: 0.5rem var(--button-radius) var(--button-radius) 0.5rem;
 }
 
 .inviteContainer > div button:hover {
-  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem !important;
+  border-radius: 0.5rem var(--button-radius) var(--button-radius) 0.5rem !important;
 }
 
 .inviteContainer input {
   color: white;
   width: 100%;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
-  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
+  border-radius: var(--button-radius) 0.5rem 0.5rem var(--button-radius);
   font-size: 17px;
   border: none;
   background-color: var(--border-color);
@@ -3423,19 +3422,19 @@ input::placeholder {
 }
 
 .inviteContainer .buttons button:first-child {
-  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
+  border-radius: var(--button-radius) 0.5rem 0.5rem var(--button-radius);
 }
 
 .inviteContainer .buttons button:last-child {
-  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
+  border-radius: 0.5rem var(--button-radius) var(--button-radius) 0.5rem;
 }
 
 .inviteContainer .buttons button:first-child:hover {
-  border-radius: 1.5rem 0.5rem 0.5rem 1.5rem !important;
+  border-radius: var(--button-radius) 0.5rem 0.5rem var(--button-radius) !important;
 }
 
 .inviteContainer .buttons button:last-child:hover {
-  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem !important;
+  border-radius: 0.5rem var(--button-radius) var(--button-radius) 0.5rem !important;
 }
 
 .workspace-navbar .activeUsers {
@@ -3605,7 +3604,7 @@ input::placeholder {
 }
 
 .hostContainer .infoBox .buttons button {
-  border-radius: 1.5rem;
+  border-radius: var(--button-radius);
   padding: 1rem;
 }
 
