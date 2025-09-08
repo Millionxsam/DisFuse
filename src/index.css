@@ -738,6 +738,41 @@ i.workspacesMenuBtn:hover {
   font-size: 25px;
 }
 
+.code-view .code,
+#workshopPreviewCode {
+  font-family: monospace !important;
+  padding: 1.5vh;
+  font-size: 15px;
+  background-color: #1f2c38;
+  border: 4px solid #274864;
+  border-radius: 10px;
+  max-height: 90vh;
+  overflow: auto;
+  white-space: pre; 
+}
+
+.code-view .code .line,
+#workshopPreviewCode .line {
+  display: flex;
+  white-space: nowrap; 
+}
+
+.code-view .code .line-number,
+#workshopPreviewCode .line-number {
+  width: 2em;
+  text-align: right;
+  margin-right: 1em;
+  color: #666;
+  user-select: none;
+  flex-shrink: 0; 
+}
+
+.code-view .code .line-content,
+#workshopPreviewCode .line-content {
+  flex: 1 0 auto;
+  white-space: pre;
+}
+
 .secrets-view .top {
   display: flex;
   align-items: center;
