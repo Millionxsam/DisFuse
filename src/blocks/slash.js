@@ -99,7 +99,7 @@ Blockly.Blocks["slash_addoption"] = {
           ["mentionable", "9"],
           ["number", "10"],
           ["role", "8"],
-          ["user", "6"],
+          ["user/member", "6"],
         ]),
         "type"
       )
