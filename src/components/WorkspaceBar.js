@@ -384,206 +384,206 @@ export default function WorkspaceBar({
             });
           });
 
-        document
-          .querySelector(".blockBuddy-container #create")
-          .addEventListener("click", async () => {
-            Swal.fire({
-              ...modalColors,
-              title: "BlockBuddy Create",
-              confirmButtonText: "Create",
-              showCancelButton: true,
-              inputPlaceholder: "A block that logs something in the console",
-              html: "Describe one or more blocks to create",
-              input: "text",
-              showLoaderOnConfirm: true,
-              preConfirm: async (prompt) => {
-                return (
-                  await axios.post(
-                    apiUrl + `/users/${userCache.user.id}/blockbuddy/blocks`,
-                    {
-                      prompt,
-                    },
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem("disfuse-token"),
-                      },
-                    }
-                  )
-                ).data;
-              },
-            }).then(async (response) => {
-              if (!response.isConfirmed) return;
+        // document
+        //   .querySelector(".blockBuddy-container #create")
+        //   .addEventListener("click", async () => {
+        //     Swal.fire({
+        //       ...modalColors,
+        //       title: "BlockBuddy Create",
+        //       confirmButtonText: "Create",
+        //       showCancelButton: true,
+        //       inputPlaceholder: "A block that logs something in the console",
+        //       html: "Describe one or more blocks to create",
+        //       input: "text",
+        //       showLoaderOnConfirm: true,
+        //       preConfirm: async (prompt) => {
+        //         return (
+        //           await axios.post(
+        //             apiUrl + `/users/${userCache.user.id}/blockbuddy/blocks`,
+        //             {
+        //               prompt,
+        //             },
+        //             {
+        //               headers: {
+        //                 Authorization: localStorage.getItem("disfuse-token"),
+        //               },
+        //             }
+        //           )
+        //         ).data;
+        //       },
+        //     }).then(async (response) => {
+        //       if (!response.isConfirmed) return;
 
-              Blockly.defineBlocksWithJsonArray(
-                response.value.map((b) => b.definition)
-              );
+        //       Blockly.defineBlocksWithJsonArray(
+        //         response.value.map((b) => b.definition)
+        //       );
 
-              response.value.forEach((customBlock) => {
-                const bl = workspace.newBlock(customBlock.definition.type);
-                bl.initSvg();
-                bl.render();
-                bl.setDeletable(true);
+        //       response.value.forEach((customBlock) => {
+        //         const bl = workspace.newBlock(customBlock.definition.type);
+        //         bl.initSvg();
+        //         bl.render();
+        //         bl.setDeletable(true);
 
-                // eslint-disable-next-line no-new-func
-                const genCode = new Function(
-                  "javascript",
-                  customBlock.javascriptGenerator
-                );
+        //         // eslint-disable-next-line no-new-func
+        //         const genCode = new Function(
+        //           "javascript",
+        //           customBlock.javascriptGenerator
+        //         );
 
-                genCode(javascript);
-              });
+        //         genCode(javascript);
+        //       });
 
-              let installedBlockPacks = [];
+        //       let installedBlockPacks = [];
 
-              const responses = await Promise.all(
-                userCache.user.installedBlockPacks?.map((packId) =>
-                  axios.get(apiUrl + `/workshop/${packId}`, {
-                    headers: {
-                      Authorization: localStorage.getItem("disfuse-token"),
-                    },
-                  })
-                )
-              );
+        //       const responses = await Promise.all(
+        //         userCache.user.installedBlockPacks?.map((packId) =>
+        //           axios.get(apiUrl + `/workshop/${packId}`, {
+        //             headers: {
+        //               Authorization: localStorage.getItem("disfuse-token"),
+        //             },
+        //           })
+        //         )
+        //       );
 
-              installedBlockPacks = responses.map((response) => response.data);
+        //       installedBlockPacks = responses.map((response) => response.data);
 
-              userCache.user.customBlocks = [
-                ...(userCache.user.customBlocks || []),
-                ...response.value,
-              ];
+        //       userCache.user.customBlocks = [
+        //         ...(userCache.user.customBlocks || []),
+        //         ...response.value,
+        //       ];
 
-              workspace.updateToolbox(
-                getToolbox(installedBlockPacks, userCache.user)
-              );
-            });
-          });
-        document
-          .querySelector(".blockBuddy-container #complete")
-          .addEventListener("click", async () => {
-            Swal.fire({
-              ...modalColors,
-              title: "BlockBuddy Complete",
-              confirmButtonText: "Generate",
-              showCancelButton: true,
-              inputPlaceholder: "Create a simple help command",
-              html: "Describe a command or feature to create",
-              input: "text",
-              showLoaderOnConfirm: true,
-              preConfirm: async (prompt) => {
-                const blockTypes = Object.keys(Blockly.Blocks);
-                const blockSchemas = blockTypes
-                  .map(getBlockMetadata)
-                  .filter(Boolean);
+        //       workspace.updateToolbox(
+        //         getToolbox(installedBlockPacks, userCache.user)
+        //       );
+        //     });
+        //   });
+        // document
+        //   .querySelector(".blockBuddy-container #complete")
+        //   .addEventListener("click", async () => {
+        //     Swal.fire({
+        //       ...modalColors,
+        //       title: "BlockBuddy Complete",
+        //       confirmButtonText: "Generate",
+        //       showCancelButton: true,
+        //       inputPlaceholder: "Create a simple help command",
+        //       html: "Describe a command or feature to create",
+        //       input: "text",
+        //       showLoaderOnConfirm: true,
+        //       preConfirm: async (prompt) => {
+        //         const blockTypes = Object.keys(Blockly.Blocks);
+        //         const blockSchemas = blockTypes
+        //           .map(getBlockMetadata)
+        //           .filter(Boolean);
 
-                return (
-                  await axios.post(
-                    apiUrl + `/projects/${project._id}/blockbuddy/complete`,
-                    {
-                      prompt,
-                      availableBlocks: blockSchemas,
-                    },
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem("disfuse-token"),
-                      },
-                    }
-                  )
-                ).data;
-              },
-            }).then((response) => {
-              if (!response.isConfirmed) return;
+        //         return (
+        //           await axios.post(
+        //             apiUrl + `/projects/${project._id}/blockbuddy/complete`,
+        //             {
+        //               prompt,
+        //               availableBlocks: blockSchemas,
+        //             },
+        //             {
+        //               headers: {
+        //                 Authorization: localStorage.getItem("disfuse-token"),
+        //               },
+        //             }
+        //           )
+        //         ).data;
+        //       },
+        //     }).then((response) => {
+        //       if (!response.isConfirmed) return;
 
-              try {
-                Blockly.Xml.domToWorkspace(
-                  Blockly.utils.xml.textToDom(response.value.xml),
-                  workspace
-                );
+        //       try {
+        //         Blockly.Xml.domToWorkspace(
+        //           Blockly.utils.xml.textToDom(response.value.xml),
+        //           workspace
+        //         );
 
-                Swal.fire({
-                  ...modalColors,
-                  title: "BlockBuddy Complete",
-                  text: response.value.completionText,
-                });
-              } catch (e) {
-                console.error(e);
+        //         Swal.fire({
+        //           ...modalColors,
+        //           title: "BlockBuddy Complete",
+        //           text: response.value.completionText,
+        //         });
+        //       } catch (e) {
+        //         console.error(e);
 
-                Swal.fire({
-                  ...modalColors,
-                  title: "There was a problem",
-                  icon: "error",
-                  text: "There was a problem generating the blocks. Please try again.",
-                });
-              }
-            });
-          });
-        document
-          .querySelector(".blockBuddy-container #convert")
-          .addEventListener("click", async () => {
-            Swal.fire({
-              ...modalColors,
-              title: "BlockBuddy Convert",
-              confirmButtonText: "Convert",
-              showCancelButton: true,
-              html: "Insert the contents of your index.js file below",
-              input: "textarea",
-              showLoaderOnConfirm: true,
-              preConfirm: async (code) => {
-                const blockTypes = Object.keys(Blockly.Blocks);
-                const blockSchemas = blockTypes
-                  .map(getBlockMetadata)
-                  .filter(Boolean);
+        //         Swal.fire({
+        //           ...modalColors,
+        //           title: "There was a problem",
+        //           icon: "error",
+        //           text: "There was a problem generating the blocks. Please try again.",
+        //         });
+        //       }
+        //     });
+        //   });
+        // document
+        //   .querySelector(".blockBuddy-container #convert")
+        //   .addEventListener("click", async () => {
+        //     Swal.fire({
+        //       ...modalColors,
+        //       title: "BlockBuddy Convert",
+        //       confirmButtonText: "Convert",
+        //       showCancelButton: true,
+        //       html: "Insert the contents of your index.js file below",
+        //       input: "textarea",
+        //       showLoaderOnConfirm: true,
+        //       preConfirm: async (code) => {
+        //         const blockTypes = Object.keys(Blockly.Blocks);
+        //         const blockSchemas = blockTypes
+        //           .map(getBlockMetadata)
+        //           .filter(Boolean);
 
-                return (
-                  await axios.post(
-                    apiUrl + `/projects/${project._id}/blockbuddy/convert`,
-                    {
-                      code,
-                      availableBlocks: blockSchemas,
-                    },
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem("disfuse-token"),
-                      },
-                    }
-                  )
-                ).data;
-              },
-            }).then((response) => {
-              if (!response.isConfirmed) return;
+        //         return (
+        //           await axios.post(
+        //             apiUrl + `/projects/${project._id}/blockbuddy/convert`,
+        //             {
+        //               code,
+        //               availableBlocks: blockSchemas,
+        //             },
+        //             {
+        //               headers: {
+        //                 Authorization: localStorage.getItem("disfuse-token"),
+        //               },
+        //             }
+        //           )
+        //         ).data;
+        //       },
+        //     }).then((response) => {
+        //       if (!response.isConfirmed) return;
 
-              try {
-                Blockly.Xml.domToWorkspace(
-                  Blockly.utils.xml.textToDom(response.value.xml),
-                  workspace
-                );
+        //       try {
+        //         Blockly.Xml.domToWorkspace(
+        //           Blockly.utils.xml.textToDom(response.value.xml),
+        //           workspace
+        //         );
 
-                Swal.fire({
-                  ...modalColors,
-                  title: "BlockBuddy Convert",
-                  text: response.value.completionText,
-                });
-              } catch (e) {
-                console.error(e);
+        //         Swal.fire({
+        //           ...modalColors,
+        //           title: "BlockBuddy Convert",
+        //           text: response.value.completionText,
+        //         });
+        //       } catch (e) {
+        //         console.error(e);
 
-                Swal.fire({
-                  ...modalColors,
-                  title: "There was a problem",
-                  icon: "error",
-                  text: "There was a problem generating the blocks. Please try again.",
-                });
-              }
-            });
-          });
+        //         Swal.fire({
+        //           ...modalColors,
+        //           title: "There was a problem",
+        //           icon: "error",
+        //           text: "There was a problem generating the blocks. Please try again.",
+        //         });
+        //       }
+        //     });
+        // });
       },
       html: renderToStaticMarkup(
         <>
           <div className="blockBuddy-container">
-            <div id="complete">
+            <div id="complete" className="disabled">
               <div>
                 <i class="fa-solid fa-cubes-stacked"></i>
                 <h3>Complete</h3>
               </div>
-              <p>Create commands or features using toolbox blocks</p>
+              <p>Unavailable due to an issue</p>
             </div>
             <div id="suggest">
               <div>
@@ -592,19 +592,19 @@ export default function WorkspaceBar({
               </div>
               <p>Make a list of changes or improvements for your bot</p>
             </div>
-            <div id="create">
+            <div id="create" className="disabled">
               <div>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <h3>Create</h3>
               </div>
-              <p>Describe custom blocks to create</p>
+              <p>Unavailable due to an issue</p>
             </div>
-            <div id="convert">
+            <div id="convert" className="disabled">
               <div>
                 <i class="fa-solid fa-repeat"></i>
                 <h3>Convert</h3>
               </div>
-              <p>Convert JavaScript code to blocks</p>
+              <p>Unavailable due to an issue</p>
             </div>
           </div>
         </>

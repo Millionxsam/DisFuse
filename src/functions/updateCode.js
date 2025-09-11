@@ -48,17 +48,15 @@ export function updateCode(
   workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);
 
   if (!onlyWarning) {
-    workspaceCodeEle.innerHTML = addLineNumbers(
+    workspaceCodeEle.innerHTML =
       hljs.highlight(workspaceCode, {
         language: "javascript",
-      }).value
-    );
+      }).value;
 
-    projectCodeEle.innerHTML = addLineNumbers(
+    projectCodeEle.innerHTML =
       hljs.highlight(projectCode, {
         language: "javascript",
-      }).value
-    );
+      }).value;
   }
 
   tempWorkspace.dispose();

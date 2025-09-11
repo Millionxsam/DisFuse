@@ -3343,6 +3343,11 @@ div.hidden:not(.shown) {
   transition: all 0.2s ease;
 }
 
+.blockBuddy-container > div.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .blockBuddy-container div div {
   display: flex;
   align-items: center;
