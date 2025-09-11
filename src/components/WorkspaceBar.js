@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import axios from "axios";
 import javascript, { javascriptGenerator } from "blockly/javascript";
-import getToolbox from "../config/legacyToolbox.js";
+import getToolbox from "../config/toolbox.js";
 import LoadingAnim from "./LoadingAnim";
 import { io } from "socket.io-client";
 import HostModal from "./HostModal.js";
