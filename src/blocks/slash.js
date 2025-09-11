@@ -355,7 +355,7 @@ createRestrictions(
 );
 
 createRestrictions(
-  ["slash_create"],
+  ["slash_create", "slash_create_mutator"],
   [
     {
       type: "surroundParent",
