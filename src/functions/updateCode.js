@@ -9,17 +9,6 @@ import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
 
 hljs.registerLanguage("javascript", javascript);
 
-function addLineNumbers(codeHtml) {
-  return codeHtml
-    .split("\n")
-    .map((line, index) => {
-      return `<div class="line"><span class="line-number">${
-        index + 1
-      }</span><span class="line-content">${line}</span></div>`;
-    })
-    .join("");
-}
-
 export function updateCode(
   workspace,
   project,
@@ -40,9 +29,7 @@ export function updateCode(
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
-  if (!onlyWarning) {
-    projectCode = setUpCode(project, tempWorkspace, projectBlocks);
-  }
+  if (!onlyWarning) projectCode = setUpCode(project, tempWorkspace, projectBlocks);
 
   var currentBlocks = workspace.getAllBlocks(true);
   workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);

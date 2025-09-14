@@ -8,7 +8,8 @@ export default async function autosave(
   projectId,
   currentWorkspace,
   socket,
-  event
+  event,
+  autosaveLabel
 ) {
   console.log("Autosaving...");
 
@@ -42,9 +43,7 @@ export default async function autosave(
             });
           else if (response.error) return reject(new Error(response.error));
 
-          if (
-            userCache?.user?.settings?.workspace?.toolboxAutosaveLabel !== false
-          ) {
+          if (autosaveLabel) {
             const autosaveIndicator = document.querySelector(
               ".workspace-navbar #autosave-indicator"
             );

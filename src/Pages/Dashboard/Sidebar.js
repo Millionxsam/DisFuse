@@ -44,6 +44,7 @@ export default function Sidebar() {
     }
   }, []);
 
+
   return (
     <>
       <div className="dashboard-container">
@@ -145,7 +146,7 @@ export default function Sidebar() {
               onClick={() => navigate(`/@${user.username}`)}
             >
               <img src={user?.avatar} alt="" />
-              <div>{user?.displayName}</div>
+              <div>{user?.global_name || user.username}</div>
               <i
                 onClick={logout}
                 className="fa-solid fa-arrow-right-from-bracket"

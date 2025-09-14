@@ -60,6 +60,22 @@ export default function OptimizationSettings() {
         <h5>
           Makes the workspace run faster, but it might look more pixelated.
         </h5>
+        <div className="option">
+          <label htmlFor="optimization-changesUntilSave">
+            Changes before saving:
+          </label>
+          <input
+            type="number"
+            defaultValue={user.settings?.optimization.changesUntilSave ?? 3}
+            onChange={(e) => {
+              e.currentTarget.value = Math.max(e.currentTarget.value, 2);
+              updateSetting("changesUntilSave", e.currentTarget.value);
+            }}
+            placeholder="Default: 2"
+            id="optimization-changesUntilSave"
+          />
+        </div>
+        <h5>How many changes (add, remove, modify blocks) before autosaving</h5>
       </div>
     </>
   );

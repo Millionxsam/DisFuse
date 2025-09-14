@@ -254,11 +254,16 @@ export default function Workspace() {
                       text-rendering: optimizeSpeed !important;
                       image-rendering: optimizeSpeed !important;
                       shape-rendering: optimizeSpeed !important;
-                      font-smooth: none;
+                      font-smooth: none !important;
                     }
                   `;
                     document.head.appendChild(styleEle);
                   }
+
+                  const changesUntilSave = Math.max(
+                    2,
+                    user.settings?.optimization?.changesUntilSave ?? 3
+                  );
 
                   installedBlockPacks?.forEach((pack) => {
                     registerCustomBlocks(
@@ -633,8 +638,8 @@ export default function Workspace() {
 
                     if (blocksIndicator)
                       blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
-  ${workspace.getAllBlocks().length ?? "??"} blocks
-  </div>`;
+                      ${workspace.getAllBlocks().length ?? "??"} blocks
+                      </div>`;
                   });
 
                   workspace.addChangeListener(async (e) => {
@@ -642,6 +647,8 @@ export default function Workspace() {
                       socket.emit("blockSelect", { blockId: e.newElementId });
                     }
                   });
+
+                  let updates = 0;
 
                   workspace.addChangeListener(async (e) => {
                     let ignoredEvents = [
@@ -652,25 +659,33 @@ export default function Workspace() {
                       Blockly.Events.TRASHCAN_OPEN,
                       Blockly.Events.FINISHED_LOADING,
                       Blockly.Events.BLOCK_DRAG,
+                      Blockly.Events.BLOCK_MOVE,
+                      Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
+                      Blockly.Events.UI,
+                      "backpack_change",
                     ];
 
                     if (ignoredEvents.includes(e.type)) return;
 
-                    javascriptGenerator.init(workspace);
+                    updates++;
 
                     reloadContextMenus(project, currentWorkspace.current);
                     setBackpackStorage();
                     addTooltips(workspace);
                     executeRestrictions(workspace);
 
+                    if (updates < changesUntilSave) return;
+                    updates = 0;
+
                     project = await autosave(
                       workspace,
                       projectId,
                       currentWorkspace.current,
                       socket,
-                      e.toJson()
+                      e.toJson(),
+                      user.settings?.workspace.toolboxAutosaveLabel ?? true
                     ).catch((e) => {
-                      console.error(e);
+                      console.error("Autosave error:", e);
 
                       document.querySelector(
                         ".workspace-navbar #autosave-indicator"
@@ -681,6 +696,10 @@ export default function Workspace() {
                         title: "Autosave Error",
                         icon: "error",
                         text: e,
+                        showConfirmButton: true,
+                        confirmButtonText: "Reload",
+                      }).then((value) => {
+                        if (value.isConfirmed) window.location.reload();
                       });
                     });
                   });
@@ -1068,7 +1087,8 @@ export default function Workspace() {
             .catch((e) => {
               console.error(e);
               Swal.fire({
-                title: "Error",
+                ...modalColors,
+                title: "Project Error",
                 text: "There was an error while loading this project!",
                 icon: "error",
               });

@@ -8,9 +8,9 @@ import modalThemeColor from "../functions/modalThemeColor.js";
 import { renderToStaticMarkup } from "react-dom/server";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import axios from "axios";
-import javascript, { javascriptGenerator } from "blockly/javascript";
-import getToolbox from "../config/toolbox.js";
+//import axios from "axios";
+//import javascript, { javascriptGenerator } from "blockly/javascript";
+//import getToolbox from "../config/toolbox.js";
 import LoadingAnim from "./LoadingAnim";
 import { io } from "socket.io-client";
 import HostModal from "./HostModal.js";
@@ -635,63 +635,63 @@ export default function WorkspaceBar({
   // }
 }
 
-function getBlockMetadata(blockType) {
-  const blockDef = Blockly.Blocks[blockType];
-  if (!blockDef) return null;
-
-  const workspace = Blockly.inject(document.createElement("div"), {
-    toolbox: null,
-  });
-  const block = workspace.newBlock(blockType);
-
-  const metadata = {
-    type: blockType,
-    inputs: {},
-    fields: {},
-    output: block.outputConnection?.check_ ?? null,
-    hasPreviousStatement: block.previousConnection !== null,
-    hasNextStatement: block.nextConnection !== null,
-    code: null,
-  };
-
-  for (const input of block.inputList) {
-    metadata.inputs[input.name] = {
-      inputType:
-        input.type === Blockly.INPUT_VALUE
-          ? "value"
-          : input.type === Blockly.NEXT_STATEMENT
-          ? "statement"
-          : "dummy",
-      check: input.connection?.check_ ?? null,
-    };
-  }
-
-  for (const input of block.inputList) {
-    for (const field of input.fieldRow) {
-      metadata.fields[field.name] = {
-        type: field.constructor.name,
-        value: field.getValue(),
-      };
-    }
-  }
-
-  javascriptGenerator.init(workspace);
-
-  try {
-    const generatedCode = javascriptGenerator.blockToCode(block);
-    metadata.code = Array.isArray(generatedCode)
-      ? generatedCode[0]
-      : generatedCode;
-  } catch (e) {
-    console.error(e);
-    metadata.code = "// Code generation failed";
-  }
-
-  block.dispose();
-  workspace.dispose();
-
-  return metadata;
-}
+//function getBlockMetadata(blockType) {
+//  const blockDef = Blockly.Blocks[blockType];
+//  if (!blockDef) return null;
+//
+//  const workspace = Blockly.inject(document.createElement("div"), {
+//    toolbox: null,
+//  });
+//  const block = workspace.newBlock(blockType);
+//
+//  const metadata = {
+//    type: blockType,
+//    inputs: {},
+//    fields: {},
+//    output: block.outputConnection?.check_ ?? null,
+//    hasPreviousStatement: block.previousConnection !== null,
+//    hasNextStatement: block.nextConnection !== null,
+//    code: null,
+//  };
+//
+//  for (const input of block.inputList) {
+//    metadata.inputs[input.name] = {
+//      inputType:
+//        input.type === Blockly.INPUT_VALUE
+//          ? "value"
+//          : input.type === Blockly.NEXT_STATEMENT
+//          ? "statement"
+//          : "dummy",
+//      check: input.connection?.check_ ?? null,
+//    };
+//  }
+//
+//  for (const input of block.inputList) {
+//    for (const field of input.fieldRow) {
+//      metadata.fields[field.name] = {
+//        type: field.constructor.name,
+//        value: field.getValue(),
+//      };
+//    }
+//  }
+//
+//  javascriptGenerator.init(workspace);
+//
+//  try {
+//    const generatedCode = javascriptGenerator.blockToCode(block);
+//    metadata.code = Array.isArray(generatedCode)
+//      ? generatedCode[0]
+//      : generatedCode;
+//  } catch (e) {
+//    console.error(e);
+//    metadata.code = "// Code generation failed";
+//  }
+//
+//  block.dispose();
+//  workspace.dispose();
+//
+//  return metadata;
+//}
 
 function openWorkspaceTabs(workspace) {
   document.querySelector(".workspace-tabs").style.height = "5vh";
