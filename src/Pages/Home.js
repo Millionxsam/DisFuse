@@ -22,8 +22,8 @@ export default function Home() {
           setProjects(data.projects);
         })
         .catch(() => {
-          setUsers(694);
-          setProjects(843);
+          setUsers(1000);
+          setProjects(1100);
         });
     }
   }, [users, projects]);
@@ -47,8 +47,8 @@ export default function Home() {
       const currentUsers = Math.floor(users * progress);
       const currentProjects = Math.floor(projects * progress);
 
-      usersEle.innerHTML = `${currentUsers} Users`;
-      projectsEle.innerHTML = `${currentProjects} Projects`;
+      usersEle.innerHTML = `${currentUsers.toLocaleString()} Users`;
+      projectsEle.innerHTML = `${currentProjects.toLocaleString()} Projects`;
 
       if (progress < 1 && window.location.pathname !== "/home") {
         animationFrameId = requestAnimationFrame(animate);
@@ -71,8 +71,8 @@ export default function Home() {
           </div>
           <h1>DisFuse</h1>
           <div className="stats hidden">
-            <div>{users ?? "0"} Users</div>
-            <div>{projects ?? "0"} Projects</div>
+            <div>{users ? users.toLocaleString() : "0"} Users</div>
+            <div>{projects ? users.toLocaleString() : "0"} Projects</div>
           </div>
           <p>
             Create your own <strong>advanced</strong> Discord bot by using
