@@ -91,18 +91,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div
-          onClick={() => {
-            window.scrollTo({
-              top: window.outerHeight,
-              left: 0,
-              behavior: "smooth",
-            });
-          }}
-          className="hidden scrollDownBtn"
-        >
-          <i className="fa-solid fa-circle-chevron-down"></i>
-        </div>
         <div className="body">
           <h2 className="hidden">Why DisFuse?</h2>
           <div className="features">
