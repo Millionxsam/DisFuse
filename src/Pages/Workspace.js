@@ -260,7 +260,10 @@ export default function Workspace() {
                     document.head.appendChild(styleEle);
                   }
 
-                  const changesUntilSave = Math.max(
+                  const changesUntilSave =
+                    activeUsers?.length > 0
+                      ? 1
+                      : Math.max(
                     2,
                     user.settings?.optimization?.changesUntilSave ?? 3
                   );
