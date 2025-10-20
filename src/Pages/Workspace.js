@@ -1076,7 +1076,7 @@ export default function Workspace() {
                       title: "New to DisFuse?",
                       html: `
                       <p>Welcome! Here are some useful links to help you use DisFuse:</p>
-                      <a href="https://docs.disfuse.com" target="_blank">📘 DisFuse Documentation</a><br>
+                      <a href="https://docs.disfuse.xyz" target="_blank">📘 DisFuse Documentation</a><br>
                       <a href="https://www.youtube.com/watch?v=OOrapVifGoE" target="_blank">▶️ DisFuse's YouTube Channel</a><br>
                       <a href="https://dsc.gg/disfuse" target="_blank">💬 Join the Discord Server</a>`,
                       ...modalColors,
