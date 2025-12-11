@@ -26,8 +26,8 @@ export default function Staff() {
           <Link to={"https://discord.com/users/" + i.id} key={index}>
             <div>
               <img
-                src={`https://cdn.discordapp.com/avatars/${i.id}/${i.avatar}.png?size=1024`}
-                alt=""
+                src={i.avatar}
+                alt={i.username + "'s Avatar"}
               />
               <h3>{i.username}</h3>
               <p className="staff-roles-card">
