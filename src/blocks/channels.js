@@ -69,7 +69,7 @@ javascriptGenerator.forBlock["channel_send_mutator"] = function (
   if (files) options.push(`files: [\n${files}]`);
   if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
 
-  return `await ${channel}.send({
+  return `${channel}.send({
   ${options.join(",\n  ")}
 })${thenCode}`;
 };
