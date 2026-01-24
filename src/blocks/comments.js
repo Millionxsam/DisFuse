@@ -149,7 +149,7 @@ Blockly.Blocks["comment_value"] = {
     this.appendDummyInput()
       .appendField("//")
       .appendField(new Blockly.FieldTextInput("comment"), "TEXT");
-    this.setOutput(true, "String");
+    this.setOutput(true, null);
     this.setColour("#476586");
     this.setOnChange(function (event) {
       if (event.type === Blockly.Events.UI) return;
