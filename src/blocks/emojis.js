@@ -18,7 +18,7 @@ Blockly.Blocks["emoji_getallinserver"] = {
 
 javascriptGenerator.forBlock["emoji_getallinserver"] = function (
   block,
-  generator
+  generator,
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "code");
@@ -39,9 +39,9 @@ Blockly.Blocks["emoji_getallinserver_value"] = {
 
 javascriptGenerator.forBlock["emoji_getallinserver_value"] = function (
   block,
-  generator
+  generator,
 ) {
-  return ["emoji", Order.NONE];
+  return ["ForEachemojiInServer", Order.NONE];
 };
 
 Blockly.Blocks["emoji_getguild"] = {
@@ -91,7 +91,7 @@ Blockly.Blocks["emoji_getimageurl"] = {
 
 javascriptGenerator.forBlock["emoji_getimageurl"] = function (
   block,
-  generator
+  generator,
 ) {
   var emoji = generator.valueToCode(block, "emoji", Order.ATOMIC);
 
@@ -108,7 +108,7 @@ Blockly.Blocks["emoji_getemojiwith"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "with"
+        "with",
       )
       .appendField("equal to");
     this.appendValueInput("server")
@@ -122,7 +122,7 @@ Blockly.Blocks["emoji_getemojiwith"] = {
 
 javascriptGenerator.forBlock["emoji_getemojiwith"] = function (
   block,
-  generator
+  generator,
 ) {
   var dropdown_with = block.getFieldValue("with");
   var value_equal = generator.valueToCode(block, "equal", Order.ATOMIC);
@@ -226,7 +226,7 @@ Blockly.Blocks["emoji_created"] = {
           ["date", "createdAt"],
           ["timestamp", "createdTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of emoji:");
     this.setInputsInline(true);
@@ -265,7 +265,7 @@ createRestrictions(
       check: (val) => 0 < val.length && val.length <= 32,
       message: "Name must be between 1 and 32 characters",
     },
-  ]
+  ],
 );
 
 javascriptGenerator.forBlock["emoji_setname"] = function (block, generator) {
@@ -311,7 +311,7 @@ createRestrictions(
       check: (val) => 0 < val.length && val.length <= 32,
       message: "Name must be between 1 and 32 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -331,7 +331,7 @@ createRestrictions(
       blockTypes: ["emoji"],
       message: "You must specify the emoji",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -347,7 +347,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to get the emoji from",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -358,7 +358,7 @@ createRestrictions(
       blockTypes: ["emoji_getallinserver"],
       message: 'This block must be in a "for each emoji in the server" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -369,5 +369,5 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to iterate emojis from.",
     },
-  ]
+  ],
 );
