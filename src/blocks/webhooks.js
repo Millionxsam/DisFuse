@@ -114,7 +114,7 @@ javascriptGenerator.forBlock["webhooks_edit"] = function (block, generator) {
   var avatar = generator.valueToCode(block, "avatar", Order.ATOMIC);
   var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
-  var code = `${webhook}.edit({
+  var code = `await ${webhook}.edit({
   name: ${name}, ${avatar ? `\navatar: ${avatar}` : ""}
 });`;
   return code;
@@ -135,7 +135,7 @@ javascriptGenerator.forBlock["webhooks_fetch"] = function (block, generator) {
   var id = generator.valueToCode(block, "id", Order.ATOMIC);
   var token = generator.valueToCode(block, "token", Order.ATOMIC);
 
-  var code = `client.fetchWebhook(${id}, ${token}).then((webhook) => { return webhook })`;
+  var code = `await client.fetchWebhook(${id}, ${token})`;
 
   return [code, Order.NONE];
 };
@@ -216,7 +216,7 @@ Blockly.Blocks["webhooks_createdAt"] = {
 
 javascriptGenerator.forBlock["webhooks_createdAt"] = function (
   block,
-  generator
+  generator,
 ) {
   var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
   var code = `${webhook}.createdAt`;
@@ -236,7 +236,7 @@ createRestrictions(
       blockTypes: ["token"],
       message: "You must specify the token of the webhook ",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -267,7 +267,7 @@ createRestrictions(
       },
       message: "Avatar URL must be a valid URL",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -284,7 +284,7 @@ createRestrictions(
       check: (val) => val.length <= 2000,
       message: "Content cannot be greater than 2,000 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -295,7 +295,7 @@ createRestrictions(
       blockTypes: ["webhooks_create"],
       message: "This block must be under the 'Create a webhook' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -315,7 +315,7 @@ createRestrictions(
       blockTypes: ["webhook"],
       message: "You must specify the webhook",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -341,5 +341,5 @@ createRestrictions(
       },
       message: "Avatar URL must be a valid URL",
     },
-  ]
+  ],
 );
