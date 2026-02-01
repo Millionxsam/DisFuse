@@ -50,7 +50,7 @@ javascriptGenerator.forBlock["webhooks_send"] = function (block, generator) {
 
   var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
-  var code = `${webhook}.send({
+  var code = `await ${webhook}.send({
   content: ${content || "''"}
 });`;
   return code;
