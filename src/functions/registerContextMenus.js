@@ -55,9 +55,8 @@ export default function registerContextMenus(project, currentWorkspace) {
       }).then((response) => {
         if (!response.isConfirmed) return;
 
-        const newData = JSON.parse(
-          project.workspaces.find((ws) => ws._id === response.value).data
-        );
+        const toWorkspace = project.workspaces.find((ws) => ws._id === response.value)
+        const newData = JSON.parse(toWorkspace.data === "" ? "{}" : toWorkspace.data);
 
         if (newData.blocks) {
           newData.blocks.blocks.push(
@@ -81,9 +80,7 @@ export default function registerContextMenus(project, currentWorkspace) {
           .then(() =>
             Swal.fire({
               toast: true,
-              title: `Block moved to ${
-                project.workspaces.find((ws) => ws._id === response.value).name
-              }`,
+              title: `Block moved to ${toWorkspace.name}`,
               icon: "success",
               timer: 5000,
               timerProgressBar: true,
