@@ -1,3 +1,42 @@
+const DEFAULT_SHADOWS = {
+  Number: { type: "math_number", fields: { NUM: 0 } },
+  String: { type: "text", fields: { TEXT: "" } },
+  Boolean: { type: "logic_boolean" },
+};
+
+function block(type, properties = {}) {
+  return Object.assign(
+    {},
+    {
+      kind: "block",
+      type,
+    },
+    properties
+  );
+}
+
+function shadow(type, properties = {}) {
+  if (DEFAULT_SHADOWS[type]) {
+    return Object.assign({}, DEFAULT_SHADOWS[type], properties);
+  } else {
+    return Object.assign({}, { kind: "shadow", type }, properties);
+  }
+}
+
+function sep(gap) {
+  return {
+    kind: "sep",
+    gap,
+  };
+}
+
+function label(text) {
+  return {
+    kind: "label",
+    text,
+  };
+}
+
 export default function getToolbox(blockPacks = [], user) {
   return {
     kind: "categoryToolbox",
@@ -6,70 +45,26 @@ export default function getToolbox(blockPacks = [], user) {
         kind: "search",
         name: "Search",
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Logic",
         categorystyle: "logic_category",
         contents: [
-          {
-            kind: "block",
-            type: "controls_if",
-          },
-          {
-            kind: "block",
-            type: "logic_compare",
-          },
-          {
-            kind: "block",
-            type: "logic_equalsExactly",
-          },
-          {
-            kind: "block",
-            type: "logic_operation",
-          },
-          {
-            kind: "block",
-            type: "logic_negate",
-          },
-          {
-            kind: "block",
-            type: "logic_boolean",
-          },
-          {
-            kind: "block",
-            type: "logic_null",
-          },
-          {
-            kind: "block",
-            type: "logic_ternary",
-          },
-          {
-            kind: "block",
-            type: "logic_nullishOperator",
-          },
-          {
-            kind: "label",
-            text: "--------------------------------",
-          },
-          {
-            kind: "block",
-            type: "logic_switch",
-          },
-          {
-            kind: "block",
-            type: "logic_case",
-          },
-          {
-            kind: "block",
-            type: "logic_default",
-          },
-          {
-            kind: "label",
-            text: "--------------------------------",
-          },
+          block("controls_if"),
+          block("logic_compare"),
+          block("logic_equalsExactly"),
+          block("logic_operation"),
+          block("logic_negate"),
+          block("logic_boolean"),
+          block("logic_null"),
+          block("logic_ternary"),
+          block("logic_nullishOperator"),
+          label("--------------------------------"),
+          block("logic_switch"),
+          block("logic_case"),
+          block("logic_default"),
+          label("--------------------------------"),
         ],
       },
       {
@@ -77,24 +72,16 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Loops",
         categorystyle: "loop_category",
         contents: [
-          {
-            kind: "block",
-            type: "controls_repeat_ext",
+          block("controls_repeat_ext", {
             inputs: {
-              TIMES: {
-                shadow: {
-                  type: "math_number",
-                  fields: {
-                    NUM: 10,
-                  },
+              TIMES: shadow("math_number", {
+                fields: {
+                  NUM: 10,
                 },
-              },
+              }),
             },
-          },
-          {
-            kind: "block",
-            type: "controls_whileUntil",
-          },
+          }),
+          block("controls_whileUntil"),
           {
             kind: "block",
             type: "controls_for",
@@ -125,14 +112,8 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "controls_forEach",
-          },
-          {
-            kind: "block",
-            type: "controls_flow_statements",
-          },
+          block("controls_forEach"),
+          block("controls_flow_statements"),
         ],
       },
       {
@@ -140,22 +121,10 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Text",
         colour: "#59c059",
         contents: [
-          {
-            kind: "block",
-            type: "text",
-          },
-          {
-            kind: "block",
-            type: "text_multiline",
-          },
-          {
-            kind: "block",
-            type: "text_join",
-          },
-          {
-            kind: "block",
-            type: "text_newline",
-          },
+          block("text"),
+          block("text_multiline"),
+          block("text_join"),
+          block("text_newline"),
           {
             kind: "block",
             type: "text_append",
@@ -381,30 +350,12 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "label",
-            text: "Advanced | RegExp Blocks ↓",
-          },
-          {
-            kind: "block",
-            type: "text_regexp",
-          },
-          {
-            kind: "block",
-            type: "text_regexp_test",
-          },
-          {
-            kind: "block",
-            type: "text_regexp_match",
-          },
-          {
-            kind: "block",
-            type: "text_regexp_exec",
-          },
-          {
-            kind: "block",
-            type: "text_regexp_replace",
-          },
+          label("Advanced | RegExp Blocks ↓"),
+          block("text_regexp"),
+          block("text_regexp_test"),
+          block("text_regexp_match"),
+          block("text_regexp_exec"),
+          block("text_regexp_replace"),
         ],
       },
       {
@@ -419,10 +370,7 @@ export default function getToolbox(blockPacks = [], user) {
               NUM: 123,
             },
           },
-          {
-            kind: "block",
-            type: "math_toNumber",
-          },
+          block("math_toNumber"),
           {
             kind: "block",
             type: "math_arithmetic",
@@ -473,10 +421,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "math_constant",
-          },
+          block("math_constant"),
           {
             kind: "block",
             type: "math_number_property",
@@ -589,10 +534,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "math_random_float",
-          },
+          block("math_random_float"),
           {
             kind: "block",
             type: "math_atan2",
@@ -622,10 +564,7 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Lists",
         categorystyle: "list_category",
         contents: [
-          {
-            kind: "block",
-            type: "lists_create_with",
-          },
+          block("lists_create_with"),
           {
             kind: "block",
             type: "lists_repeat",
@@ -640,14 +579,8 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "lists_length",
-          },
-          {
-            kind: "block",
-            type: "lists_isEmpty",
-          },
+          block("lists_length"),
+          block("lists_isEmpty"),
           {
             kind: "block",
             type: "lists_indexOf",
@@ -706,14 +639,8 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "lists_sort",
-          },
-          {
-            kind: "block",
-            type: "lists_reverse",
-          },
+          block("lists_sort"),
+          block("lists_reverse"),
           {
             kind: "block",
             type: "list_merge",
@@ -778,26 +705,11 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Objects",
         colour: "#BA59CE",
         contents: [
-          {
-            kind: "label",
-            text: "Objects are like lists, but each item has a value",
-          },
-          {
-            kind: "label",
-            text: "Create an object ↓",
-          },
-          {
-            kind: "block",
-            type: "object_new",
-          },
-          {
-            kind: "block",
-            type: "object_addkey",
-          },
-          {
-            kind: "label",
-            text: "Object actions ↓",
-          },
+          label("Objects are like lists, but each item has a value"),
+          label("Create an object ↓"),
+          block("object_new"),
+          block("object_addkey"),
+          label("Object actions ↓"),
           {
             kind: "block",
             type: "object_setkey",
@@ -826,10 +738,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "object_stringify",
-          },
+          block("object_stringify"),
           {
             kind: "block",
             type: "object_parse",
@@ -844,10 +753,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "label",
-            text: "Information about object ↓",
-          },
+          label("Information about object ↓"),
           {
             kind: "block",
             type: "object_getkey",
@@ -876,18 +782,9 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "object_length",
-          },
-          {
-            kind: "block",
-            type: "object_keys",
-          },
-          {
-            kind: "block",
-            type: "object_values",
-          },
+          block("object_length"),
+          block("object_keys"),
+          block("object_values"),
         ],
       },
       {
@@ -895,34 +792,13 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Time",
         colour: "#db4b9c",
         contents: [
-          {
-            kind: "label",
-            text: "Get a date ↓",
-          },
-          {
-            kind: "block",
-            type: "time_date_now",
-          },
-          {
-            kind: "block",
-            type: "time_date",
-          },
-          {
-            kind: "block",
-            type: "time_createdate",
-          },
-          {
-            kind: "label",
-            text: "Timestamp creation ↓",
-          },
-          {
-            kind: "block",
-            type: "time_timestampFromDate",
-          },
-          {
-            kind: "label",
-            text: "Convertion / Operations ↓",
-          },
+          label("Get a date ↓"),
+          block("time_date_now"),
+          block("time_date"),
+          block("time_createdate"),
+          label("Timestamp creation ↓"),
+          block("time_timestampFromDate"),
+          label("Convertion / Operations ↓"),
           {
             kind: "block",
             type: "time_convert",
@@ -951,14 +827,8 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "time_between",
-          },
-          {
-            kind: "label",
-            text: "String convertion ↓",
-          },
+          block("time_between"),
+          label("String convertion ↓"),
           {
             kind: "block",
             type: "time_stringToMS",
@@ -1002,22 +872,10 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Colour",
         colour: "#ad794c",
         contents: [
-          {
-            kind: "block",
-            type: "colour_picker",
-          },
-          {
-            kind: "block",
-            type: "colour_convert",
-          },
-          {
-            kind: "block",
-            type: "colour_hex",
-          },
-          {
-            kind: "block",
-            type: "colour_random",
-          },
+          block("colour_picker"),
+          block("colour_convert"),
+          block("colour_hex"),
+          block("colour_random"),
           {
             kind: "block",
             type: "colour_rgb",
@@ -1080,9 +938,7 @@ export default function getToolbox(blockPacks = [], user) {
           },
         ],
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Variables",
@@ -1150,104 +1006,36 @@ export default function getToolbox(blockPacks = [], user) {
         name: "JavaScript",
         colour: "#c93a5e",
         contents: [
-          {
-            kind: "label",
-            text: "Get the type of a value ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_typeof",
-          },
-          {
-            kind: "label",
-            text: "Run raw javascript ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_raw",
-          },
-          {
-            kind: "block",
-            type: "javascript_raw_float",
-          },
-          {
-            kind: "block",
-            type: "javascript_raw_value",
-          },
-          {
-            kind: "label",
-            text: "Wait before running code ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_wait",
-          },
-          {
-            kind: "label",
-            text: "Log to the console ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_consolelog",
-          },
-          {
-            kind: "block",
-            type: "javascript_consolewarn",
-          },
-          {
-            kind: "block",
-            type: "javascript_consoleerror",
-          },
-          {
-            kind: "block",
-            type: "javascript_consoleclear",
-          },
-          {
-            kind: "label",
-            text: "Ask for user input ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_consoleinput",
-          },
-          {
-            kind: "label",
-            text: "Try catch ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_trycatch",
-          },
-          {
-            kind: "block",
-            type: "javascript_trycatchfinally",
-          },
-          {
-            kind: "block",
-            type: "javascript_trycatch_error",
-          },
-          {
-            kind: "label",
-            text: "Program control ↓",
-          },
-          {
-            kind: "block",
-            type: "javascript_exit",
-          },
+          label("Get the type of a value ↓"),
+          block("javascript_typeof"),
+          label("Run raw javascript ↓"),
+          block("javascript_raw"),
+          block("javascript_raw_float"),
+          block("javascript_raw_value"),
+          label("Wait before running code ↓"),
+          block("javascript_wait"),
+          label("Log to the console ↓"),
+          block("javascript_consolelog"),
+          block("javascript_consolewarn"),
+          block("javascript_consoleerror"),
+          block("javascript_consoleclear"),
+          label("Ask for user input ↓"),
+          block("javascript_consoleinput"),
+          label("Try catch ↓"),
+          block("javascript_trycatch"),
+          block("javascript_trycatchfinally"),
+          block("javascript_trycatch_error"),
+          label("Program control ↓"),
+          block("javascript_exit"),
         ],
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Main",
         colour: "#FF6E33",
         contents: [
-          {
-            kind: "label",
-            text: "Required ↓",
-          },
+          label("Required ↓"),
           {
             kind: "block",
             type: "main_token",
@@ -1262,10 +1050,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "label",
-            text: "Get the value of a secret ↓",
-          },
+          label("Get the value of a secret ↓"),
           {
             kind: "block",
             type: "main_env",
@@ -1275,42 +1060,15 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "label",
-            text: "The bot itself, represented as a Discord user ↓",
-          },
-          {
-            kind: "block",
-            type: "main_bot",
-          },
-          {
-            kind: "label",
-            text: "Properties of the bot ↓",
-          },
-          {
-            kind: "block",
-            type: "main_ping",
-          },
-          {
-            kind: "block",
-            type: "main_numberof",
-          },
-          {
-            kind: "block",
-            type: "main_readyAt",
-          },
-          {
-            kind: "label",
-            text: "Events ↓",
-          },
-          {
-            kind: "block",
-            type: "main_ready",
-          },
-          {
-            kind: "label",
-            text: "Actions ↓",
-          },
+          label("The bot itself, represented as a Discord user ↓"),
+          block("main_bot"),
+          label("Properties of the bot ↓"),
+          block("main_ping"),
+          block("main_numberof"),
+          block("main_readyAt"),
+          label("Events ↓"),
+          block("main_ready"),
+          label("Actions ↓"),
           {
             kind: "block",
             type: "main_presence",
@@ -1333,18 +1091,9 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "main_destroy",
-          },
-          {
-            kind: "label",
-            text: "ONLY use the block below if you shutdown the bot first ↓",
-          },
-          {
-            kind: "block",
-            type: "main_botStart",
-          },
+          block("main_destroy"),
+          label("ONLY use the block below if you shutdown the bot first ↓"),
+          block("main_botStart"),
         ],
       },
       {
@@ -1352,14 +1101,8 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Embeds",
         colour: "00A58E",
         contents: [
-          {
-            kind: "label",
-            text: "Create the embed first ↓",
-          },
-          {
-            kind: "block",
-            type: "embed_create",
-          },
+          label("Create the embed first ↓"),
+          block("embed_create"),
           {
             kind: "label",
             text: "Put all of these blocks INSIDE of the 'create embed' block above ↓",
@@ -1491,10 +1234,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "embed_settimestamp",
-          },
+          block("embed_settimestamp"),
         ],
       },
       {
@@ -1507,10 +1247,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Message",
             colour: "#336EFF",
             contents: [
-              {
-                kind: "label",
-                text: "Get a message ↓",
-              },
+              label("Get a message ↓"),
               {
                 kind: "block",
                 type: "msg_getone",
@@ -1522,22 +1259,10 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "msg_received",
-              },
-              {
-                kind: "block",
-                type: "msg_msg",
-              },
-              {
-                kind: "label",
-                text: "Information about a message ↓",
-              },
+              label("Events ↓"),
+              block("msg_received"),
+              block("msg_msg"),
+              label("Information about a message ↓"),
               {
                 kind: "block",
                 type: "message_property",
@@ -1549,10 +1274,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Actions ↓",
-              },
+              label("Actions ↓"),
               {
                 kind: "block",
                 type: "msg_reply_mutator",
@@ -1564,21 +1286,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
+              block("misc_addrow"),
               {
                 kind: "block",
                 type: "misc_addFile",
                 inputs: {
-                  path: { shadow: { type: "text" } },
+                  path: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_messageSent",
-              },
+              block("misc_messageSent"),
               {
                 kind: "block",
                 type: "msg_deleteOther",
@@ -1632,10 +1348,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Threads",
             colour: "#5b67a5",
             contents: [
-              {
-                kind: "label",
-                text: "Get a thread ↓",
-              },
+              label("Get a thread ↓"),
               {
                 kind: "block",
                 type: "threads_getone",
@@ -1647,18 +1360,9 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "threads_msgHasThread",
-              },
-              {
-                kind: "block",
-                type: "threads_msgThread",
-              },
-              {
-                kind: "label",
-                text: "Create a thread ↓",
-              },
+              block("threads_msgHasThread"),
+              block("threads_msgThread"),
+              label("Create a thread ↓"),
               {
                 kind: "block",
                 type: "threads_msgCreateThread",
@@ -1696,50 +1400,17 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "threads_createdThread",
-              },
-              {
-                kind: "label",
-                text: "Information about a thread ↓",
-              },
-              {
-                kind: "block",
-                type: "threads_name",
-              },
-              {
-                kind: "block",
-                type: "threads_createdAt",
-              },
-              {
-                kind: "block",
-                type: "threads_lastMessage",
-              },
-              {
-                kind: "block",
-                type: "threads_author",
-              },
-              {
-                kind: "block",
-                type: "threads_authorMember",
-              },
-              {
-                kind: "block",
-                type: "threads_id",
-              },
-              {
-                kind: "block",
-                type: "threads_memberCount",
-              },
-              {
-                kind: "block",
-                type: "threads_parentChannel",
-              },
-              {
-                kind: "label",
-                text: "Thread actions ↓",
-              },
+              block("threads_createdThread"),
+              label("Information about a thread ↓"),
+              block("threads_name"),
+              block("threads_createdAt"),
+              block("threads_lastMessage"),
+              block("threads_author"),
+              block("threads_authorMember"),
+              block("threads_id"),
+              block("threads_memberCount"),
+              block("threads_parentChannel"),
+              label("Thread actions ↓"),
               {
                 kind: "block",
                 type: "threads_setName",
@@ -1784,30 +1455,12 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "threads_pin",
-              },
-              {
-                kind: "block",
-                type: "threads_unpin",
-              },
-              {
-                kind: "block",
-                type: "threads_join",
-              },
-              {
-                kind: "block",
-                type: "threads_leave",
-              },
-              {
-                kind: "block",
-                type: "threads_addUser",
-              },
-              {
-                kind: "block",
-                type: "threads_removeUser",
-              },
+              block("threads_pin"),
+              block("threads_unpin"),
+              block("threads_join"),
+              block("threads_leave"),
+              block("threads_addUser"),
+              block("threads_removeUser"),
             ],
           },
           {
@@ -1815,10 +1468,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Polls",
             colour: "#656b75",
             contents: [
-              {
-                kind: "label",
-                text: "Create a poll ↓",
-              },
+              label("Create a poll ↓"),
               {
                 kind: "block",
                 type: "poll_create",
@@ -1857,30 +1507,12 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "poll_sendchannel",
-              },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "poll_whenvoteadded",
-              },
-              {
-                kind: "block",
-                type: "poll_whenvoteaddedvotetext",
-              },
-              {
-                kind: "block",
-                type: "poll_whenvoteaddedvoteemoji",
-              },
-              {
-                kind: "block",
-                type: "poll_whenvoteaddedvoteuser",
-              },
+              block("poll_sendchannel"),
+              label("Events ↓"),
+              block("poll_whenvoteadded"),
+              block("poll_whenvoteaddedvotetext"),
+              block("poll_whenvoteaddedvoteemoji"),
+              block("poll_whenvoteaddedvoteuser"),
             ],
           },
         ],
@@ -1895,94 +1527,28 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Server",
             colour: "#A33DAC",
             contents: [
-              {
-                kind: "label",
-                text: "Get a server ↓",
-              },
-              {
-                kind: "block",
-                type: "server_getone",
-              },
-              {
-                kind: "label",
-                text: "Get all servers ↓",
-              },
-              {
-                kind: "block",
-                type: "server_getall",
-              },
-              {
-                kind: "block",
-                type: "server_guild",
-              },
-              {
-                kind: "label",
-                text: "Information about a server ↓",
-              },
-              {
-                kind: "block",
-                type: "server_name",
-              },
-              {
-                kind: "block",
-                type: "server_membercount",
-              },
-              {
-                kind: "block",
-                type: "server_id",
-              },
-              {
-                kind: "block",
-                type: "server_banner",
-              },
-              {
-                kind: "block",
-                type: "server_icon",
-              },
-              {
-                kind: "block",
-                type: "server_ownerid",
-              },
-              {
-                kind: "block",
-                type: "server_dsc",
-              },
-              {
-                kind: "block",
-                type: "server_afkchannel",
-              },
-              {
-                kind: "block",
-                type: "server_creationdate",
-              },
-              {
-                kind: "block",
-                type: "server_vanityurl",
-              },
-              {
-                kind: "block",
-                type: "server_systemchannel",
-              },
-              {
-                kind: "block",
-                type: "server_ruleschannel",
-              },
-              {
-                kind: "block",
-                type: "server_verified",
-              },
-              {
-                kind: "label",
-                text: "Actions on a server ↓",
-              },
-              {
-                kind: "block",
-                type: "server_disableinvites",
-              },
-              {
-                kind: "block",
-                type: "server_leave",
-              },
+              label("Get a server ↓"),
+              block("server_getone"),
+              label("Get all servers ↓"),
+              block("server_getall"),
+              block("server_guild"),
+              label("Information about a server ↓"),
+              block("server_name"),
+              block("server_membercount"),
+              block("server_id"),
+              block("server_banner"),
+              block("server_icon"),
+              block("server_ownerid"),
+              block("server_dsc"),
+              block("server_afkchannel"),
+              block("server_creationdate"),
+              block("server_vanityurl"),
+              block("server_systemchannel"),
+              block("server_ruleschannel"),
+              block("server_verified"),
+              label("Actions on a server ↓"),
+              block("server_disableinvites"),
+              block("server_leave"),
             ],
           },
           {
@@ -1990,10 +1556,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Channels",
             colour: "#AD509B",
             contents: [
-              {
-                kind: "label",
-                text: "Get a channel ↓",
-              },
+              label("Get a channel ↓"),
               {
                 kind: "block",
                 type: "channel_getone",
@@ -2005,22 +1568,10 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Get all channels ↓",
-              },
-              {
-                kind: "block",
-                type: "channel_foreach",
-              },
-              {
-                kind: "block",
-                type: "channel_channel",
-              },
-              {
-                kind: "label",
-                text: "Create a channel ↓",
-              },
+              label("Get all channels ↓"),
+              block("channel_foreach"),
+              block("channel_channel"),
+              label("Create a channel ↓"),
               {
                 kind: "block",
                 type: "channel_create",
@@ -2032,66 +1583,21 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "channel_createdChannel",
-              },
-              {
-                kind: "label",
-                text: "Information about a channel ↓",
-              },
-              {
-                kind: "block",
-                type: "channel_getslowmode",
-              },
-              {
-                kind: "block",
-                type: "channel_getnsfw",
-              },
-              {
-                kind: "block",
-                type: "channel_getParent",
-              },
-              {
-                kind: "block",
-                type: "channel_gettopic",
-              },
-              {
-                kind: "block",
-                type: "channel_gettype",
-              },
-              {
-                kind: "block",
-                type: "channel_deletable",
-              },
-              {
-                kind: "block",
-                type: "channel_manageable",
-              },
-              {
-                kind: "block",
-                type: "channel_name",
-              },
-              {
-                kind: "block",
-                type: "channel_id",
-              },
-              {
-                kind: "block",
-                type: "channel_url",
-              },
-              {
-                kind: "block",
-                type: "channel_created",
-              },
-              {
-                kind: "label",
-                text: "Channel actions ↓",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------",
-              },
+              block("channel_createdChannel"),
+              label("Information about a channel ↓"),
+              block("channel_getslowmode"),
+              block("channel_getnsfw"),
+              block("channel_getParent"),
+              block("channel_gettopic"),
+              block("channel_gettype"),
+              block("channel_deletable"),
+              block("channel_manageable"),
+              block("channel_name"),
+              block("channel_id"),
+              block("channel_url"),
+              block("channel_created"),
+              label("Channel actions ↓"),
+              label("------------------------------------"),
               {
                 kind: "block",
                 type: "channel_send_mutator",
@@ -2103,25 +1609,16 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
+              block("misc_addrow"),
               {
                 kind: "block",
                 type: "misc_addFile",
                 inputs: {
-                  path: { shadow: { type: "text" } },
+                  path: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_messageSent",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------",
-              },
+              block("misc_messageSent"),
+              label("------------------------------------"),
               {
                 kind: "block",
                 type: "channel_setParent",
@@ -2133,10 +1630,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "channel_syncPerms",
-              },
+              block("channel_syncPerms"),
               {
                 kind: "block",
                 type: "channel_setPosition",
@@ -2162,10 +1656,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "----------------------------------------------------",
-              },
+              label("----------------------------------------------------"),
               {
                 kind: "block",
                 type: "channel_set_permission",
@@ -2229,10 +1720,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "channel_setautoarchive",
-              },
+              block("channel_setautoarchive"),
               {
                 kind: "block",
                 type: "channel_clone",
@@ -2244,26 +1732,11 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "channel_createdChannel",
-              },
-              {
-                kind: "block",
-                type: "channel_del",
-              },
-              {
-                kind: "block",
-                type: "channel_setname",
-              },
-              {
-                kind: "label",
-                text: "----------------------------------------------------",
-              },
-              {
-                kind: "label",
-                text: "Get the latest messages of a channel ↓",
-              },
+              block("channel_createdChannel"),
+              block("channel_del"),
+              block("channel_setname"),
+              label("----------------------------------------------------"),
+              label("Get the latest messages of a channel ↓"),
               {
                 kind: "block",
                 type: "channel_fetchLastMessages",
@@ -2292,10 +1765,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "----------------------------------------------------",
-              },
+              label("----------------------------------------------------"),
             ],
           },
           {
@@ -2303,10 +1773,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Roles",
             colour: "#B76489",
             contents: [
-              {
-                kind: "label",
-                text: "Get a role ↓",
-              },
+              label("Get a role ↓"),
               {
                 kind: "block",
                 type: "roles_getone",
@@ -2318,43 +1785,16 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Loop through each role in a server ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_foreach",
-              },
-              {
-                kind: "block",
-                type: "roles_foreach_role",
-              },
+              label("Loop through each role in a server ↓"),
+              block("roles_foreach"),
+              block("roles_foreach_role"),
 
-              {
-                kind: "label",
-                text: "Loop through each member who has a certain role ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_foreachMember",
-              },
-              {
-                kind: "block",
-                type: "roles_currentLoopMember",
-              },
-              {
-                kind: "label",
-                text: "Get the highest role in a server ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_highest",
-              },
-              {
-                kind: "label",
-                text: "Create a role in a server ↓",
-              },
+              label("Loop through each member who has a certain role ↓"),
+              block("roles_foreachMember"),
+              block("roles_currentLoopMember"),
+              label("Get the highest role in a server ↓"),
+              block("roles_highest"),
+              label("Create a role in a server ↓"),
               {
                 kind: "block",
                 type: "roles_create",
@@ -2381,42 +1821,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_permission",
-              },
-              {
-                kind: "label",
-                text: "Check whether a certain member has a role ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_hasRole",
-              },
-              {
-                kind: "label",
-                text: "Information about a role ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_name",
-              },
-              {
-                kind: "block",
-                type: "roles_id",
-              },
-              {
-                kind: "block",
-                type: "roles_position",
-              },
-              {
-                kind: "block",
-                type: "roles_hexColor",
-              },
-              {
-                kind: "block",
-                type: "roles_createdAt",
-              },
+              block("misc_permission"),
+              label("Check whether a certain member has a role ↓"),
+              block("roles_hasRole"),
+              label("Information about a role ↓"),
+              block("roles_name"),
+              block("roles_id"),
+              block("roles_position"),
+              block("roles_hexColor"),
+              block("roles_createdAt"),
               {
                 kind: "block",
                 type: "roles_hasPermission",
@@ -2428,14 +1841,8 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Role actions ↓",
-              },
-              {
-                kind: "block",
-                type: "roles_delete",
-              },
+              label("Role actions ↓"),
+              block("roles_delete"),
               {
                 kind: "block",
                 type: "roles_rename",
@@ -2447,18 +1854,9 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "roles_addToMember",
-              },
-              {
-                kind: "block",
-                type: "roles_removeFromMember",
-              },
-              {
-                kind: "block",
-                type: "roles_setPermissions",
-              },
+              block("roles_addToMember"),
+              block("roles_removeFromMember"),
+              block("roles_setPermissions"),
             ],
           },
           {
@@ -2466,38 +1864,19 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Members",
             colour: "#3c9e56",
             contents: [
-              {
-                kind: "label",
-                text: "Member = one member of a server",
-              },
-              {
-                kind: "label",
-                text: "User = the total Discord user",
-              },
-              {
-                kind: "label",
-                text: "Some blocks only accept users",
-              },
-              {
-                kind: "label",
-                text: "Other blocks only accept members",
-              },
-              {
-                kind: "label",
-                text: "Some blocks can accept either one",
-              },
+              label("Member = one member of a server"),
+              label("User = the total Discord user"),
+              label("Some blocks only accept users"),
+              label("Other blocks only accept members"),
+              label("Some blocks can accept either one"),
               {
                 kind: "label",
                 text: "(It won't let you drag in the wrong one)",
               },
-              {
-                kind: "label",
-                text: "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
-              },
-              {
-                kind: "label",
-                text: "Get a member or user ↓",
-              },
+              label(
+                "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+              ),
+              label("Get a member or user ↓"),
               {
                 kind: "block",
                 type: "member_getone",
@@ -2520,42 +1899,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Do something for every member in a server ↓",
-              },
-              {
-                kind: "block",
-                type: "member_foreach",
-              },
-              {
-                kind: "block",
-                type: "member_member",
-              },
-              {
-                kind: "label",
-                text: "Information about members/users ↓",
-              },
-              {
-                kind: "block",
-                type: "member_status",
-              },
-              {
-                kind: "block",
-                type: "member_userFlags",
-              },
-              {
-                kind: "block",
-                type: "member_bannable",
-              },
-              {
-                kind: "block",
-                type: "member_kickable",
-              },
-              {
-                kind: "block",
-                type: "member_timedout",
-              },
+              label("Do something for every member in a server ↓"),
+              block("member_foreach"),
+              block("member_member"),
+              label("Information about members/users ↓"),
+              block("member_status"),
+              block("member_userFlags"),
+              block("member_bannable"),
+              block("member_kickable"),
+              block("member_timedout"),
               {
                 kind: "block",
                 type: "member_hasPermission",
@@ -2567,62 +1919,20 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "member_color",
-              },
-              {
-                kind: "block",
-                type: "member_id",
-              },
-              {
-                kind: "block",
-                type: "member_joined",
-              },
-              {
-                kind: "block",
-                type: "member_nickname",
-              },
-              {
-                kind: "block",
-                type: "member_username",
-              },
-              {
-                kind: "block",
-                type: "member_avatarURL",
-              },
-              {
-                kind: "block",
-                type: "member_bannerURL",
-              },
-              {
-                kind: "block",
-                type: "member_bot",
-              },
-              {
-                kind: "block",
-                type: "member_system",
-              },
-              {
-                kind: "block",
-                type: "member_accent",
-              },
-              {
-                kind: "block",
-                type: "member_created",
-              },
-              {
-                kind: "block",
-                type: "member_user",
-              },
-              {
-                kind: "label",
-                text: "Actions on users/members ↓",
-              },
-              {
-                kind: "block",
-                type: "member_ban",
-              },
+              block("member_color"),
+              block("member_id"),
+              block("member_joined"),
+              block("member_nickname"),
+              block("member_username"),
+              block("member_avatarURL"),
+              block("member_bannerURL"),
+              block("member_bot"),
+              block("member_system"),
+              block("member_accent"),
+              block("member_created"),
+              block("member_user"),
+              label("Actions on users/members ↓"),
+              block("member_ban"),
               {
                 kind: "block",
                 type: "member_timeout",
@@ -2637,10 +1947,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "member_kick",
-              },
+              block("member_kick"),
               {
                 kind: "block",
                 type: "member_dm",
@@ -2674,10 +1981,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "member_removetimeout",
-              },
+              block("member_removetimeout"),
             ],
           },
           {
@@ -2685,74 +1989,23 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Invites",
             colour: "#CA8A67",
             contents: [
-              {
-                kind: "label",
-                text: "Create/delete invites ↓",
-              },
-              {
-                kind: "block",
-                type: "invite_create",
-              },
-              {
-                kind: "block",
-                type: "invite_delete",
-              },
-              {
-                kind: "label",
-                text: "Get an invite ↓",
-              },
-              {
-                kind: "block",
-                type: "invite_get",
-              },
-              {
-                kind: "label",
-                text: "Information about an invite ↓",
-              },
-              {
-                kind: "block",
-                type: "invite_url",
-              },
-              {
-                kind: "block",
-                type: "invite_channel",
-              },
-              {
-                kind: "block",
-                type: "invite_author",
-              },
-              {
-                kind: "label",
-                text: "Loops ↓",
-              },
-              {
-                kind: "block",
-                type: "invite_foreach",
-              },
-              {
-                kind: "block",
-                type: "invite_channel_foreach",
-              },
-              {
-                kind: "block",
-                type: "invite_foreach_var",
-              },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "invite_invitecreated",
-              },
-              {
-                kind: "block",
-                type: "invite_invitedeleted",
-              },
-              {
-                kind: "block",
-                type: "invite_event_var",
-              },
+              label("Create/delete invites ↓"),
+              block("invite_create"),
+              block("invite_delete"),
+              label("Get an invite ↓"),
+              block("invite_get"),
+              label("Information about an invite ↓"),
+              block("invite_url"),
+              block("invite_channel"),
+              block("invite_author"),
+              label("Loops ↓"),
+              block("invite_foreach"),
+              block("invite_channel_foreach"),
+              block("invite_foreach_var"),
+              label("Events ↓"),
+              block("invite_invitecreated"),
+              block("invite_invitedeleted"),
+              block("invite_event_var"),
             ],
           },
           {
@@ -2760,10 +2013,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Webhooks",
             colour: "#4f85db",
             contents: [
-              {
-                kind: "label",
-                text: "Get a webhook ↓",
-              },
+              label("Get a webhook ↓"),
               {
                 kind: "block",
                 type: "webhooks_fetch",
@@ -2780,10 +2030,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Create a webhook ↓",
-              },
+              label("Create a webhook ↓"),
               {
                 kind: "block",
                 type: "webhooks_create",
@@ -2795,18 +2042,9 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "webhooks_createdWebhook",
-              },
-              {
-                kind: "label",
-                text: "Get token of a webhook ↓",
-              },
-              {
-                kind: "label",
-                text: "WARNING: This should be kept private!",
-              },
+              block("webhooks_createdWebhook"),
+              label("Get token of a webhook ↓"),
+              label("WARNING: This should be kept private!"),
               {
                 kind: "block",
                 type: "webhooks_token",
@@ -2818,10 +2056,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Actions ↓",
-              },
+              label("Actions ↓"),
               {
                 kind: "block",
                 type: "webhooks_send",
@@ -2860,26 +2095,11 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Information about a webhook ↓",
-              },
-              {
-                kind: "block",
-                type: "webhooks_name",
-              },
-              {
-                kind: "block",
-                type: "webhooks_id",
-              },
-              {
-                kind: "block",
-                type: "webhooks_owner",
-              },
-              {
-                kind: "block",
-                type: "webhooks_createdAt",
-              },
+              label("Information about a webhook ↓"),
+              block("webhooks_name"),
+              block("webhooks_id"),
+              block("webhooks_owner"),
+              block("webhooks_createdAt"),
             ],
           },
           {
@@ -2887,10 +2107,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Emojis",
             colour: "#DEB144",
             contents: [
-              {
-                kind: "label",
-                text: "Get an emoji ↓",
-              },
+              label("Get an emoji ↓"),
               {
                 kind: "block",
                 type: "emoji_getemojiwith",
@@ -2902,54 +2119,18 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Get all emojis ↓",
-              },
-              {
-                kind: "block",
-                type: "emoji_getallinserver",
-              },
-              {
-                kind: "block",
-                type: "emoji_getallinserver_value",
-              },
-              {
-                kind: "label",
-                text: "Information about an emoji ↓",
-              },
-              {
-                kind: "block",
-                type: "emoji_getname",
-              },
-              {
-                kind: "block",
-                type: "emoji_getguild",
-              },
-              {
-                kind: "block",
-                type: "emoji_getid",
-              },
-              {
-                kind: "block",
-                type: "emoji_getimageurl",
-              },
-              {
-                kind: "block",
-                type: "emoji_isanimated",
-              },
-              {
-                kind: "block",
-                type: "emoji_created",
-              },
-              {
-                kind: "block",
-                type: "emoji_author",
-              },
-              {
-                kind: "label",
-                text: "Emoji actions ↓",
-              },
+              label("Get all emojis ↓"),
+              block("emoji_getallinserver"),
+              block("emoji_getallinserver_value"),
+              label("Information about an emoji ↓"),
+              block("emoji_getname"),
+              block("emoji_getguild"),
+              block("emoji_getid"),
+              block("emoji_getimageurl"),
+              block("emoji_isanimated"),
+              block("emoji_created"),
+              block("emoji_author"),
+              label("Emoji actions ↓"),
               {
                 kind: "block",
                 type: "emoji_create",
@@ -2966,10 +2147,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "emoji_delete",
-              },
+              block("emoji_delete"),
               {
                 kind: "block",
                 type: "emoji_setname",
@@ -2988,10 +2166,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Stickers",
             colour: "#7a9e37",
             contents: [
-              {
-                kind: "label",
-                text: "Get a sticker ↓",
-              },
+              label("Get a sticker ↓"),
               {
                 kind: "block",
                 type: "sticker_getwith",
@@ -3003,46 +2178,16 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Get all stickers ↓",
-              },
-              {
-                kind: "block",
-                type: "sticker_getallinserver",
-              },
-              {
-                kind: "block",
-                type: "sticker_getallinserver_value",
-              },
-              {
-                kind: "label",
-                text: "Information about a sticker ↓",
-              },
-              {
-                kind: "block",
-                type: "sticker_getname",
-              },
-              {
-                kind: "block",
-                type: "sticker_getguild",
-              },
-              {
-                kind: "block",
-                type: "sticker_getid",
-              },
-              {
-                kind: "block",
-                type: "sticker_geturl",
-              },
-              {
-                kind: "block",
-                type: "sticker_created",
-              },
-              {
-                kind: "label",
-                text: "Sticker actions ↓",
-              },
+              label("Get all stickers ↓"),
+              block("sticker_getallinserver"),
+              block("sticker_getallinserver_value"),
+              label("Information about a sticker ↓"),
+              block("sticker_getname"),
+              block("sticker_getguild"),
+              block("sticker_getid"),
+              block("sticker_geturl"),
+              block("sticker_created"),
+              label("Sticker actions ↓"),
               {
                 kind: "block",
                 type: "sticker_create",
@@ -3059,10 +2204,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "sticker_delete",
-              },
+              block("sticker_delete"),
               {
                 kind: "block",
                 type: "sticker_setname",
@@ -3088,18 +2230,9 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Slash",
             colour: "#3366CC",
             contents: [
-              {
-                kind: "label",
-                text: "Setup slash commands ↓",
-              },
-              {
-                kind: "block",
-                type: "misc_createcontainer_global",
-              },
-              {
-                kind: "label",
-                text: "Add a slash command ↓",
-              },
+              label("Setup slash commands ↓"),
+              block("misc_createcontainer_global"),
+              label("Add a slash command ↓"),
               {
                 kind: "block",
                 type: "slash_create_mutator",
@@ -3116,64 +2249,49 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_permission",
-              },
+              block("misc_permission"),
               {
                 kind: "block",
                 type: "slash_addoption",
                 inputs: {
-                  name: { shadow: { type: "text" } },
-                  dsc: { shadow: { type: "text" } },
-                  required: { shadow: { type: "logic_boolean" } },
+                  name: { shadow: shadow("text") },
+                  dsc: { shadow: shadow("text") },
+                  required: { shadow: shadow("logic_boolean") },
                 },
               },
               {
                 kind: "block",
                 type: "slash_addchoice",
                 inputs: {
-                  name: { shadow: { type: "text" } },
-                  value: { shadow: { type: "text" } },
+                  name: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "Subcommands (advanced) ↓",
-              },
+              label("Subcommands (advanced) ↓"),
               {
                 kind: "block",
                 type: "slash_addsubcommand",
                 inputs: {
-                  name: { shadow: { type: "text" } },
-                  dsc: { shadow: { type: "text" } },
+                  name: { shadow: shadow("text") },
+                  dsc: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "slash_addsubcommandgroup",
                 inputs: {
-                  name: { shadow: { type: "text" } },
-                  dsc: { shadow: { type: "text" } },
+                  name: { shadow: shadow("text") },
+                  dsc: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "slash_received",
-              },
-              {
-                kind: "label",
-                text: "Actions ↓",
-              },
+              label("Events ↓"),
+              block("slash_received"),
+              label("Actions ↓"),
               {
                 kind: "block",
                 type: "misc_int_reply_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                   ephemeral: {
                     shadow: {
                       type: "logic_boolean",
@@ -3186,10 +2304,9 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
-              {
-                kind: "label",
-                text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+              ),
               {
                 kind: "block",
                 type: "misc_int_deferReply",
@@ -3202,52 +2319,28 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
+              block("misc_addrow"),
               {
                 kind: "block",
                 type: "misc_addFile",
                 inputs: {
-                  path: { shadow: { type: "text" } },
+                  path: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "Information about the command ran ↓",
-              },
-              {
-                kind: "block",
-                type: "slash_getoption",
-              },
-              {
-                kind: "block",
-                type: "slash_name",
-              },
-              {
-                kind: "block",
-                type: "misc_int_member",
-              },
-              {
-                kind: "block",
-                type: "misc_int_user",
-              },
-              {
-                kind: "block",
-                type: "misc_int_channel",
-              },
-              {
-                kind: "block",
-                type: "misc_int_server",
-              },
+              label("Information about the command ran ↓"),
+              block("slash_getoption"),
+              block("slash_name"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
             ],
           },
           {
@@ -3255,22 +2348,16 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Buttons",
             colour: "#2677AF",
             contents: [
-              {
-                kind: "label",
-                text: "Put this inside a block to send a row ↓",
-              },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
+              label("Put this inside a block to send a row ↓"),
+              block("misc_addrow"),
               {
                 kind: "block",
                 type: "buttons_add",
                 inputs: {
-                  label: { shadow: { type: "text" } },
-                  emoji: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
-                  url: { shadow: { type: "text" } },
+                  label: { shadow: shadow("text") },
+                  emoji: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  url: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3279,51 +2366,21 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Button events ↓",
-              },
-              {
-                kind: "block",
-                type: "buttons_event",
-              },
-              {
-                kind: "label",
-                text: "Info about the clicked button ↓",
-              },
-              {
-                kind: "block",
-                type: "buttons_message",
-              },
-              {
-                kind: "block",
-                type: "buttons_id",
-              },
-              {
-                kind: "block",
-                type: "misc_int_member",
-              },
-              {
-                kind: "block",
-                type: "misc_int_user",
-              },
-              {
-                kind: "block",
-                type: "misc_int_channel",
-              },
-              {
-                kind: "block",
-                type: "misc_int_server",
-              },
-              {
-                kind: "label",
-                text: "Button actions ↓",
-              },
+              label("Button events ↓"),
+              block("buttons_event"),
+              label("Info about the clicked button ↓"),
+              block("buttons_message"),
+              block("buttons_id"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
+              label("Button actions ↓"),
               {
                 kind: "block",
                 type: "misc_int_reply_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                   ephemeral: {
                     shadow: {
                       type: "logic_boolean",
@@ -3332,25 +2389,21 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
+              block("misc_addrow"),
               {
                 kind: "block",
                 type: "misc_addFile",
                 inputs: {
-                  path: { shadow: { type: "text" } },
+                  path: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
-              {
-                kind: "label",
-                text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+              ),
               {
                 kind: "block",
                 type: "misc_int_deferReply",
@@ -3367,13 +2420,10 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "buttons_del",
-              },
+              block("buttons_del"),
             ],
           },
           {
@@ -3381,28 +2431,18 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Modals",
             colour: "1A8793",
             contents: [
-              {
-                kind: "label",
-                text: "Keep in mind that you can only show modals in slash commands!",
-              },
-              {
-                kind: "label",
-                text: "Show a modal to the user ↓",
-              },
-              {
-                kind: "block",
-                type: "modal_show",
-              },
-              {
-                kind: "label",
-                text: "Create a modal (put this in the block above) ↓",
-              },
+              label(
+                "Keep in mind that you can only show modals in slash commands!"
+              ),
+              label("Show a modal to the user ↓"),
+              block("modal_show"),
+              label("Create a modal (put this in the block above) ↓"),
               {
                 kind: "block",
                 type: "modal_create",
                 inputs: {
-                  title: { shadow: { type: "text" } },
-                  customId: { shadow: { type: "text" } },
+                  title: { shadow: shadow("text") },
+                  customId: { shadow: shadow("text") },
                 },
               },
               {
@@ -3413,61 +2453,43 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "modal_add_text_input",
                 inputs: {
-                  label: { shadow: { type: "text" } },
-                  customId: { shadow: { type: "text" } },
-                  required: { shadow: { type: "logic_boolean" } },
+                  label: { shadow: shadow("text") },
+                  customId: { shadow: shadow("text") },
+                  required: { shadow: shadow("logic_boolean") },
                 },
               },
               {
                 kind: "block",
                 type: "modal_add_text_input_advanced",
                 inputs: {
-                  label: { shadow: { type: "text" } },
-                  customId: { shadow: { type: "text" } },
-                  required: { shadow: { type: "logic_boolean" } },
-                  placeholder: { shadow: { type: "text" } },
+                  label: { shadow: shadow("text") },
+                  customId: { shadow: shadow("text") },
+                  required: { shadow: shadow("logic_boolean") },
+                  placeholder: { shadow: shadow("text") },
                   max: {
                     shadow: { type: "math_number", fields: { NUM: 100 } },
                   },
                   min: { shadow: { type: "math_number", fields: { NUM: 10 } } },
                 },
               },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "modal_handle_interaction",
-              },
-              {
-                kind: "label",
-                text: "Information about the submitted modal ↓",
-              },
+              label("Events ↓"),
+              block("modal_handle_interaction"),
+              label("Information about the submitted modal ↓"),
               {
                 kind: "block",
                 type: "modal_get_input_value",
                 inputs: {
-                  customId: { shadow: { type: "text" } },
+                  customId: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "modal_get_author",
-              },
-              {
-                kind: "block",
-                type: "modal_get_customId",
-              },
-              {
-                kind: "label",
-                text: "Reply to the modal after submitted ↓",
-              },
+              block("modal_get_author"),
+              block("modal_get_customId"),
+              label("Reply to the modal after submitted ↓"),
               {
                 kind: "block",
                 type: "misc_int_reply_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                   ephemeral: {
                     shadow: {
                       type: "logic_boolean",
@@ -3480,10 +2502,9 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
-              {
-                kind: "label",
-                text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+              ),
               {
                 kind: "block",
                 type: "misc_int_deferReply",
@@ -3500,7 +2521,7 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
             ],
@@ -3510,24 +2531,15 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Select Menus",
             colour: "#26A483",
             contents: [
-              {
-                kind: "label",
-                text: "Put this inside a block to send a row ↓",
-              },
-              {
-                kind: "block",
-                type: "misc_addrow",
-              },
-              {
-                kind: "label",
-                text: "Create a menu with TEXT options ↓",
-              },
+              label("Put this inside a block to send a row ↓"),
+              block("misc_addrow"),
+              label("Create a menu with TEXT options ↓"),
               {
                 kind: "block",
                 type: "menus_add",
                 inputs: {
-                  placeholder: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3540,10 +2552,10 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "menus_addoption",
                 inputs: {
-                  label: { shadow: { type: "text" } },
-                  dsc: { shadow: { type: "text" } },
-                  emoji: { shadow: { type: "text" } },
-                  value: { shadow: { type: "text" } },
+                  label: { shadow: shadow("text") },
+                  dsc: { shadow: shadow("text") },
+                  emoji: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
                   default: {
                     shadow: {
                       type: "logic_boolean",
@@ -3552,16 +2564,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
-              },
+              label(
+                "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓"
+              ),
               {
                 kind: "block",
                 type: "menus_addChannelMenu",
                 inputs: {
-                  placeholder: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3623,20 +2634,16 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_channelType",
-              },
-              {
-                kind: "label",
-                text: "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
-              },
+              block("misc_channelType"),
+              label(
+                "Create a menu with ROLE options (auto-adds all roles in the server) ↓"
+              ),
               {
                 kind: "block",
                 type: "menus_addRoleMenu",
                 inputs: {
-                  placeholder: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3676,16 +2683,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Create a menu with USER options (auto-adds all users in the server) ↓",
-              },
+              label(
+                "Create a menu with USER options (auto-adds all users in the server) ↓"
+              ),
               {
                 kind: "block",
                 type: "menus_addUserMenu",
                 inputs: {
-                  placeholder: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3725,16 +2731,15 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
-              },
+              label(
+                "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓"
+              ),
               {
                 kind: "block",
                 type: "menus_addMentionableMenu",
                 inputs: {
-                  placeholder: { shadow: { type: "text" } },
-                  id: { shadow: { type: "text" } },
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
                   disabled: {
                     shadow: {
                       type: "logic_boolean",
@@ -3774,54 +2779,23 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Menu events ↓",
-              },
-              {
-                kind: "block",
-                type: "menus_event",
-              },
-              {
-                kind: "label",
-                text: "Info about the clicked menu ↓",
-              },
-              {
-                kind: "block",
-                type: "menus_id",
-              },
-              {
-                kind: "block",
-                type: "menus_value",
-              },
-              {
-                kind: "block",
-                type: "misc_int_member",
-              },
-              {
-                kind: "block",
-                type: "misc_int_user",
-              },
-              {
-                kind: "block",
-                type: "misc_int_channel",
-              },
-              {
-                kind: "block",
-                type: "misc_int_server",
-              },
-              {
-                kind: "label",
-                text: "Menu actions ↓",
-              },
+              label("Menu events ↓"),
+              block("menus_event"),
+              label("Info about the clicked menu ↓"),
+              block("menus_id"),
+              block("menus_value"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
+              label("Menu actions ↓"),
               {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
-              {
-                kind: "label",
-                text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+              ),
               {
                 kind: "block",
                 type: "misc_int_deferReply",
@@ -3844,27 +2818,24 @@ export default function getToolbox(blockPacks = [], user) {
                       fields: { BOOL: "FALSE" },
                     },
                   },
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "menus_update",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "menus_del",
-              },
+              block("menus_del"),
             ],
           },
           {
@@ -3872,18 +2843,9 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Context Menus",
             colour: "#00A859",
             contents: [
-              {
-                kind: "label",
-                text: "Setup context menus ↓",
-              },
-              {
-                kind: "block",
-                type: "misc_createcontainer_global",
-              },
-              {
-                kind: "label",
-                text: "Add a context menu ↓",
-              },
+              label("Setup context menus ↓"),
+              block("misc_createcontainer_global"),
+              label("Add a context menu ↓"),
               {
                 kind: "block",
                 type: "contextMenu_create",
@@ -3900,18 +2862,9 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Events ↓",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_received",
-              },
-              {
-                kind: "label",
-                text: "Actions ↓",
-              },
+              label("Events ↓"),
+              block("contextMenu_received"),
+              label("Actions ↓"),
               {
                 kind: "block",
                 type: "misc_int_reply_mutator",
@@ -3922,17 +2875,16 @@ export default function getToolbox(blockPacks = [], user) {
                       fields: { BOOL: "FALSE" },
                     },
                   },
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
-              {
-                kind: "label",
-                text: "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+              ),
               {
                 kind: "block",
                 type: "misc_int_deferReply",
@@ -3949,57 +2901,21 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "misc_int_edit_mutator",
                 inputs: {
-                  content: { shadow: { type: "text" } },
+                  content: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "Information about the context menu clicked ↓",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_name",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_userMenu",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_messageMenu",
-              },
-              {
-                kind: "block",
-                type: "misc_int_member",
-              },
-              {
-                kind: "block",
-                type: "misc_int_user",
-              },
-              {
-                kind: "block",
-                type: "misc_int_channel",
-              },
-              {
-                kind: "block",
-                type: "misc_int_server",
-              },
-              {
-                kind: "label",
-                text: "Only if the menu is an user menu ↓",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_targetUser",
-              },
-              {
-                kind: "label",
-                text: "Only if the menu is a message menu ↓",
-              },
-              {
-                kind: "block",
-                type: "contextMenu_targetMessage",
-              },
+              label("Information about the context menu clicked ↓"),
+              block("contextMenu_name"),
+              block("contextMenu_userMenu"),
+              block("contextMenu_messageMenu"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
+              label("Only if the menu is an user menu ↓"),
+              block("contextMenu_targetUser"),
+              label("Only if the menu is a message menu ↓"),
+              block("contextMenu_targetMessage"),
             ],
           },
         ],
@@ -4014,54 +2930,18 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Server Actions",
             colour: "FF4F4F",
             contents: [
-              {
-                kind: "block",
-                type: "events_guild_memberAdd",
-              },
-              {
-                kind: "block",
-                type: "events_guild_memberAdd_member",
-              },
-              {
-                kind: "block",
-                type: "events_guild_memberAdd_server",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_remove_guildmemberremove",
-              },
-              {
-                kind: "block",
-                type: "events_remove_guildmemberremove_member",
-              },
-              {
-                kind: "block",
-                type: "events_remove_guildmemberremove_server",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_guild_created",
-              },
-              {
-                kind: "block",
-                type: "events_guild_created_guild",
-              },
-              {
-                kind: "block",
-                type: "events_guild_deleted",
-              },
-              {
-                kind: "block",
-                type: "events_guild_deleted_guild",
-              },
+              block("events_guild_memberAdd"),
+              block("events_guild_memberAdd_member"),
+              block("events_guild_memberAdd_server"),
+              label("------------------------------------------------"),
+              block("events_remove_guildmemberremove"),
+              block("events_remove_guildmemberremove_member"),
+              block("events_remove_guildmemberremove_server"),
+              label("------------------------------------------------"),
+              block("events_guild_created"),
+              block("events_guild_created_guild"),
+              block("events_guild_deleted"),
+              block("events_guild_deleted_guild"),
             ],
           },
           {
@@ -4069,70 +2949,22 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Message Actions",
             colour: "FF4F4F",
             contents: [
-              {
-                kind: "block",
-                type: "events_message_deleted",
-              },
-              {
-                kind: "block",
-                type: "events_message_deleted_message",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_message_ReactionAdd",
-              },
-              {
-                kind: "block",
-                type: "events_message_ReactionAdd_user",
-              },
-              {
-                kind: "block",
-                type: "events_message_ReactionAdd_msg",
-              },
-              {
-                kind: "block",
-                type: "events_message_ReactionAdd_emoji",
-              },
-              {
-                kind: "block",
-                type: "events_message_ReactionAdd_count",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_message_edited",
-              },
-              {
-                kind: "block",
-                type: "events_message_edited_message",
-              },
-              {
-                kind: "block",
-                type: "events_message_edited_oldContent",
-              },
-              {
-                kind: "block",
-                type: "events_message_edited_newContent",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_message_pinned",
-              },
-              {
-                kind: "block",
-                type: "events_message_pinned_message",
-              },
+              block("events_message_deleted"),
+              block("events_message_deleted_message"),
+              label("------------------------------------------------"),
+              block("events_message_ReactionAdd"),
+              block("events_message_ReactionAdd_user"),
+              block("events_message_ReactionAdd_msg"),
+              block("events_message_ReactionAdd_emoji"),
+              block("events_message_ReactionAdd_count"),
+              label("------------------------------------------------"),
+              block("events_message_edited"),
+              block("events_message_edited_message"),
+              block("events_message_edited_oldContent"),
+              block("events_message_edited_newContent"),
+              label("------------------------------------------------"),
+              block("events_message_pinned"),
+              block("events_message_pinned_message"),
             ],
           },
           {
@@ -4140,54 +2972,18 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Member Actions",
             colour: "FF4F4F",
             contents: [
-              {
-                kind: "block",
-                type: "events_members_addRole",
-              },
-              {
-                kind: "block",
-                type: "events_members_addRole_member",
-              },
-              {
-                kind: "block",
-                type: "events_members_addRole_role",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_members_removeRole",
-              },
-              {
-                kind: "block",
-                type: "events_members_removeRole_member",
-              },
-              {
-                kind: "block",
-                type: "events_members_removeRole_role",
-              },
-              {
-                kind: "label",
-                text: "------------------------------------------------",
-              },
-              {
-                kind: "block",
-                type: "events_members_nickname",
-              },
-              {
-                kind: "block",
-                type: "events_members_nickname_member",
-              },
-              {
-                kind: "block",
-                type: "events_members_nickname_oldNickname",
-              },
-              {
-                kind: "block",
-                type: "events_members_nickname_newNickname",
-              },
+              block("events_members_addRole"),
+              block("events_members_addRole_member"),
+              block("events_members_addRole_role"),
+              label("------------------------------------------------"),
+              block("events_members_removeRole"),
+              block("events_members_removeRole_member"),
+              block("events_members_removeRole_role"),
+              label("------------------------------------------------"),
+              block("events_members_nickname"),
+              block("events_members_nickname_member"),
+              block("events_members_nickname_oldNickname"),
+              block("events_members_nickname_newNickname"),
             ],
           },
           {
@@ -4195,25 +2991,14 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Custom",
             colour: "#999999",
             contents: [
-              {
-                kind: "label",
-                text: "Use custom discord.js v14 events ↓",
-              },
-              {
-                kind: "block",
-                type: "events_custom",
-              },
-              {
-                kind: "block",
-                type: "events_customParameter",
-              },
+              label("Use custom discord.js v14 events ↓"),
+              block("events_custom"),
+              block("events_customParameter"),
             ],
           },
         ],
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Databases",
@@ -4224,60 +3009,45 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Simple",
             colour: "C66953",
             contents: [
-              {
-                kind: "label",
-                text: "Create a database first ↓",
-              },
-              {
-                kind: "block",
-                type: "db_create",
-              },
-              {
-                kind: "label",
-                text: "Get information from the database ↓",
-              },
+              label("Create a database first ↓"),
+              block("db_create"),
+              label("Get information from the database ↓"),
               {
                 kind: "block",
                 type: "db_get",
                 inputs: {
-                  id: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "db_has",
                 inputs: {
-                  id: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "db_all",
-              },
-              {
-                kind: "label",
-                text: "Actions in the database ↓",
-              },
+              block("db_all"),
+              label("Actions in the database ↓"),
               {
                 kind: "block",
                 type: "db_set",
                 inputs: {
-                  id: { shadow: { type: "text" } },
-                  val: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
+                  val: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "db_del",
                 inputs: {
-                  id: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
                 },
               },
               {
                 kind: "block",
                 type: "db_add",
                 inputs: {
-                  id: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
                   val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
                 },
               },
@@ -4285,7 +3055,7 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "db_sub",
                 inputs: {
-                  id: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
                   val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
                 },
               },
@@ -4293,14 +3063,11 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "db_push",
                 inputs: {
-                  id: { shadow: { type: "text" } },
-                  val: { shadow: { type: "text" } },
+                  id: { shadow: shadow("text") },
+                  val: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "db_clear",
-              },
+              block("db_clear"),
             ],
           },
         ],
@@ -4319,18 +3086,15 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "scratch_getprofile",
                 inputs: {
-                  username: { shadow: { type: "text" } },
+                  username: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "block",
-                type: "scratch_getprofileinfo",
-              },
+              block("scratch_getprofileinfo"),
               {
                 kind: "block",
                 type: "scratch_getmessages",
                 inputs: {
-                  username: { shadow: { type: "text" } },
+                  username: { shadow: shadow("text") },
                 },
               },
             ],
@@ -4340,22 +3104,10 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Captcha",
             colour: "#0fbd8c",
             contents: [
-              {
-                kind: "label",
-                text: "Create a captcha first ↓",
-              },
-              {
-                kind: "block",
-                type: "captcha_create_mutator",
-              },
-              {
-                kind: "block",
-                type: "captcha_value",
-              },
-              {
-                kind: "label",
-                text: "Send captcha image ↓",
-              },
+              label("Create a captcha first ↓"),
+              block("captcha_create_mutator"),
+              block("captcha_value"),
+              label("Send captcha image ↓"),
               {
                 kind: "block",
                 type: "channel_send_mutator",
@@ -4381,30 +3133,21 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Fetch",
             colour: "#0fbd8c",
             contents: [
-              {
-                kind: "label",
-                text: "Send a request to a url ↓",
-              },
+              label("Send a request to a url ↓"),
               {
                 kind: "block",
                 type: "fetch_send",
                 inputs: {
-                  url: { shadow: { type: "text" } },
+                  url: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "----------------------------------------------",
-              },
-              {
-                kind: "label",
-                text: "Advanced request ↓",
-              },
+              label("----------------------------------------------"),
+              label("Advanced request ↓"),
               {
                 kind: "block",
                 type: "fetch_sendAdvanced",
                 inputs: {
-                  url: { shadow: { type: "text" } },
+                  url: { shadow: shadow("text") },
                   config: {
                     block: {
                       type: "fetch_configSection",
@@ -4448,34 +3191,18 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "block",
                 type: "fetch_configSection",
                 inputs: {
-                  key: { shadow: { type: "text" } },
-                  value: { shadow: { type: "text" } },
+                  key: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
                 },
               },
-              {
-                kind: "label",
-                text: "----------------------------------------------",
-              },
-              {
-                kind: "label",
-                text: "Information about the response ↓",
-              },
-              {
-                kind: "block",
-                type: "fetch_responseData",
-              },
-              {
-                kind: "block",
-                type: "fetch_responseStatus",
-              },
-              {
-                kind: "block",
-                type: "fetch_responseHeaders",
-              },
-              {
-                kind: "label",
-                text: "Get a key from the response data (from the objects category) ↓",
-              },
+              label("----------------------------------------------"),
+              label("Information about the response ↓"),
+              block("fetch_responseData"),
+              block("fetch_responseStatus"),
+              block("fetch_responseHeaders"),
+              label(
+                "Get a key from the response data (from the objects category) ↓"
+              ),
               {
                 kind: "block",
                 type: "object_getkey",
@@ -4502,10 +3229,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Canvas",
             colour: "#4C9F70",
             contents: [
-              {
-                kind: "label",
-                text: "Create a Canvas ↓",
-              },
+              label("Create a Canvas ↓"),
               {
                 kind: "block",
                 type: "canvas_createCanvas",
@@ -4528,10 +3252,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "label",
-                text: "Export the Canvas ↓",
-              },
+              label("Export the Canvas ↓"),
               {
                 kind: "block",
                 type: "channel_send_mutator",
@@ -4550,26 +3271,11 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "canvas_asData",
-              },
-              {
-                kind: "label",
-                text: "Properties ↓",
-              },
-              {
-                kind: "block",
-                type: "canvas_width",
-              },
-              {
-                kind: "block",
-                type: "canvas_height",
-              },
-              {
-                kind: "label",
-                text: "Actions ↓",
-              },
+              block("canvas_asData"),
+              label("Properties ↓"),
+              block("canvas_width"),
+              block("canvas_height"),
+              label("Actions ↓"),
               {
                 kind: "block",
                 type: "canvas_setFillColor",
@@ -4832,22 +3538,10 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "canvas_clearCanvas",
-              },
-              {
-                kind: "label",
-                text: "Transforms ↓",
-              },
-              {
-                kind: "block",
-                type: "canvas_save",
-              },
-              {
-                kind: "block",
-                type: "canvas_restore",
-              },
+              block("canvas_clearCanvas"),
+              label("Transforms ↓"),
+              block("canvas_save"),
+              block("canvas_restore"),
               {
                 kind: "block",
                 type: "canvas_translate",
@@ -4888,30 +3582,16 @@ export default function getToolbox(blockPacks = [], user) {
           },
         ],
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Comments",
         colour: "#476586",
         contents: [
-          {
-            kind: "label",
-            text: "These blocks will also be visible on your code!",
-          },
-          {
-            kind: "block",
-            type: "comment_multiline",
-          },
-          {
-            kind: "block",
-            type: "comment_statement",
-          },
-          {
-            kind: "block",
-            type: "comment_float",
-          },
+          label("These blocks will also be visible on your code!"),
+          block("comment_multiline"),
+          block("comment_statement"),
+          block("comment_float"),
           {
             kind: "block",
             type: "comment_value",
@@ -4926,10 +3606,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "block",
-            type: "comment_stackImage",
-          },
+          block("comment_stackImage"),
         ],
       },
       {
@@ -4937,22 +3614,14 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Music",
         colour: "#379e37",
         contents: [
-          {
-            kind: "label",
-            text: "Get lyrics ↓",
-          },
-          {
-            kind: "block",
-            type: "music_findLyrics",
+          label("Get lyrics ↓"),
+          block("music_findLyrics", {
             inputs: {
-              artist: { shadow: { type: "text" } },
-              song: { shadow: { type: "text" } },
+              artist: { shadow: shadow("text") },
+              song: { shadow: shadow("text") },
             },
-          },
-          {
-            kind: "block",
-            type: "music_findLyrics_lyrics",
-          },
+          }),
+          block("music_findLyrics_lyrics"),
         ],
       },
       {
@@ -4960,76 +3629,55 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Files",
         colour: "#eb8334",
         contents: [
-          {
-            kind: "label",
-            text: "Files will be created AFTER the bot is run",
-          },
-          {
-            kind: "label",
-            text: "Read data from files ↓",
-          },
+          label("Files will be created AFTER the bot is run"),
+          label("Read data from files ↓"),
           {
             kind: "block",
             type: "fs_readFile",
             inputs: {
-              path: { shadow: { type: "text" } },
+              path: { shadow: shadow("text") },
             },
           },
-          {
-            kind: "block",
-            type: "fs_readFile_data",
-          },
+          block("fs_readFile_data"),
           {
             kind: "block",
             type: "fs_readdir",
             inputs: {
-              path: { shadow: { type: "text" } },
+              path: { shadow: shadow("text") },
             },
           },
-          {
-            kind: "block",
-            type: "fs_readdir_name",
-          },
-          {
-            kind: "block",
-            type: "fs_readdir_path",
-          },
-          {
-            kind: "label",
-            text: "Write a file ↓",
-          },
+          block("fs_readdir_name"),
+          block("fs_readdir_path"),
+          label("Write a file ↓"),
           {
             kind: "block",
             type: "fs_writeFile",
             inputs: {
-              path: { shadow: { type: "text" } },
-              data: { shadow: { type: "text" } },
+              path: { shadow: shadow("text") },
+              data: { shadow: shadow("text") },
             },
           },
-          {
-            kind: "label",
-            text: "File actions ↓",
-          },
+          label("File actions ↓"),
           {
             kind: "block",
             type: "fs_deleteFile",
             inputs: {
-              path: { shadow: { type: "text" } },
+              path: { shadow: shadow("text") },
             },
           },
           {
             kind: "block",
             type: "fs_renameFile",
             inputs: {
-              path: { shadow: { type: "text" } },
-              newpath: { shadow: { type: "text" } },
+              path: { shadow: shadow("text") },
+              newpath: { shadow: shadow("text") },
             },
           },
           {
             kind: "block",
             type: "channel_send_mutator",
             extraState:
-              '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
+              '<mutation embeds="false" rows="false" files="true" then="false"></mutation>',
             inputs: {
               content: {
                 shadow: {
@@ -5053,41 +3701,32 @@ export default function getToolbox(blockPacks = [], user) {
           },
         ],
       },
-      {
-        kind: "sep",
-      },
+      sep(),
       {
         kind: "category",
         name: "Workshop",
         colour: "#014f98",
         contents: [
-          {
-            kind: "label",
-            text: `You have ${blockPacks.length} installed block pack${
-              blockPacks.length === 0
-                ? "s. Go to the workshop page to discover and install new block packs."
-                : blockPacks.length === 1
-                ? ":"
-                : "s:"
+          label(`You have ${blockPacks.length} installed block pack${blockPacks.length === 0
+            ? "s. Go to the workshop page to discover and install new block packs."
+            : blockPacks.length === 1
+              ? ":"
+              : "s:"
             }`,
-          },
-          ...blockPacks.map((pack) => ({
-            kind: "label",
-            text: `- ${pack.name} v${
-              pack.versions[pack.versions.length - 1]?.version || "0.0.0"
-            }`,
-          })),
+          ),
+          ...blockPacks.map((pack) =>
+            label(
+              `- ${pack.name} v${pack.versions[pack.versions.length - 1]?.version || "0.0.0"}`
+            )
+          ),
           ...blockPacks.map((pack) => ({
             kind: "category",
             name: pack.name,
             colour: pack.color || "#014f98",
             contents: pack.versions[pack.versions.length - 1]?.blocks?.length
               ? pack.versions[pack.versions.length - 1]?.blocks?.map(
-                  (block) => ({
-                    kind: "block",
-                    type: block.name,
-                  })
-                )
+                (block) => block(block.name)
+              )
               : [],
           })),
         ],
@@ -5097,95 +3736,42 @@ export default function getToolbox(blockPacks = [], user) {
         name: "BlockBuddy",
         colour: "#014f98",
         contents: [
-          {
-            kind: "label",
-            text: "Click BlockBuddy > Create to make new custom blocks",
-          },
-          ...(user?.customBlocks || []).map((block) => ({
-            kind: "block",
-            type: block.definition.type,
-          })),
+          label("Click BlockBuddy > Create to make new custom blocks"),
+          ...(user?.customBlocks || []).map((block) =>
+            block(block.definition.type)
+          ),
         ],
       },
       ...(window.location.hostname === "localhost"
         ? [
-            {
-              kind: "sep",
-            },
-            {
-              kind: "category",
-              name: "Testing",
-              colour: "#014f98",
-              contents: [
-                {
-                  kind: "block",
-                  type: "my_custom_block",
-                },
-              ],
-            },
-          ]
+          sep(),
+          {
+            kind: "category",
+            name: "Testing",
+            colour: "#014f98",
+            contents: [block("my_custom_block")],
+          },
+        ]
         : []),
       /*{
       kind: 'category',
       name: 'Games',
       colour: '#4fb88a',
       contents: [
-        {
-          kind: "block",
-          type: 'game_2048',
-        },
-        {
-          kind: "block",
-          type: 'game_connect4',
-        },
-        {
-          kind: "block",
-          type: 'game_fasttype',
-        },
-        {
-          kind: "block",
-          type: 'game_findemoji',
-        },
-        {
-          kind: "block",
-          type: 'game_flood',
-        },
-        {
-          kind: "block",
-          type: 'game_hangman',
-        },
-        {
-          kind: "block",
-          type: 'game_matchpairs',
-        },
-        {
-          kind: "block",
-          type: 'game_minesweeper',
-        },
-        {
-          kind: "block",
-          type: 'game_rps',
-        },
-        {
-          kind: "block",
-          type: 'game_slots',
-        },
-        {
-          kind: "block",
-          type: 'game_snake',
-        },
-        {
-          kind: "block",
-          type: 'game_tictactoe',
-        },
-        {
-          kind: "block",
-          type: 'game_wordle',
-        },
-        {
-          kind: "block",
-          type: 'game_trivia',
-        },
+        block("game_2048"),
+        block("game_connect4"),
+        block("game_fasttype"),
+        block("game_findemoji"),
+        block("game_flood"),
+        block("game_hangman"),
+        block("game_matchpairs"),
+        block("game_minesweeper"),
+        block("game_rps"),
+        block("game_slots"),
+        block("game_snake"),
+        block("game_tictactoe"),
+        block("game_wordle"),
+        block("game_trivia"),
       ],
     },*/
     ],
