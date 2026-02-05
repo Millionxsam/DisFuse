@@ -11,7 +11,7 @@ function block(type, properties = {}) {
       kind: "block",
       type,
     },
-    properties
+    properties,
   );
 }
 
@@ -352,10 +352,27 @@ export default function getToolbox(blockPacks = [], user) {
           },
           label("Advanced | RegExp Blocks ↓"),
           block("text_regexp"),
-          block("text_regexp_test"),
-          block("text_regexp_match"),
-          block("text_regexp_exec"),
-          block("text_regexp_replace"),
+          block("text_regexp_test", {
+            inputs: {
+              string: { shadow: shadow("text") },
+            },
+          }),
+          block("text_regexp_match", {
+            inputs: {
+              string: { shadow: shadow("text") },
+            },
+          }),
+          block("text_regexp_exec", {
+            inputs: {
+              string: { shadow: shadow("text") },
+            },
+          }),
+          block("text_regexp_replace", {
+            inputs: {
+              string: { shadow: shadow("text") },
+              replace: { shadow: shadow("text") },
+            },
+          }),
         ],
       },
       {
@@ -1873,9 +1890,7 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "label",
                 text: "(It won't let you drag in the wrong one)",
               },
-              label(
-                "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
-              ),
+              label("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"),
               label("Get a member or user ↓"),
               {
                 kind: "block",
@@ -2305,7 +2320,7 @@ export default function getToolbox(blockPacks = [], user) {
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
               label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
               {
                 kind: "block",
@@ -2402,7 +2417,7 @@ export default function getToolbox(blockPacks = [], user) {
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
               label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
               {
                 kind: "block",
@@ -2431,9 +2446,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Modals",
             colour: "1A8793",
             contents: [
-              label(
-                "Keep in mind that you can only show modals in slash commands!"
-              ),
+              label("Keep in mind that you can only show modals in slash commands!"),
               label("Show a modal to the user ↓"),
               block("modal_show"),
               label("Create a modal (put this in the block above) ↓"),
@@ -2503,7 +2516,7 @@ export default function getToolbox(blockPacks = [], user) {
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
               label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
               {
                 kind: "block",
@@ -2565,7 +2578,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
               label(
-                "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓"
+                "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
               ),
               {
                 kind: "block",
@@ -2636,7 +2649,7 @@ export default function getToolbox(blockPacks = [], user) {
               },
               block("misc_channelType"),
               label(
-                "Create a menu with ROLE options (auto-adds all roles in the server) ↓"
+                "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
               ),
               {
                 kind: "block",
@@ -2684,7 +2697,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
               label(
-                "Create a menu with USER options (auto-adds all users in the server) ↓"
+                "Create a menu with USER options (auto-adds all users in the server) ↓",
               ),
               {
                 kind: "block",
@@ -2732,7 +2745,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
               label(
-                "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓"
+                "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
               ),
               {
                 kind: "block",
@@ -2794,7 +2807,7 @@ export default function getToolbox(blockPacks = [], user) {
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
               label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
               {
                 kind: "block",
@@ -2883,7 +2896,7 @@ export default function getToolbox(blockPacks = [], user) {
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
               },
               label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply"
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
               {
                 kind: "block",
@@ -3200,9 +3213,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("fetch_responseData"),
               block("fetch_responseStatus"),
               block("fetch_responseHeaders"),
-              label(
-                "Get a key from the response data (from the objects category) ↓"
-              ),
+              label("Get a key from the response data (from the objects category) ↓"),
               {
                 kind: "block",
                 type: "object_getkey",
@@ -3707,26 +3718,28 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Workshop",
         colour: "#014f98",
         contents: [
-          label(`You have ${blockPacks.length} installed block pack${blockPacks.length === 0
-            ? "s. Go to the workshop page to discover and install new block packs."
-            : blockPacks.length === 1
-              ? ":"
-              : "s:"
+          label(
+            `You have ${blockPacks.length} installed block pack${
+              blockPacks.length === 0
+                ? "s. Go to the workshop page to discover and install new block packs."
+                : blockPacks.length === 1
+                  ? ":"
+                  : "s:"
             }`,
           ),
-          ...blockPacks.map((pack) =>
+          ...blockPacks.map(pack =>
             label(
-              `- ${pack.name} v${pack.versions[pack.versions.length - 1]?.version || "0.0.0"}`
-            )
+              `- ${pack.name} v${pack.versions[pack.versions.length - 1]?.version || "0.0.0"}`,
+            ),
           ),
-          ...blockPacks.map((pack) => ({
+          ...blockPacks.map(pack => ({
             kind: "category",
             name: pack.name,
             colour: pack.color || "#014f98",
             contents: pack.versions[pack.versions.length - 1]?.blocks?.length
-              ? pack.versions[pack.versions.length - 1]?.blocks?.map(
-                (block) => block(block.name)
-              )
+              ? pack.versions[pack.versions.length - 1]?.blocks?.map(block =>
+                  block(block.name),
+                )
               : [],
           })),
         ],
@@ -3737,21 +3750,19 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label("Click BlockBuddy > Create to make new custom blocks"),
-          ...(user?.customBlocks || []).map((block) =>
-            block(block.definition.type)
-          ),
+          ...(user?.customBlocks || []).map(block => block(block.definition.type)),
         ],
       },
       ...(window.location.hostname === "localhost"
         ? [
-          sep(),
-          {
-            kind: "category",
-            name: "Testing",
-            colour: "#014f98",
-            contents: [block("my_custom_block")],
-          },
-        ]
+            sep(),
+            {
+              kind: "category",
+              name: "Testing",
+              colour: "#014f98",
+              contents: [block("my_custom_block")],
+            },
+          ]
         : []),
       /*{
       kind: 'category',

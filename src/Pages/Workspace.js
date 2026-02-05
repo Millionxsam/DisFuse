@@ -42,7 +42,7 @@ import { io } from "socket.io-client";
 require
   .context("../blocks", true, /\.js$/)
   .keys()
-  .forEach((key) => {
+  .forEach(key => {
     key = key.replace("./", "");
 
     import(`../blocks/${key}`).catch(console.error);
@@ -86,10 +86,10 @@ export default function Workspace() {
     });
 
     socket.on("connect", () =>
-      console.log(`Connected to WebSocket with ID: ${socket.id}`)
+      console.log(`Connected to WebSocket with ID: ${socket.id}`),
     );
 
-    socket.on("disconnect", (reason) => {
+    socket.on("disconnect", reason => {
       console.log("Disconnected from socket, reason:", reason);
     });
 
@@ -112,144 +112,135 @@ export default function Workspace() {
               let installedBlockPacks = [];
 
               const responses = await Promise.all(
-                user.installedBlockPacks?.map((packId) =>
+                user.installedBlockPacks?.map(packId =>
                   axios.get(apiUrl + `/workshop/${packId}`, {
                     headers: {
                       Authorization: localStorage.getItem("disfuse-token"),
                     },
-                  })
-                )
+                  }),
+                ),
               );
 
-              installedBlockPacks = responses.map((response) => response.data);
+              installedBlockPacks = responses.map(response => response.data);
 
-              socket.emit(
-                "projectJoin",
-                { projectId },
-                async (project, activeUsers) => {
-                  if (project?.error || activeUsers?.error) {
-                    socket.disconnect();
+              socket.emit("projectJoin", { projectId }, async (project, activeUsers) => {
+                if (project?.error || activeUsers?.error) {
+                  socket.disconnect();
 
-                    let error = project?.error || activeUsers?.error;
-                    if (error === "You have already joined this project") {
-                      return Swal.fire({
-                        title: "Already in Project",
-                        icon: "info",
-                        text: "You're already part of this project from another tab or device.",
-                        confirmButtonText: "OK",
-                        ...modalThemeColor(userCache?.user),
-                      }).then(() => {
-                        window.location.replace("/projects");
-                      });
-                    } else console.error(error);
-                  }
-
-                  setProject(project);
-                  setActiveUsers(activeUsers);
-
-                  if (project?.suspension?.status) {
+                  let error = project?.error || activeUsers?.error;
+                  if (error === "You have already joined this project") {
                     return Swal.fire({
-                      title: "Project Suspended",
-                      icon: "error",
-                      html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
+                      title: "Already in Project",
+                      icon: "info",
+                      text: "You're already part of this project from another tab or device.",
+                      confirmButtonText: "OK",
+                      ...modalThemeColor(userCache?.user),
+                    }).then(() => {
+                      window.location.replace("/projects");
+                    });
+                  } else console.error(error);
+                }
+
+                setProject(project);
+                setActiveUsers(activeUsers);
+
+                if (project?.suspension?.status) {
+                  return Swal.fire({
+                    title: "Project Suspended",
+                    icon: "error",
+                    html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
                       <br />
                       <br />
                       Reason: ${project.status?.reason || "None"}
                       `,
-                      showConfirmButton: true,
-                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
-                      allowEscapeKey: false,
-                      allowOutsideClick: false,
-                      ...modalThemeColor(userCache.user),
-                    }).then(() => {
-                      window.location.replace("/projects");
-                    });
-                  }
-
-                  socket.on("projectJoin", ({ user }) => {
-                    setActiveUsers([...activeUsers, user]);
-                    activeUsers = [...activeUsers, user];
+                    showConfirmButton: true,
+                    footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    ...modalThemeColor(userCache.user),
+                  }).then(() => {
+                    window.location.replace("/projects");
                   });
+                }
 
-                  socket.on("projectLeave", ({ user }) => {
-                    setActiveUsers(activeUsers.filter((u) => u.id !== user.id));
-                    activeUsers = activeUsers.filter((u) => u.id !== user.id);
-                  });
+                socket.on("projectJoin", ({ user }) => {
+                  setActiveUsers([...activeUsers, user]);
+                  activeUsers = [...activeUsers, user];
+                });
 
-                  if (localStorage.getItem("showTokenAlert") === "false") {
-                    window.tokenAlertPopupAppeared = true;
-                  } else {
-                    window.tokenAlertPopupAppeared = project?.private ?? false;
-                  }
+                socket.on("projectLeave", ({ user }) => {
+                  setActiveUsers(activeUsers.filter(u => u.id !== user.id));
+                  activeUsers = activeUsers.filter(u => u.id !== user.id);
+                });
 
-                  let theme = user.settings?.workspace?.theme || "DFTheme";
+                if (localStorage.getItem("showTokenAlert") === "false") {
+                  window.tokenAlertPopupAppeared = true;
+                } else {
+                  window.tokenAlertPopupAppeared = project?.private ?? false;
+                }
 
-                  if (theme === "DFTheme") theme = DFTheme;
-                  else if (theme === "DarkerTheme") theme = DarkerTheme;
-                  else if (theme === "LightTheme") theme = LightTheme;
-                  else if (theme === "BlueBlackTheme") theme = BlueBlackTheme;
-                  else if (theme === "CandyTheme") theme = CandyTheme;
+                let theme = user.settings?.workspace?.theme || "DFTheme";
 
-                  let zelosBlock = Blockly.Themes.Zelos.blockStyles;
+                if (theme === "DFTheme") theme = DFTheme;
+                else if (theme === "DarkerTheme") theme = DarkerTheme;
+                else if (theme === "LightTheme") theme = LightTheme;
+                else if (theme === "BlueBlackTheme") theme = BlueBlackTheme;
+                else if (theme === "CandyTheme") theme = CandyTheme;
 
-                  theme = {
-                    ...theme,
-                    blockStyles: {
-                      text_blocks: zelosBlock["math_blocks"],
-                      math_blocks: {
-                        colourPrimary: "#cfa23a",
-                        colourSecondary: "#b88e32",
-                        colourTertiary: "#9b7329",
-                      },
-                      colour_blocks: {
-                        colourPrimary: "#ad794c",
-                        colourSecondary: "#8d5b3d",
-                        colourTertiary: "#6b3f2c",
-                      },
-                      logic_blocks:
-                        Blockly.Themes.Zelos.blockStyles["logic_blocks"],
-                      loop_blocks:
-                        Blockly.Themes.Zelos.blockStyles["loop_blocks"],
-                      list_blocks:
-                        Blockly.Themes.Zelos.blockStyles["list_blocks"],
-                      procedure_blocks:
-                        Blockly.Themes.Zelos.blockStyles["procedure_blocks"],
-                      variable_blocks:
-                        Blockly.Themes.Zelos.blockStyles["variable_blocks"],
-                      variable_dynamic_blocks:
-                        Blockly.Themes.Zelos.blockStyles[
-                          "variable_dynamic_blocks"
-                        ],
-                      hat_blocks:
-                        Blockly.Themes.Zelos.blockStyles["hat_blocks"],
+                let zelosBlock = Blockly.Themes.Zelos.blockStyles;
+
+                theme = {
+                  ...theme,
+                  blockStyles: {
+                    text_blocks: zelosBlock["math_blocks"],
+                    regexp_blocks: {
+                      colourPrimary: "#4fde62",
+                      colourSecondary: "#3cd75a",
+                      colourTertiary: "#2eb242",
                     },
-                  };
+                    math_blocks: {
+                      colourPrimary: "#cfa23a",
+                      colourSecondary: "#b88e32",
+                      colourTertiary: "#9b7329",
+                    },
+                    colour_blocks: {
+                      colourPrimary: "#ad794c",
+                      colourSecondary: "#8d5b3d",
+                      colourTertiary: "#6b3f2c",
+                    },
+                    logic_blocks: zelosBlock["logic_blocks"],
+                    loop_blocks: zelosBlock["loop_blocks"],
+                    list_blocks: zelosBlock["list_blocks"],
+                    procedure_blocks: zelosBlock["procedure_blocks"],
+                    variable_blocks: zelosBlock["variable_blocks"],
+                    variable_dynamic_blocks: zelosBlock["variable_dynamic_blocks"],
+                    hat_blocks: zelosBlock["hat_blocks"],
+                  },
+                };
 
-                  let renderer = user.settings?.workspace.renderer ?? "zelos";
-                  let sounds = user.settings?.workspace.sounds ?? true;
-                  let showGrid = user.settings?.workspace.grid.enabled ?? true;
-                  let snapToGrid = user.settings?.workspace.grid.snap ?? false;
-                  let gridSpacing = user.settings?.workspace.grid.spacing ?? 35;
+                let renderer = user.settings?.workspace.renderer ?? "zelos";
+                let sounds = user.settings?.workspace.sounds ?? true;
+                let showGrid = user.settings?.workspace.grid.enabled ?? true;
+                let snapToGrid = user.settings?.workspace.grid.snap ?? false;
+                let gridSpacing = user.settings?.workspace.grid.spacing ?? 35;
 
-                  let toolboxBtIcons =
-                    user.settings?.workspace.toolboxBtIcons ?? true;
+                let toolboxBtIcons = user.settings?.workspace.toolboxBtIcons ?? true;
 
-                  if (!toolboxBtIcons) {
-                    let styleEle = document.createElement("style");
-                    styleEle.innerHTML = `
+                if (!toolboxBtIcons) {
+                  let styleEle = document.createElement("style");
+                  styleEle.innerHTML = `
                     .workspace-navbar * button i:not(.fa-discord) {
                       display: none !important;
                     }
                   `;
-                    document.head.appendChild(styleEle);
-                  }
+                  document.head.appendChild(styleEle);
+                }
 
-                  let fastRenderMode =
-                    user.settings?.optimization.fastRenderMode ?? false;
+                let fastRenderMode = user.settings?.optimization.fastRenderMode ?? false;
 
-                  if (fastRenderMode === true) {
-                    let styleEle = document.createElement("style");
-                    styleEle.innerHTML = `
+                if (fastRenderMode === true) {
+                  let styleEle = document.createElement("style");
+                  styleEle.innerHTML = `
                     div#workspace {
                       text-rendering: optimizeSpeed !important;
                       image-rendering: optimizeSpeed !important;
@@ -257,837 +248,756 @@ export default function Workspace() {
                       font-smooth: none !important;
                     }
                   `;
-                    document.head.appendChild(styleEle);
-                  }
+                  document.head.appendChild(styleEle);
+                }
 
-                  const changesUntilSave =
-                    activeUsers?.length > 0
-                      ? 1
-                      : Math.max(
-                    2,
-                    user.settings?.optimization?.changesUntilSave ?? 3
+                const changesUntilSave =
+                  activeUsers?.length > 0
+                    ? 1
+                    : Math.max(2, user.settings?.optimization?.changesUntilSave ?? 3);
+
+                installedBlockPacks?.forEach(pack => {
+                  registerCustomBlocks(
+                    pack.versions[pack.versions.length - 1]?.blocks || [],
                   );
+                });
 
-                  installedBlockPacks?.forEach((pack) => {
-                    registerCustomBlocks(
-                      pack.versions[pack.versions.length - 1]?.blocks || []
-                    );
+                const customBlocks = [...(project.owner.customBlocks || [])];
+
+                for (let id of project.collaborators) {
+                  const collaborator = (
+                    await axios.get(apiUrl + `/users/${id}`, {
+                      headers: {
+                        Authorization: localStorage.getItem("disfuse-token"),
+                      },
+                    })
+                  ).data;
+
+                  customBlocks.push(...(collaborator.customBlocks || []));
+                }
+
+                if (customBlocks.length) {
+                  Blockly.defineBlocksWithJsonArray(customBlocks.map(b => b.definition));
+
+                  customBlocks.forEach(customBlock => {
+                    try {
+                      // eslint-disable-next-line no-new-func
+                      const genCode = new Function(
+                        "javascript",
+                        customBlock.javascriptGenerator,
+                      );
+
+                      genCode(javascript);
+                    } catch {}
                   });
+                }
 
-                  const customBlocks = [...(project.owner.customBlocks || [])];
+                // Inject workspace
+                const workspace = Blockly.inject(document.getElementById("workspace"), {
+                  toolbox: getToolbox(installedBlockPacks, user),
+                  theme,
+                  move: {
+                    wheel: true,
+                  },
+                  renderer,
+                  collapse: true,
+                  comments: true,
+                  disable: true,
+                  maxBlocks: Infinity,
+                  trashcan: true,
+                  horizontalLayout: false,
+                  toolboxPosition: "start",
+                  css: true,
+                  media: "https://blockly-demo.appspot.com/static/media/",
+                  rtl: false,
+                  scrollbars: true,
+                  sounds: sounds,
+                  oneBasedIndex: true,
+                  grid: showGrid
+                    ? {
+                        spacing: gridSpacing,
+                        length: 5,
+                        colour: "#8888886e",
+                        snap: snapToGrid,
+                      }
+                    : false,
+                  zoom: {
+                    controls: true,
+                    wheel: true,
+                    startScale: 1,
+                    maxScale: 3,
+                    minScale: 0.3,
+                    scaleSpeed: 1.2,
+                  },
+                });
+                setWorkspace(workspace);
 
-                  for (let id of project.collaborators) {
-                    const collaborator = (
-                      await axios.get(apiUrl + `/users/${id}`, {
-                        headers: {
-                          Authorization: localStorage.getItem("disfuse-token"),
-                        },
-                      })
-                    ).data;
+                Blockly.svgResize(workspace);
 
-                    customBlocks.push(...(collaborator.customBlocks || []));
-                  }
+                document.querySelector(".workspace-navbar .projectName p").innerText =
+                  project.name;
 
-                  if (customBlocks.length) {
-                    Blockly.defineBlocksWithJsonArray(
-                      customBlocks.map((b) => b.definition)
-                    );
-
-                    customBlocks.forEach((customBlock) => {
-                      try {
-                        // eslint-disable-next-line no-new-func
-                        const genCode = new Function(
-                          "javascript",
-                          customBlock.javascriptGenerator
-                        );
-
-                        genCode(javascript);
-                      } catch {}
-                    });
-                  }
-
-                  // Inject workspace
-                  const workspace = Blockly.inject(
-                    document.getElementById("workspace"),
-                    {
-                      toolbox: getToolbox(installedBlockPacks, user),
-                      theme,
-                      move: {
-                        wheel: true,
-                      },
-                      renderer,
-                      collapse: true,
-                      comments: true,
-                      disable: true,
-                      maxBlocks: Infinity,
-                      trashcan: true,
-                      horizontalLayout: false,
-                      toolboxPosition: "start",
-                      css: true,
-                      media: "https://blockly-demo.appspot.com/static/media/",
-                      rtl: false,
-                      scrollbars: true,
-                      sounds: sounds,
-                      oneBasedIndex: true,
-                      grid: showGrid
-                        ? {
-                            spacing: gridSpacing,
-                            length: 5,
-                            colour: "#8888886e",
-                            snap: snapToGrid,
-                          }
-                        : false,
-                      zoom: {
-                        controls: true,
-                        wheel: true,
-                        startScale: 1,
-                        maxScale: 3,
-                        minScale: 0.3,
-                        scaleSpeed: 1.2,
-                      },
-                    }
-                  );
-                  setWorkspace(workspace);
-
-                  Blockly.svgResize(workspace);
-
-                  document.querySelector(
-                    ".workspace-navbar .projectName p"
-                  ).innerText = project.name;
-
-                  if (project?.suspension?.status) {
-                    return Swal.fire({
-                      title: "Project Suspended",
-                      icon: "error",
-                      html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
+                if (project?.suspension?.status) {
+                  return Swal.fire({
+                    title: "Project Suspended",
+                    icon: "error",
+                    html: `This project was detected to be violating our terms of service. Please join our Discord server if you think this is a mistake.
                       <br />
                       <br />
                       Reason: ${project.status?.reason || "None"}
                       `,
-                      showConfirmButton: true,
-                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
-                      allowEscapeKey: false,
-                      allowOutsideClick: false,
-                      ...modalThemeColor(userCache.user),
-                    }).then(() => {
-                      window.location.replace("/projects");
-                    });
-                  }
+                    showConfirmButton: true,
+                    footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    ...modalThemeColor(userCache.user),
+                  }).then(() => {
+                    window.location.replace("/projects");
+                  });
+                }
 
-                  javascriptGenerator.addReservedWords(
-                    "Discord,moment,gamecord,discord_gamecord,easyjsondatabase,Database,client,databases,wait,process,emoji,channel,channels,member,members,user,users,guild,guilds,server,servers,modalSubmitInteraction,ForEachemojiInServer,interaction,int,scratchUserProfileInformation,errorButWithLengthyName,error,PollCreator,leavingMember,AddMember,AddServer,messageDeleted,messageReaction,messageSent,role,roles,createdThread,lyrics,lyricsFinder,filePath,fs,readData,err,files,filterItem,localVar,newWebhook,captcha,Captcha,permsChannel,variable,list,disfuse,canvas,ctx,config,dotenv,lyrics_finder,@ddededodediamante/captcha-generator,axios,_napi_rs_canvas,response,_ddededodediamante_captcha_generator"
-                  );
+                javascriptGenerator.addReservedWords(
+                  "Discord,moment,gamecord,discord_gamecord,easyjsondatabase,Database,client,databases,wait,process,emoji,channel,channels,member,members,user,users,guild,guilds,server,servers,modalSubmitInteraction,ForEachemojiInServer,interaction,int,scratchUserProfileInformation,errorButWithLengthyName,error,PollCreator,leavingMember,AddMember,AddServer,messageDeleted,messageReaction,messageSent,role,roles,createdThread,lyrics,lyricsFinder,filePath,fs,readData,err,files,filterItem,localVar,newWebhook,captcha,Captcha,permsChannel,variable,list,disfuse,canvas,ctx,config,dotenv,lyrics_finder,@ddededodediamante/captcha-generator,axios,_napi_rs_canvas,response,_ddededodediamante_captcha_generator",
+                );
 
-                  if (project.data?.length && !project.workspaces?.length) {
-                    const subWorkspacesOnboarding = Swal.mixin({
-                      progressSteps: ["1", "2", "3", "4"],
-                      confirmButtonText: "Next",
-                      allowEscapeKey: false,
-                      allowOutsideClick: false,
-                      animation: false,
-                      footer:
-                        "This project needs to be migrated to sub-workspaces. This won't show for new projects.",
-                      ...modalColors,
-                    });
+                if (project.data?.length && !project.workspaces?.length) {
+                  const subWorkspacesOnboarding = Swal.mixin({
+                    progressSteps: ["1", "2", "3", "4"],
+                    confirmButtonText: "Next",
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    animation: false,
+                    footer:
+                      "This project needs to be migrated to sub-workspaces. This won't show for new projects.",
+                    ...modalColors,
+                  });
 
-                    await subWorkspacesOnboarding.fire({
-                      title: "Set Up Sub-Workspaces",
-                      currentProgressStep: 0,
-                      text: "Sub-workspaces are here! You can now create multiple workspaces in a single project to organize your code better.",
-                    });
+                  await subWorkspacesOnboarding.fire({
+                    title: "Set Up Sub-Workspaces",
+                    currentProgressStep: 0,
+                    text: "Sub-workspaces are here! You can now create multiple workspaces in a single project to organize your code better.",
+                  });
 
-                    await subWorkspacesOnboarding.fire({
-                      title: "How it works",
-                      currentProgressStep: 1,
-                      text: "Use the new tab bar at the top to create a new workspace or switch between workspaces. Each workspace can contain different blocks.",
-                    });
+                  await subWorkspacesOnboarding.fire({
+                    title: "How it works",
+                    currentProgressStep: 1,
+                    text: "Use the new tab bar at the top to create a new workspace or switch between workspaces. Each workspace can contain different blocks.",
+                  });
 
-                    await subWorkspacesOnboarding.fire({
-                      title: "Extra Features",
-                      currentProgressStep: 2,
-                      text: 'Right-click a block and click "Move to workspace" to move it to a different workspace. Right click anywhere in the view and click "Merge workspace" to merge two workspaces together.',
-                    });
+                  await subWorkspacesOnboarding.fire({
+                    title: "Extra Features",
+                    currentProgressStep: 2,
+                    text: 'Right-click a block and click "Move to workspace" to move it to a different workspace. Right click anywhere in the view and click "Merge workspace" to merge two workspaces together.',
+                  });
 
-                    const { value: wsName } =
-                      await subWorkspacesOnboarding.fire({
-                        title: "Name your workspace",
-                        currentProgressStep: 3,
-                        text: "Enter a name for your first workspace. Your current project data will be moved to the new workspace. You can create more workspaces and move blocks to them later.",
-                        input: "text",
-                        inputPlaceholder: "My workspace",
-                        inputValidator: (value) => {
-                          if (value.length >= 3) return false;
-                          else return "The name must be at least 3 characters";
+                  const { value: wsName } = await subWorkspacesOnboarding.fire({
+                    title: "Name your workspace",
+                    currentProgressStep: 3,
+                    text: "Enter a name for your first workspace. Your current project data will be moved to the new workspace. You can create more workspaces and move blocks to them later.",
+                    input: "text",
+                    inputPlaceholder: "My workspace",
+                    inputValidator: value => {
+                      if (value.length >= 3) return false;
+                      else return "The name must be at least 3 characters";
+                    },
+                  });
+
+                  axios
+                    .post(
+                      apiUrl + `/projects/${projectId}/workspaces`,
+                      {
+                        name: wsName,
+                        data: project.data,
+                      },
+                      {
+                        headers: {
+                          Authorization: localStorage.getItem("disfuse-token"),
                         },
-                      });
+                      },
+                    )
+                    .then(() => window.location.reload());
 
+                  return;
+                } else if (!project.workspaces?.length) {
+                  return Swal.fire({
+                    title: "Name your first workspace",
+                    text: "Create multiple workspaces to organize your blocks into separate tabs",
+                    input: "text",
+                    inputValidator: value => {
+                      if (value?.length < 3) return "Name needs at least 3 characters";
+                    },
+                    inputPlaceholder: "Initial workspace",
+                    showCancelButton: false,
+                    allowEscapeKey: false,
+                    confirmButtonText: "Create",
+                    allowOutsideClick: false,
+                    ...modalColors,
+                  }).then(response => {
                     axios
                       .post(
                         apiUrl + `/projects/${projectId}/workspaces`,
-                        {
-                          name: wsName,
-                          data: project.data,
-                        },
+                        { name: response.value },
                         {
                           headers: {
-                            Authorization:
-                              localStorage.getItem("disfuse-token"),
+                            Authorization: localStorage.getItem("disfuse-token"),
                           },
-                        }
+                        },
                       )
                       .then(() => window.location.reload());
+                  });
+                }
 
-                    return;
-                  } else if (!project.workspaces?.length) {
-                    return Swal.fire({
-                      title: "Name your first workspace",
-                      text: "Create multiple workspaces to organize your blocks into separate tabs",
-                      input: "text",
-                      inputValidator: (value) => {
-                        if (value?.length < 3)
-                          return "Name needs at least 3 characters";
-                      },
-                      inputPlaceholder: "Initial workspace",
-                      showCancelButton: false,
-                      allowEscapeKey: false,
-                      confirmButtonText: "Create",
-                      allowOutsideClick: false,
-                      ...modalColors,
-                    }).then((response) => {
-                      axios
-                        .post(
-                          apiUrl + `/projects/${projectId}/workspaces`,
-                          { name: response.value },
-                          {
-                            headers: {
-                              Authorization:
-                                localStorage.getItem("disfuse-token"),
-                            },
-                          }
-                        )
-                        .then(() => window.location.reload());
-                    });
-                  }
+                if (
+                  searchParams.get("id") &&
+                  project.workspaces.find(p => p._id === searchParams.get("id"))
+                )
+                  currentWorkspace.current = project.workspaces.find(
+                    p => p._id === searchParams.get("id"),
+                  );
+                else {
+                  setSearchParams(params => {
+                    params.set("id", project.workspaces[0]._id);
+                    return params;
+                  });
 
-                  if (
-                    searchParams.get("id") &&
-                    project.workspaces.find(
-                      (p) => p._id === searchParams.get("id")
-                    )
-                  )
-                    currentWorkspace.current = project.workspaces.find(
-                      (p) => p._id === searchParams.get("id")
-                    );
-                  else {
-                    setSearchParams((params) => {
-                      params.set("id", project.workspaces[0]._id);
-                      return params;
-                    });
+                  currentWorkspace.current = project.workspaces[0];
+                }
 
-                    currentWorkspace.current = project.workspaces[0];
-                  }
+                if (
+                  project.owner?.id !== user.id &&
+                  !(project.collaborators || []).includes(user.id)
+                )
+                  return (window.location = "/projects");
 
-                  if (
-                    project.owner?.id !== user.id &&
-                    !(project.collaborators || []).includes(user.id)
-                  )
-                    return (window.location = "/projects");
+                if (project.owner?.id !== user.id) {
+                  document.querySelector("button.invite").classList.add("disabled");
+                  document.querySelector("button.secrets").classList.add("disabled");
+                }
 
-                  if (project.owner?.id !== user.id) {
-                    document
-                      .querySelector("button.invite")
-                      .classList.add("disabled");
-                    document
-                      .querySelector("button.secrets")
-                      .classList.add("disabled");
-                  }
+                registerContextMenus(project, currentWorkspace.current);
 
-                  registerContextMenus(project, currentWorkspace.current);
+                Blockly.Events.disable();
 
-                  Blockly.Events.disable();
+                try {
+                  Blockly.serialization.workspaces.load(
+                    JSON.parse(currentWorkspace.current?.data || "{}"),
+                    workspace,
+                  );
+                } catch (error) {
+                  console.error(error);
+                  return Swal.fire({
+                    title: "Corrupt Project",
+                    text: "Part of your project is corrupt and cannot be loaded. This can be because one of your installed block packs is corrupt or your project is trying to load blocks that don't exist. Please join our Discord server and create a post in the support channel to fix this issue.",
+                    icon: "error",
+                    footer:
+                      '<a target="_blank" rel="noopener" style="color: lightblue" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    ...modalColors,
+                  });
+                } finally {
+                  Blockly.Events.enable();
+                  updateCode(workspace, project, currentWorkspace.current._id);
+                }
 
-                  try {
-                    Blockly.serialization.workspaces.load(
-                      JSON.parse(currentWorkspace.current?.data || "{}"),
-                      workspace
-                    );
-                  } catch (error) {
-                    console.error(error);
-                    return Swal.fire({
-                      title: "Corrupt Project",
-                      text: "Part of your project is corrupt and cannot be loaded. This can be because one of your installed block packs is corrupt or your project is trying to load blocks that don't exist. Please join our Discord server and create a post in the support channel to fix this issue.",
-                      icon: "error",
-                      footer:
-                        '<a target="_blank" rel="noopener" style="color: lightblue" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
-                      showCancelButton: false,
-                      showConfirmButton: false,
-                      allowEscapeKey: false,
-                      allowOutsideClick: false,
-                      ...modalColors,
-                    });
-                  } finally {
-                    Blockly.Events.enable();
-                    updateCode(
-                      workspace,
-                      project,
-                      currentWorkspace.current._id
-                    );
-                  }
+                let userLabels = new Map();
 
-                  let userLabels = new Map();
+                socket.on("projectUpdate", ({ workspaceId, event }) => {
+                  if (currentWorkspace.current._id === workspaceId) {
+                    Blockly.Events.disable();
 
-                  socket.on("projectUpdate", ({ workspaceId, event }) => {
-                    if (currentWorkspace.current._id === workspaceId) {
-                      Blockly.Events.disable();
-
-                      try {
-                        Blockly.Events.fromJson(event, workspace).run(true);
-                      } catch {
-                      } finally {
-                        Blockly.Events.enable();
-                        handleUserLabels();
-                      }
+                    try {
+                      Blockly.Events.fromJson(event, workspace).run(true);
+                    } catch {
+                    } finally {
+                      Blockly.Events.enable();
+                      handleUserLabels();
                     }
-                  });
-
-                  // Initiating plugins
-                  const backpack = new Backpack(workspace, {
-                    allowEmptyBackpackOpen: false,
-                    contextMenu: {
-                      copyAllToBackpack: true,
-                      pasteAllToBackpack: true,
-                    },
-                  });
-                  const workspaceSearch = new WorkspaceSearch(workspace);
-                  const zoomToFit = new ZoomToFitControl(workspace);
-
-                  backpack.init();
-                  workspaceSearch.init();
-                  zoomToFit.init();
-
-                  function setBackpackStorage() {
-                    localStorage.setItem(
-                      "dfWorkspaceBackpack",
-                      JSON.stringify(backpack.getContents() || [])
-                    );
                   }
+                });
 
-                  backpack.onDragEnter = setBackpackStorage;
-                  backpack.onDragExit = setBackpackStorage;
-                  backpack.onDrop = setBackpackStorage;
+                // Initiating plugins
+                const backpack = new Backpack(workspace, {
+                  allowEmptyBackpackOpen: false,
+                  contextMenu: {
+                    copyAllToBackpack: true,
+                    pasteAllToBackpack: true,
+                  },
+                });
+                const workspaceSearch = new WorkspaceSearch(workspace);
+                const zoomToFit = new ZoomToFitControl(workspace);
 
-                  try {
-                    backpack.setContents(
-                      JSON.parse(localStorage.getItem("dfWorkspaceBackpack"))
-                    );
-                  } catch (_) {}
+                backpack.init();
+                workspaceSearch.init();
+                zoomToFit.init();
 
-                  // Disable blocks that are not attached to anything
-                  workspace.addChangeListener(Blockly.Events.disableOrphans);
+                function setBackpackStorage() {
+                  localStorage.setItem(
+                    "dfWorkspaceBackpack",
+                    JSON.stringify(backpack.getContents() || []),
+                  );
+                }
 
-                  setLoading(false);
+                backpack.onDragEnter = setBackpackStorage;
+                backpack.onDragExit = setBackpackStorage;
+                backpack.onDrop = setBackpackStorage;
 
-                  const handleUserLabels = () => {
-                    document
-                      .querySelectorAll(".userLabel")
-                      .forEach((e) => e.remove());
+                try {
+                  backpack.setContents(
+                    JSON.parse(localStorage.getItem("dfWorkspaceBackpack")),
+                  );
+                } catch (_) {}
 
-                    userLabels.forEach((blockId, userId) => {
-                      const block = workspace
-                        .getAllBlocks()
-                        .find((b) => b.id === blockId);
+                // Disable blocks that are not attached to anything
+                workspace.addChangeListener(Blockly.Events.disableOrphans);
 
-                      if (!block) return;
+                setLoading(false);
 
-                      const blockEle = document.querySelector(
-                        `g[data-id="${block.id}"]`
-                      );
+                const handleUserLabels = () => {
+                  document.querySelectorAll(".userLabel").forEach(e => e.remove());
 
-                      const ele = document.createElement("h4");
+                  userLabels.forEach((blockId, userId) => {
+                    const block = workspace.getAllBlocks().find(b => b.id === blockId);
 
-                      const user = activeUsers.find((u) => u.id === userId);
+                    if (!block) return;
 
-                      const avatar = document.createElement("img");
+                    const blockEle = document.querySelector(`g[data-id="${block.id}"]`);
 
-                      avatar.src = activeUsers.find(
-                        (u) => u.id === userId
-                      ).avatar;
-                      ele.appendChild(avatar);
+                    const ele = document.createElement("h4");
 
-                      ele.innerHTML = `<img src="${user?.avatar}" /> ${
-                        user?.displayName ?? "someone"
-                      } is editing`;
+                    const user = activeUsers.find(u => u.id === userId);
 
-                      var rect = blockEle.getBoundingClientRect();
+                    const avatar = document.createElement("img");
 
-                      ele.classList.add("userLabel");
-                      ele.style.top = `${rect.top.toFixed(0) - 40}px`;
-                      ele.style.left = `${rect.left.toFixed(0)}px`;
-                      document.body.appendChild(ele);
-                    });
-                  };
+                    avatar.src = activeUsers.find(u => u.id === userId).avatar;
+                    ele.appendChild(avatar);
 
-                  socket.on("blockSelect", ({ user, blockId }) => {
-                    userLabels.set(user.id, blockId);
-                    handleUserLabels();
-                    workspace.removeChangeListener(handleUserLabels);
-                    workspace.addChangeListener(handleUserLabels);
+                    ele.innerHTML = `<img src="${user?.avatar}" /> ${
+                      user?.displayName ?? "someone"
+                    } is editing`;
+
+                    var rect = blockEle.getBoundingClientRect();
+
+                    ele.classList.add("userLabel");
+                    ele.style.top = `${rect.top.toFixed(0) - 40}px`;
+                    ele.style.left = `${rect.left.toFixed(0)}px`;
+                    document.body.appendChild(ele);
                   });
+                };
 
-                  workspace.addChangeListener(() => {
-                    const blocksIndicator = document.querySelector(
-                      ".workspace-navbar #blocks-indicator"
-                    );
+                socket.on("blockSelect", ({ user, blockId }) => {
+                  userLabels.set(user.id, blockId);
+                  handleUserLabels();
+                  workspace.removeChangeListener(handleUserLabels);
+                  workspace.addChangeListener(handleUserLabels);
+                });
 
-                    if (blocksIndicator)
-                      blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
+                workspace.addChangeListener(() => {
+                  const blocksIndicator = document.querySelector(
+                    ".workspace-navbar #blocks-indicator",
+                  );
+
+                  if (blocksIndicator)
+                    blocksIndicator.innerHTML = `<i class="fa-solid fa-cube"></i><div>
                       ${workspace.getAllBlocks().length ?? "??"} blocks
                       </div>`;
+                });
+
+                workspace.addChangeListener(async e => {
+                  if (e.type === Blockly.Events.SELECTED) {
+                    socket.emit("blockSelect", { blockId: e.newElementId });
+                  }
+                });
+
+                let updates = 0;
+
+                workspace.addChangeListener(async e => {
+                  let ignoredEvents = [
+                    Blockly.Events.VIEWPORT_CHANGE,
+                    Blockly.Events.SELECTED,
+                    Blockly.Events.CLICK,
+                    Blockly.Events.TOOLBOX_ITEM_SELECT,
+                    Blockly.Events.TRASHCAN_OPEN,
+                    Blockly.Events.FINISHED_LOADING,
+                    Blockly.Events.BLOCK_DRAG,
+                    Blockly.Events.BLOCK_MOVE,
+                    Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
+                    Blockly.Events.UI,
+                    "backpack_change",
+                  ];
+
+                  if (ignoredEvents.includes(e.type)) return;
+
+                  updates++;
+
+                  reloadContextMenus(project, currentWorkspace.current);
+                  setBackpackStorage();
+                  addTooltips(workspace);
+                  executeRestrictions(workspace);
+
+                  if (updates < changesUntilSave) return;
+                  updates = 0;
+
+                  project = await autosave(
+                    workspace,
+                    projectId,
+                    currentWorkspace.current,
+                    socket,
+                    e.toJson(),
+                    user.settings?.workspace.toolboxAutosaveLabel ?? true,
+                  ).catch(e => {
+                    console.error("Autosave error:", e);
+
+                    document.querySelector(
+                      ".workspace-navbar #autosave-indicator",
+                    ).innerHTML =
+                      `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+
+                    Swal.fire({
+                      ...modalColors,
+                      title: "Autosave Error",
+                      icon: "error",
+                      text: e,
+                      showConfirmButton: true,
+                      confirmButtonText: "Reload",
+                    }).then(value => {
+                      if (value.isConfirmed) window.location.reload();
+                    });
+                  });
+                });
+
+                // Show code event
+                document
+                  .querySelector("button#showCode")
+                  .addEventListener("click", () => {
+                    updateCode(workspace, project, currentWorkspace.current._id);
+                    document.querySelector(".code-view").style.display = "flex";
                   });
 
-                  workspace.addChangeListener(async (e) => {
-                    if (e.type === Blockly.Events.SELECTED) {
-                      socket.emit("blockSelect", { blockId: e.newElementId });
-                    }
-                  });
+                // Load from file event
+                document.querySelector("button#load").addEventListener("click", () => {
+                  const fileInput = document.createElement("input");
+                  fileInput.type = "file";
+                  fileInput.accept = ".df";
 
-                  let updates = 0;
+                  fileInput.addEventListener("change", e => {
+                    let file = e.target.files[0];
+                    if (!file) return;
 
-                  workspace.addChangeListener(async (e) => {
-                    let ignoredEvents = [
-                      Blockly.Events.VIEWPORT_CHANGE,
-                      Blockly.Events.SELECTED,
-                      Blockly.Events.CLICK,
-                      Blockly.Events.TOOLBOX_ITEM_SELECT,
-                      Blockly.Events.TRASHCAN_OPEN,
-                      Blockly.Events.FINISHED_LOADING,
-                      Blockly.Events.BLOCK_DRAG,
-                      Blockly.Events.BLOCK_MOVE,
-                      Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
-                      Blockly.Events.UI,
-                      "backpack_change",
-                    ];
+                    let reader = new FileReader();
 
-                    if (ignoredEvents.includes(e.type)) return;
+                    reader.onload = async event => {
+                      let data = event.target.result;
 
-                    updates++;
+                      let json;
+                      try {
+                        json = JSON.parse(data);
+                      } catch (error) {
+                        return Swal.fire("Error", String(error), "error");
+                      }
 
-                    reloadContextMenus(project, currentWorkspace.current);
-                    setBackpackStorage();
-                    addTooltips(workspace);
-                    executeRestrictions(workspace);
-
-                    if (updates < changesUntilSave) return;
-                    updates = 0;
-
-                    project = await autosave(
-                      workspace,
-                      projectId,
-                      currentWorkspace.current,
-                      socket,
-                      e.toJson(),
-                      user.settings?.workspace.toolboxAutosaveLabel ?? true
-                    ).catch((e) => {
-                      console.error("Autosave error:", e);
-
-                      document.querySelector(
-                        ".workspace-navbar #autosave-indicator"
-                      ).innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><div>Error</div>`;
+                      if (!json.blocks || !json.blocks.blocks) {
+                        return Swal.fire(
+                          "Error",
+                          "The selected file doesn't contain any blocks.",
+                          "error",
+                        );
+                      }
 
                       Swal.fire({
-                        ...modalColors,
-                        title: "Autosave Error",
-                        icon: "error",
-                        text: e,
-                        showConfirmButton: true,
-                        confirmButtonText: "Reload",
-                      }).then((value) => {
-                        if (value.isConfirmed) window.location.reload();
-                      });
-                    });
-                  });
-
-                  // Show code event
-                  document
-                    .querySelector("button#showCode")
-                    .addEventListener("click", () => {
-                      updateCode(
-                        workspace,
-                        project,
-                        currentWorkspace.current._id
-                      );
-                      document.querySelector(".code-view").style.display =
-                        "flex";
-                    });
-
-                  // Load from file event
-                  document
-                    .querySelector("button#load")
-                    .addEventListener("click", () => {
-                      const fileInput = document.createElement("input");
-                      fileInput.type = "file";
-                      fileInput.accept = ".df";
-
-                      fileInput.addEventListener("change", (e) => {
-                        let file = e.target.files[0];
-                        if (!file) return;
-
-                        let reader = new FileReader();
-
-                        reader.onload = async (event) => {
-                          let data = event.target.result;
-
-                          let json;
-                          try {
-                            json = JSON.parse(data);
-                          } catch (error) {
-                            return Swal.fire("Error", String(error), "error");
-                          }
-
-                          if (!json.blocks || !json.blocks.blocks) {
-                            return Swal.fire(
-                              "Error",
-                              "The selected file doesn't contain any blocks.",
-                              "error"
-                            );
-                          }
-
-                          Swal.fire({
-                            title: "Load Blocks from File",
-                            text: "Do you want to replace the current blocks in the workspace?",
-                            showCancelButton: true,
-                            showDenyButton: true,
-                            cancelButtonText: "Cancel",
-                            confirmButtonText: "Replace",
-                            denyButtonText: "Combine",
-                            icon: "question",
-                            animation: true,
-                            ...modalColors,
-                          }).then((result) => {
-                            if (result.isDismissed) return;
-
-                            if (result.isConfirmed) {
-                              Blockly.serialization.workspaces.load(
-                                json,
-                                workspace
-                              );
-                            } else {
-                              json.blocks.blocks = json.blocks.blocks.concat(
-                                Blockly.serialization.workspaces.save(workspace)
-                                  ?.blocks?.blocks || []
-                              );
-
-                              Blockly.serialization.workspaces.load(
-                                json,
-                                workspace
-                              );
-                            }
-                          });
-                        };
-
-                        reader.readAsText(file);
-                      });
-
-                      fileInput.click();
-                      fileInput.remove();
-                    });
-
-                  // Templates button event
-                  document
-                    .querySelector("button#templates")
-                    .addEventListener("click", () => {
-                      Swal.fire({
-                        title: "Load Template",
-                        text: "Which template would you like to load?",
+                        title: "Load Blocks from File",
+                        text: "Do you want to replace the current blocks in the workspace?",
                         showCancelButton: true,
+                        showDenyButton: true,
                         cancelButtonText: "Cancel",
-                        confirmButtonText: "Load",
-                        input: "select",
-                        inputOptions: {
-                          slashCommand: "Slash Commands",
-                          pingCommand: "Ping Command",
-                          economyCommand: "Economy Commands",
-                          ticketCommands: "Ticket Commands",
-                          contextMenu: "Context Menu",
-                        },
+                        confirmButtonText: "Replace",
+                        denyButtonText: "Combine",
+                        icon: "question",
+                        animation: true,
                         ...modalColors,
-                      }).then((result) => {
-                        if (!result.isConfirmed) return;
+                      }).then(result => {
+                        if (result.isDismissed) return;
 
-                        let data = require(`../templates/${result.value}`);
-
-                        data.blocks.blocks = data.blocks.blocks.concat(
-                          Blockly.serialization.workspaces.save(workspace)
-                            ?.blocks?.blocks || []
-                        );
-
-                        Blockly.serialization.workspaces.load(data, workspace);
-                      });
-                    });
-
-                  document
-                    .querySelector("button.host")
-                    .addEventListener("click", () => {
-                      updateCode(
-                        workspace,
-                        project,
-                        currentWorkspace.current._id
-                      );
-
-                      if (
-                        localStorage.getItem("hostingOnboardingComplete") !==
-                        "true"
-                      ) {
-                        Swal.fire({
-                          ...modalColors,
-                          title: "Introducing DisFuse hosting!",
-                          icon: "info",
-                          footer:
-                            'By hosting your bot on DisFuse, you agree to our new <a target="_blank" rel="noopener" href="/tos">terms of service</a> for hosting',
-                          text: "You can run your bot on DisFuse to test features before deploying it to your own hosting service. The bot will go offline when you close this page, so this is not meant to be a permanent host.",
-                        }).then(() => {
-                          localStorage.setItem(
-                            "hostingOnboardingComplete",
-                            "true"
+                        if (result.isConfirmed) {
+                          Blockly.serialization.workspaces.load(json, workspace);
+                        } else {
+                          json.blocks.blocks = json.blocks.blocks.concat(
+                            Blockly.serialization.workspaces.save(workspace)?.blocks
+                              ?.blocks || [],
                           );
-                          document.querySelector(".hostModal").showModal();
-                        });
-                      } else document.querySelector(".hostModal").showModal();
-                    });
 
-                  // Export button event
-                  document
-                    .querySelector("button.export")
-                    .addEventListener("click", () => {
-                      updateCode(
-                        workspace,
-                        project,
-                        currentWorkspace.current._id
+                          Blockly.serialization.workspaces.load(json, workspace);
+                        }
+                      });
+                    };
+
+                    reader.readAsText(file);
+                  });
+
+                  fileInput.click();
+                  fileInput.remove();
+                });
+
+                // Templates button event
+                document
+                  .querySelector("button#templates")
+                  .addEventListener("click", () => {
+                    Swal.fire({
+                      title: "Load Template",
+                      text: "Which template would you like to load?",
+                      showCancelButton: true,
+                      cancelButtonText: "Cancel",
+                      confirmButtonText: "Load",
+                      input: "select",
+                      inputOptions: {
+                        slashCommand: "Slash Commands",
+                        pingCommand: "Ping Command",
+                        economyCommand: "Economy Commands",
+                        ticketCommands: "Ticket Commands",
+                        contextMenu: "Context Menu",
+                      },
+                      ...modalColors,
+                    }).then(result => {
+                      if (!result.isConfirmed) return;
+
+                      let data = require(`../templates/${result.value}`);
+
+                      data.blocks.blocks = data.blocks.blocks.concat(
+                        Blockly.serialization.workspaces.save(workspace)?.blocks
+                          ?.blocks || [],
                       );
 
-                      Swal.fire({
-                        title: "Export Project",
-                        icon: "info",
-                        confirmButtonText: "Download ZIP",
-                        input: "select",
-                        inputOptions: {
-                          project: "Export whole project",
-                          workspace: "Export current workspace",
-                        },
-                        showCancelButton: false,
-                        html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
-                        ...modalColors,
-                      }).then(async (result) => {
-                        if (!result.isConfirmed) return;
+                      Blockly.serialization.workspaces.load(data, workspace);
+                    });
+                  });
 
-                        const zip = new JSZip();
+                document.querySelector("button.host").addEventListener("click", () => {
+                  updateCode(workspace, project, currentWorkspace.current._id);
 
-                        const projectCode =
-                          document.querySelector(
-                            ".project.code code"
-                          ).innerText;
-                        const wsCode = document.querySelector(
-                          ".workspace.code code"
-                        ).innerText;
+                  if (localStorage.getItem("hostingOnboardingComplete") !== "true") {
+                    Swal.fire({
+                      ...modalColors,
+                      title: "Introducing DisFuse hosting!",
+                      icon: "info",
+                      footer:
+                        'By hosting your bot on DisFuse, you agree to our new <a target="_blank" rel="noopener" href="/tos">terms of service</a> for hosting',
+                      text: "You can run your bot on DisFuse to test features before deploying it to your own hosting service. The bot will go offline when you close this page, so this is not meant to be a permanent host.",
+                    }).then(() => {
+                      localStorage.setItem("hostingOnboardingComplete", "true");
+                      document.querySelector(".hostModal").showModal();
+                    });
+                  } else document.querySelector(".hostModal").showModal();
+                });
 
-                        const fullWorkspace = getWholeProjectWorkspace(
-                          project,
-                          workspace,
-                          currentWorkspace.current._id
-                        );
+                // Export button event
+                document.querySelector("button.export").addEventListener("click", () => {
+                  updateCode(workspace, project, currentWorkspace.current._id);
 
-                        let missingBlocks = [];
-                        let warningBlocks = [];
+                  Swal.fire({
+                    title: "Export Project",
+                    icon: "info",
+                    confirmButtonText: "Download ZIP",
+                    input: "select",
+                    inputOptions: {
+                      project: "Export whole project",
+                      workspace: "Export current workspace",
+                    },
+                    showCancelButton: false,
+                    html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+                    ...modalColors,
+                  }).then(async result => {
+                    if (!result.isConfirmed) return;
 
-                        let exportingWs;
-                        if (result.value === "project")
-                          exportingWs = fullWorkspace;
-                        else exportingWs = workspace;
+                    const zip = new JSZip();
 
-                        requiredBlocks.forEach((requiredBlock) => {
-                          if (
-                            !exportingWs
-                              .getAllBlocks(false)
-                              .find(
-                                (block) => block.type === requiredBlock.type
-                              )
-                          )
-                            missingBlocks.push(requiredBlock);
+                    const projectCode =
+                      document.querySelector(".project.code code").innerText;
+                    const wsCode =
+                      document.querySelector(".workspace.code code").innerText;
+
+                    const fullWorkspace = getWholeProjectWorkspace(
+                      project,
+                      workspace,
+                      currentWorkspace.current._id,
+                    );
+
+                    let missingBlocks = [];
+                    let warningBlocks = [];
+
+                    let exportingWs;
+                    if (result.value === "project") exportingWs = fullWorkspace;
+                    else exportingWs = workspace;
+
+                    requiredBlocks.forEach(requiredBlock => {
+                      if (
+                        !exportingWs
+                          .getAllBlocks(false)
+                          .find(block => block.type === requiredBlock.type)
+                      )
+                        missingBlocks.push(requiredBlock);
+                    });
+
+                    const exportingWsBlocks = exportingWs.getAllBlocks(false);
+
+                    exportingWsBlocks.forEach(block => {
+                      if (block.data?.length)
+                        warningBlocks.push({
+                          message: block.data,
+                          id: block.id,
                         });
+                    });
 
-                        const exportingWsBlocks =
-                          exportingWs.getAllBlocks(false);
-
-                        exportingWsBlocks.forEach((block) => {
-                          if (block.data?.length)
-                            warningBlocks.push({
-                              message: block.data,
-                              id: block.id,
-                            });
-                        });
-
-                        if (missingBlocks.length || warningBlocks.length) {
-                          let { isConfirmed } = await Swal.fire({
-                            title: "Errors",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonText: "Download Anyway",
-                            confirmButtonColor: "#e40000",
-                            html: `
+                    if (missingBlocks.length || warningBlocks.length) {
+                      let { isConfirmed } = await Swal.fire({
+                        title: "Errors",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Download Anyway",
+                        confirmButtonColor: "#e40000",
+                        html: `
                           <p>You have the following errors in your code:</p>
                           ${missingBlocks
-                            .map(
-                              (block) =>
-                                `<p class="exportError">${block.message}</p>`
-                            )
+                            .map(block => `<p class="exportError">${block.message}</p>`)
                             .join("")}
                           ${warningBlocks
                             .map(
-                              (block) =>
+                              block =>
                                 `
                               <p class="exportError">
                                 <span>
                                 ${titleCase(
                                   exportingWs
                                     .getBlockById(block.id)
-                                    .type.replaceAll("_", " ")
+                                    .type.replaceAll("_", " "),
                                 )}
                                 </span>
-                              ${block.message
-                                .map((m) => `<span>${m}</span>`)
-                                .join("")}
-                              </p>`
+                              ${block.message.map(m => `<span>${m}</span>`).join("")}
+                              </p>`,
                             )
                             .join("")}
                           `,
-                            ...modalColors,
-                            customClass: {
-                              container: "dark",
-                              htmlContainer: "exportErrors",
-                            },
-                          });
-
-                          if (!isConfirmed) return;
-                        }
-
-                        const indexjs =
-                          result.value === "project" ? projectCode : wsCode;
-
-                        const envFile = `${project.secrets
-                          .map((s) => `${s.name}=${s.value}`)
-                          .join("\n")}`;
-
-                        const deps = [];
-
-                        installedBlockPacks.forEach((bp) =>
-                          deps.push(...(bp.dependencies || []))
-                        );
-
-                        getExportFiles(deps, exportingWsBlocks).forEach(
-                          (file) => {
-                            zip.file(file.name, file.content);
-                          }
-                        );
-
-                        zip.file(
-                          "index.js",
-                          `${beautifyJs(indexjs, {
-                            indent_size: 2,
-                            preserve_newlines: true,
-                            max_preserve_newlines: 2,
-                          })}`
-                        );
-                        zip.file(".env", envFile);
-                        zip.file(
-                          `${project.name}.df`,
-                          JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace)
-                          )
-                        );
-
-                        zip.generateAsync({ type: "blob" }).then((content) => {
-                          let url = window.URL.createObjectURL(content);
-                          let anchor = document.createElement("a");
-                          anchor.href = url;
-                          anchor.download = `${project.name}.zip`;
-
-                          anchor.click();
-
-                          window.URL.revokeObjectURL(url);
-
-                          Swal.fire({
-                            toast: true,
-                            position: "top-right",
-                            timer: 5000,
-                            timerProgressBar: true,
-                            icon: "success",
-                            title: "Successfully exported",
-                            showConfirmButton: false,
-                          });
-                        });
+                        ...modalColors,
+                        customClass: {
+                          container: "dark",
+                          htmlContainer: "exportErrors",
+                        },
                       });
 
-                      // Save file event
-                      document.querySelector("button#save").onclick =
-                        async () => {
-                          const data = JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace)
-                          );
-                          const blob = new Blob([data], {
-                            type: "text/plain",
-                          });
+                      if (!isConfirmed) return;
+                    }
 
-                          let url = window.URL.createObjectURL(blob);
-                          let anchor = document.createElement("a");
-                          anchor.href = url;
-                          anchor.download = `${project.name}.df`;
+                    const indexjs = result.value === "project" ? projectCode : wsCode;
 
-                          anchor.click();
+                    const envFile = `${project.secrets
+                      .map(s => `${s.name}=${s.value}`)
+                      .join("\n")}`;
 
-                          window.URL.revokeObjectURL(url);
+                    const deps = [];
 
-                          Swal.fire({
-                            toast: true,
-                            position: "top-right",
-                            timer: 5000,
-                            timerProgressBar: true,
-                            icon: "success",
-                            title: "Successfully saved",
-                            showConfirmButton: false,
-                          });
-                        };
+                    installedBlockPacks.forEach(bp =>
+                      deps.push(...(bp.dependencies || [])),
+                    );
 
-                      let projectNameDiv =
-                        document.querySelector(".projectName p");
-
-                      projectNameDiv.addEventListener("click", () => {
-                        if (projectNameDiv.dataset.collapsed === "false") {
-                          projectNameDiv.dataset.collapsed = "true";
-                          projectNameDiv.innerText = "...";
-                        } else {
-                          projectNameDiv.dataset.collapsed = "false";
-                          projectNameDiv.innerText = project.name;
-                        }
-                      });
+                    getExportFiles(deps, exportingWsBlocks).forEach(file => {
+                      zip.file(file.name, file.content);
                     });
 
-                  if (localStorage.getItem("isNew") !== "true") {
+                    zip.file(
+                      "index.js",
+                      `${beautifyJs(indexjs, {
+                        indent_size: 2,
+                        preserve_newlines: true,
+                        max_preserve_newlines: 2,
+                      })}`,
+                    );
+                    zip.file(".env", envFile);
+                    zip.file(
+                      `${project.name}.df`,
+                      JSON.stringify(Blockly.serialization.workspaces.save(workspace)),
+                    );
+
+                    zip.generateAsync({ type: "blob" }).then(content => {
+                      let url = window.URL.createObjectURL(content);
+                      let anchor = document.createElement("a");
+                      anchor.href = url;
+                      anchor.download = `${project.name}.zip`;
+
+                      anchor.click();
+
+                      window.URL.revokeObjectURL(url);
+
+                      Swal.fire({
+                        toast: true,
+                        position: "top-right",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        icon: "success",
+                        title: "Successfully exported",
+                        showConfirmButton: false,
+                      });
+                    });
+                  });
+
+                  // Save file event
+                  document.querySelector("button#save").onclick = async () => {
+                    const data = JSON.stringify(
+                      Blockly.serialization.workspaces.save(workspace),
+                    );
+                    const blob = new Blob([data], {
+                      type: "text/plain",
+                    });
+
+                    let url = window.URL.createObjectURL(blob);
+                    let anchor = document.createElement("a");
+                    anchor.href = url;
+                    anchor.download = `${project.name}.df`;
+
+                    anchor.click();
+
+                    window.URL.revokeObjectURL(url);
+
                     Swal.fire({
-                      title: "New to DisFuse?",
-                      html: `
+                      toast: true,
+                      position: "top-right",
+                      timer: 5000,
+                      timerProgressBar: true,
+                      icon: "success",
+                      title: "Successfully saved",
+                      showConfirmButton: false,
+                    });
+                  };
+
+                  let projectNameDiv = document.querySelector(".projectName p");
+
+                  projectNameDiv.addEventListener("click", () => {
+                    if (projectNameDiv.dataset.collapsed === "false") {
+                      projectNameDiv.dataset.collapsed = "true";
+                      projectNameDiv.innerText = "...";
+                    } else {
+                      projectNameDiv.dataset.collapsed = "false";
+                      projectNameDiv.innerText = project.name;
+                    }
+                  });
+                });
+
+                if (localStorage.getItem("isNew") !== "true") {
+                  Swal.fire({
+                    title: "New to DisFuse?",
+                    html: `
                       <p>Welcome! Here are some useful links to help you use DisFuse:</p>
                       <a href="https://docs.disfuse.xyz" target="_blank">📘 DisFuse Documentation</a><br>
                       <a href="https://www.youtube.com/watch?v=OOrapVifGoE" target="_blank">▶️ DisFuse's YouTube Channel</a><br>
                       <a href="https://dsc.gg/disfuse" target="_blank">💬 Join the Discord Server</a>`,
-                      ...modalColors,
-                    }).then(() => {
-                      localStorage.setItem("isNew", "true");
-                    });
-                  }
+                    ...modalColors,
+                  }).then(() => {
+                    localStorage.setItem("isNew", "true");
+                  });
                 }
-              );
+              });
             })
-            .catch((e) => {
+            .catch(e => {
               console.error(e);
               Swal.fire({
                 ...modalColors,
@@ -1097,7 +1007,7 @@ export default function Workspace() {
               });
             });
         },
-        [projectId, searchParams, setSearchParams]
+        [projectId, searchParams, setSearchParams],
       );
 
     return () => {
@@ -1116,7 +1026,7 @@ export default function Workspace() {
       />
       <CodeView />
       <SecretsView project={project} />
-      <InviteModal project={project} onSave={(p) => setProject(p)} />
+      <InviteModal project={project} onSave={p => setProject(p)} />
 
       <div className="load-container">{isLoading ? <LoadingAnim /> : ""}</div>
 
@@ -1153,7 +1063,7 @@ export default function Workspace() {
 
     currentWorkspace.current = p.workspaces[index];
 
-    setSearchParams((params) => {
+    setSearchParams(params => {
       params.set("id", p.workspaces[index]._id);
       return params;
     });
@@ -1166,7 +1076,7 @@ export default function Workspace() {
       if (p.workspaces[index].data?.length)
         Blockly.serialization.workspaces.load(
           JSON.parse(p.workspaces[index].data),
-          workspace
+          workspace,
         );
       else workspace.clear();
     } finally {
@@ -1184,7 +1094,7 @@ export default function Workspace() {
   function titleCase(str) {
     return str.replace(
       /\w\S*/g,
-      (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase(),
     );
   }
 }

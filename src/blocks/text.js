@@ -5,7 +5,7 @@ Blockly.Blocks["text_newline"] = {
   init: function () {
     this.appendDummyInput().appendField("new line");
     this.setOutput(true, "String");
-    this.setColour("#59c059");
+    this.setStyle("text_blocks");
   },
 };
 
@@ -19,7 +19,7 @@ Blockly.Blocks["text_contains"] = {
     this.appendValueInput("text").appendField("text").setCheck("String");
     this.appendValueInput("query").appendField("contains").setCheck("String");
     this.setOutput(true, "Boolean");
-    this.setColour("#59c059");
+    this.setStyle("text_blocks");
     this.setInputsInline(true);
   },
 };
@@ -34,33 +34,27 @@ javascriptGenerator.forBlock["text_contains"] = function (block, generator) {
 
 Blockly.Blocks["text_regexp"] = {
   init: function () {
-    var regexpValidator = function (newValue) {
-      var valid = null;
-
-      try {
-        let regexp = new RegExp(newValue);
-        valid = regexp;
-      } catch (err) {
-        valid = null;
-      }
-
-      return valid;
-    };
-
     this.appendDummyInput()
-      .appendField("regexp")
+      .appendField("regexp /")
       .appendField(
-        new Blockly.FieldTextInput("/regexp/", regexpValidator),
+        new Blockly.FieldTextInput("regexp", function (newValue) {
+          try {
+            new RegExp(newValue);
+            return newValue;
+          } catch (err) {
+            return null;
+          }
+        }),
         "regexp"
-      );
+      )
+      .appendField("/");
     this.setOutput(true, "regexp");
-    this.setColour("#59c059");
+    this.setStyle("regexp_blocks");
   },
 };
 
 javascriptGenerator.forBlock["text_regexp"] = function (block, generator) {
-  var regexp = block.getFieldValue("regexp");
-
+  const regexp = generator.quote_(block.getFieldValue("regexp") || "");
   return [`new RegExp(${regexp})`, Order.NEW];
 };
 
@@ -69,9 +63,10 @@ Blockly.Blocks["text_regexp_test"] = {
     this.appendValueInput("regexp")
       .setCheck("regexp")
       .appendField("test regexp");
-    this.appendValueInput("string").setCheck("String").appendField("on string");
-    this.setColour("#59c059");
+    this.appendValueInput("string").setCheck("String").appendField("on");
+    this.setStyle("regexp_blocks");
     this.setOutput(true, "Boolean");
+    this.setInputsInline(true);
   },
 };
 
@@ -89,9 +84,10 @@ Blockly.Blocks["text_regexp_match"] = {
     this.appendValueInput("regexp")
       .setCheck("regexp")
       .appendField("match regexp");
-    this.appendValueInput("string").setCheck("String").appendField("on string");
-    this.setColour("#59c059");
+    this.appendValueInput("string").setCheck("String").appendField("on");
+    this.setStyle("regexp_blocks");
     this.setOutput(true, "Array");
+    this.setInputsInline(true);
   },
 };
 
@@ -112,9 +108,10 @@ Blockly.Blocks["text_regexp_exec"] = {
     this.appendValueInput("regexp")
       .setCheck("regexp")
       .appendField("exec regexp");
-    this.appendValueInput("string").setCheck("String").appendField("on string");
-    this.setColour("#59c059");
+    this.appendValueInput("string").setCheck("String").appendField("on");
+    this.setStyle("regexp_blocks");
     this.setOutput(true, "Array");
+    this.setInputsInline(true);
   },
 };
 
@@ -132,12 +129,13 @@ Blockly.Blocks["text_regexp_replace"] = {
     this.appendValueInput("regexp")
       .setCheck("regexp")
       .appendField("replace regexp");
-    this.appendValueInput("string").setCheck("String").appendField("on string");
+    this.appendValueInput("string").setCheck("String").appendField("on");
     this.appendValueInput("replace")
       .setCheck("String")
-      .appendField("with string");
-    this.setColour("#59c059");
+      .appendField("with");
+    this.setStyle("regexp_blocks");
     this.setOutput(true, "String");
+    this.setInputsInline(true);
   },
 };
 
@@ -159,8 +157,8 @@ Blockly.Blocks["text_regexp_search"] = {
     this.appendValueInput("regexp")
       .setCheck("regexp")
       .appendField("search regexp");
-    this.appendValueInput("string").setCheck("String").appendField("on string");
-    this.setColour("#59c059");
+    this.appendValueInput("string").setCheck("String").appendField("on");
+    this.setStyle("regexp_blocks");
     this.setOutput(true, "Number");
   },
 };
@@ -182,7 +180,7 @@ Blockly.Blocks["text_repeat"] = {
     this.appendValueInput("text").setCheck("String").appendField("repeat");
     this.appendValueInput("times").setCheck("Number");
     this.appendDummyInput().appendField("times");
-    this.setColour("#59c059");
+    this.setStyle("text_blocks");
     this.setOutput(true, "String");
   },
 };
@@ -208,7 +206,7 @@ Blockly.Blocks["text_startOrEndWith"] = {
       )
       .appendField("with");
     this.setInputsInline(true);
-    this.setColour("#59c059");
+    this.setStyle("text_blocks");
     this.setOutput(true, "Boolean");
   },
 };
