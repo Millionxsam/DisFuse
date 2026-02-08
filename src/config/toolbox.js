@@ -1626,6 +1626,59 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
+              block("misc_messageSent"),
+              label("------------------------------------"),
+              {
+                kind: "block",
+                type: "channel_waitForResponse",
+                inputs: {
+                  time: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 60,
+                      },
+                    },
+                  },
+                  max: {
+                    shadow: {
+                      type: "math_number",
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                },
+              },
+              label(
+                "Use this block to check if a message should be accepted ↓",
+              ),
+              block("channel_awaitResponses_filterMsg"),
+              label("Get the responses after collecting has finished ↓"),
+              block("channel_responses"),
+              {
+                kind: "block",
+                type: "lists_getIndex",
+                inputs: {
+                  VALUE: {
+                    shadow: {
+                      type: "channel_responses",
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "lists_length",
+                inputs: {
+                  VALUE: {
+                    shadow: {
+                      type: "channel_responses",
+                    },
+                  },
+                },
+              },
+              label("------------------------------------"),
               block("misc_addrow"),
               {
                 kind: "block",
@@ -1634,7 +1687,6 @@ export default function getToolbox(blockPacks = [], user) {
                   path: { shadow: shadow("text") },
                 },
               },
-              block("misc_messageSent"),
               label("------------------------------------"),
               {
                 kind: "block",
@@ -1881,8 +1933,8 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Members",
             colour: "#3c9e56",
             contents: [
-              label("Member = one member of a server"),
-              label("User = the total Discord user"),
+              label("Member = info of one member in a server"),
+              label("User = all info of the whole Discord user"),
               label("Some blocks only accept users"),
               label("Other blocks only accept members"),
               label("Some blocks can accept either one"),
@@ -1890,7 +1942,9 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "label",
                 text: "(It won't let you drag in the wrong one)",
               },
-              label("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"),
+              label(
+                "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+              ),
               label("Get a member or user ↓"),
               {
                 kind: "block",
@@ -1920,6 +1974,7 @@ export default function getToolbox(blockPacks = [], user) {
               label("Information about members/users ↓"),
               block("member_status"),
               block("member_userFlags"),
+              block("member_dmChannel"),
               block("member_bannable"),
               block("member_kickable"),
               block("member_timedout"),
@@ -2446,7 +2501,9 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Modals",
             colour: "1A8793",
             contents: [
-              label("Keep in mind that you can only show modals in slash commands!"),
+              label(
+                "Keep in mind that you can only show modals in slash commands!",
+              ),
               label("Show a modal to the user ↓"),
               block("modal_show"),
               label("Create a modal (put this in the block above) ↓"),
@@ -3213,7 +3270,9 @@ export default function getToolbox(blockPacks = [], user) {
               block("fetch_responseData"),
               block("fetch_responseStatus"),
               block("fetch_responseHeaders"),
-              label("Get a key from the response data (from the objects category) ↓"),
+              label(
+                "Get a key from the response data (from the objects category) ↓",
+              ),
               {
                 kind: "block",
                 type: "object_getkey",
@@ -3719,24 +3778,27 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label(
-            `You have ${blockPacks.length} installed block pack${blockPacks.length === 0
-              ? "s. Go to the workshop page to discover and install new block packs."
-              : blockPacks.length === 1
-                ? ":"
-                : "s:"
+            `You have ${blockPacks.length} installed block pack${
+              blockPacks.length === 0
+                ? "s. Go to the workshop page to discover and install new block packs."
+                : blockPacks.length === 1
+                  ? ":"
+                  : "s:"
             }`,
           ),
-          ...blockPacks.map(pack =>
+          ...blockPacks.map((pack) =>
             label(
               `- ${pack.name} v${pack.versions[pack.versions.length - 1]?.version || "0.0.0"}`,
             ),
           ),
-          ...blockPacks.map(pack => ({
+          ...blockPacks.map((pack) => ({
             kind: "category",
             name: pack.name,
             colour: pack.color || "#014f98",
             contents: pack.versions[pack.versions.length - 1]?.blocks?.length
-              ? pack.versions[pack.versions.length - 1]?.blocks?.map(b => block(b.name))
+              ? pack.versions[pack.versions.length - 1]?.blocks?.map((b) =>
+                  block(b.name),
+                )
               : [],
           })),
         ],
@@ -3747,19 +3809,19 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label("Click BlockBuddy > Create to make new custom blocks"),
-          ...(user?.customBlocks || []).map(b => block(b.definition.type)),
+          ...(user?.customBlocks || []).map((b) => block(b.definition.type)),
         ],
       },
       ...(window.location.hostname === "localhost"
         ? [
-          sep(),
-          {
-            kind: "category",
-            name: "Testing",
-            colour: "#014f98",
-            contents: [block("my_custom_block")],
-          },
-        ]
+            sep(),
+            {
+              kind: "category",
+              name: "Testing",
+              colour: "#014f98",
+              contents: [block("my_custom_block")],
+            },
+          ]
         : []),
       /*{
       kind: 'category',

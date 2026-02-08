@@ -33,7 +33,7 @@ export default function WorkspaceBar({
     setSocket(
       io(hostUrl, {
         auth: { token: localStorage.getItem("disfuse-token") },
-      })
+      }),
     );
   }, []);
 
@@ -48,18 +48,18 @@ export default function WorkspaceBar({
     if (!active) {
       if (document.body.clientWidth <= 396) {
         document.querySelector(
-          ".workspace-navbar .content-container"
+          ".workspace-navbar .content-container",
         ).style.height = "45%";
       } else {
         document.querySelector(
-          ".workspace-navbar .content-container"
+          ".workspace-navbar .content-container",
         ).style.height = "30vh";
       }
 
       setActive(true);
     } else {
       document.querySelector(
-        ".workspace-navbar .content-container"
+        ".workspace-navbar .content-container",
       ).style.height = "0";
 
       setActive(false);
@@ -282,7 +282,7 @@ export default function WorkspaceBar({
                 <div>Invite</div>
                 <i className="fa-solid fa-share"></i>
               </button>
-              <button
+              {/* <button
                 className="host"
                 style={{
                   borderRadius: "1.5rem .25rem .25rem 1.5rem",
@@ -295,13 +295,15 @@ export default function WorkspaceBar({
                 )}
                 <div>Host</div>
                 <i className="fa-solid fa-server"></i>
-              </button>
+              </button> */}
               <button
                 className="export"
-                style={{
-                  borderRadius: ".25rem 1.5rem 1.5rem .25rem",
-                  marginLeft: "-.35vw",
-                }}
+                style={
+                  {
+                    // borderRadius: ".25rem 1.5rem 1.5rem .25rem",
+                    // marginLeft: "-.35vw",
+                  }
+                }
               >
                 <div>Export</div>
                 <i className="fa-solid fa-download"></i>
@@ -369,7 +371,7 @@ export default function WorkspaceBar({
                     authorization: localStorage.getItem("disfuse-token"),
                     "content-type": "application/json",
                   },
-                }
+                },
               );
 
               const reader = stream.body.getReader();
@@ -607,7 +609,7 @@ export default function WorkspaceBar({
               <p>Unavailable due to an issue</p>
             </div>
           </div>
-        </>
+        </>,
       ),
     }).then(() => localStorage.setItem("blockBuddy-discovered", true));
   }
@@ -696,7 +698,7 @@ export default function WorkspaceBar({
 function openWorkspaceTabs(workspace) {
   document.querySelector(".workspace-tabs").style.height = "5vh";
   document.querySelector(
-    ".workspace-navbar .workspace-tabs-open"
+    ".workspace-navbar .workspace-tabs-open",
   ).style.opacity = "0";
 
   Blockly.svgResize(workspace);

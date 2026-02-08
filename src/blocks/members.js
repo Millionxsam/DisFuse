@@ -12,7 +12,7 @@ Blockly.Blocks["member_getone"] = {
           ["username", "username"],
           ["id", "id"],
         ]),
-        "type"
+        "type",
       )
       .appendField("equal to");
     this.appendValueInput("server")
@@ -33,7 +33,7 @@ Blockly.Blocks["member_getuser"] = {
           ["username", "username"],
           ["id", "id"],
         ]),
-        "type"
+        "type",
       )
       .appendField("equal to");
     this.setOutput(true, "user");
@@ -239,10 +239,10 @@ Blockly.Blocks["member_userFlags"] = {
     this.setOutput(true, "Array");
     this.setColour("#3c9e56");
     this.setTooltip(
-      "Returns the flags of a user as a list/array (this includes the user's badges as well as other info"
+      "Returns the flags of a user as a list/array (this includes the user's badges as well as other info",
     );
     this.setHelpUrl(
-      "https://discord-api-types.dev/api/discord-api-types-v10/enum/UserFlags"
+      "https://discord-api-types.dev/api/discord-api-types-v10/enum/UserFlags",
     );
   },
 };
@@ -275,7 +275,7 @@ Blockly.Blocks["member_joined"] = {
           ["date", "joinedAt"],
           ["timestamp", "joinedTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of member:");
     this.setInputsInline(true);
@@ -315,6 +315,24 @@ Blockly.Blocks["member_username"] = {
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
   },
+};
+
+Blockly.Blocks["member_dmChannel"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("DM channel of user:");
+    this.setInputsInline(true);
+    this.setOutput(true, "channel");
+    this.setColour("#3c9e56");
+  },
+};
+
+javascriptGenerator.forBlock["member_dmChannel"] = function (block, generator) {
+  return [
+    `${generator.valueToCode(block, "member", Order.ATOMIC)}.dmChannel`,
+    Order.NONE,
+  ];
 };
 
 Blockly.Blocks["member_avatarURL"] = {
@@ -380,7 +398,7 @@ Blockly.Blocks["member_created"] = {
           ["date", "createdAt"],
           ["timestamp", "createdTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of user:");
     this.setInputsInline(true);
@@ -498,7 +516,7 @@ javascriptGenerator.forBlock["member_bannable"] = function (block, generator) {
 
 javascriptGenerator.forBlock["member_removetimeout"] = function (
   block,
-  generator
+  generator,
 ) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
@@ -608,7 +626,7 @@ Blockly.Blocks["member_hasPermission"] = {
 
 javascriptGenerator.forBlock["member_hasPermission"] = function (
   block,
-  generator
+  generator,
 ) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var permission = generator.valueToCode(block, "permission", Order.ATOMIC);
@@ -625,7 +643,7 @@ createRestrictions(
       blockTypes: ["user"],
       message: "You must specify a user or member",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -636,7 +654,7 @@ createRestrictions(
       blockTypes: ["member_foreach"],
       message: "This block must be under a 'For each member in server' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -647,7 +665,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to iterate member from.",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -678,7 +696,7 @@ createRestrictions(
       blockTypes: ["member"],
       message: "You must specify the user/member.",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -696,5 +714,5 @@ createRestrictions(
       check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
-  ]
+  ],
 );

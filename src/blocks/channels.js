@@ -52,7 +52,7 @@ createMutatorBlock({
 
 javascriptGenerator.forBlock["channel_send_mutator"] = function (
   block,
-  generator
+  generator,
 ) {
   const channel =
     generator.valueToCode(block, "channel", Order.ATOMIC) || "null";
@@ -89,6 +89,84 @@ Blockly.Blocks["channel_send"] = {
     this.setNextStatement(true, "default");
     this.setColour("#AD509B");
   },
+};
+
+Blockly.Blocks["channel_awaitResponses_filterMsg"] = {
+  init: function () {
+    this.appendDummyInput().appendField("message being checked");
+    this.setOutput(true, "message");
+    this.setNextStatement(false);
+    this.setPreviousStatement(false);
+    this.setColour("#AD509B");
+  },
+};
+
+javascriptGenerator.forBlock["channel_awaitResponses_filterMsg"] = function (
+  block,
+  generator,
+) {
+  return [`msg`, Order.NONE];
+};
+
+Blockly.Blocks["channel_responses"] = {
+  init: function () {
+    this.appendDummyInput().appendField("responses");
+    this.setOutput(true, "Array");
+    this.setNextStatement(false);
+    this.setPreviousStatement(false);
+    this.setColour("#AD509B");
+  },
+};
+
+javascriptGenerator.forBlock["channel_responses"] = function (
+  block,
+  generator,
+) {
+  return [`collected.toJSON()`, Order.NONE];
+};
+
+Blockly.Blocks["channel_waitForResponse"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Wait for responses");
+    this.appendValueInput("channel")
+      .appendField("in channel:")
+      .setCheck("channel");
+    this.appendValueInput("filter")
+      .appendField("accept messages if:")
+      .setCheck("Boolean");
+    this.appendValueInput("time")
+      .appendField("time (seconds):")
+      .setCheck("Number");
+    this.appendValueInput("max")
+      .appendField("max messages:")
+      .setCheck("Number");
+    this.appendStatementInput("then")
+      .appendField("when finished collecting:")
+      .setCheck("default");
+    this.appendStatementInput("noResponses")
+      .appendField("if no responses received:")
+      .setCheck("default");
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("#AD509B");
+  },
+};
+
+javascriptGenerator.forBlock["channel_waitForResponse"] = function (
+  block,
+  generator,
+) {
+  const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+
+  return `${channel}.awaitMessages({
+    filter: (msg) => ${generator.valueToCode(block, "filter", Order.NONE) || "true"},
+    time: ${generator.valueToCode(block, "time", Order.NONE)} * 1000,
+    max: ${generator.valueToCode(block, "max", Order.NONE) || "1"}
+  }).then(async collected => {
+    ${generator.statementToCode(block, "then")}
+  }).catch(() => {
+    ${generator.statementToCode(block, "noResponses")}
+    });`;
 };
 
 Blockly.Blocks["channel_send_rows"] = {
@@ -174,7 +252,7 @@ createRestrictions(
       check: (val) => 0 <= parseInt(val) && parseInt(val) <= 21600,
       message: "Slowmode must be between 0 and 21,600 seconds",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_setslowmode"] = {
@@ -218,7 +296,7 @@ createRestrictions(
       blockTypes: ["channel"],
       message: "You must specify the channel to set the topic of",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_syncPerms"] = {
@@ -273,7 +351,7 @@ Blockly.Blocks["channel_setautoarchive"] = {
           ["One week", "10080"],
           ["Three days", "4320"],
         ]),
-        "duration"
+        "duration",
       );
     this.appendValueInput("channel")
       .setCheck("channel")
@@ -300,7 +378,7 @@ createRestrictions(
       message:
         "You must specify the channel to set the auto archive duration of",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_getslowmode"] = {
@@ -361,7 +439,7 @@ Blockly.Blocks["channel_gettype"] = {
           ["Media channel", "16"],
           ["DM", "1"],
         ]),
-        "type"
+        "type",
       )
       .appendField("?");
     this.setOutput(true, "Boolean");
@@ -379,7 +457,7 @@ Blockly.Blocks["channel_getone"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "type"
+        "type",
       )
       .appendField("equal to");
     this.appendValueInput("server")
@@ -448,7 +526,7 @@ Blockly.Blocks["channel_created"] = {
           ["date", "createdAt"],
           ["timestamp", "createdTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of channel:");
     this.setInputsInline(true);
@@ -490,7 +568,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_setParent"] = {
@@ -513,7 +591,7 @@ Blockly.Blocks["channel_setParent"] = {
 
 javascriptGenerator.forBlock["channel_setParent"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var category = generator.valueToCode(block, "category", Order.NONE);
@@ -544,7 +622,7 @@ Blockly.Blocks["channel_setPosition"] = {
 
 javascriptGenerator.forBlock["channel_setPosition"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var position = generator.valueToCode(block, "position", Order.NONE);
@@ -578,7 +656,7 @@ Blockly.Blocks["channel_create"] = {
           ["text", "GuildText"],
           ["voice", "GuildVoice"],
         ]),
-        "type"
+        "type",
       );
     this.appendStatementInput("then").appendField("then:");
     this.setInputsInline(false);
@@ -598,7 +676,7 @@ Blockly.Blocks["channel_createdChannel"] = {
 
 javascriptGenerator.forBlock["channel_createdChannel"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `createdChannel`;
   return [code, Order.NONE];
@@ -649,7 +727,7 @@ createRestrictions(
       check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_setname"] = {
@@ -684,7 +762,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 javascriptGenerator.forBlock["channel_setname"] = function (block, generator) {
@@ -747,7 +825,7 @@ javascriptGenerator.forBlock["channel_name"] = function (block, generator) {
 
 javascriptGenerator.forBlock["channel_manageable"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
@@ -757,7 +835,7 @@ javascriptGenerator.forBlock["channel_manageable"] = function (
 
 javascriptGenerator.forBlock["channel_deletable"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
@@ -802,7 +880,7 @@ javascriptGenerator.forBlock["channel_getnsfw"] = function (block, generator) {
 
 javascriptGenerator.forBlock["channel_getParent"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
@@ -812,7 +890,7 @@ javascriptGenerator.forBlock["channel_getParent"] = function (
 
 javascriptGenerator.forBlock["channel_getslowmode"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
@@ -822,7 +900,7 @@ javascriptGenerator.forBlock["channel_getslowmode"] = function (
 
 javascriptGenerator.forBlock["channel_setautoarchive"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
@@ -834,7 +912,7 @@ javascriptGenerator.forBlock["channel_setautoarchive"] = function (
 
 javascriptGenerator.forBlock["channel_bulkdelete"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var amount = generator.valueToCode(block, "amount", Order.ATOMIC);
@@ -845,7 +923,7 @@ javascriptGenerator.forBlock["channel_bulkdelete"] = function (
 
 javascriptGenerator.forBlock["channel_starttyping"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var wait = generator.valueToCode(block, "wait", Order.ATOMIC);
@@ -864,7 +942,7 @@ javascriptGenerator.forBlock["channel_settopic"] = function (block, generator) {
 
 javascriptGenerator.forBlock["channel_syncPerms"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
 
@@ -874,7 +952,7 @@ javascriptGenerator.forBlock["channel_syncPerms"] = function (
 
 javascriptGenerator.forBlock["channel_setslowmode"] = function (
   block,
-  generator
+  generator,
 ) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var time = generator.valueToCode(block, "time", Order.ATOMIC);
@@ -900,7 +978,7 @@ javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
 
 javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
   block,
-  generator
+  generator,
 ) {
   var amount = generator.valueToCode(block, "amount", Order.ATOMIC);
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
@@ -916,7 +994,7 @@ javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
 
 javascriptGenerator.forBlock["channel_fetchedLastMessages"] = function (
   block,
-  generator
+  generator,
 ) {
   var number = generator.valueToCode(block, "number", Order.ATOMIC);
 
@@ -948,7 +1026,7 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
 
 javascriptGenerator.forBlock["channel_send_rows"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
@@ -966,6 +1044,17 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
 
   return code;
 };
+
+createRestrictions(
+  ["channel_waitForResponse"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel to wait for responses in",
+    },
+  ],
+);
 
 createRestrictions(
   ["channel_send", "channel_send_rows", "channel_send_mutator"],
@@ -1002,7 +1091,7 @@ createRestrictions(
               .find(
                 (b) =>
                   b.type === "embed_create" &&
-                  b.getFieldValue("name") === embedName.trim()
+                  b.getFieldValue("name") === embedName.trim(),
               )
           )
             pass = false;
@@ -1012,7 +1101,7 @@ createRestrictions(
       },
       message: "No embed with that name exists",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1034,7 +1123,7 @@ createRestrictions(
       check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1056,7 +1145,7 @@ createRestrictions(
       check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1084,7 +1173,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1096,7 +1185,30 @@ createRestrictions(
       message:
         "This block must be under a 'create channel' or 'clone channel' block",
     },
-  ]
+  ],
+);
+
+createRestrictions(
+  ["channel_responses"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["channel_waitForResponses"],
+      message: "This block must be under a 'wait for responses' block",
+    },
+  ],
+);
+
+createRestrictions(
+  ["channel_awaitResponses_filterMsg"],
+  [
+    {
+      type: "surroundParent",
+      blockTypes: ["channel_waitForResponses"],
+      message:
+        "This block must be under a 'wait for responses' block and inside the 'accept messages' input",
+    },
+  ],
 );
 
 createRestrictions(
@@ -1108,7 +1220,7 @@ createRestrictions(
       message:
         "This block must be under a 'get last messages of channel' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1119,7 +1231,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to iterate channels from.",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["channel_set_permission"] = {
@@ -1134,7 +1246,7 @@ Blockly.Blocks["channel_set_permission"] = {
           ["Allow", "allow"],
           ["Block", "block"],
         ]),
-        "action"
+        "action",
       );
     this.appendValueInput("channel")
       .setCheck("channel")
@@ -1147,14 +1259,14 @@ Blockly.Blocks["channel_set_permission"] = {
     this.setNextStatement(true, "default");
     this.setColour("#AD509B");
     this.setTooltip(
-      "Sets a permission for a role, everyone or a member on a channel."
+      "Sets a permission for a role, everyone or a member on a channel.",
     );
   },
 };
 
 javascriptGenerator.forBlock["channel_set_permission"] = function (
   block,
-  generator
+  generator,
 ) {
   const permission = generator.valueToCode(block, "permission", Order.NONE);
   const action = block.getFieldValue("action");
@@ -1179,7 +1291,7 @@ createRestrictions(
       blockTypes: ["channel"],
       message: "You must specify the channel",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -1200,5 +1312,5 @@ createRestrictions(
       blockTypes: ["role"],
       message: "You must specify the role, everyone or the member",
     },
-  ]
+  ],
 );
