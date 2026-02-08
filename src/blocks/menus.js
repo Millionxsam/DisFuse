@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import javascript, { Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { isValidEmoji } from "../functions/fixers";
 
 Blockly.Blocks["menus_add"] = {
   init: function () {
@@ -499,20 +500,20 @@ javascript.javascriptGenerator.forBlock["menus_addoption"] = function (
   block,
   generator
 ) {
-  var label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
-  var dsc = generator.valueToCode(block, "dsc", javascript.Order.ATOMIC);
-  var emoji = generator.valueToCode(block, "emoji", javascript.Order.ATOMIC);
-  var selected = generator.valueToCode(
+  const label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
+  const dsc = generator.valueToCode(block, "dsc", javascript.Order.ATOMIC);
+  const emoji = generator.valueToCode(block, "emoji", javascript.Order.ATOMIC);
+  const selected = generator.valueToCode(
     block,
     "default",
     javascript.Order.ATOMIC
   );
-  var value = generator.valueToCode(block, "value", javascript.Order.ATOMIC);
+  const value = generator.valueToCode(block, "value", javascript.Order.ATOMIC);
 
-  var code = `{
+  const code = `{
     label: ${label || "''"},
     description: ${dsc || "''"},
-    emoji: ${emoji || "''"},
+    ${isValidEmoji(emoji) ? `emoji: ${emoji},` : ""}
     default: ${selected || "false"},
     value: ${value || "''"}
   },\n`;

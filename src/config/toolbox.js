@@ -3719,12 +3719,11 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label(
-            `You have ${blockPacks.length} installed block pack${
-              blockPacks.length === 0
-                ? "s. Go to the workshop page to discover and install new block packs."
-                : blockPacks.length === 1
-                  ? ":"
-                  : "s:"
+            `You have ${blockPacks.length} installed block pack${blockPacks.length === 0
+              ? "s. Go to the workshop page to discover and install new block packs."
+              : blockPacks.length === 1
+                ? ":"
+                : "s:"
             }`,
           ),
           ...blockPacks.map(pack =>
@@ -3737,9 +3736,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: pack.name,
             colour: pack.color || "#014f98",
             contents: pack.versions[pack.versions.length - 1]?.blocks?.length
-              ? pack.versions[pack.versions.length - 1]?.blocks?.map(block =>
-                  block(block.name),
-                )
+              ? pack.versions[pack.versions.length - 1]?.blocks?.map(b => block(b.name))
               : [],
           })),
         ],
@@ -3750,19 +3747,19 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label("Click BlockBuddy > Create to make new custom blocks"),
-          ...(user?.customBlocks || []).map(block => block(block.definition.type)),
+          ...(user?.customBlocks || []).map(b => block(b.definition.type)),
         ],
       },
       ...(window.location.hostname === "localhost"
         ? [
-            sep(),
-            {
-              kind: "category",
-              name: "Testing",
-              colour: "#014f98",
-              contents: [block("my_custom_block")],
-            },
-          ]
+          sep(),
+          {
+            kind: "category",
+            name: "Testing",
+            colour: "#014f98",
+            contents: [block("my_custom_block")],
+          },
+        ]
         : []),
       /*{
       kind: 'category',

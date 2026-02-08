@@ -44,8 +44,8 @@ export default function InviteModal({ project, onSave }) {
             list="usernames"
           />
           <datalist id="usernames">
-            {allUsers.map((i) => (
-              <option value={i.username} />
+            {allUsers.map((i, idx) => (
+              <option key={idx} value={i.username} />
             ))}
           </datalist>
           <button onClick={addUser}>Add</button>
