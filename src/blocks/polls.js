@@ -45,7 +45,7 @@ createRestrictions(
       check: (val) => 0 <= parseInt(val) && parseInt(val) <= 336,
       message: "Duration must be between 0 and 336 hours (2 weeks)",
     },
-  ]
+  ],
 );
 
 javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
@@ -55,7 +55,7 @@ javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
   var value_multiselect = generator.valueToCode(
     block,
     "MULTISELECT",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
   var statements_choices = generator.statementToCode(block, "CHOICES");
 
@@ -98,7 +98,7 @@ createRestrictions(
       check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
       message: "Emoji must be a single valid emoji",
     },
-  ]
+  ],
 );
 
 javascriptGenerator.forBlock["poll_choice"] = function (block, generator) {
@@ -136,7 +136,7 @@ javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
   var value_message =
     generator.valueToCode(block, "MESSAGE", Order.ATOMIC) || "";
 
-  return `${value_channel}.send({
+  return `await ${value_channel}.send({
   content: ${value_message || "''"},
   poll: PollCreator${text_name}
 });\n`;
@@ -151,7 +151,7 @@ createRestrictions(
       check: (val) => val.length <= 2000,
       message: "Text cannot be greater than 2,000 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["poll_whenvoteadded"] = {
@@ -160,14 +160,14 @@ Blockly.Blocks["poll_whenvoteadded"] = {
     this.appendStatementInput("CODE").setCheck("default");
     this.setColour("#656b75");
     this.setTooltip(
-      "Runs the code inside when a vote is added to any poll the bot can access to."
+      "Runs the code inside when a vote is added to any poll the bot can access to.",
     );
   },
 };
 
 javascriptGenerator.forBlock["poll_whenvoteadded"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = generator.statementToCode(block, "CODE");
 
@@ -231,5 +231,5 @@ createRestrictions(
       message:
         "This block must be in the 'When a vote is added to a poll' event",
     },
-  ]
+  ],
 );

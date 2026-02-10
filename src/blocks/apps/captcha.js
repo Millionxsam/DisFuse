@@ -105,14 +105,14 @@ createMutatorBlock({
 
 javascriptGenerator.forBlock["captcha_create_mutator"] = function (
   block,
-  generator
+  generator,
 ) {
   const width = generator.valueToCode(block, "width", Order.NONE);
   const height = generator.valueToCode(block, "height", Order.NONE);
   const backgroundColor = generator.valueToCode(
     block,
     "backgroundcolor",
-    Order.NONE
+    Order.NONE,
   );
   const textColor = generator.valueToCode(block, "textcolor", Order.NONE);
   const font = generator.valueToCode(block, "font", Order.NONE);
@@ -138,7 +138,7 @@ javascriptGenerator.forBlock["captcha_create_mutator"] = function (
   ].filter(Boolean);
 
   return `let captcha = new Captcha(${
-    options.length !== 0 ? '{' + options.join(',\n  ') + '}' : ''
+    options.length !== 0 ? "{" + options.join(",\n  ") + "}" : ""
   }).generate('image/png');\n`;
 };
 
@@ -181,7 +181,7 @@ javascriptGenerator.forBlock["captcha_send"] = function (block, generator) {
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  const code = `${channel}.send({
+  const code = `await ${channel}.send({
   files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
@@ -248,7 +248,7 @@ Blockly.Blocks["captcha_replyInteraction"] = {
 
 javascriptGenerator.forBlock["captcha_replyInteraction"] = function (
   block,
-  generator
+  generator,
 ) {
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
@@ -279,7 +279,7 @@ createRestrictions(
       ],
       message: "This must be under a interaction event",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["captcha_value"] = {
@@ -304,7 +304,7 @@ createRestrictions(
       blockTypes: ["captcha_create", "captcha_create_mutator"],
       message: 'This block must be used AFTER a "Create new captcha" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -315,7 +315,7 @@ createRestrictions(
       blockTypes: ["channel"],
       message: "You must specify the channel to send the captcha in",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -326,5 +326,5 @@ createRestrictions(
       blockTypes: ["message"],
       message: "You must specify the message to reply with the captcha",
     },
-  ]
+  ],
 );

@@ -69,7 +69,7 @@ javascriptGenerator.forBlock["channel_send_mutator"] = function (
   if (files) options.push(`files: [\n${files}]`);
   if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
 
-  return `${channel}.send({
+  return `await ${channel}.send({
   ${options.join(",\n  ")}
 })${thenCode}`;
 };
@@ -928,7 +928,7 @@ javascriptGenerator.forBlock["channel_starttyping"] = function (
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var wait = generator.valueToCode(block, "wait", Order.ATOMIC);
 
-  var code = `${channel}.sendTyping();\nwait(${wait} * 1000);`;
+  var code = `await ${channel}.sendTyping();\nwait(${wait} * 1000);`;
   return code;
 };
 
@@ -1016,7 +1016,7 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var then = generator.statementToCode(block, "then");
 
-  var code = `${value_channel}.send({
+  var code = `await ${value_channel}.send({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}]
 }).then((messageSent) => {
@@ -1034,7 +1034,7 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
   var rows = generator.statementToCode(block, "rows");
   var then = generator.statementToCode(block, "then");
 
-  var code = `${value_channel}.send({
+  var code = `await ${value_channel}.send({
   content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   components: [

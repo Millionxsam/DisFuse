@@ -47,7 +47,7 @@ Blockly.Blocks["fs_writeFile"] = {
     this.setNextStatement(true, "default");
     this.setColour("#eb8334");
     this.setTooltip(
-      "Overwrites the data of a file. If the file doesn't exist, it creates one."
+      "Overwrites the data of a file. If the file doesn't exist, it creates one.",
     );
   },
 };
@@ -189,7 +189,7 @@ javascriptGenerator.forBlock["fs_sendFile"] = function (block, generator) {
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `${channel}.send({
+  var code = `await ${channel}.send({
   files: [new Discord.AttachmentBuilder(${path})],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
@@ -215,7 +215,7 @@ createRestrictions(
       blockTypes: ["path"],
       message: "You must specify a valid path",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -226,7 +226,7 @@ createRestrictions(
       blockTypes: ["newpath"],
       message: "You must specify the new path for the file",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -237,7 +237,7 @@ createRestrictions(
       blockTypes: ["channel"],
       message: "You must specify the channel to send the file in",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -248,7 +248,7 @@ createRestrictions(
       blockTypes: ["data"],
       message: "You must specify the data to write",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -259,7 +259,7 @@ createRestrictions(
       blockTypes: ["fs_readdir"],
       message: 'This block must be inside a "For each file at path" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -270,5 +270,5 @@ createRestrictions(
       blockTypes: ["fs_readFile"],
       message: 'This block must be inside a "Read file from path" block',
     },
-  ]
+  ],
 );

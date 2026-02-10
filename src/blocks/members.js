@@ -137,7 +137,7 @@ javascriptGenerator.forBlock["member_dm_rows"] = function (block, generator) {
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `${user}.send({
+  var code = `await ${user}.send({
     content: ${content || "''"},
     embeds: [${embeds.replaceAll("'", "")}],
     components: [${rows}]
@@ -539,7 +539,7 @@ javascriptGenerator.forBlock["member_dm"] = function (block, generator) {
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
 
-  var code = `${user}.send({
+  var code = `await ${user}.send({
     content: ${content || "''"},
     embeds: [${embeds.replaceAll("'", "")}]
   });`;
