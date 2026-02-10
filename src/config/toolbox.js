@@ -1278,11 +1278,10 @@ export default function getToolbox(blockPacks = [], user) {
               },
               label("Events ↓"),
               block("msg_received"),
+              block("message_author_not_bot"),
               block("msg_msg"),
               label("Information about a message ↓"),
-              {
-                kind: "block",
-                type: "message_property",
+              block("message_property", {
                 inputs: {
                   message: {
                     shadow: {
@@ -1290,7 +1289,31 @@ export default function getToolbox(blockPacks = [], user) {
                     },
                   },
                 },
-              },
+              }),
+              block("message_property", {
+                inputs: {
+                  message: {
+                    shadow: {
+                      type: "msg_msg",
+                    },
+                  },
+                },
+                fields: {
+                  property: "author",
+                }
+              }),
+              block("message_property", {
+                inputs: {
+                  message: {
+                    shadow: {
+                      type: "msg_msg",
+                    },
+                  },
+                },
+                fields: {
+                  property: "channel",
+                }
+              }),
               label("Actions ↓"),
               {
                 kind: "block",
