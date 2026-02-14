@@ -363,7 +363,7 @@ javascriptGenerator.forBlock["msg_edit"] = function (block, generator) {
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  return `${message}.edit({
+  return `await (${message}).edit({
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
   components: [
