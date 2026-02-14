@@ -605,7 +605,7 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
   var code = `${value_server}.members.cache${
     dropdown_type === "id"
       ? `.get(${value_value})`
-      : `.find(m => m.username == ${value_value})`
+      : `.find(m => m.user.username == ${value_value})`
   }`;
   return [code, Order.NONE];
 };
