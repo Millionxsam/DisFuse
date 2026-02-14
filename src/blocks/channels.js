@@ -163,10 +163,12 @@ javascriptGenerator.forBlock["channel_waitForResponse"] = function (
     time: ${generator.valueToCode(block, "time", Order.NONE)} * 1000,
     max: ${generator.valueToCode(block, "max", Order.NONE) || "1"}
   }).then(async collected => {
-    ${generator.statementToCode(block, "then")}
-  }).catch(async () => {
-    ${generator.statementToCode(block, "noResponses")}
-    });`;
+    if (collected.size === 0) {
+      ${generator.statementToCode(block, "noResponses")}
+    } else {
+      ${generator.statementToCode(block, "then")}
+    }
+  });`;
 };
 
 Blockly.Blocks["channel_send_rows"] = {
