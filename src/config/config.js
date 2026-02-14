@@ -2,7 +2,7 @@ export const discordUrl = "https://discord.com/api/v6";
 export const apiUrl =
   window.location.hostname === "localhost"
     ? "http://localhost:80"
-    : "https://api.disfuse.xyz";
+    : "https://disfuse-api.onrender.com";
 export const hostUrl =
   window.location.hostname === "localhost"
     ? "http://localhost:30"
