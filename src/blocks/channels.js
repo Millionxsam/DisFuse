@@ -164,7 +164,7 @@ javascriptGenerator.forBlock["channel_waitForResponse"] = function (
     max: ${generator.valueToCode(block, "max", Order.NONE) || "1"}
   }).then(async collected => {
     ${generator.statementToCode(block, "then")}
-  }).catch(() => {
+  }).catch(async () => {
     ${generator.statementToCode(block, "noResponses")}
     });`;
 };
