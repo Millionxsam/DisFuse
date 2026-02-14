@@ -111,6 +111,7 @@ export default function ViewProject() {
           project.workspaces?.length > 0 &&
           project.workspaces[0].data?.length > 0
         )
+        console.log(JSON.parse(project.workspaces[0].data))
           Blockly.serialization.workspaces.load(
             JSON.parse(project.workspaces[0].data),
             workspace

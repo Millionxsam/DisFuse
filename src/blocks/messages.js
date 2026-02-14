@@ -32,8 +32,15 @@ Blockly.Blocks["msg_received"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
-    ;
-    
+  },
+};
+
+Blockly.Blocks["message_author_not_bot"] = {
+  init: function () {
+    this.appendDummyInput().appendField("When a message is received from a human");
+    this.appendStatementInput("name").setCheck("default");
+    this.setInputsInline(false);
+    this.setColour("#336EFF");
   },
 };
 
@@ -262,13 +269,19 @@ javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
-  var codeState = generator.statementToCode(block, "event");
-
-  var code = `client.on("messageCreate", async (message) => {
+  const codeState = generator.statementToCode(block, "event");
+  const code = `client.on("messageCreate", async (message) => {
 ${codeState}});\n`;
-
   return code;
 };
+
+javascriptGenerator.forBlock["message_author_not_bot"] = function (block, generator) {
+  const codeState = generator.statementToCode(block, "name");
+  const code = `client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;
+${codeState}});\n`;
+  return code;
+}
 
 javascriptGenerator.forBlock["msg_msg"] = function (block, generator) {
   var code = "message";
@@ -420,7 +433,7 @@ Blockly.Blocks["message_property"] = {
         ]),
         "property"
       )
-      .appendField("of message");
+      .appendField("of");
     this.setColour("336EFF");
     this.setOutput(true, null);
     this.setOnChange(function () {
@@ -485,7 +498,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["msg_received"],
+      blockTypes: ["msg_received", "message_author_not_bot"],
       message: 'This block must be in a "When a message is received" event',
     },
   ]
@@ -496,7 +509,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["msg_received"],
+      blockTypes: ["msg_received", "message_author_not_bot"],
       message: 'This block must be in a "When a message is received" event',
     },
     {
