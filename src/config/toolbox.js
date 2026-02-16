@@ -1300,7 +1300,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
                 fields: {
                   property: "author",
-                }
+                },
               }),
               block("message_property", {
                 inputs: {
@@ -1312,7 +1312,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
                 fields: {
                   property: "channel",
-                }
+                },
               }),
               label("Actions ↓"),
               {
@@ -2091,6 +2091,10 @@ export default function getToolbox(blockPacks = [], user) {
               block("invite_url"),
               block("invite_channel"),
               block("invite_author"),
+              block("invite_created"),
+              block("invite_expiration"),
+              block("invite_temporary"),
+              block("invite_uses"),
               label("Loops ↓"),
               block("invite_foreach"),
               block("invite_channel_foreach"),

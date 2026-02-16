@@ -13,7 +13,7 @@ export function updateCode(
   workspace,
   project,
   workspaceId,
-  onlyWarning = false
+  onlyWarning = false,
 ) {
   javascriptGenerator.init(workspace);
 
@@ -23,27 +23,26 @@ export function updateCode(
   const tempWorkspace = getWholeProjectWorkspace(
     project,
     workspace,
-    workspaceId
+    workspaceId,
   );
 
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
-  if (!onlyWarning) projectCode = setUpCode(project, tempWorkspace, projectBlocks);
+  if (!onlyWarning)
+    projectCode = setUpCode(project, tempWorkspace, projectBlocks);
 
   var currentBlocks = workspace.getAllBlocks(true);
   workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);
 
   if (!onlyWarning) {
-    workspaceCodeEle.innerHTML =
-      hljs.highlight(workspaceCode, {
-        language: "javascript",
-      }).value;
+    workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
+      language: "javascript",
+    }).value;
 
-    projectCodeEle.innerHTML =
-      hljs.highlight(projectCode, {
-        language: "javascript",
-      }).value;
+    projectCodeEle.innerHTML = hljs.highlight(projectCode, {
+      language: "javascript",
+    }).value;
   }
 
   tempWorkspace.dispose();
@@ -74,7 +73,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     if (
       // eslint-disable-next-line no-useless-escape
       /[A-Za-z0-9_\-]{24}\.[A-Za-z0-9_\-]{6}\.[A-Za-z0-9_\-]{27}/.test(
-        tokenCode
+        tokenCode,
       )
     ) {
       Swal.fire({
@@ -128,7 +127,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     .map((value) =>
       value.code
         ? value.code
-        : `const ${fixPackageName(value)} = require("${value}");`
+        : `const ${fixPackageName(value)} = require("${value}");`,
     )
     .join("\n");
 
@@ -157,12 +156,8 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
       console.error(e);
     });
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""}
-    ${topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""} 
-    ${
-      blockImportCode.includes("const discord_logs =")
-        ? "\ndiscord_logs(client);"
-        : ""
-    }
+    ${topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""}
+    
     client.setMaxListeners(0);
         
     client.on("ready", async () => {
@@ -180,7 +175,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
 export function getWholeProjectWorkspace(
   project,
   currentWorkspace,
-  workspaceId
+  workspaceId,
 ) {
   javascriptGenerator.init(currentWorkspace);
 
