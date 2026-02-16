@@ -66,7 +66,7 @@ Blockly.Blocks["events_guild_memberAdd"] = {
   init: function () {
     this.appendDummyInput().appendField("When a member joins a server");
     this.setColour("#FF4F4F");
-    this.appendStatementInput("actions").setCheck(null);
+    this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(false);
     this.setNextStatement(false);
   },
@@ -76,7 +76,7 @@ javascriptGenerator.forBlock["events_guild_memberAdd"] = function (
   block,
   generator,
 ) {
-  const actions = generator.statementToCode(block, "actions");
+  const actions = generator.statementToCode(block, "code");
   const code = `tracker.on("guildMemberAdd", async (...guildMemberAdded) => {${actions}});`;
 
   return code;
