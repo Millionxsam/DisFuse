@@ -3030,6 +3030,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("events_guild_memberAdd"),
               block("events_guild_memberAdd_member"),
               block("events_guild_memberAdd_server"),
+              block("events_guild_memberAdd_invite"),
               label("------------------------------------------------"),
               block("events_remove_guildmemberremove"),
               block("events_remove_guildmemberremove_member"),
