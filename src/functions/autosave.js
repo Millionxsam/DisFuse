@@ -9,7 +9,7 @@ export default async function autosave(
   currentWorkspace,
   socket,
   event,
-  autosaveLabel
+  autosaveLabel,
 ) {
   console.log("Autosaving...");
 
@@ -36,7 +36,7 @@ export default async function autosave(
               <br />
               ${response.reason}`,
               footer:
-                '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+                '<a rel="noopener" target="_blank" href="https://discord.gg/Xwx4zkQcmJ">Join our Discord for support</a>',
               showConfirmButton: false,
               allowEscapeKey: false,
               allowOutsideClick: false,
@@ -45,7 +45,7 @@ export default async function autosave(
 
           if (autosaveLabel) {
             const autosaveIndicator = document.querySelector(
-              ".workspace-navbar #autosave-indicator"
+              ".workspace-navbar #autosave-indicator",
             );
 
             autosaveIndicator.style.display = "flex";
@@ -56,7 +56,7 @@ export default async function autosave(
 
           console.log("Autosaved");
           resolve(response);
-        }
+        },
       );
     } catch (err) {
       reject(err);

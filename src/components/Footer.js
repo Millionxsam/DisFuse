@@ -53,7 +53,11 @@ export default function Footer() {
         <h2>Links</h2>
         <ul>
           <li>
-            <a target="_blank" rel="noreferrer" href="https://dsc.gg/disfuse">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://discord.gg/Xwx4zkQcmJ"
+            >
               Discord Server
             </a>
           </li>

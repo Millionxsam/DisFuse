@@ -277,8 +277,8 @@ export default function tos() {
         <li>
           <strong>11b.</strong> To request deletion of your data, submit an
           appeal for your account suspension, or any other account issues, join
-          our <a href="https://dsc.gg/disfuse">Discord server</a>, and create a
-          ticket in the #tickets channel.
+          our <a href="https://discord.gg/Xwx4zkQcmJ">Discord server</a>, and
+          create a ticket in the #tickets channel.
         </li>
       </ul>
       <hr />
@@ -333,7 +333,7 @@ export default function tos() {
       </p>
       <ul>
         <li>
-          Joining our <a href="https://dsc.gg/disfuse">Discord server</a>
+          Joining our <a href="https://discord.gg/Xwx4zkQcmJ">Discord server</a>
         </li>
         <li>
           Directly messaging{" "}

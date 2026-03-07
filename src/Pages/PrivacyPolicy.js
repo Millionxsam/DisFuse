@@ -212,8 +212,8 @@ export default function PrivacyPolicy() {
       </ul>
       <p>
         To request deletion of your data, join our{" "}
-        <a href="https://dsc.gg/disfuse">Discord server</a>, and create a ticket
-        in the #tickets channel.
+        <a href="https://discord.gg/Xwx4zkQcmJ">Discord server</a>, and create a
+        ticket in the #tickets channel.
       </p>
       <hr />
 
@@ -235,8 +235,8 @@ export default function PrivacyPolicy() {
       </ul>
       <p>
         To exercise these rights, join our{" "}
-        <a href="https://dsc.gg/disfuse">Discord server</a>, and create a ticket
-        in the #tickets channel.
+        <a href="https://discord.gg/Xwx4zkQcmJ">Discord server</a>, and create a
+        ticket in the #tickets channel.
       </p>
       <hr />
 
@@ -268,7 +268,7 @@ export default function PrivacyPolicy() {
       <p>You can contact us by:</p>
       <ul>
         <li>
-          Joining our <a href="https://dsc.gg/disfuse">Discord server</a>
+          Joining our <a href="https://discord.gg/Xwx4zkQcmJ">Discord server</a>
         </li>
         <li>
           Directly messaging{" "}

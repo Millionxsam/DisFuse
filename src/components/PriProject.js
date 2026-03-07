@@ -80,7 +80,10 @@ export default function PriProject({
             Open
           </button>
           {project?.owner?.id === userCache.user.id && (
-            <button onClick={() => deleteProject(project, onDelete)} className="red">
+            <button
+              onClick={() => deleteProject(project, onDelete)}
+              className="red"
+            >
               <i className="fa-solid fa-trash"></i>
               Delete
             </button>
@@ -160,7 +163,7 @@ function editProject(project) {
     if (!editChoice.isConfirmed || editChoice.value?.length < 1) return;
 
     const sequence = ["name", "description", "visibility"].filter((i) =>
-      editChoice.value.includes(i)
+      editChoice.value.includes(i),
     );
     const steps = sequence.map((_, i) => (i + 1).toString());
 
@@ -254,7 +257,7 @@ function editProject(project) {
           headers: {
             Authorization: token,
           },
-        }
+        },
       )
       .then(() => window.location.reload());
   })();
@@ -272,7 +275,7 @@ function openSuspendedReason(project) {
       <br />
       ${project.suspension.reason}`,
     footer:
-      '<a rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+      '<a rel="noopener" target="_blank" href="https://discord.gg/Xwx4zkQcmJ">Join our Discord for support</a>',
     showConfirmButton: true,
     allowEscapeKey: false,
     allowOutsideClick: false,

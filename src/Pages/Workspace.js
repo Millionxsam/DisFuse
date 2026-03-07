@@ -157,7 +157,7 @@ export default function Workspace() {
                       Reason: ${project.status?.reason || "None"}
                       `,
                       showConfirmButton: true,
-                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
+                      footer: `<a href="https://discord.gg/Xwx4zkQcmJ" target="_blank" rel="noopener">Join our Discord for support</a>`,
                       allowEscapeKey: false,
                       allowOutsideClick: false,
                       ...modalThemeColor(userCache.user),
@@ -362,7 +362,7 @@ export default function Workspace() {
                       Reason: ${project.status?.reason || "None"}
                       `,
                       showConfirmButton: true,
-                      footer: `<a href="https://dsc.gg/disfuse" target="_blank" rel="noopener">Join our Discord for support</a>`,
+                      footer: `<a href="https://discord.gg/Xwx4zkQcmJ" target="_blank" rel="noopener">Join our Discord for support</a>`,
                       allowEscapeKey: false,
                       allowOutsideClick: false,
                       ...modalThemeColor(userCache.user),
@@ -515,7 +515,7 @@ export default function Workspace() {
                       text: "Part of your project is corrupt and cannot be loaded. This can be because one of your installed block packs is corrupt or your project is trying to load blocks that don't exist. Please join our Discord server and create a post in the support channel to fix this issue.",
                       icon: "error",
                       footer:
-                        '<a target="_blank" rel="noopener" style="color: lightblue" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+                        '<a target="_blank" rel="noopener" style="color: lightblue" href="https://discord.gg/Xwx4zkQcmJ">Join our Discord for support</a>',
                       showCancelButton: false,
                       showConfirmButton: false,
                       allowEscapeKey: false,
@@ -861,7 +861,7 @@ export default function Workspace() {
                           workspace: "Export current workspace",
                         },
                         showCancelButton: false,
-                        html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://dsc.gg/disfuse">Discord server</a> for help',
+                        html: 'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://discord.gg/Xwx4zkQcmJ">Discord server</a> for help',
                         ...modalColors,
                       }).then(async (result) => {
                         if (!result.isConfirmed) return;
@@ -1062,7 +1062,7 @@ export default function Workspace() {
                       <p>Welcome! Here are some useful links to help you use DisFuse:</p>
                       <a href="https://docs.disfuse.xyz" target="_blank">📘 DisFuse Documentation</a><br>
                       <a href="https://www.youtube.com/watch?v=OOrapVifGoE" target="_blank">▶️ DisFuse's YouTube Channel</a><br>
-                      <a href="https://dsc.gg/disfuse" target="_blank">💬 Join the Discord Server</a>`,
+                      <a href="https://discord.gg/Xwx4zkQcmJ" target="_blank">💬 Join the Discord Server</a>`,
                       ...modalColors,
                     }).then(() => {
                       localStorage.setItem("isNew", "true");

@@ -15,7 +15,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       acc[dep] = "latest";
       return acc;
     },
-    {}
+    {},
   );
 
   return [
@@ -24,7 +24,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       content: `
       These are the instructions about what to do after you export your project from DisFuse.
       If you need help with anything about DisFuse, including these instructions, want to share your code, get important updates, or just want to be a part of the community, make sure to join our Discord server!
-      https://dsc.gg/disfuse
+      https://discord.gg/Xwx4zkQcmJ
       
       Explanation of files:
       After you extracted this folder, you should see the following files:

@@ -1,7 +1,7 @@
 # [DisFuse](https://disfuse.xyz)
 
 [![Static Badge](https://img.shields.io/badge/DisFuse-Website-blue)](https://disfuse.xyz)
-[![Discord](https://img.shields.io/discord/1232427191099457626?style=flat&logo=discord&label=Discord&labelColor=gray&color=blue)](https://dsc.gg/disfuse)
+[![Discord](https://img.shields.io/discord/1232427191099457626?style=flat&logo=discord&label=Discord&labelColor=gray&color=blue)](https://discord.gg/Xwx4zkQcmJ)
 [![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ![DisFuse](https://github.com/user-attachments/assets/71f0b5f8-faf3-4194-b0bd-ceacb5fb62a5)
@@ -41,7 +41,7 @@ Coming soon: guide on how to contribute to DisFuse and become a developer.
 
 If you need any help, want to ask questions about the website, want to show off your creations, or just want to be part of the community, make sure to join our Discord server!
 
-[![Discord Banner 1](https://discord.com/api/guilds/1232427191099457626/widget.png?style=banner2)](https://dsc.gg/disfuse)
+[![Discord Banner 1](https://discord.com/api/guilds/1232427191099457626/widget.png?style=banner2)](https://discord.gg/Xwx4zkQcmJ)
 
 ## License
 

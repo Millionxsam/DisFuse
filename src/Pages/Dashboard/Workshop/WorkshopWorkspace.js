@@ -103,7 +103,7 @@ export default function WorkshopWorkspace() {
                           minScale: 0.3,
                           scaleSpeed: 1.2,
                         },
-                      }
+                      },
                     );
 
                     setWorkspace(workspace);
@@ -111,7 +111,7 @@ export default function WorkshopWorkspace() {
                     if (pack.data?.length)
                       Blockly.serialization.workspaces.load(
                         JSON.parse(pack.data),
-                        workspace
+                        workspace,
                       );
 
                     const modalColors = modalThemeColor(user);
@@ -126,8 +126,8 @@ export default function WorkshopWorkspace() {
                       }).then(() =>
                         localStorage.setItem(
                           "workshopOnboardingCompleted",
-                          true
-                        )
+                          true,
+                        ),
                       );
                     }
 
@@ -148,7 +148,7 @@ export default function WorkshopWorkspace() {
                         .getAllBlocks(false)
                         .filter((b) => b.type === "main_blockcreator")
                         .map((b) =>
-                          JSON.parse(javascriptGenerator.blockToCode(b))
+                          JSON.parse(javascriptGenerator.blockToCode(b)),
                         );
 
                       setBlocks(blockList);
@@ -157,7 +157,7 @@ export default function WorkshopWorkspace() {
                         apiUrl + `/workshop/${packId}/data`,
                         {
                           data: JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace)
+                            Blockly.serialization.workspaces.save(workspace),
                           ),
                         },
                         {
@@ -165,7 +165,7 @@ export default function WorkshopWorkspace() {
                             Authorization:
                               localStorage.getItem("disfuse-token"),
                           },
-                        }
+                        },
                       );
                     });
                   });
@@ -198,7 +198,7 @@ export default function WorkshopWorkspace() {
                 Last published
                 {" " +
                   new Date(
-                    pack.versions[pack.versions.length - 1]?.releaseDate || 0
+                    pack.versions[pack.versions.length - 1]?.releaseDate || 0,
                   ).toLocaleString([], {
                     dateStyle: "long",
                     timeStyle: "short",
@@ -223,7 +223,7 @@ export default function WorkshopWorkspace() {
               !blocks.length ||
               arraysAreEqual(
                 blocks,
-                pack.versions[pack.versions.length - 1]?.blocks || []
+                pack.versions[pack.versions.length - 1]?.blocks || [],
               )
                 ? "disabled"
                 : ""
@@ -286,7 +286,7 @@ export default function WorkshopWorkspace() {
               defaultValue={pack.color}
             />
           </div>
-        </div>
+        </div>,
       ),
       confirmButtonText: "Save",
       showCancelButton: true,
@@ -317,7 +317,7 @@ export default function WorkshopWorkspace() {
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setPack(res.data);
@@ -354,7 +354,7 @@ export default function WorkshopWorkspace() {
     if (
       arraysAreEqual(
         blocks,
-        pack.versions[pack.versions.length - 1]?.blocks || []
+        pack.versions[pack.versions.length - 1]?.blocks || [],
       )
     )
       return;
@@ -408,7 +408,7 @@ export default function WorkshopWorkspace() {
                   rows="4"
                 ></textarea>
               </div>
-            </>
+            </>,
           );
         }
       },
@@ -428,14 +428,14 @@ export default function WorkshopWorkspace() {
           parseInt(version.replaceAll(".", ""))
         ) {
           Swal.showValidationMessage(
-            "The new version must be higher than the current version"
+            "The new version must be higher than the current version",
           );
           return false;
         }
 
         if (changelog.length < 10) {
           Swal.showValidationMessage(
-            "The changelog must be at least 10 characters long"
+            "The changelog must be at least 10 characters long",
           );
           return false;
         }
@@ -456,7 +456,7 @@ export default function WorkshopWorkspace() {
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setPack(res.data);
@@ -478,7 +478,7 @@ export default function WorkshopWorkspace() {
               icon: "error",
               title: "Errors Found",
               footer:
-                '<a target="_blank" rel="noopener" style="color: lightblue" href="https://dsc.gg/disfuse">Join our Discord for support</a>',
+                '<a target="_blank" rel="noopener" style="color: lightblue" href="https://discord.gg/Xwx4zkQcmJ">Join our Discord for support</a>',
               html: `There were problems publishing your pack:
             <br />
             <br />
