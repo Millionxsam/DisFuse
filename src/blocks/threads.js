@@ -4,7 +4,7 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["threads_msgCreateThread"] = {
   init: function () {
-    this.appendDummyInput().appendField("Start a thread");
+    this.appendDummyInput().appendField("start a thread");
     this.appendValueInput("message")
       .setCheck("message")
       .appendField("in the message:");
@@ -55,7 +55,7 @@ javascriptGenerator.forBlock["threads_msgCreateThread"] = function (
 
 Blockly.Blocks["threads_channelCreateThread"] = {
   init: function () {
-    this.appendDummyInput().appendField("Start a thread");
+    this.appendDummyInput().appendField("start a thread");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in the channel:");
@@ -174,7 +174,7 @@ Blockly.Blocks["threads_setLocked"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Set locked status of thread:");
+      .appendField("set locked status of thread:");
     this.appendValueInput("locked").setCheck("Boolean").appendField("to:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
@@ -196,7 +196,7 @@ Blockly.Blocks["threads_setName"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Rename thread:");
+      .appendField("rename thread:");
     this.appendValueInput("name").setCheck("String").appendField("to:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
@@ -215,7 +215,7 @@ Blockly.Blocks["threads_setArchived"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Set archived status of thread:");
+      .appendField("set archived status of thread:");
     this.appendValueInput("archived").setCheck("Boolean").appendField("to:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
@@ -237,7 +237,7 @@ Blockly.Blocks["threads_pin"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Pin thread:");
+      .appendField("pin thread:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
@@ -254,7 +254,7 @@ Blockly.Blocks["threads_unpin"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Unpin thread:");
+      .appendField("unpin thread:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
@@ -271,7 +271,7 @@ Blockly.Blocks["threads_join"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Join thread:");
+      .appendField("join thread:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
@@ -288,7 +288,7 @@ Blockly.Blocks["threads_leave"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Leave thread:");
+      .appendField("leave thread:");
     this.setPreviousStatement("default", null);
     this.setNextStatement("default", null);
     this.setColour("#5b67a5");
@@ -305,7 +305,7 @@ Blockly.Blocks["threads_setSlowmode"] = {
   init: function () {
     this.appendValueInput("thread")
       .setCheck("channel")
-      .appendField("Set slowmode of thread:");
+      .appendField("set slowmode of thread:");
     this.appendValueInput("slowmode")
       .setCheck("Number")
       .appendField("slowmode (seconds):");
@@ -491,7 +491,7 @@ javascriptGenerator.forBlock["threads_msgHasThread"] = function (
 
 Blockly.Blocks["threads_addUser"] = {
   init: function () {
-    this.appendValueInput("user").setCheck("user").appendField("Add user:");
+    this.appendValueInput("user").setCheck("user").appendField("add user:");
     this.appendValueInput("thread")
       .setCheck("channel")
       .appendField("to thread:");
@@ -511,7 +511,7 @@ javascriptGenerator.forBlock["threads_addUser"] = function (block, generator) {
 
 Blockly.Blocks["threads_removeUser"] = {
   init: function () {
-    this.appendValueInput("user").setCheck("user").appendField("Remove user:");
+    this.appendValueInput("user").setCheck("user").appendField("remove user:");
     this.appendValueInput("thread")
       .setCheck("channel")
       .appendField("from thread:");

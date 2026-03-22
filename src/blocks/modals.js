@@ -36,7 +36,7 @@ Blockly.Blocks["modal_add_text_input"] = {
   init: function () {
     this.appendValueInput("label")
       .setCheck("String")
-      .appendField("Add text input with label:");
+      .appendField("add text input with label:");
     this.appendValueInput("customId")
       .setCheck("String")
       .appendField("set custom ID to:");
@@ -83,7 +83,7 @@ Blockly.Blocks["modal_add_text_input_advanced"] = {
   init: function () {
     this.appendValueInput("label")
       .setCheck("String")
-      .appendField("Add advanced text input with label:");
+      .appendField("add advanced text input with label:");
     this.appendValueInput("customId")
       .setCheck("String")
       .appendField("set custom ID to:");
@@ -141,7 +141,7 @@ javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
 
 Blockly.Blocks["modal_show"] = {
   init: function () {
-    this.appendValueInput("modal").setCheck("modal").appendField("Show modal:");
+    this.appendValueInput("modal").setCheck("modal").appendField("show modal:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#1A8793");
@@ -160,7 +160,7 @@ javascriptGenerator.forBlock["modal_show"] = function (block, generator) {
 
 Blockly.Blocks["modal_handle_interaction"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a modal is submitted");
+    this.appendDummyInput().appendField("when a modal is submitted");
     this.appendStatementInput("code").setCheck("default");
     this.setColour("#1A8793");
     this.setTooltip("Runs the code when a modal is sub");

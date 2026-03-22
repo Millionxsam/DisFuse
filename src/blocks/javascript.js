@@ -5,7 +5,7 @@ import { Order, javascriptGenerator } from "blockly/javascript";
 Blockly.Blocks["javascript_raw"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Raw code:")
+      .appendField("raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
         "CODE"
@@ -24,7 +24,7 @@ javascriptGenerator.forBlock["javascript_raw"] = function (block) {
 Blockly.Blocks["javascript_raw_float"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Raw code:")
+      .appendField("raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
         "CODE"
@@ -59,7 +59,7 @@ Blockly.Blocks["javascript_wait"] = {
   init: function () {
     this.appendValueInput("number")
       .setCheck("Number")
-      .appendField("Wait (in milliseconds):");
+      .appendField("wait (in milliseconds):");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -76,7 +76,7 @@ javascriptGenerator.forBlock["javascript_wait"] = function (block, generator) {
 
 Blockly.Blocks["javascript_consoleclear"] = {
   init: function () {
-    this.appendDummyInput().appendField("Clear console");
+    this.appendDummyInput().appendField("clear console");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -90,7 +90,7 @@ javascriptGenerator.forBlock["javascript_consoleclear"] = function () {
 
 Blockly.Blocks["javascript_consolelog"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("Console log:");
+    this.appendValueInput("log").setCheck(null).appendField("console log:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -109,7 +109,7 @@ javascriptGenerator.forBlock["javascript_consolelog"] = function (
 
 Blockly.Blocks["javascript_consolewarn"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("Console warn:");
+    this.appendValueInput("log").setCheck(null).appendField("console warn:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -128,7 +128,7 @@ javascriptGenerator.forBlock["javascript_consolewarn"] = function (
 
 Blockly.Blocks["javascript_consoleerror"] = {
   init: function () {
-    this.appendValueInput("log").setCheck(null).appendField("Console error:");
+    this.appendValueInput("log").setCheck(null).appendField("console error:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
@@ -181,9 +181,9 @@ javascriptGenerator.forBlock["javascript_consoleinput"] = function (
 
 Blockly.Blocks["javascript_trycatch"] = {
   init: function () {
-    this.appendDummyInput().appendField("Try to run code");
+    this.appendDummyInput().appendField("try to run code");
     this.appendStatementInput("code").setCheck("default");
-    this.appendDummyInput().appendField("If error");
+    this.appendDummyInput().appendField("if error");
     this.appendStatementInput("error").setCheck("default");
     this.setInputsInline(false);
     this.setNextStatement(true, "default");
@@ -206,11 +206,11 @@ javascriptGenerator.forBlock["javascript_trycatch"] = function (
 
 Blockly.Blocks["javascript_trycatchfinally"] = {
   init: function () {
-    this.appendDummyInput().appendField("Try to run code");
+    this.appendDummyInput().appendField("try to run code");
     this.appendStatementInput("code").setCheck("default");
-    this.appendDummyInput().appendField("If error");
+    this.appendDummyInput().appendField("if error");
     this.appendStatementInput("error").setCheck("default");
-    this.appendDummyInput().appendField("Then finally");
+    this.appendDummyInput().appendField("then finally");
     this.appendStatementInput("finally").setCheck("default");
     this.setInputsInline(false);
     this.setNextStatement(true, "default");
@@ -250,7 +250,7 @@ Blockly.Blocks["javascript_exit"] = {
   init: function () {
     this.appendValueInput("code")
       .setCheck("Number")
-      .appendField("Forcequit with code:");
+      .appendField("forcequit with code:");
     this.setPreviousStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip("Forces the bot to quit instantly, possible data loss!");

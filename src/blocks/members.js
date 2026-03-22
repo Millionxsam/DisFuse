@@ -45,7 +45,7 @@ Blockly.Blocks["member_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each member in server:");
+      .appendField("for each member in server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -64,7 +64,7 @@ Blockly.Blocks["member_member"] = {
 Blockly.Blocks["member_ban"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Ban member:")
+      .appendField("ban member:")
       .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
@@ -76,7 +76,7 @@ Blockly.Blocks["member_ban"] = {
 Blockly.Blocks["member_timeout"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Timeout member:")
+      .appendField("timeout member:")
       .setCheck("member");
     this.appendValueInput("seconds").appendField("seconds:").setCheck("Number");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
@@ -89,7 +89,7 @@ Blockly.Blocks["member_timeout"] = {
 Blockly.Blocks["member_kick"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Kick member:")
+      .appendField("kick member:")
       .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
@@ -101,7 +101,7 @@ Blockly.Blocks["member_kick"] = {
 Blockly.Blocks["member_dm"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Send direct message to user/member:")
+      .appendField("send direct message to user/member:")
       .setCheck(["user", "member"]);
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
@@ -117,7 +117,7 @@ Blockly.Blocks["member_dm"] = {
 Blockly.Blocks["member_dm_rows"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Send direct message to user/member:")
+      .appendField("send direct message to user/member:")
       .setCheck(["user", "member"]);
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
@@ -148,7 +148,7 @@ javascriptGenerator.forBlock["member_dm_rows"] = function (block, generator) {
 Blockly.Blocks["member_setnick"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Change nickname of member:")
+      .appendField("change nickname of member:")
       .setCheck("member");
     this.appendValueInput("nickname").setCheck("String").appendField("to:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
@@ -162,7 +162,7 @@ Blockly.Blocks["member_setnick"] = {
 Blockly.Blocks["member_removetimeout"] = {
   init: function () {
     this.appendValueInput("member")
-      .appendField("Remove timeout from member:")
+      .appendField("remove timeout from member:")
       .setCheck("member");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setInputsInline(false);
@@ -321,7 +321,7 @@ Blockly.Blocks["member_dmChannel"] = {
   init: function () {
     this.appendValueInput("member")
       .setCheck("user")
-      .appendField("DM channel of user:");
+      .appendField("dM channel of user:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#3c9e56");

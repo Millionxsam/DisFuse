@@ -76,7 +76,7 @@ javascriptGenerator.forBlock["channel_send_mutator"] = function (
 
 Blockly.Blocks["channel_send"] = {
   init: function () {
-    this.appendDummyInput().appendField("Send a message");
+    this.appendDummyInput().appendField("send a message");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in channel:");
@@ -127,7 +127,7 @@ javascriptGenerator.forBlock["channel_responses"] = function (
 
 Blockly.Blocks["channel_waitForResponse"] = {
   init: function () {
-    this.appendDummyInput().appendField("Wait for responses");
+    this.appendDummyInput().appendField("wait for responses");
     this.appendValueInput("channel")
       .appendField("in channel:")
       .setCheck("channel");
@@ -173,7 +173,7 @@ javascriptGenerator.forBlock["channel_waitForResponse"] = function (
 
 Blockly.Blocks["channel_send_rows"] = {
   init: function () {
-    this.appendDummyInput().appendField("Send a message");
+    this.appendDummyInput().appendField("send a message");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("in channel:");
@@ -193,7 +193,7 @@ Blockly.Blocks["channel_setnsfw"] = {
   init: function () {
     this.appendValueInput("set")
       .setCheck("Boolean")
-      .appendField("Set NSFW to:");
+      .appendField("set NSFW to:");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("on channel:");
@@ -207,7 +207,7 @@ Blockly.Blocks["channel_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each channel on the server:");
+      .appendField("for each channel on the server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -217,7 +217,7 @@ Blockly.Blocks["channel_foreach"] = {
 
 Blockly.Blocks["channel_fetchLastMessages"] = {
   init: function () {
-    this.appendValueInput("amount").setCheck("Number").appendField("Get last");
+    this.appendValueInput("amount").setCheck("Number").appendField("get last");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("messages of channel:");
@@ -261,7 +261,7 @@ Blockly.Blocks["channel_setslowmode"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("Set slowmode of channel:");
+      .appendField("set slowmode of channel:");
     this.appendValueInput("time")
       .setCheck("Number")
       .appendField("to (seconds):");
@@ -276,7 +276,7 @@ Blockly.Blocks["channel_settopic"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("Set topic of channel:");
+      .appendField("set topic of channel:");
     this.appendValueInput("topic").setCheck("String").appendField("to:");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
@@ -305,7 +305,7 @@ Blockly.Blocks["channel_syncPerms"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("Sync permissions of channel:");
+      .appendField("sync permissions of channel:");
     this.appendDummyInput().appendField("to its category");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
@@ -317,7 +317,7 @@ Blockly.Blocks["channel_starttyping"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("Start typing on channel:");
+      .appendField("start typing on channel:");
     this.appendValueInput("wait")
       .setCheck("Number")
       .appendField("and wait (seconds):");
@@ -330,7 +330,7 @@ Blockly.Blocks["channel_starttyping"] = {
 Blockly.Blocks["channel_bulkdelete"] = {
   init: function () {
     this.appendValueInput("amount")
-      .appendField("Delete the last")
+      .appendField("delete the last")
       .setCheck("Number");
     this.appendValueInput("channel")
       .appendField("messages on channel:")
@@ -345,7 +345,7 @@ Blockly.Blocks["channel_bulkdelete"] = {
 Blockly.Blocks["channel_setautoarchive"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Set thread auto archive duration to:")
+      .appendField("set thread auto archive duration to:")
       .appendField(
         new Blockly.FieldDropdown([
           ["One hour", "60"],
@@ -540,7 +540,7 @@ Blockly.Blocks["channel_created"] = {
 Blockly.Blocks["channel_clone"] = {
   init: function () {
     this.appendValueInput("channel")
-      .appendField("Clone the channel:")
+      .appendField("clone the channel:")
       .setCheck("channel");
     this.appendValueInput("name").appendField("new name:").setCheck("String");
     this.appendStatementInput("then").appendField("then:");
@@ -576,7 +576,7 @@ createRestrictions(
 Blockly.Blocks["channel_setParent"] = {
   init: function () {
     this.appendValueInput("channel")
-      .appendField("Move the channel:")
+      .appendField("move the channel:")
       .setCheck("channel");
     this.appendValueInput("category")
       .appendField("to category:")
@@ -610,7 +610,7 @@ javascriptGenerator.forBlock["channel_setParent"] = function (
 Blockly.Blocks["channel_setPosition"] = {
   init: function () {
     this.appendValueInput("channel")
-      .appendField("Move the channel:")
+      .appendField("move the channel:")
       .setCheck("channel");
     this.appendValueInput("position")
       .appendField("to position #:")
@@ -638,7 +638,7 @@ javascriptGenerator.forBlock["channel_setPosition"] = function (
 
 Blockly.Blocks["channel_create"] = {
   init: function () {
-    this.appendDummyInput().appendField("Create a channel");
+    this.appendDummyInput().appendField("create a channel");
     this.appendValueInput("guild")
       .appendField("in the server:")
       .setCheck("server");
@@ -706,7 +706,7 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
 Blockly.Blocks["channel_del"] = {
   init: function () {
     this.appendValueInput("channel")
-      .appendField("Delete the channel:")
+      .appendField("delete the channel:")
       .setCheck("channel");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setNextStatement(true, "default");
@@ -735,7 +735,7 @@ createRestrictions(
 Blockly.Blocks["channel_setname"] = {
   init: function () {
     this.appendValueInput("channel")
-      .appendField("Rename channel:")
+      .appendField("rename channel:")
       .setCheck("channel");
     this.appendValueInput("name").appendField("new name:").setCheck("String");
     this.setNextStatement(true, "default");
@@ -1240,7 +1240,7 @@ Blockly.Blocks["channel_set_permission"] = {
   init: function () {
     this.appendValueInput("permission")
       .setCheck("permissionChannel")
-      .appendField("Set");
+      .appendField("set");
     this.appendDummyInput()
       .appendField("to")
       .appendField(

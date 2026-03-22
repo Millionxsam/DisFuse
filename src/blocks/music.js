@@ -4,7 +4,7 @@ import { createRestrictions } from '../functions/restrictions';
 
 Blockly.Blocks['music_findLyrics'] = {
   init: function () {
-    this.appendDummyInput().appendField('Get lyrics');
+    this.appendDummyInput().appendField('get lyrics');
     this.appendValueInput('artist')
       .setCheck('String')
       .appendField('by artist:');

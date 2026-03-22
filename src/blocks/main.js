@@ -6,9 +6,9 @@ Blockly.Blocks["main_token"] = {
   init: function () {
     this.appendValueInput("token")
       .setCheck("String")
-      .appendField("Log in to bot with token:");
+      .appendField("log in to bot with token:");
     this.appendDummyInput()
-      .appendField("Mobile:")
+      .appendField("mobile:")
       .appendField(new Blockly.FieldCheckbox("FALSE"), "mobile");
     this.setInputsInline(false);
     this.setColour("#FF6E33");
@@ -26,9 +26,9 @@ Blockly.Blocks["main_botStart"] = {
   init: function () {
     this.appendValueInput("token")
       .setCheck("String")
-      .appendField("Start bot with token:");
+      .appendField("start bot with token:");
     this.appendDummyInput()
-      .appendField("Mobile:")
+      .appendField("mobile:")
       .appendField(new Blockly.FieldCheckbox("FALSE"), "mobile");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
@@ -51,7 +51,7 @@ javascriptGenerator.forBlock["main_botStart"] = function (block, generator) {
 
 Blockly.Blocks["main_ready"] = {
   init: function () {
-    this.appendDummyInput().appendField("When the bot is logged in");
+    this.appendDummyInput().appendField("when the bot is logged in");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#FF6E33");
@@ -74,7 +74,7 @@ javascriptGenerator.forBlock["main_readyAt"] = function (block, generator) {
 
 Blockly.Blocks["main_presence"] = {
   init: function () {
-    this.appendDummyInput().appendField("Set the presence of the bot");
+    this.appendDummyInput().appendField("set the presence of the bot");
     this.appendDummyInput()
       .appendField("status:")
       .appendField(
@@ -86,7 +86,7 @@ Blockly.Blocks["main_presence"] = {
         ]),
         "status"
       );
-    this.appendValueInput("afk").setCheck("Boolean").appendField("AFK:");
+    this.appendValueInput("afk").setCheck("Boolean").appendField("aFK:");
     this.appendDummyInput()
       .appendField("activity type:")
       .appendField(
@@ -157,7 +157,7 @@ Blockly.Blocks["main_numberof"] = {
 
 Blockly.Blocks["main_destroy"] = {
   init: function () {
-    this.appendDummyInput().appendField("Shutdown the bot");
+    this.appendDummyInput().appendField("shutdown the bot");
     this.setNextStatement(true, "default");
     this.setPreviousStatement(true, "default");
     this.setColour("#FF6E33");

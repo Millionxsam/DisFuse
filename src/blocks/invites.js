@@ -77,7 +77,7 @@ javascriptGenerator.forBlock["invite_get"] = function (block, generator) {
 Blockly.Blocks["invite_delete"] = {
   init: function () {
     this.appendValueInput("invite")
-      .appendField("Delete invite:")
+      .appendField("delete invite:")
       .setCheck("invite");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -242,7 +242,7 @@ javascriptGenerator.forBlock["invite_author"] = function (block, generator) {
 
 Blockly.Blocks["invite_invitecreated"] = {
   init: function () {
-    this.appendDummyInput().appendField("When an invite is created");
+    this.appendDummyInput().appendField("when an invite is created");
     this.appendStatementInput("code").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#CA8A67");
@@ -264,7 +264,7 @@ javascriptGenerator.forBlock["invite_invitecreated"] = function (
 
 Blockly.Blocks["invite_invitedeleted"] = {
   init: function () {
-    this.appendDummyInput().appendField("When an invite is deleted");
+    this.appendDummyInput().appendField("when an invite is deleted");
     this.appendStatementInput("code").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#CA8A67");
@@ -302,7 +302,7 @@ Blockly.Blocks["invite_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each invite on server:");
+      .appendField("for each invite on server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -340,7 +340,7 @@ Blockly.Blocks["invite_channel_foreach"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("For each invite on channel:");
+      .appendField("for each invite on channel:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");

@@ -5,7 +5,7 @@ import { createMutatorBlock } from "../../functions/createMutator.ts";
 
 Blockly.Blocks["captcha_create"] = {
   init: function () {
-    this.appendDummyInput().appendField("Create new captcha");
+    this.appendDummyInput().appendField("create new captcha");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#0fbd8c");
@@ -144,7 +144,7 @@ javascriptGenerator.forBlock["captcha_create_mutator"] = function (
 
 Blockly.Blocks["captcha_addFile"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add captcha as file");
+    this.appendDummyInput().appendField("add captcha as file");
     this.setPreviousStatement(true, "files");
     this.setNextStatement(true, "files");
     this.setColour("#0fbd8c");
@@ -159,7 +159,7 @@ Blockly.Blocks["captcha_send"] = {
   init: function () {
     this.appendValueInput("channel")
       .setCheck("channel")
-      .appendField("Send captcha to channel:");
+      .appendField("send captcha to channel:");
     this.appendValueInput("content")
       .setCheck("String")
       .appendField("with content:");
@@ -196,7 +196,7 @@ Blockly.Blocks["captcha_reply"] = {
   init: function () {
     this.appendValueInput("message")
       .setCheck("message")
-      .appendField("Reply captcha to message:");
+      .appendField("reply captcha to message:");
     this.appendValueInput("content")
       .setCheck("String")
       .appendField("with content:");
@@ -228,7 +228,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
 
 Blockly.Blocks["captcha_replyInteraction"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply captcha to interaction");
+    this.appendDummyInput().appendField("reply captcha to interaction");
     this.appendValueInput("content")
       .setCheck("String")
       .appendField("with content:");

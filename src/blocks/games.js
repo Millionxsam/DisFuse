@@ -4,7 +4,7 @@ import { javascriptGenerator, Order } from 'blockly/javascript';
 Blockly.Blocks['game_2048'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a 2048 game from')
+      .appendField('start a 2048 game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -12,7 +12,7 @@ Blockly.Blocks['game_2048'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     //   this.appendValueInput("dsc")
     //       .setCheck("String")
@@ -32,7 +32,7 @@ Blockly.Blocks['game_2048'] = {
 Blockly.Blocks['game_connect4'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Connect4 game from')
+      .appendField('start a Connect4 game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -40,7 +40,7 @@ Blockly.Blocks['game_connect4'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('status')
       .setCheck('String')
@@ -60,7 +60,7 @@ Blockly.Blocks['game_connect4'] = {
 Blockly.Blocks['game_fasttype'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a FastType game from')
+      .appendField('start a FastType game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -68,7 +68,7 @@ Blockly.Blocks['game_fasttype'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')
@@ -88,7 +88,7 @@ Blockly.Blocks['game_fasttype'] = {
 Blockly.Blocks['game_findemoji'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a FindEmoji game from')
+      .appendField('start a FindEmoji game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -96,7 +96,7 @@ Blockly.Blocks['game_findemoji'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')
@@ -119,7 +119,7 @@ Blockly.Blocks['game_findemoji'] = {
 Blockly.Blocks['game_flood'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Flood game from')
+      .appendField('start a Flood game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -127,7 +127,7 @@ Blockly.Blocks['game_flood'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('color')
       .setCheck(['Colour', 'String'])
@@ -144,7 +144,7 @@ Blockly.Blocks['game_flood'] = {
 Blockly.Blocks['game_hangman'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Hangman game from')
+      .appendField('start a Hangman game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -152,7 +152,7 @@ Blockly.Blocks['game_hangman'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('color')
       .setCheck(['Colour', 'String'])
@@ -169,7 +169,7 @@ Blockly.Blocks['game_hangman'] = {
 Blockly.Blocks['game_matchpairs'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a MatchPairs game from')
+      .appendField('start a MatchPairs game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -177,7 +177,7 @@ Blockly.Blocks['game_matchpairs'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')
@@ -197,7 +197,7 @@ Blockly.Blocks['game_matchpairs'] = {
 Blockly.Blocks['game_minesweeper'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Minesweeper game from')
+      .appendField('start a Minesweeper game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -205,7 +205,7 @@ Blockly.Blocks['game_minesweeper'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')
@@ -225,7 +225,7 @@ Blockly.Blocks['game_minesweeper'] = {
 Blockly.Blocks['game_rps'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a RockPaperScissors game from')
+      .appendField('start a RockPaperScissors game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -234,7 +234,7 @@ Blockly.Blocks['game_rps'] = {
         'slash'
       );
     this.appendValueInput('opponent').setCheck('user').appendField('opponent:');
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')
@@ -254,7 +254,7 @@ Blockly.Blocks['game_rps'] = {
 Blockly.Blocks['game_slots'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Slots game from')
+      .appendField('start a Slots game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -262,7 +262,7 @@ Blockly.Blocks['game_slots'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('color')
       .setCheck(['Colour', 'String'])
@@ -279,7 +279,7 @@ Blockly.Blocks['game_slots'] = {
 Blockly.Blocks['game_snake'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Snake game from')
+      .appendField('start a Snake game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -287,7 +287,7 @@ Blockly.Blocks['game_snake'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('overtitle')
       .setCheck('String')
@@ -307,7 +307,7 @@ Blockly.Blocks['game_snake'] = {
 Blockly.Blocks['game_tictactoe'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a TicTacToe game from')
+      .appendField('start a TicTacToe game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -316,7 +316,7 @@ Blockly.Blocks['game_tictactoe'] = {
         'slash'
       );
     this.appendValueInput('opponent').setCheck('user').appendField('opponent:');
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('overtitle')
       .setCheck('String')
@@ -339,7 +339,7 @@ Blockly.Blocks['game_tictactoe'] = {
 Blockly.Blocks['game_wordle'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Wordle game from')
+      .appendField('start a Wordle game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -347,7 +347,7 @@ Blockly.Blocks['game_wordle'] = {
         ]),
         'slash'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('color')
       .setCheck(['Colour', 'String'])
@@ -364,7 +364,7 @@ Blockly.Blocks['game_wordle'] = {
 Blockly.Blocks['game_trivia'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Start a Trivia game from')
+      .appendField('start a Trivia game from')
       .appendField(
         new Blockly.FieldDropdown([
           ['text command', 'false'],
@@ -391,7 +391,7 @@ Blockly.Blocks['game_trivia'] = {
         ]),
         'difficulty'
       );
-    this.appendDummyInput().appendField('Configure embed ↓');
+    this.appendDummyInput().appendField('configure embed ↓');
     this.appendValueInput('title').setCheck('String').appendField('title:');
     this.appendValueInput('dsc')
       .setCheck('String')

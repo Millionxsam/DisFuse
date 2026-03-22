@@ -4,7 +4,7 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["emoji_getallinserver"] = {
   init: function () {
-    this.appendDummyInput().appendField("For each emoji on the server:");
+    this.appendDummyInput().appendField("for each emoji on the server:");
     this.appendValueInput("server").setCheck("server");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
@@ -175,7 +175,7 @@ Blockly.Blocks["emoji_create"] = {
   init: function () {
     this.appendValueInput("name")
       .setCheck("String")
-      .appendField("Create an emoji named:");
+      .appendField("create an emoji named:");
     this.appendValueInput("url")
       .setCheck("String")
       .appendField("with image/gif url set to:");
@@ -202,7 +202,7 @@ Blockly.Blocks["emoji_delete"] = {
   init: function () {
     this.appendValueInput("emoji")
       .setCheck("emoji")
-      .appendField("Delete emoji:");
+      .appendField("delete emoji:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("DEB144");
@@ -247,7 +247,7 @@ Blockly.Blocks["emoji_setname"] = {
   init: function () {
     this.appendValueInput("emoji")
       .setCheck("emoji")
-      .appendField("Rename the emoji:");
+      .appendField("rename the emoji:");
     this.appendValueInput("name").setCheck("String").appendField("to:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");

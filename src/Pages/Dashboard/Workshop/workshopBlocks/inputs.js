@@ -4,7 +4,7 @@ import javascript from "blockly/javascript";
 Blockly.Blocks["input_value"] = {
   init: function () {
     this.appendDummyInput("name")
-      .appendField("Value input named")
+      .appendField("value input named")
       .appendField(new Blockly.FieldTextInput("name"), "name");
     this.appendStatementInput("fields")
       .setCheck("Field")
@@ -60,7 +60,7 @@ javascript.javascriptGenerator.forBlock["input_value"] = function (
 Blockly.Blocks["input_statement"] = {
   init: function () {
     this.appendDummyInput("name")
-      .appendField("Statement input named")
+      .appendField("statement input named")
       .appendField(new Blockly.FieldTextInput("name"), "name");
     this.appendStatementInput("code")
       .setCheck("Field")
@@ -114,7 +114,7 @@ javascript.javascriptGenerator.forBlock["input_statement"] = function (
 
 Blockly.Blocks["input_dummy"] = {
   init: function () {
-    this.appendDummyInput().appendField("Dummy input");
+    this.appendDummyInput().appendField("dummy input");
     this.appendStatementInput("code")
       .setCheck("Field")
       .appendField("with fields");
@@ -158,7 +158,7 @@ javascript.javascriptGenerator.forBlock["input_dummy"] = function (
 
 Blockly.Blocks["input_endrow"] = {
   init: function () {
-    this.appendDummyInput().appendField("End-row input");
+    this.appendDummyInput().appendField("end-row input");
     this.appendStatementInput("code")
       .setCheck("Field")
       .appendField("with fields");

@@ -4,7 +4,7 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["logic_switch"] = {
   init: function () {
-    this.appendValueInput("switch").appendField("Check if");
+    this.appendValueInput("switch").appendField("check if");
     this.appendStatementInput("cases").setCheck("case");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -14,7 +14,7 @@ Blockly.Blocks["logic_switch"] = {
 
 Blockly.Blocks["logic_case"] = {
   init: function () {
-    this.appendValueInput("case").appendField("Equals to");
+    this.appendValueInput("case").appendField("equals to");
     this.appendStatementInput("code").appendField("then");
     this.setPreviousStatement(true, "case");
     this.setNextStatement(true, "case");
@@ -24,7 +24,7 @@ Blockly.Blocks["logic_case"] = {
 
 Blockly.Blocks["logic_default"] = {
   init: function () {
-    this.appendDummyInput().appendField("If none of the above");
+    this.appendDummyInput().appendField("if none of the above");
     this.appendStatementInput("code").appendField("then");
     this.setPreviousStatement(true, "case");
     this.setNextStatement(true, "case");

@@ -5,7 +5,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["embed_create"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Create an embed with name:")
+      .appendField("create an embed with name:")
       .appendField(
         new Blockly.FieldTextInput("name", (val) => {
           if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
@@ -26,7 +26,7 @@ Blockly.Blocks["embed_settitle"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Set embed title to:");
+      .appendField("set embed title to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -49,7 +49,7 @@ Blockly.Blocks["embed_setdsc"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Set embed description to:");
+      .appendField("set embed description to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -72,7 +72,7 @@ Blockly.Blocks["embed_setcolor"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck(["Colour", "String"])
-      .appendField("Set embed color to:");
+      .appendField("set embed color to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -97,7 +97,7 @@ Blockly.Blocks["embed_seturl"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Set embed title URL to:");
+      .appendField("set embed title URL to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -128,9 +128,9 @@ Blockly.Blocks["embed_setauthor"] = {
   init: function () {
     this.appendValueInput("name")
       .setCheck("String")
-      .appendField("Set embed author name to:");
-    this.appendValueInput("icon").setCheck("String").appendField("Icon URL:");
-    this.appendValueInput("url").setCheck("String").appendField("Click URL:");
+      .appendField("set embed author name to:");
+    this.appendValueInput("icon").setCheck("String").appendField("icon URL:");
+    this.appendValueInput("url").setCheck("String").appendField("click URL:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -181,7 +181,7 @@ Blockly.Blocks["embed_setfooter"] = {
   init: function () {
     this.appendValueInput("text")
       .setCheck("String")
-      .appendField("Set embed footer to:");
+      .appendField("set embed footer to:");
     this.appendValueInput("icon").setCheck("String").appendField("icon URL:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
@@ -205,7 +205,7 @@ Blockly.Blocks["embed_setimage"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Set embed image URL to:");
+      .appendField("set embed image URL to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -236,7 +236,7 @@ Blockly.Blocks["embed_setthumb"] = {
   init: function () {
     this.appendValueInput("value")
       .setCheck("String")
-      .appendField("Set embed thumbnail URL to:");
+      .appendField("set embed thumbnail URL to:");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");
@@ -265,7 +265,7 @@ createRestrictions(
 
 Blockly.Blocks["embed_addfield"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add embed field");
+    this.appendDummyInput().appendField("add embed field");
     this.appendValueInput("name").setCheck("String").appendField("field name:");
     this.appendValueInput("val").setCheck("String").appendField("field value:");
     this.appendValueInput("inline").setCheck("Boolean").appendField("inline:");
@@ -295,7 +295,7 @@ createRestrictions(
 
 Blockly.Blocks["embed_settimestamp"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add timestamp");
+    this.appendDummyInput().appendField("add timestamp");
     this.setPreviousStatement(true, "embedBlockCreatorBlock");
     this.setNextStatement(true, "embedBlockCreatorBlock");
     this.setColour("00A58E");

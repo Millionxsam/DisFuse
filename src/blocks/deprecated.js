@@ -3,7 +3,7 @@ import { Order, javascriptGenerator } from "blockly/javascript";
 
 Blockly.Blocks["slash_reply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -20,7 +20,7 @@ Blockly.Blocks["slash_reply"] = {
 
 Blockly.Blocks["slash_reply_rows"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -38,7 +38,7 @@ Blockly.Blocks["slash_reply_rows"] = {
 
 Blockly.Blocks["slash_editreply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
+    this.appendDummyInput().appendField("edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -53,7 +53,7 @@ Blockly.Blocks["slash_editreply"] = {
 
 Blockly.Blocks["slash_createcontainer"] = {
   init: function () {
-    this.appendDummyInput().appendField("Set slash commands");
+    this.appendDummyInput().appendField("set slash commands");
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands):");
@@ -70,10 +70,10 @@ Blockly.Blocks["slash_createcontainer"] = {
 
 Blockly.Blocks["slash_create"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add slash command");
+    this.appendDummyInput().appendField("add slash command");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
-    this.appendValueInput("nsfw").setCheck("Boolean").appendField("NSFW:");
+    this.appendValueInput("nsfw").setCheck("Boolean").appendField("nSFW:");
     this.appendValueInput("dm")
       .setCheck("Boolean")
       .appendField("usable in DMs:");
@@ -92,7 +92,7 @@ Blockly.Blocks["slash_create"] = {
 
 Blockly.Blocks["msg_reply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the message");
+    this.appendDummyInput().appendField("reply to the message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -107,7 +107,7 @@ Blockly.Blocks["msg_reply"] = {
 
 Blockly.Blocks["msg_reply_rows"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the message");
+    this.appendDummyInput().appendField("reply to the message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -123,7 +123,7 @@ Blockly.Blocks["msg_reply_rows"] = {
 
 Blockly.Blocks["misc_int_reply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -140,7 +140,7 @@ Blockly.Blocks["misc_int_reply"] = {
 
 Blockly.Blocks["misc_int_reply_rows"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
+    this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -158,7 +158,7 @@ Blockly.Blocks["misc_int_reply_rows"] = {
 
 Blockly.Blocks["misc_int_edit"] = {
   init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
+    this.appendDummyInput().appendField("edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")

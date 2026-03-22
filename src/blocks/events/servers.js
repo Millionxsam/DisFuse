@@ -64,7 +64,7 @@ createRestrictions(
 
 Blockly.Blocks["events_guild_memberAdd"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a member joins a server");
+    this.appendDummyInput().appendField("when a member joins a server");
     this.setColour("#FF4F4F");
     this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(false);

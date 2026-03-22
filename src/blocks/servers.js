@@ -24,7 +24,7 @@ Blockly.Blocks["server_getone"] = {
 
 Blockly.Blocks["server_getall"] = {
   init: function () {
-    this.appendDummyInput().appendField("For each server the bot is in");
+    this.appendDummyInput().appendField("for each server the bot is in");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -121,7 +121,7 @@ Blockly.Blocks["server_afkchannel"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("AFK channel of server:");
+      .appendField("aFK channel of server:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#A33DAC");
@@ -205,7 +205,7 @@ Blockly.Blocks["server_leave"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("Leave server:");
+      .appendField("leave server:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#A33DAC");

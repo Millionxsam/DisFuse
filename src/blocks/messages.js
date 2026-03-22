@@ -28,7 +28,7 @@ javascriptGenerator.forBlock["msg_getone"] = function (block, generator) {
 
 Blockly.Blocks["msg_received"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a message is received");
+    this.appendDummyInput().appendField("when a message is received");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
@@ -230,7 +230,7 @@ Blockly.Blocks["msg_react"] = {
   init: function () {
     this.appendValueInput("message")
       .setCheck("message")
-      .appendField("React to message:");
+      .appendField("react to message:");
     this.appendValueInput("reaction")
       .setCheck(["String", "emoji"])
       .appendField("with emoji:");
@@ -314,7 +314,7 @@ javascriptGenerator.forBlock["msg_delete"] = function (block, generator) {
 
 Blockly.Blocks["msg_delete"] = {
   init: function () {
-    this.appendDummyInput().appendField("Delete the user's message");
+    this.appendDummyInput().appendField("delete the user's message");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
@@ -326,7 +326,7 @@ Blockly.Blocks["msg_deleteOther"] = {
   init: function () {
     this.appendValueInput("message")
       .setCheck("message")
-      .appendField("Delete message:");
+      .appendField("delete message:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
@@ -344,7 +344,7 @@ Blockly.Blocks["msg_edit"] = {
   init: function () {
     this.appendValueInput("message")
       .setCheck("message")
-      .appendField("Edit message:");
+      .appendField("edit message:");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds")
       .setCheck("String")
@@ -375,7 +375,7 @@ Blockly.Blocks["captcha_reply"] = {
   init: function () {
     this.appendValueInput("message")
       .setCheck("message")
-      .appendField("Reply captcha to message:");
+      .appendField("reply captcha to message:");
     this.appendValueInput("content")
       .setCheck("String")
       .appendField("with content:");
