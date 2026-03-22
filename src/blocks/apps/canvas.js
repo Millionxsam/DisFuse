@@ -366,7 +366,7 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["canvas_createCanvas"],
-      message: 'This block must be inside a "Create new canvas" block.',
+      message: 'This block must be inside a "create new canvas" block.',
     },
   ]
 );

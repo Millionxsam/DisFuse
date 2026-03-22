@@ -207,7 +207,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["buttons_event"],
-      message: 'This block must be in a "When a button is clicked" event',
+      message: 'This block must be in a "when a button is clicked" event',
     },
   ]
 );
@@ -218,7 +218,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["buttons_event"],
-      message: 'This block must be in a "When a button is clicked" event',
+      message: 'This block must be in a "when a button is clicked" event',
     },
     {
       type: "notEmpty",

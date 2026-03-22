@@ -225,7 +225,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["contextMenu_received"],
       message:
-        'This block must be under "When a context menu is clicked" event',
+        'This block must be under "when a context menu is clicked" event',
     },
   ]
 );

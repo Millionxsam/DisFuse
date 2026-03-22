@@ -229,7 +229,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["poll_whenvoteadded"],
       message:
-        "This block must be in the 'When a vote is added to a poll' event",
+        "This block must be in the 'when a vote is added to a poll' event",
     },
   ],
 );

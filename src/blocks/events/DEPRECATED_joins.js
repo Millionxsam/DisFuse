@@ -6,7 +6,7 @@ import {
 
 createEventBlock({
   id: "events_joins_guildmemberadd",
-  text: "When a member joins a server",
+  text: "when a member joins a server",
   colour: "#FF4F4F",
   event: "guildMemberAdd",
   variables: "joinedMember"

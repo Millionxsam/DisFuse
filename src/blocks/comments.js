@@ -104,7 +104,7 @@ Blockly.Blocks["comment_stackImage"] = {
       }
     };
 
-    this.appendDummyInput().appendField("// Image").appendField(
+    this.appendDummyInput().appendField("// image").appendField(
       new Blockly.FieldTextInput(
         "https://disfuse.xyz/media/disfuse-clear.png",
         urlValidator 

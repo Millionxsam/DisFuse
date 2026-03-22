@@ -38,7 +38,7 @@ Blockly.Blocks["msg_received"] = {
 Blockly.Blocks["message_author_not_bot"] = {
   init: function () {
     this.appendDummyInput().appendField(
-      "When a message is received from a human",
+      "when a message is received from a human",
     );
     this.appendStatementInput("name").setCheck("default");
     this.setInputsInline(false);
@@ -51,7 +51,7 @@ createMutatorBlock({
   optionsBlockId: "msg_reply_mutator_options",
   colour: "#336EFF",
   inputs: [
-    { type: "dummy", label: "Reply to the message" },
+    { type: "dummy", label: "reply to the message" },
     { type: "value", name: "content", check: "String", label: "content:" },
   ],
   mutatorFields: [
@@ -125,7 +125,7 @@ createMutatorBlock({
       type: "value",
       name: "message",
       check: "message",
-      label: "Edit message:",
+      label: "edit message:",
     },
     { type: "value", name: "content", check: "String", label: "content:" },
   ],
@@ -490,7 +490,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["msg_received", "message_author_not_bot"],
-      message: 'This block must be in a "When a message is received" event',
+      message: 'This block must be in a "when a message is received" event',
     },
   ],
 );
@@ -501,7 +501,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["msg_received", "message_author_not_bot"],
-      message: 'This block must be in a "When a message is received" event',
+      message: 'This block must be in a "when a message is received" event',
     },
     {
       type: "notEmpty",

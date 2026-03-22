@@ -534,7 +534,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["menus_event"],
-      message: 'This block must be in a "When a menu is clicked" event',
+      message: 'This block must be in a "when a menu is clicked" event',
     },
   ]
 );
@@ -545,7 +545,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["menus_event"],
-      message: 'This block must be in a "When a menu is clicked" event',
+      message: 'This block must be in a "when a menu is clicked" event',
     },
     {
       type: "notEmpty",

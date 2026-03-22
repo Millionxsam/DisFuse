@@ -6,7 +6,7 @@ import {
 
 createEventBlock({
   id: "events_message_pinned",
-  text: "When a message is pinned",
+  text: "when a message is pinned",
   colour: "#FF4F4F",
   event: "messagePinned",
   variables: "pinnedMessage",
@@ -22,7 +22,7 @@ createEventVariable({
 
 createEventBlock({
   id: "events_message_edited",
-  text: "When a message is edited",
+  text: "when a message is edited",
   colour: "#FF4F4F",
   event: "messageContentEdited",
   variables: ["messageEdited", "oldContent", "newContent"],
@@ -54,7 +54,7 @@ createEventVariable({
 
 createEventBlock({
   id: "events_message_deleted",
-  text: "When a message gets deleted",
+  text: "when a message gets deleted",
   colour: "#FF4F4F",
   event: "messageDelete",
   variables: "messageDeleted",
@@ -74,14 +74,14 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["events_message_deleted"],
-      message: "This block must be in the 'When a message gets deleted' event",
+      message: "This block must be in the 'when a message gets deleted' event",
     },
   ]
 );
 
 createEventBlock({
   id: "events_message_ReactionAdd",
-  text: "When a reaction is added to a message",
+  text: "when a reaction is added to a message",
   colour: "#FF4F4F",
   event: "messageReactionAdd",
   variables: ["messageReaction", "user"],
@@ -132,7 +132,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_message_ReactionAdd"],
       message:
-        "This block must be in the 'When a reaction is added to a message' event",
+        "This block must be in the 'when a reaction is added to a message' event",
     },
   ]
 );

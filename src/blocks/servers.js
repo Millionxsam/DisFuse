@@ -121,7 +121,7 @@ Blockly.Blocks["server_afkchannel"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("aFK channel of server:");
+      .appendField("AFK channel of server:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#A33DAC");

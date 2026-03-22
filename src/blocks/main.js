@@ -86,7 +86,7 @@ Blockly.Blocks["main_presence"] = {
         ]),
         "status"
       );
-    this.appendValueInput("afk").setCheck("Boolean").appendField("aFK:");
+    this.appendValueInput("afk").setCheck("Boolean").appendField("AFK:");
     this.appendDummyInput()
       .appendField("activity type:")
       .appendField(

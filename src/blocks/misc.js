@@ -8,7 +8,7 @@ createMutatorBlock({
   optionsBlockId: "misc_int_reply_mutator_options",
   colour: "#4192E9",
   inputs: [
-    { type: "dummy", label: "Reply to the interaction" },
+    { type: "dummy", label: "reply to the interaction" },
     { type: "value", name: "content", check: "String", label: "content:" },
     {
       type: "value",
@@ -400,7 +400,7 @@ Blockly.Blocks["misc_createcontainer"] = {
 Blockly.Blocks["misc_createcontainer_global"] = {
   init: function () {
     this.appendDummyInput().appendField(
-      "Create slash commands / context menus"
+      "create slash commands / context menus"
     );
     this.appendValueInput("guild")
       .setCheck("String")

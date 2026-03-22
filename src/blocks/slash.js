@@ -17,7 +17,7 @@ createMutatorBlock({
   optionsBlockId: "slash_create_mutator_options",
   colour: "#3366CC",
   inputs: [
-    { type: "dummy", label: "Add slash command" },
+    { type: "dummy", label: "add slash command" },
     { type: "value", name: "name", check: "String", label: "name:" },
     { type: "value", name: "dsc", check: "String", label: "description:" },
   ],

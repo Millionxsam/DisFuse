@@ -8,7 +8,7 @@ createMutatorBlock({
   optionsBlockId: "channel_send_mutator_options",
   colour: "#AD509B",
   inputs: [
-    { type: "dummy", label: "Send a message" },
+    { type: "dummy", label: "send a message" },
     { type: "value", name: "channel", check: "channel", label: "in channel:" },
     { type: "value", name: "content", check: "String", label: "content:" },
   ],

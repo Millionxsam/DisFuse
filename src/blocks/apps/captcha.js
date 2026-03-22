@@ -19,7 +19,7 @@ createMutatorBlock({
   id: "captcha_create_mutator",
   optionsBlockId: "captcha_create_mutator_options",
   colour: "#0fbd8c",
-  inputs: [{ type: "dummy", label: "Create new captcha" }],
+  inputs: [{ type: "dummy", label: "create new captcha" }],
   mutatorFields: [
     {
       name: "width",
@@ -302,7 +302,7 @@ createRestrictions(
     {
       type: "hasBlockInParent",
       blockTypes: ["captcha_create", "captcha_create_mutator"],
-      message: 'This block must be used AFTER a "Create new captcha" block',
+      message: 'This block must be used AFTER a "create new captcha" block',
     },
   ],
 );
