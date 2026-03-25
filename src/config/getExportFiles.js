@@ -7,7 +7,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
     "process",
     "dotenv",
     ...dependencies,
-    ...packageDependencies,
+    ...packageDependencies.map((d) => (d.package ? d.package : d)),
   ].sort();
 
   const dependenciesObject = [...new Set(allDependencies)].reduce(

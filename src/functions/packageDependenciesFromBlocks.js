@@ -4,12 +4,14 @@ const blockImports = {
   db_: "easy-json-database",
   game_: "discord-gamecord",
   captcha_: {
+    package: "@ddededodediamante/captcha-generator",
     code: `const { Captcha } = require("@ddededodediamante/captcha-generator");`,
   },
   fetch_: "axios",
   time_: "ms",
   canvas_: "@napi-rs/canvas",
   events_guild_memberAdd: {
+    package: "discord-logs",
     code: `
       const discord_logs = require("discord-logs");
       discord_logs(client);
