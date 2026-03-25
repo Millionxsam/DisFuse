@@ -6,7 +6,7 @@ Blockly.Blocks["roles_foreach"] = {
   init: function () {
     this.appendValueInput("server")
       .setCheck("server")
-      .appendField("For each role on the server:");
+      .appendField("for each role on the server:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -18,7 +18,7 @@ Blockly.Blocks["roles_foreachMember"] = {
   init: function () {
     this.appendValueInput("role")
       .setCheck("role")
-      .appendField("For each member with the role:");
+      .appendField("for each member with the role:");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -171,7 +171,7 @@ Blockly.Blocks["roles_create"] = {
   init: function () {
     this.appendValueInput("name")
       .setCheck("String")
-      .appendField("Create new role named:");
+      .appendField("create new role named:");
     this.appendValueInput("server")
       .setCheck("server")
       .appendField("in server:");
@@ -256,7 +256,7 @@ Blockly.Blocks["roles_delete"] = {
   init: function () {
     this.appendValueInput("role")
       .setCheck("role")
-      .appendField("Delete the role:");
+      .appendField("delete the role:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);
@@ -273,7 +273,7 @@ javascriptGenerator.forBlock["roles_delete"] = function (block, generator) {
 
 Blockly.Blocks["roles_rename"] = {
   init: function () {
-    this.appendValueInput("role").setCheck("role").appendField("Rename role:");
+    this.appendValueInput("role").setCheck("role").appendField("rename role:");
     this.appendValueInput("name").setCheck("String").appendField("new name:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);
@@ -292,7 +292,7 @@ Blockly.Blocks["roles_addToMember"] = {
   init: function () {
     this.appendValueInput("role")
       .setCheck(["role", "Array"])
-      .appendField("Add role:");
+      .appendField("add role:");
     this.appendValueInput("member")
       .setCheck("member")
       .appendField("to member:");
@@ -316,7 +316,7 @@ Blockly.Blocks["roles_removeFromMember"] = {
   init: function () {
     this.appendValueInput("role")
       .setCheck(["role", "Array"])
-      .appendField("Remove role:");
+      .appendField("remove role:");
     this.appendValueInput("member")
       .setCheck("member")
       .appendField("from member:");
@@ -340,7 +340,7 @@ Blockly.Blocks["roles_setPermissions"] = {
   init: function () {
     this.appendValueInput("permissions")
       .setCheck(["permission", "Array"])
-      .appendField("Set permissions:");
+      .appendField("set permissions:");
     this.appendValueInput("role").setCheck("role").appendField("to role:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);

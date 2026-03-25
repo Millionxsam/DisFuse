@@ -4,13 +4,13 @@ import { javascriptGenerator, Order } from "blockly/javascript";
 Blockly.Blocks["main_blockcreator"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("New block named:")
+      .appendField("new block named:")
       .appendField(new Blockly.FieldTextInput("block_name"), "NAME");
     this.appendStatementInput("INPUTS")
       .setCheck("Input")
-      .appendField("With inputs:");
+      .appendField("with inputs:");
     this.appendDummyInput()
-      .appendField("Set inputs:")
+      .appendField("set inputs:")
       .appendField(
         new Blockly.FieldDropdown([
           ["automatic", "null"],
@@ -20,7 +20,7 @@ Blockly.Blocks["main_blockcreator"] = {
         "INLINE"
       );
     this.appendDummyInput()
-      .appendField("Set type to:")
+      .appendField("set type to:")
       .appendField(
         new Blockly.FieldDropdown([
           ["no connections", "none"],
@@ -33,28 +33,28 @@ Blockly.Blocks["main_blockcreator"] = {
       );
     this.appendValueInput("OUTPUT")
       .setCheck(["OutputType", "Array"])
-      .appendField("Set output type to:")
+      .appendField("set output type to:")
       .setVisible(false);
     this.appendValueInput("PREVIOUSSTATEMENT")
       .setCheck(["OutputType", "Array"])
-      .appendField("Set previous statement to:")
+      .appendField("set previous statement to:")
       .setVisible(false);
     this.appendValueInput("NEXTSTATEMENT")
       .setCheck(["OutputType", "Array"])
-      .appendField("Set next statement to:")
+      .appendField("set next statement to:")
       .setVisible(false);
     this.appendDummyInput()
-      .appendField("Set description to:")
+      .appendField("set description to:")
       .appendField(new Blockly.FieldTextInput("description"), "DESCRIPTION");
     this.appendDummyInput()
-      .appendField("Set help url to:")
+      .appendField("set help url to:")
       .appendField(new Blockly.FieldTextInput("url"), "HELPURL");
     this.appendValueInput("COLOR")
       .setCheck("Color")
-      .appendField("Set color to:");
+      .appendField("set color to:");
     this.appendValueInput("OUTPUTCODE")
       .setCheck("String")
-      .appendField("Set output code to:");
+      .appendField("set output code to:");
     this.setInputsInline(false);
     this.setColour("#00a5ce");
     this.onchange = function () {

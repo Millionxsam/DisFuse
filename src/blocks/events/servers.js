@@ -8,7 +8,7 @@ import { javascriptGenerator } from "blockly/javascript";
 
 createEventBlock({
   id: "events_guild_created",
-  text: "When the bot is added to a server",
+  text: "when the bot is added to a server",
   colour: "#FF4F4F",
   event: "guildCreate",
   variables: "guildClientJoined",
@@ -29,14 +29,14 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_guild_created"],
       message:
-        "This block must be in the 'When the bot is added to a server' event",
+        "This block must be in the 'when the bot is added to a server' event",
     },
   ],
 );
 
 createEventBlock({
   id: "events_guild_deleted",
-  text: "When the bot is removed from a server",
+  text: "when the bot is removed from a server",
   colour: "#FF4F4F",
   event: "guildDelete",
   variables: "guildRemovedClient",
@@ -57,14 +57,14 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_guild_deleted"],
       message:
-        "This block must be in the 'When the bot is removed from a server' event",
+        "This block must be in the 'when the bot is removed from a server' event",
     },
   ],
 );
 
 Blockly.Blocks["events_guild_memberAdd"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a member joins a server");
+    this.appendDummyInput().appendField("when a member joins a server");
     this.setColour("#FF4F4F");
     this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(false);
@@ -116,14 +116,14 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["events_guild_memberAdd"],
-      message: "This block must be in the 'When a member joins a server' event",
+      message: "This block must be in the 'when a member joins a server' event",
     },
   ],
 );
 
 createEventBlock({
   id: "events_remove_guildmemberremove",
-  text: "When a member leaves / gets kicked from a server",
+  text: "when a member leaves / gets kicked from a server",
   colour: "#FF4F4F",
   event: "guildMemberRemove",
   variables: "leavingMember",
@@ -155,7 +155,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_remove_guildmemberremove"],
       message:
-        "This block must be in the 'When a member leaves / gets kicked from a server' event",
+        "This block must be in the 'when a member leaves / gets kicked from a server' event",
     },
   ],
 );

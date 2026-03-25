@@ -5,7 +5,7 @@ import { createMutatorBlock } from "../functions/createMutator.ts";
 
 Blockly.Blocks["sticker_getallinserver"] = {
   init: function () {
-    this.appendDummyInput().appendField("For each sticker on the server:");
+    this.appendDummyInput().appendField("for each sticker on the server:");
     this.appendValueInput("server").setCheck("server");
     this.appendStatementInput("code").setCheck("default");
     this.setPreviousStatement(true, "default");
@@ -231,7 +231,7 @@ Blockly.Blocks["sticker_delete"] = {
   init: function () {
     this.appendValueInput("sticker")
       .setCheck("sticker")
-      .appendField("Delete sticker:");
+      .appendField("delete sticker:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#7a9e37");
@@ -248,7 +248,7 @@ Blockly.Blocks["sticker_setname"] = {
   init: function () {
     this.appendValueInput("sticker")
       .setCheck("sticker")
-      .appendField("Rename the sticker:");
+      .appendField("rename the sticker:");
     this.appendValueInput("name").setCheck("String").appendField("to:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");

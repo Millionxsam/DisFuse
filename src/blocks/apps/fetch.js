@@ -4,7 +4,7 @@ import { Order, javascriptGenerator } from 'blockly/javascript';
 Blockly.Blocks['fetch_send'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Send')
+      .appendField('send')
       .appendField(
         new Blockly.FieldDropdown([
           ['GET', 'get'],
@@ -36,7 +36,7 @@ javascriptGenerator.forBlock['fetch_send'] = function (block, generator) {
 Blockly.Blocks['fetch_sendAdvanced'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('Send')
+      .appendField('send')
       .appendField(
         new Blockly.FieldDropdown([
           ['GET', 'get'],
@@ -49,7 +49,7 @@ Blockly.Blocks['fetch_sendAdvanced'] = {
       .appendField('request');
     this.appendValueInput('url').setCheck('String').appendField('URL:');
     this.appendStatementInput('config')
-      .appendField('Configs:')
+      .appendField('configs:')
       .setCheck('requestConfigSection');
     this.appendStatementInput('then').appendField('then:').setCheck('default');
     this.setPreviousStatement(true, 'default');
@@ -77,7 +77,7 @@ javascriptGenerator.forBlock['fetch_sendAdvanced'] = function (
 
 Blockly.Blocks['fetch_configSection'] = {
   init: function () {
-    this.appendValueInput('key').setCheck('String').appendField('Add config:');
+    this.appendValueInput('key').setCheck('String').appendField('add config:');
     this.appendValueInput('value').appendField('with value:');
     this.setPreviousStatement(true, 'requestConfigSection');
     this.setNextStatement(true, 'requestConfigSection');

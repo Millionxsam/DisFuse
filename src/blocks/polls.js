@@ -9,7 +9,7 @@ Blockly.Blocks["poll_create"] = {
     };
 
     this.appendDummyInput()
-      .appendField("Create a poll named")
+      .appendField("create a poll named")
       .appendField(new Blockly.FieldTextInput("poll", validator), "NAME");
     this.appendValueInput("QUESTION")
       .setCheck("String")
@@ -71,7 +71,7 @@ javascriptGenerator.forBlock["poll_create"] = function (block, generator) {
 
 Blockly.Blocks["poll_choice"] = {
   init: function () {
-    this.appendDummyInput().appendField("Create a choice");
+    this.appendDummyInput().appendField("create a choice");
     this.appendValueInput("TEXT").setCheck("String").appendField("with text:");
     this.appendValueInput("EMOJI")
       .setCheck(["String", "emoji"])
@@ -115,7 +115,7 @@ Blockly.Blocks["poll_sendchannel"] = {
     };
 
     this.appendDummyInput()
-      .appendField("Send poll named:")
+      .appendField("send poll named:")
       .appendField(new Blockly.FieldTextInput("poll", validator), "NAME");
     this.appendValueInput("CHANNEL")
       .setCheck("channel")
@@ -156,7 +156,7 @@ createRestrictions(
 
 Blockly.Blocks["poll_whenvoteadded"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a vote is added to a poll");
+    this.appendDummyInput().appendField("when a vote is added to a poll");
     this.appendStatementInput("CODE").setCheck("default");
     this.setColour("#656b75");
     this.setTooltip(
@@ -229,7 +229,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["poll_whenvoteadded"],
       message:
-        "This block must be in the 'When a vote is added to a poll' event",
+        "This block must be in the 'when a vote is added to a poll' event",
     },
   ],
 );

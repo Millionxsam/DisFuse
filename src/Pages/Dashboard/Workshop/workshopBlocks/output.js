@@ -7,7 +7,7 @@ Blockly.Blocks["output_valueInput"] = {
       .appendField("get value input with name:")
       .appendField(new Blockly.FieldTextInput("name"), "name");
     this.appendDummyInput()
-      .appendField("Order:")
+      .appendField("order:")
       .appendField(
         new Blockly.FieldDropdown([
           ["none", "Order.NONE"],

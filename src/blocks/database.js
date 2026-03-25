@@ -5,7 +5,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["db_create"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Create database with name:")
+      .appendField("create database with name:")
       .appendField(new Blockly.FieldTextInput("database"), "name")
       .appendField("with file:")
       .appendField(new Blockly.FieldTextInput("database"), "path")
@@ -52,7 +52,7 @@ Blockly.Blocks["db_all"] = {
 
 Blockly.Blocks["db_set"] = {
   init: function () {
-    this.appendValueInput("id").setCheck("String").appendField("Set");
+    this.appendValueInput("id").setCheck("String").appendField("set");
     this.appendValueInput("val").setCheck(null).appendField("to");
     this.appendDummyInput()
       .appendField("in the database with the name:")
@@ -66,7 +66,7 @@ Blockly.Blocks["db_set"] = {
 
 Blockly.Blocks["db_del"] = {
   init: function () {
-    this.appendValueInput("id").setCheck("String").appendField("Delete");
+    this.appendValueInput("id").setCheck("String").appendField("delete");
     this.appendDummyInput()
       .appendField("in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
@@ -79,7 +79,7 @@ Blockly.Blocks["db_del"] = {
 
 Blockly.Blocks["db_add"] = {
   init: function () {
-    this.appendValueInput("val").setCheck("Number").appendField("Add");
+    this.appendValueInput("val").setCheck("Number").appendField("add");
     this.appendValueInput("id").setCheck("String").appendField("to");
     this.appendDummyInput()
       .appendField("in the database with the name:")
@@ -93,7 +93,7 @@ Blockly.Blocks["db_add"] = {
 
 Blockly.Blocks["db_sub"] = {
   init: function () {
-    this.appendValueInput("val").setCheck("Number").appendField("Subtract");
+    this.appendValueInput("val").setCheck("Number").appendField("subtract");
     this.appendValueInput("id").setCheck("String").appendField("from");
     this.appendDummyInput()
       .appendField("in the database with the name:")
@@ -107,7 +107,7 @@ Blockly.Blocks["db_sub"] = {
 
 Blockly.Blocks["db_push"] = {
   init: function () {
-    this.appendValueInput("val").setCheck(null).appendField("Push");
+    this.appendValueInput("val").setCheck(null).appendField("push");
     this.appendValueInput("id").setCheck("String").appendField("to");
     this.appendDummyInput()
       .appendField("in the database with the name:")
@@ -122,7 +122,7 @@ Blockly.Blocks["db_push"] = {
 Blockly.Blocks["db_clear"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Clear all data in the database with the name:")
+      .appendField("clear all data in the database with the name:")
       .appendField(new Blockly.FieldTextInput("database"), "db");
     this.setInputsInline(true);
     this.setPreviousStatement(true, "default");

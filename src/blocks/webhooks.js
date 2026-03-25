@@ -5,7 +5,7 @@ import { createRestrictions } from "../functions/restrictions";
 Blockly.Blocks["webhooks_create"] = {
   init: function () {
     this.appendValueInput("name")
-      .appendField("Create a webhook with the name:")
+      .appendField("create a webhook with the name:")
       .setCheck("String");
     this.appendValueInput("avatar")
       .setCheck("String")
@@ -37,7 +37,7 @@ Blockly.Blocks["webhooks_send"] = {
   init: function () {
     this.appendValueInput("webhook")
       .setCheck("webhook")
-      .appendField("Send a message as webhook:");
+      .appendField("send a message as webhook:");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -77,7 +77,7 @@ Blockly.Blocks["webhooks_delete"] = {
   init: function () {
     this.appendValueInput("webhook")
       .setCheck("webhook")
-      .appendField("Delete the webhook:");
+      .appendField("delete the webhook:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4f85db");
@@ -95,7 +95,7 @@ Blockly.Blocks["webhooks_edit"] = {
   init: function () {
     this.appendValueInput("webhook")
       .setCheck("webhook")
-      .appendField("Edit the webhook:");
+      .appendField("edit the webhook:");
     this.appendValueInput("name")
       .appendField("with new name:")
       .setCheck("String");

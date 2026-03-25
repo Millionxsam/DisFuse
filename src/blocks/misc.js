@@ -8,7 +8,7 @@ createMutatorBlock({
   optionsBlockId: "misc_int_reply_mutator_options",
   colour: "#4192E9",
   inputs: [
-    { type: "dummy", label: "Reply to the interaction" },
+    { type: "dummy", label: "reply to the interaction" },
     { type: "value", name: "content", check: "String", label: "content:" },
     {
       type: "value",
@@ -210,7 +210,7 @@ createRestrictions(
 
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a row");
+    this.appendDummyInput().appendField("add a row");
     this.appendStatementInput("components")
       .setCheck("default")
       .appendField("with:");
@@ -222,7 +222,7 @@ Blockly.Blocks["misc_addrow"] = {
 
 Blockly.Blocks["misc_int_deferReply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Defer reply");
+    this.appendDummyInput().appendField("defer reply");
     this.appendValueInput("ephemeral")
       .appendField("visible only to the user?")
       .setCheck("Boolean");
@@ -357,7 +357,7 @@ Blockly.Blocks["misc_addFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Add file from path:");
+      .appendField("add file from path:");
     this.setPreviousStatement(true, "files");
     this.setNextStatement(true, "files");
     this.setColour("4192E9");
@@ -382,7 +382,7 @@ createRestrictions(
 
 Blockly.Blocks["misc_createcontainer"] = {
   init: function () {
-    this.appendDummyInput().appendField("Set slash commands / context menus");
+    this.appendDummyInput().appendField("set slash commands / context menus");
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands and menus):");
@@ -400,7 +400,7 @@ Blockly.Blocks["misc_createcontainer"] = {
 Blockly.Blocks["misc_createcontainer_global"] = {
   init: function () {
     this.appendDummyInput().appendField(
-      "Create slash commands / context menus"
+      "create slash commands / context menus"
     );
     this.appendValueInput("guild")
       .setCheck("String")

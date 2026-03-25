@@ -4,7 +4,7 @@ import { createRestrictions } from "../../functions/restrictions";
 
 Blockly.Blocks["canvas_createCanvas"] = {
   init: function () {
-    this.appendDummyInput().appendField("Create new canvas");
+    this.appendDummyInput().appendField("create new canvas");
     this.appendValueInput("WIDTH").setCheck("Number").appendField("width:");
     this.appendValueInput("HEIGHT").setCheck("Number").appendField("height:");
     this.appendStatementInput("DO").appendField("then");
@@ -32,7 +32,7 @@ Blockly.Blocks["canvas_setFillColor"] = {
   init: function () {
     this.appendValueInput("COLOR")
       .setCheck("Colour")
-      .appendField("Set fill color to");
+      .appendField("set fill color to");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -50,7 +50,7 @@ Blockly.Blocks["canvas_setStrokeColor"] = {
   init: function () {
     this.appendValueInput("COLOR")
       .setCheck("Colour")
-      .appendField("Set stroke color to");
+      .appendField("set stroke color to");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -68,7 +68,7 @@ Blockly.Blocks["canvas_setLineWidth"] = {
   init: function () {
     this.appendValueInput("WIDTH")
       .setCheck("Number")
-      .appendField("Set line width to");
+      .appendField("set line width to");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -86,8 +86,8 @@ Blockly.Blocks["canvas_drawRectangle"] = {
   init: function () {
     this.appendValueInput("X")
       .setCheck("Number")
-      .appendField("Rectangle at X:");
-    this.appendValueInput("Y").setCheck("Number").appendField("Y:");
+      .appendField("rectangle at X:");
+    this.appendValueInput("Y").setCheck("Number").appendField("y:");
     this.appendValueInput("W").setCheck("Number").appendField("width:");
     this.appendValueInput("H").setCheck("Number").appendField("height:");
     this.setInputsInline(true);
@@ -107,8 +107,8 @@ javascriptGenerator.forBlock["canvas_drawRectangle"] = (block) => {
 
 Blockly.Blocks["canvas_drawCircle"] = {
   init: function () {
-    this.appendValueInput("X").setCheck("Number").appendField("Circle at X:");
-    this.appendValueInput("Y").setCheck("Number").appendField("Y:");
+    this.appendValueInput("X").setCheck("Number").appendField("circle at X:");
+    this.appendValueInput("Y").setCheck("Number").appendField("y:");
     this.appendValueInput("R").setCheck("Number").appendField("radius:");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
@@ -126,10 +126,10 @@ javascriptGenerator.forBlock["canvas_drawCircle"] = (block) => {
 
 Blockly.Blocks["canvas_drawLine"] = {
   init: function () {
-    this.appendValueInput("X1").setCheck("Number").appendField("Line from X:");
-    this.appendValueInput("Y1").setCheck("Number").appendField("Y:");
+    this.appendValueInput("X1").setCheck("Number").appendField("line from X:");
+    this.appendValueInput("Y1").setCheck("Number").appendField("y:");
     this.appendValueInput("X2").setCheck("Number").appendField("to X:");
-    this.appendValueInput("Y2").setCheck("Number").appendField("Y:");
+    this.appendValueInput("Y2").setCheck("Number").appendField("y:");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -147,7 +147,7 @@ javascriptGenerator.forBlock["canvas_drawLine"] = (block) => {
 
 Blockly.Blocks["canvas_setFont"] = {
   init: function () {
-    this.appendValueInput("FONT").setCheck("String").appendField("Set font to");
+    this.appendValueInput("FONT").setCheck("String").appendField("set font to");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -163,9 +163,9 @@ javascriptGenerator.forBlock["canvas_setFont"] = (block) =>
 
 Blockly.Blocks["canvas_fillText"] = {
   init: function () {
-    this.appendValueInput("TEXT").setCheck("String").appendField("Fill text");
+    this.appendValueInput("TEXT").setCheck("String").appendField("fill text");
     this.appendValueInput("X").setCheck("Number").appendField("at X:");
-    this.appendValueInput("Y").setCheck("Number").appendField("Y:");
+    this.appendValueInput("Y").setCheck("Number").appendField("y:");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -182,9 +182,9 @@ javascriptGenerator.forBlock["canvas_fillText"] = (block) => {
 
 Blockly.Blocks["canvas_strokeText"] = {
   init: function () {
-    this.appendValueInput("TEXT").setCheck("String").appendField("Stroke text");
+    this.appendValueInput("TEXT").setCheck("String").appendField("stroke text");
     this.appendValueInput("X").setCheck("Number").appendField("at X:");
-    this.appendValueInput("Y").setCheck("Number").appendField("Y:");
+    this.appendValueInput("Y").setCheck("Number").appendField("y:");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -203,9 +203,9 @@ Blockly.Blocks["canvas_drawImage"] = {
   init: function () {
     this.appendValueInput("SRC")
       .setCheck("String")
-      .appendField("Draw image from URL");
+      .appendField("draw image from URL");
     this.appendValueInput("X").setCheck("Number").appendField("at X:");
-    this.appendValueInput("Y").setCheck("Number").appendField("Y:");
+    this.appendValueInput("Y").setCheck("Number").appendField("y:");
     this.appendValueInput("W").setCheck("Number").appendField("width:");
     this.appendValueInput("H").setCheck("Number").appendField("height:");
     this.setInputsInline(false);
@@ -230,7 +230,7 @@ javascriptGenerator.forBlock["canvas_drawImage"] = (block) => {
 
 Blockly.Blocks["canvas_save"] = {
   init: function () {
-    this.appendDummyInput().appendField("Save canvas state");
+    this.appendDummyInput().appendField("save canvas state");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -239,7 +239,7 @@ Blockly.Blocks["canvas_save"] = {
 javascriptGenerator.forBlock["canvas_save"] = () => `ctx.save();\n`;
 Blockly.Blocks["canvas_restore"] = {
   init: function () {
-    this.appendDummyInput().appendField("Restore canvas state");
+    this.appendDummyInput().appendField("restore canvas state");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -250,7 +250,7 @@ Blockly.Blocks["canvas_rotate"] = {
   init: function () {
     this.appendValueInput("ANGLE")
       .setCheck("Number")
-      .appendField("Rotate by (rad)");
+      .appendField("rotate by (rad)");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -266,8 +266,8 @@ Blockly.Blocks["canvas_translate"] = {
   init: function () {
     this.appendValueInput("DX")
       .setCheck("Number")
-      .appendField("Translate X by");
-    this.appendValueInput("DY").setCheck("Number").appendField("Y by");
+      .appendField("translate X by");
+    this.appendValueInput("DY").setCheck("Number").appendField("y by");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -283,7 +283,7 @@ javascriptGenerator.forBlock["canvas_translate"] = (block) =>
 
 Blockly.Blocks["canvas_clearCanvas"] = {
   init: function () {
-    this.appendDummyInput().appendField("Clear canvas");
+    this.appendDummyInput().appendField("clear canvas");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour("#4C9F70");
@@ -317,7 +317,7 @@ javascriptGenerator.forBlock["canvas_height"] = () => [
 
 Blockly.Blocks["canvas_addFile"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add canvas as file");
+    this.appendDummyInput().appendField("add canvas as file");
     this.setPreviousStatement(true, "files");
     this.setNextStatement(true, "files");
     this.setColour("#4C9F70");
@@ -366,7 +366,7 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["canvas_createCanvas"],
-      message: 'This block must be inside a "Create new canvas" block.',
+      message: 'This block must be inside a "create new canvas" block.',
     },
   ]
 );

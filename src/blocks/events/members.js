@@ -6,7 +6,7 @@ import { createRestrictions } from "../../functions/restrictions";
 
 createEventBlock({
   id: "events_members_nickname",
-  text: "When a member's nickname changes",
+  text: "when a member's nickname changes",
   colour: "#FF4F4F",
   event: "guildMemberNicknameUpdate",
   variables: ["member", "oldNickname", "newNickname"],
@@ -38,7 +38,7 @@ createEventVariable({
 
 createEventBlock({
   id: "events_members_addRole",
-  text: "When a member is given a role",
+  text: "when a member is given a role",
   colour: "#FF4F4F",
   event: "guildMemberRoleAdd",
   variables: ["member", "role"],
@@ -62,7 +62,7 @@ createEventVariable({
 
 createEventBlock({
   id: "events_members_removeRole",
-  text: "When a member is removed from a role",
+  text: "when a member is removed from a role",
   colour: "#FF4F4F",
   event: "guildMemberRoleRemove",
   variables: ["member", "role"],
@@ -91,7 +91,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_members_addRole"],
       message:
-        "This block must be in the 'When a member is given a role' event",
+        "This block must be in the 'when a member is given a role' event",
     },
   ]
 );
@@ -103,7 +103,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["events_members_removeRole"],
       message:
-        "This block must be in the 'When a member is removed from a role' event",
+        "This block must be in the 'when a member is removed from a role' event",
     },
   ]
 );

@@ -4,7 +4,7 @@ import { Order, javascriptGenerator } from 'blockly/javascript';
 Blockly.Blocks['events_custom'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField('When client receives')
+      .appendField('when client receives')
       .appendField(new Blockly.FieldTextInput('event'), 'event')
       .appendField('parameters:')
       .appendField(new Blockly.FieldTextInput('abc, def'), 'parameters');

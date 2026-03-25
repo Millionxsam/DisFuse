@@ -5,7 +5,7 @@ import { createMutatorBlock } from "../functions/createMutator.ts";
 
 Blockly.Blocks["slash_received"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a slash command is received");
+    this.appendDummyInput().appendField("when a slash command is received");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#3366CC");
@@ -17,7 +17,7 @@ createMutatorBlock({
   optionsBlockId: "slash_create_mutator_options",
   colour: "#3366CC",
   inputs: [
-    { type: "dummy", label: "Add slash command" },
+    { type: "dummy", label: "add slash command" },
     { type: "value", name: "name", check: "String", label: "name:" },
     { type: "value", name: "dsc", check: "String", label: "description:" },
   ],
@@ -88,7 +88,7 @@ javascriptGenerator.forBlock["slash_create_mutator"] = function (
 Blockly.Blocks["slash_addoption"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Add")
+      .appendField("add")
       .appendField(
         new Blockly.FieldDropdown([
           ["text", "3"],
@@ -121,7 +121,7 @@ Blockly.Blocks["slash_addoption"] = {
 
 Blockly.Blocks["slash_addchoice"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add choice");
+    this.appendDummyInput().appendField("add choice");
     this.appendValueInput("name")
       .setCheck("String")
       .appendField("name (shown to user):");
@@ -137,7 +137,7 @@ Blockly.Blocks["slash_addchoice"] = {
 
 Blockly.Blocks["slash_addsubcommandgroup"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add subcommand group");
+    this.appendDummyInput().appendField("add subcommand group");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
     this.appendStatementInput("subcommands")
@@ -160,7 +160,7 @@ Blockly.Blocks["slash_name"] = {
 
 Blockly.Blocks["slash_addsubcommand"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add subcommand");
+    this.appendDummyInput().appendField("add subcommand");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
     this.appendStatementInput("options")

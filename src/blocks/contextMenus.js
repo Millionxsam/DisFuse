@@ -6,7 +6,7 @@ Blockly.Blocks["contextMenu_create"] = {
   init: function () {
     this.appendValueInput("name")
       .setCheck("String")
-      .appendField("Add context menu with name:");
+      .appendField("add context menu with name:");
     this.appendDummyInput()
       .appendField("set type to")
       .appendField(
@@ -43,7 +43,7 @@ javascriptGenerator.forBlock["contextMenu_create"] = function (
 
 Blockly.Blocks["contextMenu_received"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a context menu is clicked");
+    this.appendDummyInput().appendField("when a context menu is clicked");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#00A859");
@@ -225,7 +225,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: ["contextMenu_received"],
       message:
-        'This block must be under "When a context menu is clicked" event',
+        'This block must be under "when a context menu is clicked" event',
     },
   ]
 );

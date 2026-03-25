@@ -6,7 +6,7 @@ Blockly.Blocks["fs_readFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Read file from path:");
+      .appendField("read file from path:");
     this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -40,7 +40,7 @@ Blockly.Blocks["fs_writeFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Create/overwrite file at path:");
+      .appendField("create/overwrite file at path:");
     this.appendValueInput("data").setCheck("String").appendField("with data:");
     this.appendStatementInput("then").appendField("then:");
     this.setPreviousStatement(true, "default");
@@ -68,7 +68,7 @@ Blockly.Blocks["fs_readdir"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("For each file at path:");
+      .appendField("for each file at path:");
     this.appendStatementInput("doo");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -120,7 +120,7 @@ Blockly.Blocks["fs_deleteFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Delete file from path:");
+      .appendField("delete file from path:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#eb8334");
@@ -140,10 +140,10 @@ Blockly.Blocks["fs_renameFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Rename file from path:");
+      .appendField("rename file from path:");
     this.appendValueInput("newpath")
       .setCheck("String")
-      .appendField("New path:");
+      .appendField("new path:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#eb8334");
@@ -164,7 +164,7 @@ Blockly.Blocks["fs_sendFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Send file from path:");
+      .appendField("send file from path:");
     this.appendValueInput("channel")
       .setCheck("channel")
       .appendField("to channel:");

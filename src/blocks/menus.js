@@ -5,7 +5,7 @@ import { isValidEmoji } from "../functions/fixers";
 
 Blockly.Blocks["menus_add"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a menu");
+    this.appendDummyInput().appendField("add a menu");
     this.appendValueInput("placeholder")
       .setCheck("String")
       .appendField("placeholder:");
@@ -26,7 +26,7 @@ Blockly.Blocks["menus_add"] = {
 
 Blockly.Blocks["menus_addChannelMenu"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a channel menu");
+    this.appendDummyInput().appendField("add a channel menu");
     this.appendValueInput("placeholder")
       .setCheck("String")
       .appendField("placeholder:");
@@ -84,7 +84,7 @@ javascript.javascriptGenerator.forBlock["menus_addChannelMenu"] = function (
 
 Blockly.Blocks["menus_addRoleMenu"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a role menu");
+    this.appendDummyInput().appendField("add a role menu");
     this.appendValueInput("placeholder")
       .setCheck("String")
       .appendField("placeholder:");
@@ -133,7 +133,7 @@ javascript.javascriptGenerator.forBlock["menus_addRoleMenu"] = function (
 
 Blockly.Blocks["menus_addMentionableMenu"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a mentionable menu");
+    this.appendDummyInput().appendField("add a mentionable menu");
     this.appendValueInput("placeholder")
       .setCheck("String")
       .appendField("placeholder:");
@@ -178,7 +178,7 @@ javascript.javascriptGenerator.forBlock["menus_addMentionableMenu"] = function (
 
 Blockly.Blocks["menus_addUserMenu"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add a user menu");
+    this.appendDummyInput().appendField("add a user menu");
     this.appendValueInput("placeholder")
       .setCheck("String")
       .appendField("placeholder:");
@@ -223,7 +223,7 @@ javascript.javascriptGenerator.forBlock["menus_addUserMenu"] = function (
 
 Blockly.Blocks["menus_addoption"] = {
   init: function () {
-    this.appendDummyInput().appendField("Add an option");
+    this.appendDummyInput().appendField("add an option");
     this.appendValueInput("label").setCheck("String").appendField("label:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
     this.appendValueInput("emoji").setCheck("String").appendField("emoji:");
@@ -243,7 +243,7 @@ Blockly.Blocks["menus_addoption"] = {
 
 Blockly.Blocks["menus_event"] = {
   init: function () {
-    this.appendDummyInput().appendField("When a menu is clicked");
+    this.appendDummyInput().appendField("when a menu is clicked");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#26A483");
@@ -300,7 +300,7 @@ Blockly.Blocks["menus_server"] = {
 
 Blockly.Blocks["menus_reply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Reply to the click");
+    this.appendDummyInput().appendField("reply to the click");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
     this.setPreviousStatement(true, "default");
@@ -313,7 +313,7 @@ Blockly.Blocks["menus_reply"] = {
 
 Blockly.Blocks["menus_edit"] = {
   init: function () {
-    this.appendDummyInput().appendField("Edit the reply");
+    this.appendDummyInput().appendField("edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
     this.setPreviousStatement(true, "default");
@@ -325,7 +325,7 @@ Blockly.Blocks["menus_edit"] = {
 
 Blockly.Blocks["menus_update"] = {
   init: function () {
-    this.appendDummyInput().appendField("Update the original message");
+    this.appendDummyInput().appendField("update the original message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
     this.appendValueInput("embeds").setCheck("String").appendField("embed(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
@@ -338,7 +338,7 @@ Blockly.Blocks["menus_update"] = {
 
 Blockly.Blocks["menus_del"] = {
   init: function () {
-    this.appendDummyInput().appendField("Delete the reply by the bot");
+    this.appendDummyInput().appendField("delete the reply by the bot");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");
@@ -534,7 +534,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["menus_event"],
-      message: 'This block must be in a "When a menu is clicked" event',
+      message: 'This block must be in a "when a menu is clicked" event',
     },
   ]
 );
@@ -545,7 +545,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["menus_event"],
-      message: 'This block must be in a "When a menu is clicked" event',
+      message: 'This block must be in a "when a menu is clicked" event',
     },
     {
       type: "notEmpty",
