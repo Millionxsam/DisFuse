@@ -10,10 +10,32 @@ export default function PubProject({ project }) {
       <div className="pubProject">
         <div className="info">
           <div className="name-container">
-            <h1>{project.name}</h1>
-            {project.private ? <i className="fa-solid fa-lock"></i> : ""}
+            <h1>
+              {!project.botPrivate ? (
+                <img
+                  src={
+                    "https://cdn.discordapp.com/avatars/" +
+                    project?.bot?.id +
+                    "/" +
+                    project?.bot?.avatar +
+                    ".png"
+                  }
+                  alt="Bot avatar"
+                />
+              ) : (
+                ""
+              )}
+              {project.name}
+            </h1>
+            {project.private && project.botPrivate ? (
+              <i className="fa-solid fa-lock"></i>
+            ) : (
+              ""
+            )}
           </div>
-          {project.private && project.owner !== userCache?.user._id ? (
+          {project.private &&
+          project.botPrivate &&
+          project.owner !== userCache?.user._id ? (
             <i style={{ opacity: ".5" }}>Only visible to staff</i>
           ) : (
             ""
@@ -34,13 +56,33 @@ export default function PubProject({ project }) {
           <p>{project.clones.length} Clones</p>
         </div>
 
-        <div className="buttons">
-          <Link to={`/@${project.owner.username}/${project._id}`}>
-            <button>
-              <i className="fa-solid fa-eye"></i> View
-            </button>
-          </Link>
-        </div>
+        {!project.private && project.botPrivate ? (
+          <div className="buttons">
+            <Link to={`/@${project.owner.username}/${project._id}`}>
+              <button style={{ borderRadius: "var(--button-radius)" }}>
+                <i className="fa-solid fa-eye"></i> View
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className="buttons">
+            <Link to={`/@${project.owner.username}/${project._id}`}>
+              <button>
+                <i className="fa-solid fa-eye"></i> View
+              </button>
+            </Link>
+            <Link
+              target="_blank"
+              rel="noopener"
+              to={`https://discord.com/oauth2/authorize?client_id=${project.bot?.id}&scope=bot&permissions=${project.permissions || 0}`}
+            >
+              <button>
+                <i className="fa-solid fa-arrow-up-right-from-square"></i> Add
+                Bot
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );

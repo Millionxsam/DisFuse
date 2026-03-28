@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { userCache } from "../cache.ts";
+import modalThemeColor from "../functions/modalThemeColor.js";
 
 const { apiUrl } = require("../config/config.js");
 
@@ -12,8 +13,8 @@ export default function InviteModal({ project, onSave }) {
   useEffect(() => {
     setCollaborators(
       (project.collaborators || []).map((u) =>
-        allUsers.find((user) => user.id === u)
-      )
+        allUsers.find((user) => user.id === u),
+      ),
     );
 
     document.querySelector("button.invite").addEventListener("click", () => {
@@ -22,8 +23,8 @@ export default function InviteModal({ project, onSave }) {
       document.querySelector(".inviteModal").showModal();
       setCollaborators(
         (project.collaborators || []).map((u) =>
-          allUsers.find((user) => user.id === u)
-        )
+          allUsers.find((user) => user.id === u),
+        ),
       );
     });
   }, [allUsers, project.collaborators, project.owner?.id]);
@@ -111,7 +112,7 @@ export default function InviteModal({ project, onSave }) {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        }
+        },
       )
       .then(({ data }) => {
         Swal.fire({
@@ -122,6 +123,7 @@ export default function InviteModal({ project, onSave }) {
           position: "top-right",
           timerProgressBar: true,
           showConfirmButton: false,
+          ...modalThemeColor(userCache.user),
         });
 
         document.querySelector(".inviteModal").close();

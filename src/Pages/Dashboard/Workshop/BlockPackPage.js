@@ -10,6 +10,8 @@ import ReactMarkdown from "react-markdown";
 import getToolbox from "../../../config/toolbox";
 import LoadingAnim from "../../../components/LoadingAnim";
 import remarkGfm from "remark-gfm";
+import modalThemeColor from "../../../functions/modalThemeColor.js";
+import { userCache } from "../../../cache.ts";
 
 const { apiUrl, discordUrl } = require("../../../config/config.js");
 
@@ -101,12 +103,12 @@ export default function BlockPackPage() {
                   minScale: 0.3,
                   scaleSpeed: 1.2,
                 },
-              }
+              },
             );
 
             registerCustomBlocks(
               pack.versions[pack.versions.length - 1]?.blocks || [],
-              previewWs
+              previewWs,
             );
 
             previewWs.updateToolbox(getToolbox([pack]));
@@ -184,8 +186,8 @@ export default function BlockPackPage() {
                     flag.type === "info"
                       ? "fa-circle-info"
                       : flag.type === "warning"
-                      ? "fa-triangle-exclamation"
-                      : "fa-circle-exclamation"
+                        ? "fa-triangle-exclamation"
+                        : "fa-circle-exclamation"
                   }`}
                 ></i>
                 <p>{flag.value}</p>
@@ -220,7 +222,7 @@ export default function BlockPackPage() {
                     <h2>{block.name}</h2> - <p>{block.description}</p>
                   </div>
                 );
-              }
+              },
             )
           ) : (
             <p>No blocks found</p>
@@ -275,7 +277,7 @@ export default function BlockPackPage() {
       .patch(
         apiUrl + `/workshop/${packId}/users`,
         {},
-        { headers: { Authorization: localStorage.getItem("disfuse-token") } }
+        { headers: { Authorization: localStorage.getItem("disfuse-token") } },
       )
       .then((res) => {
         setPack(res.data);
@@ -291,6 +293,7 @@ export default function BlockPackPage() {
             showConfirmButton: false,
             icon: "success",
             position: "top-right",
+            ...modalThemeColor(userCache.user),
           });
         } else {
           setNewInstall(false);
@@ -303,6 +306,7 @@ export default function BlockPackPage() {
             showConfirmButton: false,
             icon: "success",
             position: "top-right",
+            ...modalThemeColor(userCache.user),
           });
         }
       });

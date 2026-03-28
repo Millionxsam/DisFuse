@@ -94,46 +94,46 @@ export default function Home() {
         <div className="body">
           <h2 className="hidden">Why DisFuse?</h2>
           <div className="features">
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-eye-slash"></i>
               Private/public projects
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-shapes"></i>
               Custom & community-made blocks
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-user-group"></i>
               Multi-user Collaboration
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-comments"></i>
               View and comment on other projects
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-lock"></i>
               Built-in secrets (environment variables)
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-cubes"></i>
               Built-in and user-made templates
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-brands fa-square-js"></i>
               Advanced Discord features
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-desktop"></i>
               Easy-to-use and organized environment
             </div>
-            <div className="hidden">
+            <div>
               <i className="fa-solid fa-gears"></i>
               Workspace settings
             </div>
           </div>
           <h2 className="hidden">Reviews</h2>
           <div className="reviews">
-            <div className="userReview hidden">
+            <div className="userReview">
               <h1>izorc</h1>
               <p>
                 ⭐⭐⭐⭐⭐ Disfuse is a very good platform to code your discord
@@ -144,7 +144,7 @@ export default function Home() {
             </div>
 
             <div className="reviewGroup">
-              <div className="userReview hidden" style={{ width: "55%" }}>
+              <div className="userReview" style={{ width: "55%" }}>
                 <h1>WhisPro</h1>
                 <p>
                   Very epic! They listen to the community and update Disfuse
@@ -152,50 +152,50 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="userReview hidden" style={{ width: "45%" }}>
+              <div className="userReview" style={{ width: "45%" }}>
                 <h1>Aggareth</h1>
                 <p>
-                  ⭐️⭐️⭐️⭐️⭐️ ["Great Service","Best Support","Friendly
-                  Community ","LOVE"]
+                  ⭐️⭐️⭐️⭐️⭐️ ["Great Service","Best Support","Friendly Community
+                  ","LOVE"]
                 </p>
               </div>
             </div>
-            <div className="userReview hidden">
+            <div className="userReview">
               <h1>bubbel</h1>
               <p>
-                Definitely ⭐️⭐️⭐️⭐️⭐️. I wouldn’t have been able to make
-                this bot without it. I know it might be a bit unstable but it’s
-                a new project so it makes sense for bugs! I haven’t encountered
-                any myself yet so that’s good
+                Definitely ⭐️⭐️⭐️⭐️⭐️. I wouldn’t have been able to make this
+                bot without it. I know it might be a bit unstable but it’s a new
+                project so it makes sense for bugs! I haven’t encountered any
+                myself yet so that’s good
               </p>
             </div>
 
             <div className="reviewGroup">
-              <div className="userReview hidden" style={{ width: "45%" }}>
+              <div className="userReview" style={{ width: "45%" }}>
                 <h1>reem</h1>
                 <p>⭐️⭐️⭐️⭐️⭐️ It's much better than S4D</p>
               </div>
-              <div className="userReview hidden" style={{ width: "55%" }}>
+              <div className="userReview" style={{ width: "55%" }}>
                 <h1>schvarts11</h1>
                 <p>⭐️⭐️⭐️⭐️⭐️ You are the best!!!!!!!!!!!!!</p>
               </div>
             </div>
 
             <div className="reviewGroup">
-              <div className="userReview hidden">
+              <div className="userReview">
                 <h1>flipflop99</h1>
                 <p>⭐⭐⭐⭐⭐ very good</p>
               </div>
-              <div className="userReview hidden">
+              <div className="userReview">
                 <h1>ItzCherokee</h1>
                 <p>⭐️⭐️⭐️⭐️⭐️ Just Great.</p>
               </div>
-              <div className="userReview hidden">
+              <div className="userReview">
                 <h1>Alejo.14</h1>
                 <p>⭐⭐⭐⭐⭐ cuz is cool</p>
               </div>
             </div>
-            <div className="userReview hidden">
+            <div className="userReview">
               <h1>Arci</h1>
               <p>
                 Disfuse is an amazing community! The members are incredibly

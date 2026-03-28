@@ -164,7 +164,10 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
       console.log(client.user.tag + " is logged in!");
     });
         
-    ${code}`;
+    ${code}
+    
+    client.login("${project.botToken}");
+    `;
   return beautifyJs(js, {
     indent_size: 2,
     preserve_newlines: true,

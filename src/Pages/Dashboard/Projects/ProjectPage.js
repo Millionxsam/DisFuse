@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import UserTag from "../../../components/UserTag";
-import Swal from "sweetalert2";
 import Comment from "../../../components/Comment";
 import LoadingAnim from "../../../components/LoadingAnim";
 
@@ -16,6 +15,8 @@ export default function ProjectPage() {
   const [newLike, setNewLike] = useState(false);
   const [newFav, setNewFav] = useState(false);
   const [isLoading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const { projectId } = useParams();
 
@@ -99,95 +100,12 @@ export default function ProjectPage() {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        }
+        },
       )
       .then(({ data }) => {
         if (data.favorites.includes(favId)) setNewFav(true);
         setUser(data);
       });
-  }
-
-  function cloneProject() {
-    if (!project.name) return;
-
-    const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3"],
-      animation: false,
-      confirmButtonText: "Next >",
-    });
-
-    (async () => {
-      let name, dsc, isPrivate;
-      let cancelled = false;
-
-      await Queue.fire({
-        title: "Enter your project name",
-        input: "text",
-        inputValue: project.name + " Clone",
-        inputPlaceholder: "DisFuse Project",
-        showCancelButton: true,
-        inputValidator: (i) => {
-          if (i.length >= 3) return false;
-          else return "The name must be at least 3 characters";
-        },
-        animation: true,
-        currentProgressStep: 0,
-      }).then((result) => {
-        if (result.isConfirmed) name = result.value;
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      await Queue.fire({
-        title: "Enter the description (optional)",
-        currentProgressStep: 1,
-        input: "text",
-        showCancelButton: true,
-        inputPlaceholder: "Some description",
-      }).then((result) => {
-        if (result.isConfirmed) dsc = result.value;
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      await Queue.fire({
-        title: "Project Visibility",
-        currentProgressStep: 2,
-        showCancelButton: true,
-        confirmButtonText: "Create",
-        input: "select",
-        inputOptions: {
-          public: "Public",
-          private: "Private",
-        },
-      }).then((result) => {
-        if (result.isConfirmed) isPrivate = result.value === "private";
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      axios
-        .post(
-          apiUrl + `/projects/${projectId}/clones`,
-          {
-            name,
-            description: dsc,
-            private: isPrivate,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem("disfuse-token"),
-            },
-          }
-        )
-        .then(
-          ({ data }) =>
-            (window.location = `/@${user.username}/${data._id}/workspace`)
-        );
-    })();
   }
 
   function postComment() {
@@ -209,7 +127,7 @@ export default function ProjectPage() {
         },
         {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
-        }
+        },
       )
       .then(({ data }) => {
         window.location.hash = data._id;
@@ -221,9 +139,37 @@ export default function ProjectPage() {
     <div className="project-page-container">
       <div className="head">
         <div className="info">
-          <h1>
+          <h1
+            className={project.owner?.id === user?.id ? "editable" : ""}
+            onClick={
+              project.owner?.id === user?.id
+                ? () =>
+                    navigate(`/@${project.owner.username}/${project._id}/edit`)
+                : null
+            }
+          >
+            {!isLoading &&
+            project?.bot?.avatar &&
+            (!project.botPrivate || project.owner?.id === user?.id) ? (
+              <img
+                src={
+                  "https://cdn.discordapp.com/avatars/" +
+                  project?.bot?.id +
+                  "/" +
+                  project?.bot?.avatar +
+                  ".png"
+                }
+                alt="Bot avatar"
+              />
+            ) : (
+              ""
+            )}
             {isLoading ? <LoadingAnim /> : project.name}
-            {project?.private ? <i class="fa-solid fa-lock"></i> : ""}
+            {project?.private && project?.botPrivate ? (
+              <i class="fa-solid fa-lock"></i>
+            ) : (
+              ""
+            )}
           </h1>
           <div className="owner">
             {isLoading ? (
@@ -240,17 +186,53 @@ export default function ProjectPage() {
             )}
           </div>
           <p>{project.description}</p>
+          {(project?.private || project?.botPrivate) &&
+          project?.owner?.id === user?.id ? (
+            <i style={{ opacity: ".5", marginTop: "1rem" }}>
+              One or more option(s) below will not be visible to other users due
+              to visibility settings
+            </i>
+          ) : (
+            ""
+          )}
         </div>
         <div
           className="buttons"
-          style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
+          style={
+            isLoading
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {
+                  marginTop:
+                    project?.private || project?.botPrivate ? "-1rem" : "0",
+                }
+          }
         >
-          <Link to={`/@${project.owner?.username}/${project._id}/view`}>
-            <div className="darkBtn">
-              <i className="fa-solid fa-eye"></i>
-              <div>View</div>
-            </div>
-          </Link>
+          {project?.bot?.id &&
+          (!project.botPrivate || project?.owner?.id === user?.id) ? (
+            <Link
+              to={`https://discord.com/oauth2/authorize?client_id=${project.bot?.id}&scope=bot&permissions=${project.permissions || 0}`}
+              target="_blank"
+              rel="noopener"
+            >
+              <div className="darkBtn">
+                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                <div>Add Bot</div>
+              </div>
+            </Link>
+          ) : (
+            ""
+          )}
+          {!project.private || project?.owner?.id === user?.id ? (
+            <Link to={`/@${project.owner?.username}/${project._id}/view`}>
+              <div className="darkBtn">
+                <i className="fa-solid fa-eye"></i>
+                <div>View</div>
+              </div>
+            </Link>
+          ) : (
+            ""
+          )}
+
           <div
             onClick={toggleLike}
             className={`darkBtn like${
@@ -260,10 +242,21 @@ export default function ProjectPage() {
             <i className="fa-solid fa-heart"></i>
             <div>{project.likes?.length} Likes</div>
           </div>
-          <div onClick={cloneProject} className="darkBtn clone">
-            <i className="fa-solid fa-clone"></i>
-            <div>{project.clones?.length} Clones</div>
-          </div>
+
+          {!project.private || project?.owner?.id === user?.id ? (
+            <div
+              onClick={() =>
+                navigate(`/@${project.owner.username}/${project._id}/clone`)
+              }
+              className="darkBtn clone"
+            >
+              <i className="fa-solid fa-clone"></i>
+              <div>{project.clones?.length} Clones</div>
+            </div>
+          ) : (
+            ""
+          )}
+
           <div
             onClick={() => toggleFav(projectId)}
             className={`darkBtn fav${

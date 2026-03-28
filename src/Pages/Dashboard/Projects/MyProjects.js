@@ -5,6 +5,7 @@ import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
+import { Link } from "react-router-dom";
 
 const { discordUrl, apiUrl } = require("../../../config/config.js");
 
@@ -17,6 +18,68 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
+  useEffect(() => {
+    (async () => {
+      if (localStorage.getItem("projectSystemMigration") === "true") return;
+
+      const queue = Swal.mixin({
+        progressSteps: ["1", "2", "3", "4"],
+        confirmButtonText: "Next",
+        cancelButtonText: "Skip",
+        showCancelButton: true,
+        animation: false,
+      });
+
+      const { isConfirmed } = await queue.fire({
+        animation: true,
+        currentProgressStep: 0,
+        title: "New Project Creation Process",
+        icon: "info",
+        text: "We've made changes to the project creation process in order to make it easier to manage and share your Discord bots.",
+        footer: "You may ignore this if you are a new user",
+        ...modalThemeColor(userCache.user),
+      });
+
+      if (!isConfirmed)
+        return localStorage.setItem("projectSystemMigration", "true");
+
+      const { isConfirmed: two } = await queue.fire({
+        currentProgressStep: 1,
+        title: "How It Works",
+        icon: "info",
+        text: "When creating a new project, you will now enter your bot token before the project is created. This will link your Discord bot to your DisFuse project and will allow you to see your bot information directly from DisFuse, and will also let other users add your bot from the explore page.",
+        footer: "You may ignore this if you are a new user",
+        ...modalThemeColor(userCache.user),
+      });
+
+      if (!two) return localStorage.setItem("projectSystemMigration", "true");
+
+      const { isConfirmed: three } = await queue.fire({
+        currentProgressStep: 2,
+        title: "New Bot Visibility Setting",
+        icon: "info",
+        text: "You can now set your bot visibility to public or private (different from project visibility). Public bots will show up on the explore page and other users can add your bot to their servers directly from DisFuse.",
+        footer: "You may ignore this if you are a new user",
+        ...modalThemeColor(userCache.user),
+      });
+
+      if (!three) return localStorage.setItem("projectSystemMigration", "true");
+
+      await queue.fire({
+        currentProgressStep: 3,
+        title: "Old Projects",
+        icon: "info",
+        text: "All old projects will be unusable until a bot token is set in the project settings. You will need to enter your token the next time you open your project.",
+        footer: "You may ignore this if you are a new user",
+        showCancelButton: false,
+        confirmButtonText: "Finish",
+        ...modalThemeColor(userCache.user),
+      });
+
+      localStorage.setItem("projectSystemMigration", "true");
+    })();
+  }, []);
+
   const fetchProjects = useCallback((userData) => {
     if (!userData?.id) return;
     axios
@@ -25,7 +88,7 @@ export default function MyProjects() {
       })
       .then(({ data: projects }) => {
         let sortedProjects = projects.sort(
-          (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+          (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0),
         );
         userCache.projects = sortedProjects;
         setProjects(sortedProjects);
@@ -68,119 +131,6 @@ export default function MyProjects() {
       });
   }, [token, fetchProjects]);
 
-  function newProject(data) {
-    const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3"],
-      animation: false,
-      confirmButtonText: "Next >",
-      footer: `By creating a project, you agree to our <a target="_blank" rel="noopener" href="/tos">TOS</a>`,
-      ...modalColors,
-    });
-
-    (async () => {
-      let name, dsc, isPrivate;
-      let cancelled = false;
-
-      await Queue.fire({
-        title: "Enter your project name",
-        input: "text",
-        inputPlaceholder: "DisFuse Project",
-        showCancelButton: true,
-        inputValidator: (i) => {
-          if (i.length < 2) return "The name must be at least 2 characters";
-          if (i.length > 18) return "The name must be below 18 characters";
-          return false;
-        },
-        animation: true,
-        currentProgressStep: 0,
-      }).then((result) => {
-        if (result.isConfirmed) name = result.value;
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      await Queue.fire({
-        title: "Enter the description (optional)",
-        currentProgressStep: 1,
-        input: "text",
-        showCancelButton: true,
-        inputPlaceholder: "Some description",
-        inputValidator: (i) => {
-          if (i.length > 500)
-            return "The description must be below 500 characters";
-          else return false;
-        },
-      }).then((result) => {
-        if (result.isConfirmed) dsc = result.value;
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      await Queue.fire({
-        title: "Project visibility",
-        currentProgressStep: 2,
-        showCancelButton: true,
-        confirmButtonText: "Create",
-        input: "select",
-        inputOptions: {
-          private: "Private",
-          public: "Public",
-        },
-      }).then((result) => {
-        if (result.isConfirmed) isPrivate = result.value === "private";
-        else cancelled = true;
-      });
-
-      if (cancelled) return;
-
-      axios
-        .post(
-          apiUrl + `/projects`,
-          {
-            name,
-            description: dsc,
-            private: isPrivate,
-            ...(data != null && { data }),
-          },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        .then(
-          ({ data }) =>
-            (window.location = `/@${user.username}/${data._id}/workspace`)
-        )
-        .catch((err) => {
-          console.error(err);
-        });
-    })();
-  }
-
-  function loadFile() {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".df";
-
-    fileInput.addEventListener("change", (e) => {
-      let file = e.target.files[0];
-      if (!file) return;
-
-      let reader = new FileReader();
-
-      reader.onload = async (event) => {
-        newProject(event.target.result);
-      };
-      reader.readAsText(file);
-    });
-
-    fileInput.click();
-    fileInput.remove();
-  }
-
   function sort() {
     Swal.fire({
       title: "Sort Projects",
@@ -211,15 +161,15 @@ export default function MyProjects() {
           sortedProjects.sort((a, b) => b.name.localeCompare(a.name));
         } else if (result.value === "oldest") {
           sortedProjects.sort(
-            (a, b) => new Date(a.created) - new Date(b.created)
+            (a, b) => new Date(a.created) - new Date(b.created),
           );
         } else if (result.value === "newest") {
           sortedProjects.sort(
-            (a, b) => new Date(b.created) - new Date(a.created)
+            (a, b) => new Date(b.created) - new Date(a.created),
           );
         } else if (result.value === "lastEdited") {
           sortedProjects.sort(
-            (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0)
+            (a, b) => new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0),
           );
         }
 
@@ -230,8 +180,8 @@ export default function MyProjects() {
           sortedProjects.filter(
             (p) =>
               p?.name?.toLowerCase().includes(query.toLowerCase()) ||
-              p?.description?.toLowerCase().includes(query.toLowerCase())
-          )
+              p?.description?.toLowerCase().includes(query.toLowerCase()),
+          ),
         );
       }
     });
@@ -277,8 +227,8 @@ export default function MyProjects() {
       projects.filter(
         (p) =>
           p?.name?.toLowerCase().includes(query.toLowerCase()) ||
-          p?.description?.toLowerCase().includes(query.toLowerCase())
-      )
+          p?.description?.toLowerCase().includes(query.toLowerCase()),
+      ),
     );
   }
 
@@ -289,12 +239,13 @@ export default function MyProjects() {
           <i className="fa-solid fa-cubes"></i> My Projects
         </div>
         <div className="buttons">
-          <button onClick={() => newProject()}>
-            <i className="fa-solid fa-plus"></i> New Project
-          </button>
-          <button onClick={loadFile}>
-            <i className="fa-solid fa-upload"></i> Load from file
-          </button>
+          <Link to="/projects/new">
+            <button
+            // onClick={() => newProject()}
+            >
+              <i className="fa-solid fa-plus"></i> New Project
+            </button>
+          </Link>
           <button onClick={sort}>
             <i className="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
           </button>

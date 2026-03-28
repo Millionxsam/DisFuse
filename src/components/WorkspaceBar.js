@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Blockly from "blockly";
 import UserTag from "./UserTag";
 import { userCache } from "../cache.ts";
@@ -8,9 +8,6 @@ import modalThemeColor from "../functions/modalThemeColor.js";
 import { renderToStaticMarkup } from "react-dom/server";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-//import axios from "axios";
-//import javascript, { javascriptGenerator } from "blockly/javascript";
-//import getToolbox from "../config/toolbox.js";
 import LoadingAnim from "./LoadingAnim";
 import { io } from "socket.io-client";
 import HostModal from "./HostModal.js";
@@ -23,6 +20,8 @@ export default function WorkspaceBar({
   currentWorkspace,
   activeUsers = [],
 }) {
+  const navigate = useNavigate();
+
   const [active, setActive] = useState(false);
   const [blockbuddySuggestRes, setBlockbuddyRes] = useState("");
   const [fileDropdownOpen, setFileDropdown] = useState(false);
@@ -98,9 +97,27 @@ export default function WorkspaceBar({
             <img src="/media/disfuse-clear.png" alt="" />
           </Link>
         </div>
-        <div className="projectName">
+        <div
+          className="projectName"
+          onClick={() =>
+            navigate("/@" + project.owner?.username + "/" + project._id)
+          }
+        >
           <p></p>
         </div>
+        {project?.owner?.id === userCache?.user?.id ? (
+          <i
+            onClick={() =>
+              navigate(
+                "/@" + project.owner.username + "/" + project._id + "/edit",
+              )
+            }
+            className="fa-solid fa-pen-to-square"
+            id="editProject-icon"
+          ></i>
+        ) : (
+          ""
+        )}
         <div id="workspace-tabs-open-container">
           <i
             onClick={() => openWorkspaceTabs(workspace)}
@@ -146,6 +163,7 @@ export default function WorkspaceBar({
                     onClick={() => {
                       setFileDropdown(false);
                       setUtilDropdown(false);
+                      saveFile();
                     }}
                   >
                     <i className="fa-solid fa-floppy-disk"></i>
@@ -156,6 +174,7 @@ export default function WorkspaceBar({
                     onClick={() => {
                       setFileDropdown(false);
                       setUtilDropdown(false);
+                      loadFile();
                     }}
                   >
                     <i className="fa-solid fa-upload"></i>
@@ -315,6 +334,107 @@ export default function WorkspaceBar({
       </div>
     </>
   );
+
+  function loadFile() {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".df";
+
+    fileInput.addEventListener("change", (e) => {
+      let file = e.target.files[0];
+      if (!file) return;
+
+      let reader = new FileReader();
+
+      reader.onload = async (event) => {
+        let data = event.target.result;
+
+        let json;
+        try {
+          json = JSON.parse(data);
+        } catch (error) {
+          return Swal.fire("Error", String(error), "error");
+        }
+
+        if (!json.blocks || !json.blocks.blocks) {
+          return Swal.fire(
+            "Error",
+            "The selected file doesn't contain any blocks.",
+            "error",
+          );
+        }
+
+        Swal.fire({
+          title: "Load Blocks from File",
+          text: "Do you want to replace the blocks in the current workspace?",
+          showCancelButton: true,
+          showDenyButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Combine with current workspace",
+          denyButtonText: "Replace blocks",
+          icon: "question",
+          animation: true,
+          ...modalThemeColor(userCache.user),
+        }).then((result) => {
+          if (result.isDismissed) return;
+
+          if (result.isDenied) {
+            Blockly.serialization.workspaces.load(json, workspace);
+          } else {
+            json.blocks.blocks = json.blocks.blocks.concat(
+              Blockly.serialization.workspaces.save(workspace)?.blocks
+                ?.blocks || [],
+            );
+
+            Blockly.serialization.workspaces.load(json, workspace);
+          }
+        });
+      };
+
+      reader.readAsText(file);
+    });
+
+    fileInput.click();
+    fileInput.remove();
+  }
+
+  async function saveFile() {
+    await Swal.fire({
+      title: "Save Current Workspace",
+      text: "This will only save the blocks in the current workspace. To save your entire project to a file, you will need to use the save button in each workspace.",
+      icon: "info",
+      showConfirmButton: true,
+      confirmButtonText: "Save",
+      ...modalThemeColor(userCache.user),
+    });
+
+    const data = JSON.stringify(
+      Blockly.serialization.workspaces.save(workspace),
+    );
+    const blob = new Blob([data], {
+      type: "text/plain",
+    });
+
+    let url = window.URL.createObjectURL(blob);
+    let anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${project.name}.df`;
+
+    anchor.click();
+
+    window.URL.revokeObjectURL(url);
+
+    Swal.fire({
+      toast: true,
+      position: "top-right",
+      timer: 5000,
+      timerProgressBar: true,
+      icon: "success",
+      title: "Successfully saved",
+      showConfirmButton: false,
+      ...modalThemeColor(userCache.user),
+    });
+  }
 
   // eslint-disable-next-line
   function openBlockBuddy() {

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import UserTag from "./UserTag";
 import axios from "axios";
 import Swal from "sweetalert2";
+import modalThemeColor from "../functions/modalThemeColor.js";
+import { userCache } from "../cache.ts";
 
 const { apiUrl, discordUrl } = require("../config/config.js");
 
@@ -24,7 +26,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        }
+        },
       );
 
       setLocalUser(user);
@@ -44,7 +46,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
       .patch(
         apiUrl + `/workshop/${pack._id}/users`,
         {},
-        { headers: { Authorization: localStorage.getItem("disfuse-token") } }
+        { headers: { Authorization: localStorage.getItem("disfuse-token") } },
       )
       .then((res) => {
         setPack(res.data);
@@ -58,6 +60,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
             showConfirmButton: false,
             icon: "success",
             position: "top-right",
+            ...modalThemeColor(userCache.user),
           });
         } else {
           Swal.fire({
@@ -68,6 +71,7 @@ export default function WorkshopItem({ pack: p, editable = false }) {
             showConfirmButton: false,
             icon: "success",
             position: "top-right",
+            ...modalThemeColor(userCache.user),
           });
         }
       });

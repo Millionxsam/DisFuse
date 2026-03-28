@@ -27,6 +27,9 @@ import "./index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Footer from "./components/Footer";
+import NewProject from "./Pages/Dashboard/Projects/NewProject";
+import EditProject from "./Pages/Dashboard/Projects/EditProject";
+import CloneProject from "./Pages/Dashboard/Projects/CloneProject";
 
 export default function App() {
   window.addEventListener("unhandledrejection", function (event) {
@@ -43,7 +46,7 @@ export default function App() {
         <div className="head">
           <h1>You are banned from DisFuse</h1>
           <h2>You may not access DisFuse until: ${new Date(
-            data.bannedUntil
+            data.bannedUntil,
           ).toDateString()}.</h2>
         </div>
       </div>`;
@@ -112,6 +115,7 @@ export default function App() {
           }
         >
           <Route path="projects" element={<MyProjects key={0} />} />
+          <Route path="projects/new" element={<NewProject key={0} />} />
           <Route path="explore" element={<Explore key={0} />} />
           <Route path="favorites" element={<Favorites key={0} />} />
           <Route path="workshop" element={<Workshop key={0} />} />
@@ -122,6 +126,14 @@ export default function App() {
           <Route
             path="/:username/:projectId"
             element={<ProjectPage key={0} />}
+          />
+          <Route
+            path="/:username/:projectId/edit"
+            element={<EditProject key={0} />}
+          />
+          <Route
+            path="/:username/:projectId/clone"
+            element={<CloneProject key={0} />}
           />
           <Route path="settings" element={<Settings key={0} />}>
             <Route

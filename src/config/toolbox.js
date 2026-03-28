@@ -1052,21 +1052,9 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Main",
         colour: "#FF6E33",
         contents: [
-          label("Required ↓"),
-          {
-            kind: "block",
-            type: "main_token",
-            inputs: {
-              token: {
-                shadow: {
-                  type: "text",
-                  fields: {
-                    TEXT: "Your bot token",
-                  },
-                },
-              },
-            },
-          },
+          label(
+            'Looking for the "login with token" block? It\'s been moved to project settings',
+          ),
           label("Get the value of a secret ↓"),
           {
             kind: "block",

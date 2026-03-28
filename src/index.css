@@ -50,6 +50,7 @@ body {
 
 .loadingAnim {
   display: flex;
+  flex-direction: row !important;
   color: white;
   gap: 1rem;
   font-size: 40px;
@@ -73,8 +74,8 @@ p.errors {
   color: rgb(255, 134, 134);
 }
 
-button,
-input[type="date"] {
+input[type="date"],
+button {
   display: flex;
   align-items: center;
   gap: 0.5vw;
@@ -146,7 +147,9 @@ input[type="number"]:hover {
   opacity: 0;
   transform: translateX(-9rem) scale(0.95);
   filter: blur(3px);
-  transition: opacity 0.5s 0.25s ease, transform 0.5s 0.25s ease,
+  transition:
+    opacity 0.5s 0.25s ease,
+    transform 0.5s 0.25s ease,
     filter 0.5s 0.25s ease;
 }
 
@@ -348,6 +351,19 @@ p.modal-text {
   z-index: 50;
 }
 
+.workspace-navbar #editProject-icon {
+  margin-left: 1rem;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.workspace-navbar #editProject-icon:hover {
+  animation: spin 0.5s ease;
+  filter: brightness(0.75);
+  scale: 1.2;
+}
+
 .workspace-navbar .content-container {
   display: flex;
   width: 100%;
@@ -411,11 +427,17 @@ i.workspacesMenuBtn:hover {
 .projectName {
   margin-left: 0.6rem;
   margin-right: -0.6rem;
-  cursor: default;
   background-color: var(--border-color);
   border-radius: 5px;
   padding: 0.5rem;
+  cursor: pointer;
   max-width: 10rem;
+  transition: all 0.2s ease;
+}
+
+.projectName:hover {
+  opacity: 0.75;
+  scale: 1.1;
 }
 
 .projectName p {
@@ -562,7 +584,9 @@ i.workspacesMenuBtn:hover {
   display: block;
   scale: 1.25;
   cursor: pointer;
-  transition: opacity 0.3s ease, scale 0.2s ease;
+  transition:
+    opacity 0.3s ease,
+    scale 0.2s ease;
 }
 
 .workspace-navbar .workspace-tabs-open:hover {
@@ -748,13 +772,13 @@ i.workspacesMenuBtn:hover {
   border-radius: 10px;
   max-height: 90vh;
   overflow: auto;
-  white-space: pre; 
+  white-space: pre;
 }
 
 .code-view .code .line,
 #workshopPreviewCode .line {
   display: flex;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .code-view .code .line-number,
@@ -764,7 +788,7 @@ i.workspacesMenuBtn:hover {
   margin-right: 1em;
   color: #666;
   user-select: none;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .code-view .code .line-content,
@@ -1007,6 +1031,38 @@ dialog {
   letter-spacing: 2px;
 }
 
+body:has(.home-container) {
+  position: relative;
+  z-index: 0;
+}
+
+body:has(.home-container)::before {
+  content: "";
+  position: absolute;
+  background-image: url(/public/media/homeBackground.png);
+  background-size: contain;
+  inset: 0;
+  background-position: 0 -2rem;
+  background-repeat: repeat-y;
+  z-index: -100;
+  animation: homeBackground 5s ease infinite;
+}
+
+@keyframes homeBackground {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.75;
+    filter: contrast(1.5);
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
 .tos-container,
 .pp-container {
   color: white;
@@ -1092,7 +1148,7 @@ dialog {
   border-radius: 50%;
   background: conic-gradient(red, blue, purple, red);
   z-index: -1;
-  filter: blur(15px);
+  filter: blur(30px);
   animation: spin 6s linear infinite;
 }
 
@@ -1361,6 +1417,46 @@ dialog {
   width: 100%;
 }
 
+.priProject .name-container h1,
+.pubProject .name-container h1 {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.priProject .name-container img,
+.pubProject .name-container img {
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.priProject .name-container h1 i {
+  font-size: 30px;
+  color: rgb(255, 50, 50);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.priProject .name-container h1 i:hover {
+  animation: none !important;
+  scale: 1 !important;
+  filter: brightness(0.7);
+}
+
+.project-page-container .head .info h1:has(img) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.project-page-container .head .info h1 img {
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+}
+
 .priProject .name-container,
 .pubProject .name-container,
 .workshop-item .info div,
@@ -1426,7 +1522,8 @@ dialog {
 .inbox-container,
 .adminDashboard-container,
 .workshop-container,
-.library-container {
+.library-container,
+.newProject-page-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -1452,7 +1549,8 @@ dialog {
 .inbox-container .head,
 .adminDashboard-container .head,
 .workshop-container .head,
-.library-container .head {
+.library-container .head,
+.newProject-page-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
@@ -1540,6 +1638,14 @@ input[type="search"]::-webkit-search-results-decoration {
   text-overflow: ellipsis;
 }
 
+.priProject h1 {
+  cursor: pointer;
+}
+
+.priProject h1:hover {
+  text-decoration: underline;
+}
+
 .priProject .info {
   display: flex;
   flex-direction: column;
@@ -1563,6 +1669,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .pubProject .buttons {
+  flex-direction: row;
   margin-top: auto;
   display: flex;
   gap: 0.5vw;
@@ -1574,6 +1681,15 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .pubProject .buttons button {
   width: 100%;
+  border-radius: 5px;
+}
+
+.pubProject .buttons a:first-child button {
+  border-radius: var(--button-radius) 5px 5px var(--button-radius);
+}
+
+.pubProject .buttons a:last-child button {
+  border-radius: 5px var(--button-radius) var(--button-radius) 5px;
 }
 
 .pubProject .info {
@@ -1807,7 +1923,9 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .like.active.newLike i {
-  animation: spin 0.5s ease 1, scale 0.5s ease 1;
+  animation:
+    spin 0.5s ease 1,
+    scale 0.5s ease 1;
 }
 
 .project-page-container .head .buttons .fav.active i {
@@ -1815,7 +1933,9 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .project-page-container .head .buttons .fav.active.newFav i {
-  animation: spin 0.5s ease 1, scale 0.5s ease 1;
+  animation:
+    spin 0.5s ease 1,
+    scale 0.5s ease 1;
 }
 
 .project-page-container .body,
@@ -2291,7 +2411,8 @@ select option {
   .project-page-container,
   .inbox-container,
   .blockPackPage,
-  .library-container .head {
+  .library-container .head,
+  .newProject-page-container .head {
     margin-top: 2rem;
   }
 
@@ -2372,7 +2493,8 @@ select option {
   .workshop-container .head,
   .settings-container .head,
   .inbox-container .head,
-  .library-container .head {
+  .library-container .head,
+  .newProject-page-container .head {
     font-size: 40px;
   }
 
@@ -2401,7 +2523,8 @@ select option {
   .workshop-container .head,
   .settings-container .head,
   .inbox-container .head,
-  .library-container .head {
+  .library-container .head,
+  .newProject-page-container .head {
     font-size: 30px;
   }
 
@@ -2460,9 +2583,9 @@ select option {
 }
 
 .features div {
-  background-color: var(--border-color);
-  border: 2px solid var(--main-color);
-  border-radius: 1.5rem;
+  background-color: var(--foreground-color);
+  position: relative;
+  border-radius: 1rem;
   cursor: default;
   padding: 1rem;
   display: flex;
@@ -2472,8 +2595,7 @@ select option {
   text-align: center;
   font-size: 20px;
   justify-content: center;
-  transition: all 0.2s ease, opacity 0.5s 0.25s ease, transform 0.5s 0.25s ease,
-    filter 0.5s 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .features div i {
@@ -2517,41 +2639,6 @@ select option {
   color: rgb(168, 81, 81);
 }
 
-.features div:hover {
-  scale: 1.05;
-  box-shadow: 0 0 2rem var(--main-color);
-}
-
-.features div:nth-child(2) {
-  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
-    filter 0.5s 0.5s ease;
-}
-
-.features div:nth-child(3) {
-  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
-    filter 0.5s 0.75s ease;
-}
-
-.features div:nth-child(5) {
-  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
-    filter 0.5s 0.5s ease;
-}
-
-.features div:nth-child(6) {
-  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
-    filter 0.5s 0.75s ease;
-}
-
-.features div:nth-child(8) {
-  transition: all 0.2s ease, opacity 0.5s 0.5s ease, transform 0.5s 0.5s ease,
-    filter 0.5s 0.5s ease;
-}
-
-.features div:nth-child(9) {
-  transition: all 0.2s ease, opacity 0.5s 0.75s ease, transform 0.5s 0.75s ease,
-    filter 0.5s 0.75s ease;
-}
-
 .home-container .reviews {
   display: flex;
   flex-direction: column;
@@ -2564,8 +2651,55 @@ select option {
   background-color: var(--foreground-color);
   padding: 1rem;
   width: 60rem;
-  border: 2px solid var(--border-color);
   border-radius: 1rem;
+  position: relative;
+}
+
+.home-container .reviews .userReview::before,
+.features div::before {
+  content: "";
+  position: absolute;
+  top: -0.25rem;
+  left: -0.25rem;
+  width: calc(100% + 0.5rem);
+  height: calc(100% + 0.5rem);
+  border-radius: var(--button-radius);
+  z-index: -1;
+  background: #136a8a; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #267871,
+    #136a8a
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgb(200, 0, 0),
+    rgb(0, 0, 200)
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.home-container .reviews .userReview::after,
+.features div::after {
+  content: "";
+  position: absolute;
+  top: -0.4rem;
+  left: -0.4rem;
+  width: calc(100% + 0.8rem);
+  height: calc(100% + 0.8rem);
+  border-radius: var(--button-radius);
+  z-index: -2;
+  background: #136a8a; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #267871,
+    #136a8a
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgb(200, 0, 0),
+    rgb(0, 0, 200)
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  filter: blur(7.5px);
 }
 
 .home-container .reviews .reviewGroup {
@@ -3086,7 +3220,9 @@ div.hidden:not(.shown) {
 }
 
 .blockPackPage .head .buttons .darkBtn.install.active.installAnim i {
-  animation: spin 0.5s ease 1, scale 0.5s ease 1;
+  animation:
+    spin 0.5s ease 1,
+    scale 0.5s ease 1;
 }
 
 .configurePackModal {
@@ -3673,4 +3809,185 @@ input::placeholder {
 .hostContainer .console * {
   font-family: monospace;
   white-space: pre-wrap;
+}
+
+.newProject-page-container .body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.newProject-page-container .body > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.newProject-page-container input::placeholder,
+.newProject-page-container textarea::placeholder {
+  opacity: 0.4;
+}
+
+.newProject-page-container input,
+.newProject-page-container textarea,
+.newProject-page-container select {
+  color: white;
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 15px;
+  width: 60%;
+}
+
+.newProject-page-container .projectInfo > div p {
+  width: 75%;
+  font-style: italic;
+}
+
+.newProject-page-container a {
+  color: var(--main-color);
+  transition: all 0.2s ease;
+  filter: brightness(1.5);
+}
+
+.newProject-page-container a:hover {
+  text-decoration: underline;
+  filter: brightness(2);
+}
+
+.newProject-page-container button {
+  width: fit-content;
+  border-radius: 0.75rem;
+}
+
+.newProject-page-container div.botInfo {
+  background-color: var(--border-color);
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  border-radius: 2rem;
+  opacity: 0;
+  animation: 1s ease projectCreationAnim;
+  animation-fill-mode: forwards;
+}
+
+.newProject-page-container .body div.projectInfo {
+  opacity: 0;
+  animation: 1s ease 1s projectInfoAnim;
+  animation-fill-mode: forwards;
+}
+
+.newProject-page-container .botInfo > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.newProject-page-container .updateBot i {
+  color: var(--main-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  filter: brightness(1.5);
+}
+
+.newProject-page-container .updateBot i:hover {
+  filter: brightness(2);
+}
+
+.newProject-page-container .botInfo img {
+  height: 7rem;
+  border-radius: 1.5rem;
+}
+
+.newProject-page-container select {
+  height: 2rem;
+}
+
+.newProject-page-container #projectCreationGraphic {
+  height: 15rem;
+  width: 30rem;
+  animation: projectCreationGraphic 1s ease;
+}
+
+.newProject-page-container .textAnim {
+  opacity: 0;
+  animation: 1s ease 1s projectCreationAnim;
+  animation-fill-mode: forwards;
+}
+
+@keyframes projectCreationGraphic {
+  0% {
+    scale: 0.75;
+    filter: blur(1rem);
+    opacity: 0;
+  }
+
+  100% {
+    scale: 1;
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes projectCreationAnim {
+  0% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes projectInfoAnim {
+  0% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.newProject-page-container #visibilityInfo {
+  color: var(--main-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: fit-content;
+  filter: brightness(1.5);
+}
+
+.newProject-page-container #visibilityInfo:hover {
+  filter: brightness(2);
+}
+
+.newProject-page-container .invalidTokenWarning {
+  background-color: rgb(96, 0, 0);
+  border: 2px solid var(--border-color);
+  padding: 1rem;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.newProject-page-container .invalidTokenWarning i {
+  font-size: 35px;
+}
+
+.project-page-container h1.editable {
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.project-page-container h1.editable:hover {
+  text-decoration: underline;
+  scale: 1.05;
 }

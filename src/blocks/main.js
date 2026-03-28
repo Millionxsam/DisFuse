@@ -15,11 +15,8 @@ Blockly.Blocks["main_token"] = {
   },
 };
 
-javascriptGenerator.forBlock["main_token"] = function (block, generator) {
-  const token = generator.valueToCode(block, "token", Order.ATOMIC);
-
-  const code = `client.login(${token});\n`;
-  return code;
+javascriptGenerator.forBlock["main_token"] = function () {
+  return "";
 };
 
 Blockly.Blocks["main_botStart"] = {
@@ -84,7 +81,7 @@ Blockly.Blocks["main_presence"] = {
           ["invisible", "invisible"],
           ["do not disturb", "dnd"],
         ]),
-        "status"
+        "status",
       );
     this.appendValueInput("afk").setCheck("Boolean").appendField("AFK:");
     this.appendDummyInput()
@@ -98,7 +95,7 @@ Blockly.Blocks["main_presence"] = {
           ["Watching", "3"],
           ["Custom", "4"],
         ]),
-        "activity_type"
+        "activity_type",
       );
     this.appendValueInput("activity_name")
       .setCheck("String")
@@ -146,7 +143,7 @@ Blockly.Blocks["main_numberof"] = {
           ["channels", "channels"],
           ["commands", "application.commands"],
         ]),
-        "property"
+        "property",
       );
     this.appendDummyInput().appendField("of the bot");
     this.setOutput(true, "Number");
@@ -185,7 +182,7 @@ javascriptGenerator.forBlock["main_presence"] = function (block, generator) {
   var value_activity_name = generator.valueToCode(
     block,
     "activity_name",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
 
   var code = `client.user.setPresence({
@@ -226,7 +223,7 @@ createRestrictions(
       blockTypes: ["token"],
       message: "You must specify the token of your bot",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -237,5 +234,5 @@ createRestrictions(
       blockTypes: ["value"],
       message: "You must specify the name of the ENV to get",
     },
-  ]
+  ],
 );

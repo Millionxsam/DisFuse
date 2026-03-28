@@ -2,6 +2,8 @@ import axios from "axios";
 import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
+import modalThemeColor from "./modalThemeColor";
+import { userCache } from "../cache.ts";
 
 const { apiUrl } = require("../config/config");
 
@@ -14,7 +16,7 @@ export default function registerContextMenus(project, currentWorkspace) {
     id: "copyCode",
     callback: (scope) => {
       navigator.clipboard.writeText(
-        javascriptGenerator.blockToCode(scope.block)
+        javascriptGenerator.blockToCode(scope.block),
       );
 
       Swal.fire({
@@ -25,6 +27,7 @@ export default function registerContextMenus(project, currentWorkspace) {
         position: "top-right",
         timer: 2500,
         timerProgressBar: true,
+        ...modalThemeColor(userCache.user),
       });
     },
   });
@@ -55,12 +58,16 @@ export default function registerContextMenus(project, currentWorkspace) {
       }).then((response) => {
         if (!response.isConfirmed) return;
 
-        const toWorkspace = project.workspaces.find((ws) => ws._id === response.value)
-        const newData = JSON.parse(toWorkspace.data === "" ? "{}" : toWorkspace.data);
+        const toWorkspace = project.workspaces.find(
+          (ws) => ws._id === response.value,
+        );
+        const newData = JSON.parse(
+          toWorkspace.data === "" ? "{}" : toWorkspace.data,
+        );
 
         if (newData.blocks) {
           newData.blocks.blocks.push(
-            Blockly.serialization.blocks.save(scope.block)
+            Blockly.serialization.blocks.save(scope.block),
           );
         } else {
           newData.blocks = {
@@ -75,7 +82,7 @@ export default function registerContextMenus(project, currentWorkspace) {
             { data: JSON.stringify(newData) },
             {
               headers: { Authorization: localStorage.getItem("disfuse-token") },
-            }
+            },
           )
           .then(() =>
             Swal.fire({
@@ -86,7 +93,8 @@ export default function registerContextMenus(project, currentWorkspace) {
               timerProgressBar: true,
               showConfirmButton: false,
               position: "top-right",
-            })
+              ...modalThemeColor(userCache.user),
+            }),
           );
 
         scope.block.dispose();
@@ -119,13 +127,13 @@ export default function registerContextMenus(project, currentWorkspace) {
         if (!response.isConfirmed) return;
 
         let newData = JSON.parse(
-          project.workspaces.find((ws) => ws._id === response.value).data
+          project.workspaces.find((ws) => ws._id === response.value).data,
         );
 
         if (newData.blocks) {
           newData.blocks.blocks.push(
             ...Blockly.serialization.workspaces.save(scope.workspace).blocks
-              .blocks
+              .blocks,
           );
         } else {
           newData = Blockly.serialization.workspaces.save(scope.workspace);
@@ -134,7 +142,7 @@ export default function registerContextMenus(project, currentWorkspace) {
         axios.patch(
           apiUrl + `/projects/${project._id}/workspaces/${response.value}/data`,
           { data: JSON.stringify(newData) },
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } }
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
         );
       });
     },

@@ -3,6 +3,7 @@ import ms from "ms";
 import Swal from "sweetalert2";
 import modalThemeColor from "../functions/modalThemeColor";
 import { userCache } from "../cache.ts";
+import { useNavigate } from "react-router-dom";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -12,6 +13,8 @@ export default function PriProject({
   project,
   onDelete = () => window.location.reload(),
 }) {
+  const navigate = useNavigate();
+
   if (!project) return;
 
   let lastEdited = new Date(project?.lastEdited);
@@ -21,16 +24,54 @@ export default function PriProject({
       <div className="priProject">
         <div className="top">
           <div className="name-container">
-            <h1>{project.name}</h1>
+            <h1
+              onClick={() =>
+                navigate(`/@${project?.owner?.username}/${project?._id}`)
+              }
+            >
+              {project?.bot?.id ? (
+                <img
+                  src={
+                    "https://cdn.discordapp.com/avatars/" +
+                    project?.bot?.id +
+                    "/" +
+                    project?.bot?.avatar +
+                    ".png"
+                  }
+                  alt="Bot avatar"
+                />
+              ) : (
+                <i
+                  className="fa-solid fa-circle-exclamation"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    Swal.fire({
+                      title: "Project Setup Incomplete",
+                      text: "This project is currently unusable. Open the project for more details.",
+                      icon: "warning",
+                      ...modalThemeColor(userCache.user),
+                    });
+                  }}
+                ></i>
+              )}
 
-            {project.private ? <i className="fa-solid fa-lock" /> : ""}
+              {project.name}
+            </h1>
+
+            {project.private && project.botPrivate ? (
+              <i className="fa-solid fa-lock" />
+            ) : (
+              ""
+            )}
 
             {project?.owner?.id === userCache?.user?.id &&
               project?.suspension?.status !== true && (
                 <i
                   className="fa-solid fa-pen-to-square"
                   style={{ cursor: "pointer", marginLeft: "auto" }}
-                  onClick={() => editProject(project)}
+                  onClick={() =>
+                    navigate(`/@${project.owner.username}/${project._id}/edit`)
+                  }
                 />
               )}
           </div>
@@ -121,146 +162,6 @@ function deleteProject(project, onDelete) {
         onDelete();
       });
   });
-}
-
-function editProject(project) {
-  const token = localStorage.getItem("disfuse-token");
-
-  (async () => {
-    let name = project.name;
-    let dsc = project.description;
-    let isPrivate = project.private;
-    let cancelled = false;
-
-    const editChoice = await Swal.fire({
-      title: "What do you want to edit?",
-      html: `
-        <div style="text-align: left; justify-self: center;">
-          <input type="checkbox" id="name" value="Project Name">
-          <label for="name"> Project Name</label><br>
-          <input type="checkbox" id="description" value="Project Description">
-          <label for="description"> Project Description</label><br>
-          <input type="checkbox" id="visibility" value="Visibility">
-          <label for="visibility"> Visibility</label>
-        </div>
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: "Edit selected",
-      animation: true,
-      ...modalColors,
-      preConfirm: () => {
-        const selected = [];
-        if (document.getElementById("name").checked) selected.push("name");
-        if (document.getElementById("description").checked)
-          selected.push("description");
-        if (document.getElementById("visibility").checked)
-          selected.push("visibility");
-        return selected;
-      },
-    });
-
-    if (!editChoice.isConfirmed || editChoice.value?.length < 1) return;
-
-    const sequence = ["name", "description", "visibility"].filter((i) =>
-      editChoice.value.includes(i),
-    );
-    const steps = sequence.map((_, i) => (i + 1).toString());
-
-    for (let i = 0; i < sequence.length; i++) {
-      const currentField = sequence[i];
-
-      const isLastStep = i === sequence.length - 1;
-      const confirmText = isLastStep ? "Finish" : "Next >";
-
-      const commonOptions = {
-        showCancelButton: true,
-        currentProgressStep: i,
-        progressSteps: steps,
-        confirmButtonText: confirmText,
-        animation: true,
-        ...modalColors,
-      };
-
-      if (currentField === "name") {
-        const result = await Swal.fire({
-          title: "Enter your new project name",
-          input: "text",
-          inputPlaceholder: "DisFuse Project",
-          inputValue: name,
-          inputValidator: (i) => {
-            if (i.length < 3) return "The name must be at least 2 characters";
-            if (i.length > 18) return "The name must be below 18 characters";
-            return null;
-          },
-          ...commonOptions,
-          ...modalColors,
-        });
-
-        if (!result.isConfirmed) {
-          cancelled = true;
-          break;
-        }
-        name = result.value;
-      } else if (currentField === "description") {
-        const result = await Swal.fire({
-          title: "Enter the new description",
-          input: "text",
-          inputPlaceholder: "Some description",
-          inputValue: dsc,
-          inputValidator: (i) => {
-            if (i.length > 500)
-              return "The description must be below 500 characters";
-            return null;
-          },
-          ...commonOptions,
-          ...modalColors,
-        });
-
-        if (!result.isConfirmed) {
-          cancelled = true;
-          break;
-        }
-        dsc = result.value;
-      } else if (currentField === "visibility") {
-        const result = await Swal.fire({
-          title: "Change project visibility",
-          input: "select",
-          inputOptions: {
-            private: "Private",
-            public: "Public",
-          },
-          inputValue: isPrivate ? "private" : "public",
-          ...commonOptions,
-          ...modalColors,
-        });
-
-        if (!result.isConfirmed) {
-          cancelled = true;
-          break;
-        }
-        isPrivate = result.value === "private";
-      }
-    }
-
-    if (cancelled) return;
-
-    axios
-      .patch(
-        apiUrl + `/projects/${project._id}`,
-        {
-          name,
-          description: dsc,
-          private: isPrivate,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      )
-      .then(() => window.location.reload());
-  })();
 }
 
 function openSuspendedReason(project) {

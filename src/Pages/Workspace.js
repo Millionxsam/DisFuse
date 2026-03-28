@@ -25,7 +25,7 @@ import { LightTheme } from "../components/themes/LightTheme";
 import { BlueBlackTheme } from "../components/themes/BlueBlackTheme";
 import { CandyTheme } from "../components/themes/CandyTheme";
 import { executeRestrictions } from "../functions/restrictions";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import autosave from "../functions/autosave";
 import addTooltips from "../functions/addTooltips";
 import { getWholeProjectWorkspace, updateCode } from "../functions/updateCode";
@@ -50,13 +50,6 @@ require
 
 const { apiUrl, discordUrl } = require("../config/config.js");
 
-const requiredBlocks = [
-  {
-    type: "main_token",
-    message: "'Log in with token' in 'main' is required to connect to your bot",
-  },
-];
-
 const originalWarn = console.warn;
 
 console.warn = function (...args) {
@@ -79,6 +72,8 @@ export default function Workspace() {
   const [modalColors, setModalColors] = useState();
   const [activeUsers, setActiveUsers] = useState([]);
   const currentWorkspace = useRef({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const socket = io(apiUrl, {
@@ -146,6 +141,63 @@ export default function Workspace() {
 
                   setProject(project);
                   setActiveUsers(activeUsers);
+
+                  if (!project.botToken?.length)
+                    Swal.fire({
+                      title: "Project Setup Incomplete",
+                      icon: "warning",
+                      text:
+                        project.owner.id === user.id
+                          ? "We've made changes to the project creation process. You now have to enter your bot token in project settings before creating a project. In order to use this project, you must enter your bot token in the project settings."
+                          : "We've made changes to the project creation process. You now have to enter your bot token in project settings before creating a project. In order to use this project, ask the owner to enter the bot token in the project settings.",
+                      confirmButtonText:
+                        project.owner.id === user.id
+                          ? "Edit project"
+                          : "Back to Dashboard",
+                      allowEscapeKey: false,
+                      allowOutsideClick: false,
+                      showCancelButton: false,
+                      ...modalThemeColor(userCache.user),
+                    }).then(() =>
+                      navigate(
+                        project.owner.id === user.id
+                          ? `/@${project.owner.username}/${project._id}/edit`
+                          : "/projects",
+                      ),
+                    );
+                  else {
+                    axios
+                      .get(discordUrl + "/users/@me", {
+                        headers: { Authorization: "Bot " + project.botToken },
+                      })
+                      .then(() => {
+                        console.log("Valid token");
+                      })
+                      .catch(() => {
+                        Swal.fire({
+                          title: "Invalid Bot Token",
+                          icon: "warning",
+                          allowEscapeKey: false,
+                          allowOutsideClick: false,
+                          text:
+                            project.owner.id === user.id
+                              ? "Your bot token is no longer valid; it may have been reset in the Discord Developer Portal. To use your project, you must update your bot token."
+                              : "The bot token on this project is no longer valid; it may have been reset in the Discord Developer Portal. To use this project, ask the owner to update their bot token by editing the project.",
+                          confirmButtonText:
+                            project.owner.id === user.id
+                              ? "Edit Project"
+                              : "Back to Dashboard",
+                          showCancelButton: false,
+                          ...modalThemeColor(userCache.user),
+                        }).then(() =>
+                          navigate(
+                            project.owner.id === user.id
+                              ? `/@${project.owner.username}/${project._id}/edit`
+                              : "/projects",
+                          ),
+                        );
+                      });
+                  }
 
                   if (project?.suspension?.status) {
                     return Swal.fire({
@@ -529,6 +581,11 @@ export default function Workspace() {
                       project,
                       currentWorkspace.current._id,
                     );
+
+                    workspace
+                      .getAllBlocks(false)
+                      .filter((b) => b.type === "main_token")
+                      .forEach((block) => block.dispose(false, false));
                   }
 
                   let userLabels = new Map();
@@ -718,78 +775,6 @@ export default function Workspace() {
                         "flex";
                     });
 
-                  // Load from file event
-                  document
-                    .querySelector("button#load")
-                    .addEventListener("click", () => {
-                      const fileInput = document.createElement("input");
-                      fileInput.type = "file";
-                      fileInput.accept = ".df";
-
-                      fileInput.addEventListener("change", (e) => {
-                        let file = e.target.files[0];
-                        if (!file) return;
-
-                        let reader = new FileReader();
-
-                        reader.onload = async (event) => {
-                          let data = event.target.result;
-
-                          let json;
-                          try {
-                            json = JSON.parse(data);
-                          } catch (error) {
-                            return Swal.fire("Error", String(error), "error");
-                          }
-
-                          if (!json.blocks || !json.blocks.blocks) {
-                            return Swal.fire(
-                              "Error",
-                              "The selected file doesn't contain any blocks.",
-                              "error",
-                            );
-                          }
-
-                          Swal.fire({
-                            title: "Load Blocks from File",
-                            text: "Do you want to replace the current blocks in the workspace?",
-                            showCancelButton: true,
-                            showDenyButton: true,
-                            cancelButtonText: "Cancel",
-                            confirmButtonText: "Replace",
-                            denyButtonText: "Combine",
-                            icon: "question",
-                            animation: true,
-                            ...modalColors,
-                          }).then((result) => {
-                            if (result.isDismissed) return;
-
-                            if (result.isConfirmed) {
-                              Blockly.serialization.workspaces.load(
-                                json,
-                                workspace,
-                              );
-                            } else {
-                              json.blocks.blocks = json.blocks.blocks.concat(
-                                Blockly.serialization.workspaces.save(workspace)
-                                  ?.blocks?.blocks || [],
-                              );
-
-                              Blockly.serialization.workspaces.load(
-                                json,
-                                workspace,
-                              );
-                            }
-                          });
-                        };
-
-                        reader.readAsText(file);
-                      });
-
-                      fileInput.click();
-                      fileInput.remove();
-                    });
-
                   // Templates button event
                   document
                     .querySelector("button#templates")
@@ -882,24 +867,12 @@ export default function Workspace() {
                           currentWorkspace.current._id,
                         );
 
-                        let missingBlocks = [];
                         let warningBlocks = [];
 
                         let exportingWs;
                         if (result.value === "project")
                           exportingWs = fullWorkspace;
                         else exportingWs = workspace;
-
-                        requiredBlocks.forEach((requiredBlock) => {
-                          if (
-                            !exportingWs
-                              .getAllBlocks(false)
-                              .find(
-                                (block) => block.type === requiredBlock.type,
-                              )
-                          )
-                            missingBlocks.push(requiredBlock);
-                        });
 
                         const exportingWsBlocks =
                           exportingWs.getAllBlocks(false);
@@ -912,7 +885,7 @@ export default function Workspace() {
                             });
                         });
 
-                        if (missingBlocks.length || warningBlocks.length) {
+                        if (warningBlocks.length) {
                           let { isConfirmed } = await Swal.fire({
                             title: "Errors",
                             icon: "warning",
@@ -921,12 +894,6 @@ export default function Workspace() {
                             confirmButtonColor: "#e40000",
                             html: `
                           <p>You have the following errors in your code:</p>
-                          ${missingBlocks
-                            .map(
-                              (block) =>
-                                `<p class="exportError">${block.message}</p>`,
-                            )
-                            .join("")}
                           ${warningBlocks
                             .map(
                               (block) =>
@@ -1007,51 +974,9 @@ export default function Workspace() {
                             icon: "success",
                             title: "Successfully exported",
                             showConfirmButton: false,
+                            ...modalThemeColor(userCache.user),
                           });
                         });
-                      });
-
-                      // Save file event
-                      document.querySelector("button#save").onclick =
-                        async () => {
-                          const data = JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace),
-                          );
-                          const blob = new Blob([data], {
-                            type: "text/plain",
-                          });
-
-                          let url = window.URL.createObjectURL(blob);
-                          let anchor = document.createElement("a");
-                          anchor.href = url;
-                          anchor.download = `${project.name}.df`;
-
-                          anchor.click();
-
-                          window.URL.revokeObjectURL(url);
-
-                          Swal.fire({
-                            toast: true,
-                            position: "top-right",
-                            timer: 5000,
-                            timerProgressBar: true,
-                            icon: "success",
-                            title: "Successfully saved",
-                            showConfirmButton: false,
-                          });
-                        };
-
-                      let projectNameDiv =
-                        document.querySelector(".projectName p");
-
-                      projectNameDiv.addEventListener("click", () => {
-                        if (projectNameDiv.dataset.collapsed === "false") {
-                          projectNameDiv.dataset.collapsed = "true";
-                          projectNameDiv.innerText = "...";
-                        } else {
-                          projectNameDiv.dataset.collapsed = "false";
-                          projectNameDiv.innerText = project.name;
-                        }
                       });
                     });
 

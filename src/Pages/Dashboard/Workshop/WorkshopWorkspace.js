@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { renderToStaticMarkup } from "react-dom/server";
 import "@blockly/toolbox-search";
+import { userCache } from "../../../cache.ts";
 
 require
   .context("./workshopBlocks", true, /\.js$/)
@@ -330,6 +331,7 @@ export default function WorkshopWorkspace() {
             timer: 5000,
             timerProgressBar: true,
             showConfirmButton: false,
+            ...modalThemeColor(userCache.user),
           });
         });
     });
@@ -469,6 +471,7 @@ export default function WorkshopWorkspace() {
             timer: 5000,
             timerProgressBar: true,
             showConfirmButton: false,
+            ...modalThemeColor(userCache.user),
           });
         })
         .catch((e) => {
