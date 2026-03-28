@@ -56,15 +56,7 @@ export default function PubProject({ project }) {
           <p>{project.clones.length} Clones</p>
         </div>
 
-        {!project.private && project.botPrivate ? (
-          <div className="buttons">
-            <Link to={`/@${project.owner.username}/${project._id}`}>
-              <button style={{ borderRadius: "var(--button-radius)" }}>
-                <i className="fa-solid fa-eye"></i> View
-              </button>
-            </Link>
-          </div>
-        ) : (
+        {project?.bot?.id && !project.botPrivate ? (
           <div className="buttons">
             <Link to={`/@${project.owner.username}/${project._id}`}>
               <button>
@@ -79,6 +71,14 @@ export default function PubProject({ project }) {
               <button>
                 <i className="fa-solid fa-arrow-up-right-from-square"></i> Add
                 Bot
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className="buttons">
+            <Link to={`/@${project.owner.username}/${project._id}`}>
+              <button style={{ borderRadius: "var(--button-radius)" }}>
+                <i className="fa-solid fa-eye"></i> View
               </button>
             </Link>
           </div>
