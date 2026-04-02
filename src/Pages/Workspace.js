@@ -924,9 +924,12 @@ export default function Workspace() {
                         const indexjs =
                           result.value === "project" ? projectCode : wsCode;
 
-                        const envFile = `${project.secrets
+                        const envFile = `
+                        DISFUSE_SECURE_BOT_TOKEN=${project?.botToken || "invalid_token"}\n
+                        ${project.secrets
                           .map((s) => `${s.name}=${s.value}`)
-                          .join("\n")}`;
+                          .join("\n")}
+                          `;
 
                         const deps = [];
 

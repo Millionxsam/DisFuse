@@ -166,7 +166,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
         
     ${code}
     
-    client.login("${project.botToken}");
+    client.login(process.env.DISFUSE_SECURE_BOT_TOKEN);
     `;
   return beautifyJs(js, {
     indent_size: 2,
