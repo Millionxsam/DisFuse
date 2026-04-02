@@ -4,7 +4,7 @@
 [![Discord](https://img.shields.io/discord/1232427191099457626?style=flat&logo=discord&label=Discord&labelColor=gray&color=blue)](https://discord.gg/Xwx4zkQcmJ)
 [![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-![DisFuse](https://github.com/user-attachments/assets/71f0b5f8-faf3-4194-b0bd-ceacb5fb62a5)
+![DisFuse](https://disfuse.xyz/media/disfuse.png)
 
 **Make your own advanced Discord bot with simple, easy-to-use block coding!**
 
