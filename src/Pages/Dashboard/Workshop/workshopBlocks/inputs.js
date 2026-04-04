@@ -17,7 +17,7 @@ Blockly.Blocks["input_value"] = {
           ["center", "0"],
           ["right", "1"],
         ]),
-        "fieldsPos"
+        "fieldsPos",
       );
     this.appendValueInput("check")
       .setCheck(["OutputType", "Array"])
@@ -32,7 +32,7 @@ Blockly.Blocks["input_value"] = {
 
 javascript.javascriptGenerator.forBlock["input_value"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   name = name.replace(/[^A-Za-z0-9_.-]/g, "_");
@@ -73,7 +73,7 @@ Blockly.Blocks["input_statement"] = {
           ["center", "0"],
           ["right", "1"],
         ]),
-        "fieldsPos"
+        "fieldsPos",
       );
     this.appendValueInput("check")
       .setCheck(["OutputType", "Array"])
@@ -87,7 +87,7 @@ Blockly.Blocks["input_statement"] = {
 
 javascript.javascriptGenerator.forBlock["input_statement"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   name = name.replace(/[^A-Za-z0-9_.-]/g, "_");
@@ -126,7 +126,7 @@ Blockly.Blocks["input_dummy"] = {
           ["center", "0"],
           ["right", "1"],
         ]),
-        "fieldsPos"
+        "fieldsPos",
       );
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
@@ -137,7 +137,7 @@ Blockly.Blocks["input_dummy"] = {
 
 javascript.javascriptGenerator.forBlock["input_dummy"] = function (
   block,
-  generator
+  generator,
 ) {
   var fields = generator.statementToCode(block, "code");
   var fieldPos = block.getFieldValue("fieldsPos");
@@ -170,7 +170,7 @@ Blockly.Blocks["input_endrow"] = {
           ["center", "0"],
           ["right", "1"],
         ]),
-        "fieldsPos"
+        "fieldsPos",
       );
     this.setPreviousStatement(true, "Input");
     this.setNextStatement(true, "Input");
@@ -181,7 +181,7 @@ Blockly.Blocks["input_endrow"] = {
 
 javascript.javascriptGenerator.forBlock["input_endrow"] = function (
   block,
-  generator
+  generator,
 ) {
   var fields = generator.statementToCode(block, "code");
   var fieldPos = block.getFieldValue("fieldsPos");

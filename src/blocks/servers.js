@@ -12,7 +12,7 @@ Blockly.Blocks["server_getone"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "type"
+        "type",
       )
       .appendField("equal to");
     this.appendValueInput("value").setCheck(null);
@@ -191,7 +191,7 @@ Blockly.Blocks["server_disableinvites"] = {
           ["Disable", "true"],
           ["Enable", "false"],
         ]),
-        "disabled"
+        "disabled",
       )
       .appendField("invites on server:")
       .setAlign(Blockly.inputs.Align.LEFT);
@@ -214,12 +214,12 @@ Blockly.Blocks["server_leave"] = {
 
 javascript.javascriptGenerator.forBlock["server_leave"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(
     block,
     "server",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
 
   var code = `${value_server}.leave();`;
@@ -228,12 +228,12 @@ javascript.javascriptGenerator.forBlock["server_leave"] = function (
 
 javascript.javascriptGenerator.forBlock["server_disableinvites"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(
     block,
     "server",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var disabled = block.getFieldValue("disabled");
 
@@ -243,7 +243,7 @@ javascript.javascriptGenerator.forBlock["server_disableinvites"] = function (
 
 javascriptGenerator.forBlock["server_ruleschannel"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
@@ -253,7 +253,7 @@ javascriptGenerator.forBlock["server_ruleschannel"] = function (
 
 javascriptGenerator.forBlock["server_systemchannel"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
@@ -277,7 +277,7 @@ javascriptGenerator.forBlock["server_verified"] = function (block, generator) {
 
 javascriptGenerator.forBlock["server_creationdate"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
@@ -287,7 +287,7 @@ javascriptGenerator.forBlock["server_creationdate"] = function (
 
 javascriptGenerator.forBlock["server_afkchannel"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
@@ -332,7 +332,7 @@ javascriptGenerator.forBlock["server_id"] = function (block, generator) {
 
 javascriptGenerator.forBlock["server_membercount"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
 
@@ -360,20 +360,18 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
     dropdown_type === "name"
       ? `.find(s => s.name === ${value_value})`
       : dropdown_type === "id"
-      ? `.get(${value_value})`
-      : ""
+        ? `.get(${value_value})`
+        : ""
   }`;
 
   return [code, Order.NONE];
 };
 
 javascriptGenerator.forBlock["server_getall"] = function (block, generator) {
-  var statements_code = generator.statementToCode(block, "code");
-
-  var code = `client.guilds.cache.forEach(async (guild) => {
-    ${statements_code}
+  var codeVal = generator.statementToCode(block, "code");
+  return `await forEachCollection(client, "guilds", async (guild) => {
+    ${codeVal}
   });`;
-  return code;
 };
 
 createRestrictions(
@@ -384,7 +382,7 @@ createRestrictions(
       blockTypes: ["value"],
       message: "You must specify a value to search for",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -396,7 +394,7 @@ createRestrictions(
       message:
         'This block must be under the "For each server the bot is in" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -421,5 +419,5 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify a server",
     },
-  ]
+  ],
 );

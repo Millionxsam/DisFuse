@@ -5,19 +5,21 @@ import { javascriptGenerator, Order } from "blockly/javascript";
 Blockly.Blocks["my_custom_output"] = {
   init: function () {
     this.appendDummyInput()
-    .appendField('🥩')
-    .appendField(new Blockly.FieldTextInput('hi'), 'input')
-    .appendField('🥩');
-    this.setOutput(true, 'String')
+      .appendField("🥩")
+      .appendField(new Blockly.FieldTextInput("hi"), "input")
+      .appendField("🥩");
+    this.setOutput(true, "String");
     this.setColour("#014f98");
   },
 };
 
 javascriptGenerator.forBlock["my_custom_output"] = function (block) {
-  return [Order.NONE, `${block.getFieldValue('input')}`];
+  return [Order.NONE, `${block.getFieldValue("input")}`];
 };
 
-const shadowXml = Blockly.utils.xml.textToDom(`<block type="my_custom_output"></block>`);
+const shadowXml = Blockly.utils.xml.textToDom(
+  `<block type="my_custom_output"></block>`,
+);
 
 Blockly.Blocks["my_custom_block"] = {
   init: function () {
@@ -43,7 +45,7 @@ Blockly.Blocks["my_custom_block"] = {
 
       const shouldConnectNewBlock =
         event?.type === "drag" ||
-        (targetBlock?.type !== shadowXml.getAttribute('type') &&
+        (targetBlock?.type !== shadowXml.getAttribute("type") &&
           (event?.blockId === this.id ||
             event?.blockId === targetBlock?.id ||
             event?.blockId === targetBlock?.getParent()?.id));

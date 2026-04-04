@@ -88,8 +88,8 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
         this.appendDummyInput()
           .appendField(f.label)
           .appendField(
-            new Blockly.FieldCheckbox(f.default ?? false ? "TRUE" : "FALSE"),
-            f.name
+            new Blockly.FieldCheckbox((f.default ?? false) ? "TRUE" : "FALSE"),
+            f.name,
           );
       });
     },
@@ -111,21 +111,24 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
           inp = this.appendDummyInput();
         } else if (input.type === "value") {
           inp = this.appendValueInput(input.name || "").setCheck(
-            input.check ?? null
+            input.check ?? null,
           );
         } else {
           inp = this.appendStatementInput(input.name || "").setCheck(
-            input.check ?? null
+            input.check ?? null,
           );
         }
 
         if (field) inp.appendField(field);
       }
 
-      this.settings_ = mutatorFields.reduce((acc, f) => {
-        acc[f.name] = !!f.default;
-        return acc;
-      }, {} as Record<string, boolean>);
+      this.settings_ = mutatorFields.reduce(
+        (acc, f) => {
+          acc[f.name] = !!f.default;
+          return acc;
+        },
+        {} as Record<string, boolean>,
+      );
 
       this.setMutator(new Blockly.icons.MutatorIcon([], this));
       this.update_();
@@ -150,7 +153,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
       mutatorFields.forEach((f) => {
         container.setFieldValue(
           this.settings_[f.name] ? "TRUE" : "FALSE",
-          f.name
+          f.name,
         );
       });
       return container;

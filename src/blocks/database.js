@@ -133,7 +133,7 @@ Blockly.Blocks["db_clear"] = {
 
 javascript.javascriptGenerator.forBlock["db_clear"] = function (
   block,
-  generator
+  generator,
 ) {
   var text_db = block.getFieldValue("db");
 
@@ -143,7 +143,7 @@ javascript.javascriptGenerator.forBlock["db_clear"] = function (
 
 javascript.javascriptGenerator.forBlock["db_push"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
@@ -155,7 +155,7 @@ javascript.javascriptGenerator.forBlock["db_push"] = function (
 
 javascript.javascriptGenerator.forBlock["db_sub"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
@@ -167,7 +167,7 @@ javascript.javascriptGenerator.forBlock["db_sub"] = function (
 
 javascript.javascriptGenerator.forBlock["db_add"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
@@ -179,7 +179,7 @@ javascript.javascriptGenerator.forBlock["db_add"] = function (
 
 javascript.javascriptGenerator.forBlock["db_del"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
@@ -190,7 +190,7 @@ javascript.javascriptGenerator.forBlock["db_del"] = function (
 
 javascript.javascriptGenerator.forBlock["db_set"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_val = generator.valueToCode(block, "val", javascript.Order.ATOMIC);
@@ -202,7 +202,7 @@ javascript.javascriptGenerator.forBlock["db_set"] = function (
 
 javascript.javascriptGenerator.forBlock["db_all"] = function (
   block,
-  generator
+  generator,
 ) {
   var text_db = block.getFieldValue("db");
 
@@ -212,7 +212,7 @@ javascript.javascriptGenerator.forBlock["db_all"] = function (
 
 javascript.javascriptGenerator.forBlock["db_has"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
@@ -223,7 +223,7 @@ javascript.javascriptGenerator.forBlock["db_has"] = function (
 
 javascript.javascriptGenerator.forBlock["db_get"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var text_db = block.getFieldValue("db");
@@ -234,7 +234,7 @@ javascript.javascriptGenerator.forBlock["db_get"] = function (
 
 javascript.javascriptGenerator.forBlock["db_create"] = function (
   block,
-  generator
+  generator,
 ) {
   var text_name = block.getFieldValue("name");
   var text_path = block.getFieldValue("path");
@@ -257,7 +257,7 @@ createRestrictions(
       message:
         "You must create a database first with the 'create database' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -279,7 +279,7 @@ createRestrictions(
       message:
         "You must create a database first with the 'create database' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -291,5 +291,5 @@ createRestrictions(
       message:
         "You must create a database first with the 'create database' block",
     },
-  ]
+  ],
 );

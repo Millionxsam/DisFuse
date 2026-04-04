@@ -39,7 +39,10 @@ javascriptGenerator.forBlock["roles_currentLoopMember"] = function () {
   return [code, Order.NONE];
 };
 
-javascriptGenerator.forBlock["roles_foreachMember"] = function (block, generator) {
+javascriptGenerator.forBlock["roles_foreachMember"] = function (
+  block,
+  generator,
+) {
   var role = generator.valueToCode(block, "role", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
@@ -53,10 +56,9 @@ javascriptGenerator.forBlock["roles_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${server}.roles.cache.forEach(async (role) => {
+  return `await forEachCollection(${server}, "roles", async (role) => {
     ${codeVal}
   });`;
-  return code;
 };
 
 Blockly.Blocks["roles_foreach_role"] = {
@@ -104,7 +106,9 @@ javascriptGenerator.forBlock["roles_name"] = function (block, generator) {
 
 Blockly.Blocks["roles_position"] = {
   init: function () {
-    this.appendValueInput("role").setCheck("role").appendField("position of role:");
+    this.appendValueInput("role")
+      .setCheck("role")
+      .appendField("position of role:");
     this.setColour("#B76489");
     this.setOutput(true, "Number");
   },
@@ -118,7 +122,9 @@ javascriptGenerator.forBlock["roles_position"] = function (block, generator) {
 
 Blockly.Blocks["roles_hexColor"] = {
   init: function () {
-    this.appendValueInput("role").setCheck("role").appendField("hex color of role:");
+    this.appendValueInput("role")
+      .setCheck("role")
+      .appendField("hex color of role:");
     this.setColour("#B76489");
     this.setOutput(true, "String");
   },
@@ -146,7 +152,9 @@ javascriptGenerator.forBlock["roles_id"] = function (block, generator) {
 
 Blockly.Blocks["roles_createdAt"] = {
   init: function () {
-    this.appendValueInput("role").setCheck("role").appendField("creation date of role:");
+    this.appendValueInput("role")
+      .setCheck("role")
+      .appendField("creation date of role:");
     this.setColour("#B76489");
     this.setOutput(true, "date");
   },
@@ -163,9 +171,13 @@ Blockly.Blocks["roles_create"] = {
     this.appendValueInput("name")
       .setCheck("String")
       .appendField("create new role named:");
-    this.appendValueInput("server").setCheck("server").appendField("in server:");
+    this.appendValueInput("server")
+      .setCheck("server")
+      .appendField("in server:");
     this.appendValueInput("color").setCheck("Colour").appendField("color:");
-    this.appendValueInput("position").setCheck("Number").appendField("position:");
+    this.appendValueInput("position")
+      .setCheck("Number")
+      .appendField("position:");
     this.appendValueInput("mentionable")
       .setCheck("Boolean")
       .appendField("can be mentioned?");
@@ -183,8 +195,16 @@ javascriptGenerator.forBlock["roles_create"] = function (block, generator) {
   var val_server = generator.valueToCode(block, "server", Order.ATOMIC);
   var val_color = generator.valueToCode(block, "color", Order.ATOMIC);
   var val_position = generator.valueToCode(block, "position", Order.ATOMIC);
-  var val_mentionable = generator.valueToCode(block, "mentionable", Order.ATOMIC);
-  var val_permissions = generator.valueToCode(block, "permissions", Order.ATOMIC);
+  var val_mentionable = generator.valueToCode(
+    block,
+    "mentionable",
+    Order.ATOMIC,
+  );
+  var val_permissions = generator.valueToCode(
+    block,
+    "permissions",
+    Order.ATOMIC,
+  );
   var code = `${val_server}.roles.create({
   name: ${val_name},
   color: "${val_color || "#00000"}",
@@ -210,7 +230,9 @@ Blockly.Blocks["roles_getone"] = {
         "type",
       )
       .appendField("equal to");
-    this.appendValueInput("server").setCheck("server").appendField("on the server");
+    this.appendValueInput("server")
+      .setCheck("server")
+      .appendField("on the server");
     this.setOutput(true, "role");
     this.setColour("#B76489");
   },
@@ -218,33 +240,17 @@ Blockly.Blocks["roles_getone"] = {
 
 javascriptGenerator.forBlock["roles_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
-  var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-
-  const func = javascriptGenerator.provideFunction_(
-    "getRole",
-    `async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(guild, value, type = "id") {
-  if (!guild) return null;
-
-  const roles = guild.roles.cache.size
-    ? guild.roles.cache
-    : await guild.roles.fetch();
-
-  if (type === "id") {
-    return roles.get(value) ?? null;
-  }
-
-  return roles.find(r => r.name === value) ?? null;
-}`,
-  );
-
-  var code = `await ${func}(${value_server}, ${value_value}, "${dropdown_type}")`;
+  var value = generator.valueToCode(block, "value", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var code = `await getFromCollection(${server}, "roles", ${value}, "${dropdown_type}")`;
   return [code, Order.AWAIT];
 };
 
 Blockly.Blocks["roles_delete"] = {
   init: function () {
-    this.appendValueInput("role").setCheck("role").appendField("delete the role:");
+    this.appendValueInput("role")
+      .setCheck("role")
+      .appendField("delete the role:");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);
@@ -278,15 +284,22 @@ javascriptGenerator.forBlock["roles_rename"] = function (block, generator) {
 
 Blockly.Blocks["roles_addToMember"] = {
   init: function () {
-    this.appendValueInput("role").setCheck(["role", "Array"]).appendField("add role:");
-    this.appendValueInput("member").setCheck("member").appendField("to member:");
+    this.appendValueInput("role")
+      .setCheck(["role", "Array"])
+      .appendField("add role:");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("to member:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
 };
 
-javascriptGenerator.forBlock["roles_addToMember"] = function (block, generator) {
+javascriptGenerator.forBlock["roles_addToMember"] = function (
+  block,
+  generator,
+) {
   var val_role = generator.valueToCode(block, "role", Order.ATOMIC);
   var val_member = generator.valueToCode(block, "member", Order.ATOMIC);
   var code = `${val_member}.roles.add(${val_role});\n`;
@@ -295,15 +308,22 @@ javascriptGenerator.forBlock["roles_addToMember"] = function (block, generator) 
 
 Blockly.Blocks["roles_removeFromMember"] = {
   init: function () {
-    this.appendValueInput("role").setCheck(["role", "Array"]).appendField("remove role:");
-    this.appendValueInput("member").setCheck("member").appendField("from member:");
+    this.appendValueInput("role")
+      .setCheck(["role", "Array"])
+      .appendField("remove role:");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("from member:");
     this.setColour("#B76489");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
   },
 };
 
-javascriptGenerator.forBlock["roles_removeFromMember"] = function (block, generator) {
+javascriptGenerator.forBlock["roles_removeFromMember"] = function (
+  block,
+  generator,
+) {
   var val_role = generator.valueToCode(block, "role", Order.ATOMIC);
   var val_member = generator.valueToCode(block, "member", Order.ATOMIC);
   var code = `${val_member}.roles.remove(${val_role});\n`;
@@ -322,16 +342,25 @@ Blockly.Blocks["roles_setPermissions"] = {
   },
 };
 
-javascriptGenerator.forBlock["roles_setPermissions"] = function (block, generator) {
+javascriptGenerator.forBlock["roles_setPermissions"] = function (
+  block,
+  generator,
+) {
   var val_role = generator.valueToCode(block, "role", Order.ATOMIC);
-  var val_permissions = generator.valueToCode(block, "permissions", Order.ATOMIC);
+  var val_permissions = generator.valueToCode(
+    block,
+    "permissions",
+    Order.ATOMIC,
+  );
   var code = `${val_role}.setPermissions(${val_permissions});\n`;
   return code;
 };
 
 Blockly.Blocks["roles_hasRole"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("does member");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("does member");
     this.appendValueInput("role").setCheck("role").appendField("have the role");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
@@ -351,13 +380,13 @@ javascriptGenerator.forBlock["roles_hasRole"] = function (block, generator) {
   const roleId = typeof role === "string" ? role : role?.id;
   if (!roleId) return false;
 
-  if (member.roles?.cache?.has(roleId)) return true;
+  const memberRoles = await getCollection(member, "roles");
+  if (memberRoles?.has(roleId)) return true;
 
-  const roles = member.guild.roles.cache.size
-    ? member.guild.roles.cache
-    : await member.guild.roles.fetch();
+  const roles = await getCollection(member.guild, "roles");
+  if (!roles) return false;
 
-  return roles.has(roleId) && member.roles.cache.has(roleId);
+  return roles.has(roleId);
 }`,
   );
 
@@ -368,14 +397,19 @@ javascriptGenerator.forBlock["roles_hasRole"] = function (block, generator) {
 Blockly.Blocks["roles_hasPermission"] = {
   init: function () {
     this.appendValueInput("role").setCheck("role").appendField("does role");
-    this.appendValueInput("permission").setCheck("permission").appendField("have the");
+    this.appendValueInput("permission")
+      .setCheck("permission")
+      .appendField("have the");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
     this.setColour("#B76489");
   },
 };
 
-javascriptGenerator.forBlock["roles_hasPermission"] = function (block, generator) {
+javascriptGenerator.forBlock["roles_hasPermission"] = function (
+  block,
+  generator,
+) {
   var role = generator.valueToCode(block, "role", Order.ATOMIC);
   var permission = generator.valueToCode(block, "permission", Order.ATOMIC);
 
@@ -389,7 +423,8 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["roles_foreachMember"],
-      message: 'This block must be under the "For each member with the role" block',
+      message:
+        'This block must be under the "For each member with the role" block',
     },
   ],
 );
@@ -411,7 +446,8 @@ createRestrictions(
     {
       type: "hasParent",
       blockTypes: ["roles_foreach"],
-      message: 'This block must be under the "For each role on the server" block',
+      message:
+        'This block must be under the "For each role on the server" block',
     },
   ],
 );
@@ -443,7 +479,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["name"],
-      check: val => val.length <= 100,
+      check: (val) => val.length <= 100,
       message: "Name cannot be greater than 100 characters",
     },
   ],
@@ -460,7 +496,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["reason"],
-      check: val => val.length <= 512,
+      check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
   ],
@@ -482,7 +518,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["name"],
-      check: val => val.length <= 100,
+      check: (val) => val.length <= 100,
       message: "Name cannot be greater than 100 characters",
     },
   ],

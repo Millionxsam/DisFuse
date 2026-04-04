@@ -57,7 +57,7 @@ export function executeRestrictions(workspace) {
           if (
             blocks.some(
               (b) =>
-                b.id !== block.id && restriction.blockTypes.includes(b.type)
+                b.id !== block.id && restriction.blockTypes.includes(b.type),
             )
           )
             errors.push(restriction.message);
@@ -66,7 +66,7 @@ export function executeRestrictions(workspace) {
           if (
             !blocks.some(
               (b) =>
-                b.id !== block.id && restriction.blockTypes.includes(b.type)
+                b.id !== block.id && restriction.blockTypes.includes(b.type),
             )
           )
             errors.push(restriction.message);
@@ -84,7 +84,7 @@ export function executeRestrictions(workspace) {
 
             passValidator = restriction.check(
               val.replaceAll("'", ""),
-              workspace
+              workspace,
             );
           });
 

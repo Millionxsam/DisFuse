@@ -18,12 +18,13 @@ Blockly.Blocks["sticker_getallinserver"] = {
 
 javascriptGenerator.forBlock["sticker_getallinserver"] = function (
   block,
-  generator
+  generator,
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var statements_code = generator.statementToCode(block, "code");
-  return `${server}.stickers.cache.forEach(async (ForEachStickerInServer) => {
-  ${statements_code}});\n`;
+  var codeVal = generator.statementToCode(block, "code");
+  return `await forEachCollection(${server}, "stickers", async (ForEachStickerInServer) => {
+    ${codeVal}
+  });`;
 };
 
 Blockly.Blocks["sticker_getallinserver_value"] = {
@@ -93,7 +94,7 @@ Blockly.Blocks["sticker_getwith"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "with"
+        "with",
       )
       .appendField("equal to");
     this.appendValueInput("server")
@@ -106,20 +107,10 @@ Blockly.Blocks["sticker_getwith"] = {
 
 javascriptGenerator.forBlock["sticker_getwith"] = function (block, generator) {
   var dropdown_with = block.getFieldValue("with");
-  var value_equal = generator.valueToCode(block, "equal", Order.ATOMIC);
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-
-  if (dropdown_with === "name") {
-    return [
-      `${value_server}.stickers.cache.find(sticker => sticker.name === ${value_equal})`,
-      Order.FUNCTION_CALL,
-    ];
-  } else {
-    return [
-      `${value_server}.stickers.cache.get(${value_equal})`,
-      Order.FUNCTION_CALL,
-    ];
-  }
+  var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
+  var value = generator.valueToCode(block, "server", Order.ATOMIC);
+  var code = `await getFromCollection(${value}, "stickers", ${equal}, "${dropdown_with}")`;
+  return [code, Order.FUNCTION_CALL];
 };
 
 Blockly.Blocks["sticker_getid"] = {
@@ -147,7 +138,7 @@ Blockly.Blocks["sticker_created"] = {
           ["date", "createdAt"],
           ["timestamp", "createdTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of sticker:");
     this.setOutput(true, "String");
@@ -278,7 +269,7 @@ createRestrictions(
       blockTypes: ["sticker"],
       message: "You must specify the sticker",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -294,7 +285,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to get the sticker from",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -305,7 +296,7 @@ createRestrictions(
       blockTypes: ["sticker_getallinserver"],
       message: 'This block must be in a "for each sticker in the server" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -316,7 +307,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to iterate stickers from.",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -338,5 +329,5 @@ createRestrictions(
       check: (val) => 0 < val.length && val.length <= 30,
       message: "Name must be between 1 and 30 characters",
     },
-  ]
+  ],
 );

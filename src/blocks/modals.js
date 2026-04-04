@@ -50,7 +50,7 @@ Blockly.Blocks["modal_add_text_input"] = {
           ["short", "Short"],
           ["paragraph", "Paragraph"],
         ]),
-        "style"
+        "style",
       );
     this.setInputsInline(false);
     this.setPreviousStatement(true, "Array");
@@ -62,7 +62,7 @@ Blockly.Blocks["modal_add_text_input"] = {
 
 javascriptGenerator.forBlock["modal_add_text_input"] = function (
   block,
-  generator
+  generator,
 ) {
   var label = generator.valueToCode(block, "label", Order.ATOMIC);
   var required = generator.valueToCode(block, "required", Order.ATOMIC);
@@ -97,7 +97,7 @@ Blockly.Blocks["modal_add_text_input_advanced"] = {
           ["short", "Short"],
           ["paragraph", "Paragraph"],
         ]),
-        "style"
+        "style",
       );
     this.appendValueInput("placeholder")
       .setCheck("String")
@@ -118,7 +118,7 @@ Blockly.Blocks["modal_add_text_input_advanced"] = {
 
 javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
   block,
-  generator
+  generator,
 ) {
   var label = generator.valueToCode(block, "label", Order.ATOMIC);
   var required = generator.valueToCode(block, "required", Order.ATOMIC);
@@ -169,7 +169,7 @@ Blockly.Blocks["modal_handle_interaction"] = {
 
 javascriptGenerator.forBlock["modal_handle_interaction"] = function (
   block,
-  generator
+  generator,
 ) {
   var statements_code = generator.statementToCode(block, "code");
 
@@ -182,7 +182,7 @@ javascriptGenerator.forBlock["modal_handle_interaction"] = function (
 Blockly.Blocks["modal_get_input_value"] = {
   init: function () {
     this.appendValueInput("customId").appendField(
-      "get text from input with custom id:"
+      "get text from input with custom id:",
     );
     this.appendDummyInput().appendField("from the modal");
     this.setInputsInline(true);
@@ -194,7 +194,7 @@ Blockly.Blocks["modal_get_input_value"] = {
 
 javascriptGenerator.forBlock["modal_get_input_value"] = function (
   block,
-  generator
+  generator,
 ) {
   var customId = generator.valueToCode(block, "customId", Order.ATOMIC);
 
@@ -226,7 +226,7 @@ Blockly.Blocks["modal_get_customId"] = {
 
 javascriptGenerator.forBlock["modal_get_customId"] = function (
   block,
-  generator
+  generator,
 ) {
   return [`(interaction).customId`, Order.ATOMIC];
 };
@@ -268,7 +268,7 @@ createRestrictions(
       message:
         "The custom ID only have lowercase letters, numbers, hyphens, and/or underscores",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -308,7 +308,7 @@ createRestrictions(
       message:
         "The custom ID only have lowercase letters, numbers, hyphens, and/or underscores",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -354,7 +354,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "Placeholder cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -375,7 +375,7 @@ createRestrictions(
       blockTypes: ["modal_create"],
       message: 'This block must be inside a "Create modal with title" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -397,7 +397,7 @@ createRestrictions(
       ],
       message: "This block must be under an interaction event",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -414,7 +414,7 @@ createRestrictions(
       blockTypes: ["modal_handle_interaction"],
       message: 'This block must be under a "when a modal is submited" event',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -425,5 +425,5 @@ createRestrictions(
       blockTypes: ["modal_handle_interaction"],
       message: 'This block must be under a "when a modal is submited" event',
     },
-  ]
+  ],
 );

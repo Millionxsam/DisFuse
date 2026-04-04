@@ -57,7 +57,7 @@ createMutatorBlock({
 
 javascriptGenerator.forBlock["slash_create_mutator"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = generator.valueToCode(block, "name", Order.ATOMIC);
   var dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
@@ -101,7 +101,7 @@ Blockly.Blocks["slash_addoption"] = {
           ["role", "8"],
           ["user/member", "6"],
         ]),
-        "type"
+        "type",
       )
       .appendField("option");
     this.appendValueInput("name").setCheck("String").appendField("name:");
@@ -228,7 +228,7 @@ Blockly.Blocks["slash_getoption"] = {
           ["subcommand", "Subcommand"],
           ["subcommand group", "SubcommandGroup"],
         ]),
-        "type"
+        "type",
       );
     this.appendValueInput("name")
       .setCheck("String")
@@ -306,7 +306,7 @@ javascriptGenerator.forBlock["slash_user"] = function (block, generator) {
 
 javascriptGenerator.forBlock["slash_addsubcommand"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
@@ -323,7 +323,7 @@ javascriptGenerator.forBlock["slash_addsubcommand"] = function (
 
 javascriptGenerator.forBlock["slash_addsubcommandgroup"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
   var value_dsc = generator.valueToCode(block, "dsc", Order.ATOMIC);
@@ -351,7 +351,7 @@ createRestrictions(
       blockTypes: ["misc_createcontainer_global"],
       message: "It is recommended you use this block only once",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -386,7 +386,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The description cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -421,7 +421,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The description cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 createRestrictions(
   ["slash_addchoice"],
@@ -450,7 +450,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 createRestrictions(
   ["slash_addsubcommand"],
@@ -484,7 +484,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "The description cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 createRestrictions(
   ["slash_addsubcommandgroup"],
@@ -494,7 +494,7 @@ createRestrictions(
       blockTypes: ["slash_create", "slash_create_mutator"],
       message: 'This block must be under "add slash command" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -510,7 +510,7 @@ createRestrictions(
       blockTypes: ["slash_reply"],
       message: 'This block must be used AFTER "reply to the command" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -521,7 +521,7 @@ createRestrictions(
       blockTypes: ["slash_received"],
       message: 'This block must be under "when slash command received" event',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -538,7 +538,7 @@ createRestrictions(
       blockTypes: ["slash_reply"],
       message: 'This block must be used AFTER "reply to the command" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -553,7 +553,7 @@ createRestrictions(
       ],
       message: "This block must be under an interaction event",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -568,5 +568,5 @@ createRestrictions(
       ],
       message: "This block must be under an interaction event",
     },
-  ]
+  ],
 );

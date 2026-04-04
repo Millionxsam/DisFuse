@@ -73,7 +73,7 @@ Blockly.Blocks["slash_create"] = {
     this.appendDummyInput().appendField("add slash command");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
-    this.appendValueInput("nsfw").setCheck("Boolean").appendField("nSFW:");
+    this.appendValueInput("nsfw").setCheck("Boolean").appendField("NSFW:");
     this.appendValueInput("dm")
       .setCheck("Boolean")
       .appendField("usable in DMs:");
@@ -252,7 +252,7 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
 
 javascriptGenerator.forBlock["slash_createcontainer"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "commands");
@@ -260,7 +260,7 @@ javascriptGenerator.forBlock["slash_createcontainer"] = function (
   var code;
 
   if (value_guild?.length > 10)
-    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}]);`;
+    code = `(await getCollection(client, "servers")).get(${value_guild}).commands.set([${statements_code}]);`;
   else code = `client.application.commands.set([${statements_code}]);`;
 
   return code;
@@ -310,7 +310,7 @@ javascriptGenerator.forBlock["misc_int_reply"] = function (block, generator) {
 
 javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
@@ -340,6 +340,6 @@ javascriptGenerator.forBlock["misc_int_edit"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["main_amountservers"] = () => [
-  "client.guilds.cache.size",
+  `(await getCollection(client, "servers")).size`,
   Order.NONE,
 ];

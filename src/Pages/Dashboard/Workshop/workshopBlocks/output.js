@@ -13,7 +13,7 @@ Blockly.Blocks["output_valueInput"] = {
           ["none", "Order.NONE"],
           ["atomic", "Order.ATOMIC"],
         ]),
-        "ORDER"
+        "ORDER",
       );
     this.setColour("#a55b8d");
     this.setTooltip("tooltip");
@@ -24,11 +24,11 @@ Blockly.Blocks["output_valueInput"] = {
 
 javascriptGenerator.forBlock["output_valueInput"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var code = `generator.valueToCode(block, "${name}", ${block.getFieldValue(
-    "ORDER"
+    "ORDER",
   )})`;
   return [code, Order.NONE];
 };
@@ -47,7 +47,7 @@ Blockly.Blocks["output_statementInput"] = {
 
 javascriptGenerator.forBlock["output_statementInput"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var code = `generator.statementToCode(block, "${name}")`;
@@ -68,7 +68,7 @@ Blockly.Blocks["output_fieldValue"] = {
 
 javascriptGenerator.forBlock["output_fieldValue"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var code = `block.getFieldValue("${name}")`;

@@ -19,7 +19,7 @@ Blockly.Blocks["threads_msgCreateThread"] = {
           ["Public", "GUILD_PUBLIC_THREAD"],
           ["Private", "GUILD_PRIVATE_THREAD"],
         ]),
-        "type"
+        "type",
       );
     this.appendStatementInput("then").appendField("then:");
     this.setInputsInline(false);
@@ -31,7 +31,7 @@ Blockly.Blocks["threads_msgCreateThread"] = {
 
 javascriptGenerator.forBlock["threads_msgCreateThread"] = function (
   block,
-  generator
+  generator,
 ) {
   var val_message = generator.valueToCode(block, "message", Order.ATOMIC);
   var val_name = generator.valueToCode(block, "name", Order.ATOMIC);
@@ -70,7 +70,7 @@ Blockly.Blocks["threads_channelCreateThread"] = {
           ["Public", "PublicThread"],
           ["Private", "PrivateThread"],
         ]),
-        "type"
+        "type",
       );
     this.appendStatementInput("then").appendField("then:");
     this.setInputsInline(false);
@@ -82,7 +82,7 @@ Blockly.Blocks["threads_channelCreateThread"] = {
 
 javascriptGenerator.forBlock["threads_channelCreateThread"] = function (
   block,
-  generator
+  generator,
 ) {
   var val_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var val_name = generator.valueToCode(block, "name", Order.ATOMIC);
@@ -144,7 +144,7 @@ Blockly.Blocks["threads_createdAt"] = {
 
 javascriptGenerator.forBlock["threads_createdAt"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var code = `${thread}.createdAt`;
@@ -163,7 +163,7 @@ Blockly.Blocks["threads_lastMessage"] = {
 
 javascriptGenerator.forBlock["threads_lastMessage"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var code = `${thread}.lastMessage`;
@@ -184,7 +184,7 @@ Blockly.Blocks["threads_setLocked"] = {
 
 javascriptGenerator.forBlock["threads_setLocked"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var locked = generator.valueToCode(block, "locked", Order.ATOMIC);
@@ -225,7 +225,7 @@ Blockly.Blocks["threads_setArchived"] = {
 
 javascriptGenerator.forBlock["threads_setArchived"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var archived = generator.valueToCode(block, "archived", Order.ATOMIC);
@@ -317,7 +317,7 @@ Blockly.Blocks["threads_setSlowmode"] = {
 
 javascriptGenerator.forBlock["threads_setSlowmode"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var slowmode = generator.valueToCode(block, "slowmode", Order.ATOMIC);
@@ -353,7 +353,7 @@ Blockly.Blocks["threads_authorMember"] = {
 
 javascriptGenerator.forBlock["threads_authorMember"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var code = `await ${thread}.fetchOwner()`;
@@ -388,11 +388,11 @@ Blockly.Blocks["threads_memberCount"] = {
 
 javascriptGenerator.forBlock["threads_memberCount"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
-  var code = `${thread}.members.cache.size`;
-  return [code, Order.NONE];
+  var code = `(await ${thread}.members.fetch())?.size ?? 0`;
+  return [code, Order.AWAIT];
 };
 
 Blockly.Blocks["threads_parentChannel"] = {
@@ -407,7 +407,7 @@ Blockly.Blocks["threads_parentChannel"] = {
 
 javascriptGenerator.forBlock["threads_parentChannel"] = function (
   block,
-  generator
+  generator,
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
   var code = `${thread}.parent`;
@@ -424,7 +424,7 @@ Blockly.Blocks["threads_getone"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "type"
+        "type",
       )
       .appendField("equal to");
     this.appendValueInput("channel")
@@ -460,7 +460,7 @@ Blockly.Blocks["threads_msgThread"] = {
 
 javascriptGenerator.forBlock["threads_msgThread"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_message = generator.valueToCode(block, "message", Order.ATOMIC);
 
@@ -481,7 +481,7 @@ Blockly.Blocks["threads_msgHasThread"] = {
 
 javascriptGenerator.forBlock["threads_msgHasThread"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_message = generator.valueToCode(block, "message", Order.ATOMIC);
 
@@ -524,7 +524,7 @@ Blockly.Blocks["threads_removeUser"] = {
 
 javascriptGenerator.forBlock["threads_removeUser"] = function (
   block,
-  generator
+  generator,
 ) {
   var val_user = generator.valueToCode(block, "user", Order.ATOMIC);
   var val_thread = generator.valueToCode(block, "thread", Order.ATOMIC);
@@ -546,7 +546,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "Name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -557,7 +557,7 @@ createRestrictions(
       blockTypes: ["message"],
       message: "You must specify the message",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -574,7 +574,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "Name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -586,7 +586,7 @@ createRestrictions(
       check: (val) => val.length <= 100,
       message: "Name cannot be greater than 100 characters",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -597,7 +597,7 @@ createRestrictions(
       blockTypes: ["name"],
       message: "You must specify the name of the thread",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -608,7 +608,7 @@ createRestrictions(
       blockTypes: ["threads_msgCreateThread", "threads_channelCreateThread"],
       message: "This block must be under a 'start a thread' block",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -636,7 +636,7 @@ createRestrictions(
       blockTypes: ["thread"],
       message: "You must specify the thread",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -647,7 +647,7 @@ createRestrictions(
       blockTypes: ["locked", "archived"],
       message: "You must specify the locked or archived status",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -658,7 +658,7 @@ createRestrictions(
       blockTypes: ["name"],
       message: "You must specify the new name for the thread",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -675,7 +675,7 @@ createRestrictions(
       check: (val) => 0 <= parseInt(val) && parseInt(val) <= 21600,
       message: "Slowmode must be between 0 and 21,600 seconds",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -686,5 +686,5 @@ createRestrictions(
       blockTypes: ["user"],
       message: "You must specify the user",
     },
-  ]
+  ],
 );

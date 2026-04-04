@@ -4,8 +4,7 @@ import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
-
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function registerContextMenus(project, currentWorkspace) {
   Blockly.ContextMenuRegistry.registry.register({

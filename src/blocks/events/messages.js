@@ -76,7 +76,7 @@ createRestrictions(
       blockTypes: ["events_message_deleted"],
       message: "This block must be in the 'when a message gets deleted' event",
     },
-  ]
+  ],
 );
 
 createEventBlock({
@@ -134,5 +134,5 @@ createRestrictions(
       message:
         "This block must be in the 'when a reaction is added to a message' event",
     },
-  ]
+  ],
 );

@@ -14,7 +14,7 @@ Blockly.Blocks["contextMenu_create"] = {
           ["message", "Discord.ApplicationCommandType.Message"],
           ["user", "Discord.ApplicationCommandType.User"],
         ]),
-        "type"
+        "type",
       );
     this.appendValueInput("dms")
       .setCheck("Boolean")
@@ -28,7 +28,7 @@ Blockly.Blocks["contextMenu_create"] = {
 
 javascriptGenerator.forBlock["contextMenu_create"] = function (
   block,
-  generator
+  generator,
 ) {
   var val_name = generator.valueToCode(block, "name", Order.ATOMIC);
   var val_dms = generator.valueToCode(block, "dms", Order.ATOMIC);
@@ -52,7 +52,7 @@ Blockly.Blocks["contextMenu_received"] = {
 
 javascriptGenerator.forBlock["contextMenu_received"] = function (
   block,
-  generator
+  generator,
 ) {
   var code_statement = generator.statementToCode(block, "event");
 
@@ -205,7 +205,7 @@ createRestrictions(
       message:
         "The name can only have lowercase letters, numbers, hyphens, and/or underscores",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -227,5 +227,5 @@ createRestrictions(
       message:
         'This block must be under "when a context menu is clicked" event',
     },
-  ]
+  ],
 );

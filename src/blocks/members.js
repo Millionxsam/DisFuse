@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { buildDmSend } from "../functions/generatorUtils";
 
 Blockly.Blocks["member_getone"] = {
   init: function () {
@@ -131,18 +132,21 @@ Blockly.Blocks["member_dm_rows"] = {
   },
 };
 
+javascriptGenerator.forBlock["member_dm"] = function (block, generator) {
+  var user = generator.valueToCode(block, "member", Order.ATOMIC);
+  var content = generator.valueToCode(block, "content", Order.ATOMIC);
+  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
+
+  return buildDmSend(user, { content, embeds });
+};
+
 javascriptGenerator.forBlock["member_dm_rows"] = function (block, generator) {
   var user = generator.valueToCode(block, "member", Order.ATOMIC);
   var content = generator.valueToCode(block, "content", Order.ATOMIC);
   var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
 
-  var code = `await ${user}.send({
-    content: ${content || "''"},
-    embeds: [${embeds.replaceAll("'", "")}],
-    components: [${rows}]
-  });`;
-  return code;
+  return buildDmSend(user, { content, embeds, rows });
 };
 
 Blockly.Blocks["member_setnick"] = {
@@ -227,8 +231,7 @@ Blockly.Blocks["member_status"] = {
 javascriptGenerator.forBlock["member_status"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
 
-  var code = `${member}?.presence?.status || 'offline'`;
-  return [code, Order.NONE];
+  return [`${member}?.presence?.status || 'offline'`, Order.NONE];
 };
 
 Blockly.Blocks["member_userFlags"] = {
@@ -248,10 +251,10 @@ Blockly.Blocks["member_userFlags"] = {
 };
 
 javascriptGenerator.forBlock["member_userFlags"] = function (block, generator) {
-  var user = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${user}.flags.toArray()`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "member", Order.ATOMIC)}.flags.toArray()`,
+    Order.NONE,
+  ];
 };
 
 Blockly.Blocks["member_id"] = {
@@ -411,108 +414,76 @@ javascriptGenerator.forBlock["member_created"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var type = block.getFieldValue("type");
 
-  var code = `${member}.${type}`;
-  return [code, Order.NONE];
+  return [`${member}.${type}`, Order.NONE];
 };
 
-javascriptGenerator.forBlock["member_accent"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.hexAccentColor`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_system"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.system`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_bot"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.bot`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_username"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.username`;
-  return [code, Order.NONE];
-};
+javascriptGenerator.forBlock["member_accent"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.hexAccentColor`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_system"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.system`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_bot"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.bot`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_username"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.username`,
+  Order.NONE,
+];
 
 javascriptGenerator.forBlock["member_avatarURL"] = function (block, generator) {
-  var user = generator.valueToCode(block, "user", Order.ATOMIC);
-
-  var code = `${user}.displayAvatarURL()`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "user", Order.ATOMIC)}.displayAvatarURL()`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["member_bannerURL"] = function (block, generator) {
-  var user = generator.valueToCode(block, "user", Order.ATOMIC);
-
-  var code = `${user}.bannerURL()`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "user", Order.ATOMIC)}.bannerURL()`,
+    Order.NONE,
+  ];
 };
 
-javascriptGenerator.forBlock["member_user"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.user`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_nickname"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.nickname`;
-  return [code, Order.NONE];
-};
+javascriptGenerator.forBlock["member_user"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.user`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_nickname"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.nickname`,
+  Order.NONE,
+];
 
 javascriptGenerator.forBlock["member_joined"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var type = block.getFieldValue("type");
 
-  var code = `${member}.${type}`;
-  return [code, Order.NONE];
+  return [`${member}.${type}`, Order.NONE];
 };
 
-javascriptGenerator.forBlock["member_id"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.id`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_color"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.displayHexColor`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_timedout"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.isCommunicationDisabled()`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_kickable"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.kickable`;
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["member_bannable"] = function (block, generator) {
-  var member = generator.valueToCode(block, "member", Order.ATOMIC);
-
-  var code = `${member}.bannable`;
-  return [code, Order.NONE];
-};
+javascriptGenerator.forBlock["member_id"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.id`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_color"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.displayHexColor`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_timedout"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.isCommunicationDisabled()`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_kickable"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.kickable`,
+  Order.NONE,
+];
+javascriptGenerator.forBlock["member_bannable"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.bannable`,
+  Order.NONE,
+];
 
 javascriptGenerator.forBlock["member_removetimeout"] = function (
   block,
@@ -521,8 +492,7 @@ javascriptGenerator.forBlock["member_removetimeout"] = function (
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${member}.timeout(null, ${reason || "''"});`;
-  return code;
+  return `${member}.timeout(null, ${reason || "''"});`;
 };
 
 javascriptGenerator.forBlock["member_setnick"] = function (block, generator) {
@@ -530,28 +500,14 @@ javascriptGenerator.forBlock["member_setnick"] = function (block, generator) {
   var nickname = generator.valueToCode(block, "nickname", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${member}.setNickname(${nickname || "''"}, ${reason || "''"});`;
-  return code;
-};
-
-javascriptGenerator.forBlock["member_dm"] = function (block, generator) {
-  var user = generator.valueToCode(block, "member", Order.ATOMIC);
-  var content = generator.valueToCode(block, "content", Order.ATOMIC);
-  var embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
-
-  var code = `await ${user}.send({
-    content: ${content || "''"},
-    embeds: [${embeds.replaceAll("'", "")}]
-  });`;
-  return code;
+  return `${member}.setNickname(${nickname || "''"}, ${reason || "''"});`;
 };
 
 javascriptGenerator.forBlock["member_kick"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${member}.kick(${reason});`;
-  return code;
+  return `${member}.kick(${reason});`;
 };
 
 javascriptGenerator.forBlock["member_timeout"] = function (block, generator) {
@@ -559,30 +515,25 @@ javascriptGenerator.forBlock["member_timeout"] = function (block, generator) {
   var seconds = generator.valueToCode(block, "seconds", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${member}.timeout(${seconds} * 1000, ${reason});`;
-  return code;
+  return `${member}.timeout(${seconds} * 1000, ${reason});`;
 };
 
 javascriptGenerator.forBlock["member_ban"] = function (block, generator) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${member}.ban({ reason: ${reason} });`;
-  return code;
+  return `${member}.ban({ reason: ${reason} });`;
 };
 
-javascriptGenerator.forBlock["member_member"] = function (block, generator) {
-  var code = `member`;
-  return [code, Order.NONE];
-};
+javascriptGenerator.forBlock["member_member"] = () => [`member`, Order.NONE];
 
 javascriptGenerator.forBlock["member_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var foreach = generator.statementToCode(block, "code");
+  var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${server}.members.cache.forEach(async (member) => {
-${foreach}});`;
-  return code;
+  return `await forEachCollection(${server}, "members", async (member) => {
+    ${codeVal}
+  });`;
 };
 
 javascriptGenerator.forBlock["member_getuser"] = function (block, generator) {
@@ -631,8 +582,7 @@ javascriptGenerator.forBlock["member_hasPermission"] = function (
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var permission = generator.valueToCode(block, "permission", Order.ATOMIC);
 
-  var code = `${member}.permissions.has(${permission})`;
-  return [code, Order.NONE];
+  return [`${member}.permissions.has(${permission})`, Order.NONE];
 };
 
 createRestrictions(

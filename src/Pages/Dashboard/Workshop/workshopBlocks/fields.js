@@ -14,7 +14,7 @@ Blockly.Blocks["field_label"] = {
 
 javascript.javascriptGenerator.forBlock["field_label"] = function (
   block,
-  generator
+  generator,
 ) {
   var label = block.getFieldValue("label");
 
@@ -39,7 +39,7 @@ Blockly.Blocks["field_textInput"] = {
 
 javascript.javascriptGenerator.forBlock["field_textInput"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var defaultValue = block.getFieldValue("default");
@@ -67,7 +67,7 @@ Blockly.Blocks["field_numericInput"] = {
       .appendField("with precision of")
       .appendField(
         new Blockly.FieldNumber(0, -Infinity, Infinity, 1),
-        "precision"
+        "precision",
       );
     this.setPreviousStatement(true, "Field");
     this.setNextStatement(true, "Field");
@@ -78,7 +78,7 @@ Blockly.Blocks["field_numericInput"] = {
 
 javascript.javascriptGenerator.forBlock["field_numericInput"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var defaultValue = block.getFieldValue("default") || 0;
@@ -117,7 +117,7 @@ Blockly.Blocks["field_checkbox"] = {
 
 javascript.javascriptGenerator.forBlock["field_checkbox"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var defaultValue = block.getFieldValue("default");
@@ -145,7 +145,7 @@ Blockly.Blocks["field_variable"] = {
 
 javascript.javascriptGenerator.forBlock["field_variable"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("name");
   var defaultValue = block.getFieldValue("default");
@@ -173,7 +173,7 @@ Blockly.Blocks["field_dropdown"] = {
 
 javascript.javascriptGenerator.forBlock["field_dropdown"] = function (
   block,
-  generator
+  generator,
 ) {
   var choices = generator.statementToCode(block, "code");
   var name = block.getFieldValue("name");
@@ -207,7 +207,7 @@ Blockly.Blocks["field_dropdownChoice"] = {
 
 javascript.javascriptGenerator.forBlock["field_dropdownChoice"] = function (
   block,
-  generator
+  generator,
 ) {
   var field_value = block.getFieldValue("value");
   var field_display = block.getFieldValue("display");

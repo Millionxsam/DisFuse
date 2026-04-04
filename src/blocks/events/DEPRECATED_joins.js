@@ -9,7 +9,7 @@ createEventBlock({
   text: "when a member joins a server",
   colour: "#FF4F4F",
   event: "guildMemberAdd",
-  variables: "joinedMember"
+  variables: "joinedMember",
 });
 
 createEventVariable({
@@ -17,7 +17,7 @@ createEventVariable({
   text: "joining member",
   colour: "#FF4F4F",
   blockType: "member",
-  blockOutput: "joinedMember"
+  blockOutput: "joinedMember",
 });
 
 createEventVariable({
@@ -25,7 +25,7 @@ createEventVariable({
   text: "joining server",
   colour: "#FF4F4F",
   blockType: "server",
-  blockOutput: "joinedMember.guild"
+  blockOutput: "joinedMember.guild",
 });
 
 createRestrictions(
@@ -36,5 +36,5 @@ createRestrictions(
       blockTypes: ["events_joins_guildmemberadd"],
       message: "This block must be in the 'when a member joins a server' event",
     },
-  ]
+  ],
 );

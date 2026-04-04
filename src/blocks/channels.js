@@ -2,6 +2,11 @@ import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
+import {
+  buildMessageOptions,
+  buildThenSuffix,
+  buildLegacySend,
+} from "../functions/generatorUtils";
 
 createMutatorBlock({
   id: "channel_send_mutator",
@@ -61,17 +66,11 @@ javascriptGenerator.forBlock["channel_send_mutator"] = function (
   const rows = generator.statementToCode(block, "rows");
   const files = generator.statementToCode(block, "files");
   const then = generator.statementToCode(block, "then");
-  let thenCode = ";\n";
 
-  const options = [`content: ${content}`];
-  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
-  if (rows) options.push(`components: [\n${rows}]`);
-  if (files) options.push(`files: [\n${files}]`);
-  if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
+  const options = buildMessageOptions({ content, embeds, rows, files });
+  const thenCode = buildThenSuffix(then);
 
-  return `await ${channel}.send({
-  ${options.join(",\n  ")}
-})${thenCode}`;
+  return `await ${channel}.send({\n  ${options.join(",\n  ")}\n})${thenCode}`;
 };
 
 Blockly.Blocks["channel_send"] = {
@@ -680,8 +679,7 @@ javascriptGenerator.forBlock["channel_createdChannel"] = function (
   block,
   generator,
 ) {
-  var code = `createdChannel`;
-  return [code, Order.NONE];
+  return [`createdChannel`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
@@ -695,12 +693,7 @@ javascriptGenerator.forBlock["channel_create"] = function (block, generator) {
     name: ${name || "''"},
     parent: ${parent || "null"},
     type: Discord.ChannelType.${type}
-  })${
-    then
-      ? `.then(async (createdChannel) => {
-  ${then}});`
-      : ";"
-  }`;
+  })${then ? `.then(async (createdChannel) => {\n  ${then}});` : ";"}`;
 };
 
 Blockly.Blocks["channel_del"] = {
@@ -771,16 +764,14 @@ javascriptGenerator.forBlock["channel_setname"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var name = generator.valueToCode(block, "name", Order.NONE);
 
-  var code = `${channel}.setName(${name});`;
-  return code;
+  return `${channel}.setName(${name});`;
 };
 
 javascriptGenerator.forBlock["channel_del"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.NONE);
 
-  var code = `${channel}.delete(${reason});`;
-  return code;
+  return `${channel}.delete(${reason});`;
 };
 
 javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
@@ -788,61 +779,56 @@ javascriptGenerator.forBlock["channel_clone"] = function (block, generator) {
   var name = generator.valueToCode(block, "name", Order.NONE);
   var then = generator.statementToCode(block, "then");
 
-  var code = `${channel}.clone({ name: ${
-    name || `${channel}.name`
-  } }).then(async (createdChannel) => {
+  return `${channel}.clone({ name: ${name || `${channel}.name`} }).then(async (createdChannel) => {
     ${then}});\n`;
-
-  return code;
 };
 
 javascriptGenerator.forBlock["channel_created"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var type = block.getFieldValue("type");
 
-  var code = `${channel}.${type}`;
-  return [code, Order.NONE];
+  return [`${channel}.${type}`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_url"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.url`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.url`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_id"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.id`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.id`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_name"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.name`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.name`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_manageable"] = function (
   block,
   generator,
 ) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.manageable`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.manageable`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_deletable"] = function (
   block,
   generator,
 ) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.deleteable`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.deleteable`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_getone"] = function (block, generator) {
@@ -862,42 +848,41 @@ javascriptGenerator.forBlock["channel_gettype"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var type = block.getFieldValue("type");
 
-  var code = `${channel}.type === ${type}`;
-  return [code, Order.NONE];
+  return [`${channel}.type === ${type}`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_gettopic"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.topic`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.topic`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_getnsfw"] = function (block, generator) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.nsfw`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.nsfw`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_getParent"] = function (
   block,
   generator,
 ) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.parent`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.parent`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_getslowmode"] = function (
   block,
   generator,
 ) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.rateLimitPerUser`;
-  return [code, Order.NONE];
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.rateLimitPerUser`,
+    Order.NONE,
+  ];
 };
 
 javascriptGenerator.forBlock["channel_setautoarchive"] = function (
@@ -908,8 +893,7 @@ javascriptGenerator.forBlock["channel_setautoarchive"] = function (
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
   var duration = block.getFieldValue("duration");
 
-  var code = `${channel}.setDefaultAutoArchiveDuration(${duration}, ${reason})`;
-  return code;
+  return `${channel}.setDefaultAutoArchiveDuration(${duration}, ${reason})`;
 };
 
 javascriptGenerator.forBlock["channel_bulkdelete"] = function (
@@ -919,8 +903,7 @@ javascriptGenerator.forBlock["channel_bulkdelete"] = function (
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var amount = generator.valueToCode(block, "amount", Order.ATOMIC);
 
-  var code = `${channel}.bulkDelete(${amount});`;
-  return code;
+  return `${channel}.bulkDelete(${amount});`;
 };
 
 javascriptGenerator.forBlock["channel_starttyping"] = function (
@@ -930,26 +913,21 @@ javascriptGenerator.forBlock["channel_starttyping"] = function (
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var wait = generator.valueToCode(block, "wait", Order.ATOMIC);
 
-  var code = `await ${channel}.sendTyping();\nwait(${wait} * 1000);`;
-  return code;
+  return `await ${channel}.sendTyping();\nwait(${wait} * 1000);`;
 };
 
 javascriptGenerator.forBlock["channel_settopic"] = function (block, generator) {
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var topic = generator.valueToCode(block, "topic", Order.ATOMIC);
 
-  var code = `${channel}.setTopic(${topic});`;
-  return code;
+  return `${channel}.setTopic(${topic});`;
 };
 
 javascriptGenerator.forBlock["channel_syncPerms"] = function (
   block,
   generator,
 ) {
-  var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
-
-  var code = `${channel}.lockPermissions();`;
-  return code;
+  return `${generator.valueToCode(block, "channel", Order.ATOMIC)}.lockPermissions();`;
 };
 
 javascriptGenerator.forBlock["channel_setslowmode"] = function (
@@ -960,22 +938,20 @@ javascriptGenerator.forBlock["channel_setslowmode"] = function (
   var time = generator.valueToCode(block, "time", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
-  var code = `${channel}.setRateLimitPerUser(${time}, ${reason});`;
-  return code;
+  return `${channel}.setRateLimitPerUser(${time}, ${reason});`;
 };
 
 javascriptGenerator.forBlock["channel_channel"] = function (block, generator) {
-  var code = `channel`;
-  return [code, Order.NONE];
+  return [`channel`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${value_server}.channels.cache.forEach(async (channel) => {
-    ${codeVal}});\n`;
-  return code;
+  return `await forEachCollection(${server}, "channels", async (channel) => {
+    ${codeVal}
+  });\n`;
 };
 
 javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
@@ -986,12 +962,11 @@ javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var statement = generator.statementToCode(block, "code");
 
-  var code = `${channel}.messages.fetch({
+  return `${channel}.messages.fetch({
     limit: ${amount}
   }).then(fetchedMessages => {
     ${statement}
   });`;
-  return code;
 };
 
 javascriptGenerator.forBlock["channel_fetchedLastMessages"] = function (
@@ -1000,16 +975,14 @@ javascriptGenerator.forBlock["channel_fetchedLastMessages"] = function (
 ) {
   var number = generator.valueToCode(block, "number", Order.ATOMIC);
 
-  var code = `fetchedMessages.at(${number} - 1)`;
-  return [code, Order.NONE];
+  return [`fetchedMessages.at(${number} - 1)`, Order.NONE];
 };
 
 javascriptGenerator.forBlock["channel_setnsfw"] = function (block, generator) {
   var value_channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var value_enabled = generator.valueToCode(block, "set", Order.ATOMIC);
 
-  var code = `${value_channel}.setNSFW(${value_enabled});`;
-  return code;
+  return `${value_channel}.setNSFW(${value_enabled});`;
 };
 
 javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
@@ -1018,12 +991,11 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var then = generator.statementToCode(block, "then");
 
-  var code = `await ${value_channel}.send({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}]
-}).then((messageSent) => {
-  ${then}});\n`;
-  return code;
+  return buildLegacySend(value_channel, {
+    content: value_content,
+    embeds: value_embeds,
+    then,
+  });
 };
 
 javascriptGenerator.forBlock["channel_send_rows"] = function (
@@ -1036,15 +1008,12 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
   var rows = generator.statementToCode(block, "rows");
   var then = generator.statementToCode(block, "then");
 
-  var code = `await ${value_channel}.send({
-  content: ${value_content || "''"},
-  embeds: [${value_embeds.replaceAll("'", "")}],
-  components: [
-  ${rows}]
-}).then((messageSent) => {
-  ${then}});\n`;
-
-  return code;
+  return buildLegacySend(value_channel, {
+    content: value_content,
+    embeds: value_embeds,
+    rows,
+    then,
+  });
 };
 
 createRestrictions(
@@ -1274,12 +1243,10 @@ javascriptGenerator.forBlock["channel_set_permission"] = function (
   const action = block.getFieldValue("action");
   const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   const role = generator.valueToCode(block, "role", Order.ATOMIC);
-
   const allow = action === "allow" ? "true" : "false";
 
   if (role === "(everyone)") {
-    return `let permsChannel = ${channel};
-permsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone, { ${permission}: ${allow} });\n`;
+    return `let permsChannel = ${channel};\npermsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone, { ${permission}: ${allow} });\n`;
   } else {
     return `${channel}.permissionOverwrites.edit(${role}, { ${permission}: ${allow} });\n`;
   }

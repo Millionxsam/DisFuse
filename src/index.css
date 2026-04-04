@@ -1039,7 +1039,7 @@ body:has(.home-container) {
 body:has(.home-container)::before {
   content: "";
   position: absolute;
-  background-image: url(/public/media/homeBackground.png);
+  background-image: url("/media/homeBackground.png");
   background-size: contain;
   inset: 0;
   background-position: 0 -2rem;
@@ -2775,7 +2775,7 @@ div.hidden:not(.shown) {
 }
 
 .blocklyTreeIcon {
-  background-image: url("../public/media/sprite.png");
+  background-image: url("/media/sprite.png");
 }
 
 .blocklyTreeRow {

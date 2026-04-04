@@ -8,7 +8,7 @@ function sanitizeComment(text) {
     .replace(/\*\//g, "* /")
     .replace(/-->/g, "-- >")
     .replace(/[^\x20-\x7E]/g, "")
-    .trim()
+    .trim();
 }
 
 Blockly.Blocks["comment_stack"] = {
@@ -35,7 +35,7 @@ Blockly.Blocks["comment_multiline"] = {
       .appendField("//")
       .appendField(
         new Blockly.FieldMultilineInput("multi-line\ncomment"),
-        "TEXT"
+        "TEXT",
       );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -73,7 +73,7 @@ Blockly.Blocks["comment_statement"] = {
       .appendField("//")
       .appendField(
         new Blockly.FieldTextInput("comment that runs the code inside"),
-        "TEXT"
+        "TEXT",
       );
     this.appendStatementInput("CODE").setCheck("default");
     this.setPreviousStatement(true, "default");
@@ -84,7 +84,7 @@ Blockly.Blocks["comment_statement"] = {
 
 javascriptGenerator.forBlock["comment_statement"] = function (
   block,
-  generator
+  generator,
 ) {
   var text = block.getFieldValue("TEXT");
   var code = generator.statementToCode(block, "CODE");
@@ -100,17 +100,19 @@ Blockly.Blocks["comment_stackImage"] = {
         new URL(newValue);
         return newValue;
       } catch (e) {
-        return null; 
+        return null;
       }
     };
 
-    this.appendDummyInput().appendField("// image").appendField(
-      new Blockly.FieldTextInput(
-        "https://disfuse.xyz/media/disfuse-clear.png",
-        urlValidator 
-      ),
-      "TEXT"
-    );
+    this.appendDummyInput()
+      .appendField("// image")
+      .appendField(
+        new Blockly.FieldTextInput(
+          "https://disfuse.xyz/media/disfuse-clear.png",
+          urlValidator,
+        ),
+        "TEXT",
+      );
 
     this.imageField = new Blockly.FieldImage("", 200, 200, {
       alt: "*",
@@ -129,14 +131,14 @@ Blockly.Blocks["comment_stackImage"] = {
       function () {
         const imageUrl = this.getFieldValue("TEXT");
         this.imageField.setValue(imageUrl);
-      }.bind(this)
+      }.bind(this),
     );
   },
 };
 
 javascriptGenerator.forBlock["comment_stackImage"] = function (
   block,
-  generator
+  generator,
 ) {
   var text = block.getFieldValue("TEXT");
   var code = `// image (${text})\n`;

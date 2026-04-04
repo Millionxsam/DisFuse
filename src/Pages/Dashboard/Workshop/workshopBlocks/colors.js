@@ -22,7 +22,7 @@ Blockly.Blocks["color_picker"] = {
 
 javascript.javascriptGenerator.forBlock["color_picker"] = function (
   block,
-  generator
+  generator,
 ) {
   var colour = block.getFieldValue("color");
   return [colour, javascript.Order.ATOMIC];
@@ -52,7 +52,7 @@ Blockly.Blocks["color_custom"] = {
 
 javascript.javascriptGenerator.forBlock["color_custom"] = function (
   block,
-  generator
+  generator,
 ) {
   var colour = block.getFieldValue("color");
   return [colour, javascript.Order.ATOMIC];

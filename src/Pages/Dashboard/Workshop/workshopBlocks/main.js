@@ -17,7 +17,7 @@ Blockly.Blocks["main_blockcreator"] = {
           ["inline", "true"],
           ["external", "false"],
         ]),
-        "INLINE"
+        "INLINE",
       );
     this.appendDummyInput()
       .appendField("set type to:")
@@ -29,7 +29,7 @@ Blockly.Blocks["main_blockcreator"] = {
           ["↧ hat block", "hat"],
           ["↥ end block", "end"],
         ]),
-        "TYPE"
+        "TYPE",
       );
     this.appendValueInput("OUTPUT")
       .setCheck(["OutputType", "Array"])
@@ -92,7 +92,7 @@ Blockly.Blocks["main_blockcreator"] = {
 
 javascriptGenerator.forBlock["main_blockcreator"] = function (
   block,
-  generator
+  generator,
 ) {
   var name = block.getFieldValue("NAME") || "block_id_here";
   name = name.replace(/[^A-Za-z0-9_.-]/g, "_");
@@ -103,12 +103,12 @@ javascriptGenerator.forBlock["main_blockcreator"] = function (
   var previousStatement = generator.valueToCode(
     block,
     "PREVIOUSSTATEMENT",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
   var nextStatement = generator.valueToCode(
     block,
     "NEXTSTATEMENT",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
   var description = block.getFieldValue("DESCRIPTION");
   var helpurl = block.getFieldValue("HELPURL");
@@ -118,7 +118,7 @@ javascriptGenerator.forBlock["main_blockcreator"] = function (
   return `{
         "name": "${name}",
         "outputCode": ${JSON.stringify(
-          generator.valueToCode(block, "OUTPUTCODE", Order.ATOMIC) || "null"
+          generator.valueToCode(block, "OUTPUTCODE", Order.ATOMIC) || "null",
         )},
         "inlineInputs": ${inline},
         "type": "${type}",

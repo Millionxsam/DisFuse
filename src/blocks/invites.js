@@ -311,13 +311,12 @@ Blockly.Blocks["invite_foreach"] = {
 };
 
 javascriptGenerator.forBlock["invite_foreach"] = function (block, generator) {
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${value_server}.invites.cache.forEach(async (inviteForEachInLoop) => {
+  return `await forEachCollection(${server}, "invites", async (inviteForEachInLoop) => {
     ${codeVal}
-});\n`;
-  return code;
+  });`;
 };
 
 Blockly.Blocks["invite_foreach_var"] = {
