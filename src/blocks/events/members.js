@@ -93,7 +93,7 @@ createRestrictions(
       message:
         "This block must be in the 'when a member is given a role' event",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -105,5 +105,5 @@ createRestrictions(
       message:
         "This block must be in the 'when a member is removed from a role' event",
     },
-  ]
+  ],
 );

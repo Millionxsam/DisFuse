@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import UserTag from "./UserTag";
 
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function Reply({ reply: r, user, allUsers, project, comment }) {
   const [author, setAuthor] = useState({});
@@ -30,7 +30,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
             `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
           {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
-          }
+          },
         )
         .then(() => window.location.reload());
     });
@@ -48,7 +48,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
           apiUrl +
             `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
           { content: r.value },
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } }
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
         )
         .then(() => window.location.reload());
     });
@@ -64,7 +64,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        }
+        },
       )
       .then(({ data }) => {
         if (data.likes.includes(user.id)) setNewLike(true);

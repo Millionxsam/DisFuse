@@ -15,7 +15,7 @@ Blockly.Blocks["scratch_getprofile"] = {
 
 javascriptGenerator.forBlock["scratch_getprofile"] = function (
   block,
-  generator
+  generator,
 ) {
   var user = generator.valueToCode(block, "username", Order.NONE);
   var code = generator.statementToCode(block, "code");
@@ -40,7 +40,7 @@ Blockly.Blocks["scratch_getprofileinfo"] = {
           ["profile picture (90x90)", "profile.images['90x90']"],
           ["is part of the Scratch Team", "scratchteam"],
         ]),
-        "info"
+        "info",
       )
       .appendField("of Scratch profile");
     this.setOutput(true, null);
@@ -65,7 +65,7 @@ Blockly.Blocks["scratch_getmessages"] = {
 
 javascriptGenerator.forBlock["scratch_getmessages"] = function (
   block,
-  generator
+  generator,
 ) {
   var user = generator.valueToCode(block, "username", Order.NONE);
 

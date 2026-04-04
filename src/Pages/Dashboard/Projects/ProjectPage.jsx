@@ -5,7 +5,7 @@ import UserTag from "../../../components/UserTag";
 import Comment from "../../../components/Comment";
 import LoadingAnim from "../../../components/LoadingAnim";
 
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+import { apiUrl, discordUrl } from "../../../config/config.js";
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});

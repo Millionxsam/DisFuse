@@ -20,11 +20,11 @@ export default function Auth({ children }) {
     ) {
       localStorage.setItem(
         "disfuse-token",
-        `${params.get("token_type")} ${params.get("access_token")}`
+        `${params.get("token_type")} ${params.get("access_token")}`,
       );
       localStorage.setItem(
         "disfuse-token-exp",
-        `${Date.now() + Number(params.get("expires_in")) * 1000}`
+        `${Date.now() + Number(params.get("expires_in")) * 1000}`,
       );
     }
 

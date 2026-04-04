@@ -2,7 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import * as Blockly from "blockly";
 
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function WorkspaceTabs({
   currentTab,
@@ -25,7 +25,7 @@ export default function WorkspaceTabs({
 
     setTimeout(() => {
       document.querySelector(
-        ".workspace-navbar .workspace-tabs-open"
+        ".workspace-navbar .workspace-tabs-open",
       ).style.opacity = "1";
 
       Blockly.svgResize(workspace);
@@ -60,7 +60,7 @@ export default function WorkspaceTabs({
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setProject(res.data);
@@ -88,7 +88,7 @@ export default function WorkspaceTabs({
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setProject(res.data);
@@ -124,7 +124,7 @@ export default function WorkspaceTabs({
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setProject(res.data);
@@ -156,7 +156,7 @@ export default function WorkspaceTabs({
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then((res) => {
           setProject(res.data);

@@ -7,7 +7,7 @@ import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
 
-const { discordUrl, apiUrl } = require("../../../config/config.js");
+import { discordUrl, apiUrl } from "../../../config/config.js";
 
 const modalColors = modalThemeColor(null, true);
 

@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { userCache } from "../cache.ts";
 import modalThemeColor from "../functions/modalThemeColor.js";
 
-const { apiUrl } = require("../config/config.js");
+import { apiUrl } from "../config/config";
 
 export default function InviteModal({ project, onSave }) {
   const [collaborators, setCollaborators] = useState([]);

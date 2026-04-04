@@ -12,7 +12,7 @@ Blockly.Blocks["canvas_createCanvas"] = {
     this.setNextStatement(true);
     this.setColour("#4C9F70");
     this.setTooltip(
-      "Creates a new canvas with the specified width and height, then runs the given code."
+      "Creates a new canvas with the specified width and height, then runs the given code.",
     );
   },
 };
@@ -43,7 +43,7 @@ javascriptGenerator.forBlock["canvas_setFillColor"] = (block) =>
   `ctx.fillStyle = ${javascriptGenerator.valueToCode(
     block,
     "COLOR",
-    Order.ATOMIC
+    Order.ATOMIC,
   )};\n`;
 
 Blockly.Blocks["canvas_setStrokeColor"] = {
@@ -61,7 +61,7 @@ javascriptGenerator.forBlock["canvas_setStrokeColor"] = (block) =>
   `ctx.strokeStyle = ${javascriptGenerator.valueToCode(
     block,
     "COLOR",
-    Order.ATOMIC
+    Order.ATOMIC,
   )};\n`;
 
 Blockly.Blocks["canvas_setLineWidth"] = {
@@ -79,7 +79,7 @@ javascriptGenerator.forBlock["canvas_setLineWidth"] = (block) =>
   `ctx.lineWidth = ${javascriptGenerator.valueToCode(
     block,
     "WIDTH",
-    Order.ATOMIC
+    Order.ATOMIC,
   )};\n`;
 
 Blockly.Blocks["canvas_drawRectangle"] = {
@@ -158,7 +158,7 @@ javascriptGenerator.forBlock["canvas_setFont"] = (block) =>
   `ctx.font = ${javascriptGenerator.valueToCode(
     block,
     "FONT",
-    Order.ATOMIC
+    Order.ATOMIC,
   )};\n`;
 
 Blockly.Blocks["canvas_fillText"] = {
@@ -260,7 +260,7 @@ javascriptGenerator.forBlock["canvas_rotate"] = (block) =>
   `ctx.rotate(${javascriptGenerator.valueToCode(
     block,
     "ANGLE",
-    Order.ATOMIC
+    Order.ATOMIC,
   )});\n`;
 Blockly.Blocks["canvas_translate"] = {
   init: function () {
@@ -278,7 +278,7 @@ javascriptGenerator.forBlock["canvas_translate"] = (block) =>
   `ctx.translate(${javascriptGenerator.valueToCode(
     block,
     "DX",
-    Order.ATOMIC
+    Order.ATOMIC,
   )}, ${javascriptGenerator.valueToCode(block, "DY", Order.ATOMIC)});\n`;
 
 Blockly.Blocks["canvas_clearCanvas"] = {
@@ -360,7 +360,7 @@ createRestrictions(
     "canvas_width",
     "canvas_height",
     "canvas_addFile",
-    "canvas_asData"
+    "canvas_asData",
   ],
   [
     {
@@ -368,5 +368,5 @@ createRestrictions(
       blockTypes: ["canvas_createCanvas"],
       message: 'This block must be inside a "create new canvas" block.',
     },
-  ]
+  ],
 );

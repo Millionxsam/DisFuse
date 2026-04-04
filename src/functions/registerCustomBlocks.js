@@ -5,7 +5,7 @@ export default function registerCustomBlocks(
   blocks,
   workspace,
   deleteable = false,
-  aiGenerated = false
+  aiGenerated = false,
 ) {
   blocks.forEach(async (block) => {
     Blockly.Blocks[block.name] = {
@@ -49,7 +49,7 @@ export default function registerCustomBlocks(
               case "textInput":
                 currentInput.appendField(
                   new Blockly.FieldTextInput(field.defaultValue),
-                  field.name
+                  field.name,
                 );
                 break;
               case "numericInput":
@@ -58,29 +58,29 @@ export default function registerCustomBlocks(
                     field.defaultValue,
                     field.min,
                     field.max,
-                    field.precision
+                    field.precision,
                   ),
-                  field.name
+                  field.name,
                 );
                 break;
               case "checkbox":
                 currentInput.appendField(
                   new Blockly.FieldCheckbox(field.defaultValue),
-                  field.name
+                  field.name,
                 );
                 break;
               case "variable":
                 currentInput.appendField(
                   new Blockly.FieldVariable(field.defaultValue),
-                  field.name
+                  field.name,
                 );
                 break;
               case "dropdown":
                 currentInput.appendField(
                   new Blockly.FieldDropdown(
-                    field.choices.length ? field.choices : [["", ""]]
+                    field.choices.length ? field.choices : [["", ""]],
                   ),
-                  field.name
+                  field.name,
                 );
                 break;
               default:
@@ -123,7 +123,7 @@ export default function registerCustomBlocks(
           ? `return [${
               aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode
             }, Order.NONE]`
-          : `return ${aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode};`
+          : `return ${aiGenerated ? `\`${bl.outputCode}\`` : bl.outputCode};`,
       );
 
       return genCode(block, generator, Order);

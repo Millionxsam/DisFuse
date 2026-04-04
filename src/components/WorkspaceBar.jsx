@@ -10,9 +10,9 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import LoadingAnim from "./LoadingAnim";
 import { io } from "socket.io-client";
-import HostModal from "./HostModal.js";
+import HostModal from "./HostModal";
 
-const { apiUrl, hostUrl } = require("../config/config.js");
+import { apiUrl, hostUrl } from "../config/config";
 
 export default function WorkspaceBar({
   project,

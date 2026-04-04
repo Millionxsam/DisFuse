@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../functions/modalThemeColor.js";
 import { userCache } from "../cache.ts";
 
-const { apiUrl, discordUrl } = require("../config/config.js");
+import { apiUrl, discordUrl } from "../config/config";
 
 export default function WorkshopItem({ pack: p, editable = false }) {
   const [pack, setPack] = useState(p);

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { userCache } from "../../cache.ts";
-const { apiUrl, discordUrl } = require("../../config/config.js");
+import { apiUrl, discordUrl } from "../../config/config.js";
 
 export default function StaffPanel() {
   const [activeTab, setActiveTab] = useState("users");
@@ -35,7 +35,7 @@ export default function StaffPanel() {
           userCache.allStaff = newStaff;
 
           const staffUser = newStaff.users.find(
-            (u) => u.id === userCache.localUser?.id
+            (u) => u.id === userCache.localUser?.id,
           );
           if (
             !staffUser ||
@@ -110,10 +110,10 @@ export default function StaffPanel() {
             { banUntil: date },
             {
               headers: { Authorization: localStorage.getItem("disfuse-token") },
-            }
+            },
           )
           .then(() =>
-            Swal.fire("Ban Successful", `@${user} has been banned!`, "success")
+            Swal.fire("Ban Successful", `@${user} has been banned!`, "success"),
           );
       }
     });
@@ -139,14 +139,14 @@ export default function StaffPanel() {
             { banUntil: new Date(0) },
             {
               headers: { Authorization: localStorage.getItem("disfuse-token") },
-            }
+            },
           )
           .then(() =>
             Swal.fire(
               "Unban Successful",
               `@${user} has been unbanned!`,
-              "success"
-            )
+              "success",
+            ),
           );
       }
     });
@@ -161,7 +161,7 @@ export default function StaffPanel() {
       .patch(
         `${apiUrl}/projects/${suspendProjectId}/suspend`,
         { suspend: suspendToggle, reason: suspendReason || "No reason set." },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: token } },
       )
       .then(() => {
         Swal.fire(
@@ -170,15 +170,15 @@ export default function StaffPanel() {
             projects.find((i) => i._id === suspendProjectId)?.name ??
             suspendProjectId
           } has been ${suspendToggle ? "suspended" : "unsuspended"}`,
-          "success"
+          "success",
         );
       })
       .catch((err) =>
         Swal.fire(
           "Error",
           err?.response?.data?.message || "Failed to update project.",
-          "error"
-        )
+          "error",
+        ),
       );
   }
 
@@ -188,7 +188,7 @@ export default function StaffPanel() {
       return Swal.fire(
         "Access Denied",
         "You must be an admin to use this.",
-        "error"
+        "error",
       );
     }
     Swal.fire({
@@ -205,14 +205,14 @@ export default function StaffPanel() {
             {},
             {
               headers: { Authorization: localStorage.getItem("disfuse-token") },
-            }
+            },
           )
           .then(() =>
             Swal.fire(
               "Alert Successful",
               "The alert was successfully sent!",
-              "success"
-            )
+              "success",
+            ),
           );
       }
     });

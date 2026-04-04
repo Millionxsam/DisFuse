@@ -9,7 +9,7 @@ import axios from "axios";
 import UserTag from "../../../components/UserTag";
 import WorkspaceTabs from "../../../components/WorkspaceTabs";
 import javascript from "blockly/javascript.js";
-const { apiUrl } = require("../../../config/config.js");
+import { apiUrl } from "../../../config/config.js";
 
 export default function ViewProject() {
   let { projectId } = useParams();
@@ -42,7 +42,7 @@ export default function ViewProject() {
 
         if (customBlocks.length) {
           Blockly.defineBlocksWithJsonArray(
-            customBlocks.map((b) => b.definition)
+            customBlocks.map((b) => b.definition),
           );
 
           customBlocks.forEach((customBlock) => {
@@ -50,7 +50,7 @@ export default function ViewProject() {
               // eslint-disable-next-line no-new-func
               const genCode = new Function(
                 "javascript",
-                customBlock.javascriptGenerator
+                customBlock.javascriptGenerator,
               );
 
               genCode(javascript);
@@ -94,28 +94,28 @@ export default function ViewProject() {
               minScale: 0.3,
               scaleSpeed: 1.2,
             },
-          }
+          },
         );
 
         setCurrentWorkspace(
-          project.workspaces?.length ? project.workspaces[0] : {}
+          project.workspaces?.length ? project.workspaces[0] : {},
         );
 
         if (!project.workspaces?.length && project.data?.length > 0) {
           // for old projects that haven't migrated to subworkspaces yet
           Blockly.serialization.workspaces.load(
             JSON.parse(project.data),
-            workspace
+            workspace,
           );
         } else if (
           project.workspaces?.length > 0 &&
           project.workspaces[0].data?.length > 0
         )
-        console.log(JSON.parse(project.workspaces[0].data))
-          Blockly.serialization.workspaces.load(
-            JSON.parse(project.workspaces[0].data),
-            workspace
-          );
+          console.log(JSON.parse(project.workspaces[0].data));
+        Blockly.serialization.workspaces.load(
+          JSON.parse(project.workspaces[0].data),
+          workspace,
+        );
 
         setWorkspace(workspace);
         setLoading(false);
@@ -158,7 +158,7 @@ export default function ViewProject() {
     if (project.workspaces[index].data?.length)
       Blockly.serialization.workspaces.load(
         JSON.parse(project.workspaces[index].data),
-        workspace
+        workspace,
       );
     else workspace.clear();
   }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { userCache } from "../cache.ts";
-const { apiUrl } = require("../config/config.js");
+import { apiUrl } from "../config/config.js";
 
 export default function Staff() {
   const [staff, setStaff] = useState([]);
@@ -25,10 +25,7 @@ export default function Staff() {
         {staff.map((i, index) => (
           <Link to={"https://discord.com/users/" + i.id} key={index}>
             <div>
-              <img
-                src={i.avatar}
-                alt={i.username + "'s Avatar"}
-              />
+              <img src={i.avatar} alt={i.username + "'s Avatar"} />
               <h3>{i.username}</h3>
               <p className="staff-roles-card">
                 {i.owner ? (

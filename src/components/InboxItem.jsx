@@ -5,11 +5,11 @@ import ms from "ms";
 import { useNavigate } from "react-router-dom";
 import { userCache } from "../cache.ts";
 
-const { apiUrl } = require("../config/config.js");
+import { apiUrl } from "../config/config";
 
 export default function InboxItem({ item, user, index }) {
   let link, title, body;
-  
+
   const { allUsers, allProjects } = userCache;
   const token = localStorage.getItem("disfuse-token");
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function InboxItem({ item, user, index }) {
   const [alertComment, setComment] = useState(null);
   const [alertReply, setReply] = useState(null);
 
-  // user 
+  // user
   useEffect(() => {
     const uid = item.notification.userId;
     if (!uid) return;
@@ -47,7 +47,7 @@ export default function InboxItem({ item, user, index }) {
       axios
         .get(`${apiUrl}/projects`, { headers: { Authorization: token } })
         .then(({ data: projects }) =>
-          setProject(projects.find((p) => p._id === pid) || null)
+          setProject(projects.find((p) => p._id === pid) || null),
         )
         .catch(() => setProject(null));
     }
@@ -64,7 +64,7 @@ export default function InboxItem({ item, user, index }) {
         setComment(comment);
         if (rid) {
           setReply(
-            comment.replies.find((r) => r._id.toString() === rid) || null
+            comment.replies.find((r) => r._id.toString() === rid) || null,
           );
         }
       })

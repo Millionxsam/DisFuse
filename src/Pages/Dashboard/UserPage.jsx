@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import Swal from "sweetalert2";
 
-const { apiUrl, discordUrl } = require("../../config/config.js");
+import { apiUrl, discordUrl } from "../../config/config.js";
 
 export default function UserPage() {
   const { username } = useParams();
@@ -20,7 +20,7 @@ export default function UserPage() {
       try {
         const { data: users } = await axios.get(apiUrl + "/users");
         const user = users.find(
-          (u) => u.username === username.replace("@", "")
+          (u) => u.username === username.replace("@", ""),
         );
         setUser(user);
 
@@ -37,7 +37,7 @@ export default function UserPage() {
           apiUrl + "/users/" + discordUser.data.id,
           {
             headers: { Authorization: localStorage.getItem("disfuse-token") },
-          }
+          },
         );
 
         setLocalUser(localUserData);
@@ -63,7 +63,7 @@ export default function UserPage() {
             headers: {
               Authorization: localStorage.getItem("disfuse-token"),
             },
-          }
+          },
         )
         .then(({ data }) => {
           setLocalUser(data);
@@ -138,8 +138,8 @@ export default function UserPage() {
                 <PubProject key={project.id} project={project} />
               ))
             : !isLoading
-            ? "No public projects"
-            : null}
+              ? "No public projects"
+              : null}
         </div>
       </div>
     </>

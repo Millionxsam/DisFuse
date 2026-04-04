@@ -17,7 +17,7 @@ Blockly.Blocks["buttons_add"] = {
           ["Red", "4"],
           ["Link", "5"],
         ]),
-        "style"
+        "style",
       );
     this.appendValueInput("id").setCheck("String").appendField("ID:");
     this.appendValueInput("disabled")
@@ -209,7 +209,7 @@ createRestrictions(
       blockTypes: ["buttons_event"],
       message: 'This block must be in a "when a button is clicked" event',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -225,7 +225,7 @@ createRestrictions(
       blockTypes: ["content", "embeds"],
       message: "You must specify the content and/or embed(s)",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -266,5 +266,5 @@ createRestrictions(
       message:
         "The ID only have lowercase letters, numbers, hyphens, and/or underscores",
     },
-  ]
+  ],
 );

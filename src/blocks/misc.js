@@ -50,7 +50,7 @@ createMutatorBlock({
 
 javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
   block,
-  generator
+  generator,
 ) {
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
@@ -109,7 +109,7 @@ createMutatorBlock({
 
 javascript.javascriptGenerator.forBlock["misc_int_edit_mutator"] = function (
   block,
-  generator
+  generator,
 ) {
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
@@ -173,7 +173,7 @@ createRestrictions(
               .find(
                 (b) =>
                   b.type === "embed_create" &&
-                  b.getFieldValue("name") === embedName.trim()
+                  b.getFieldValue("name") === embedName.trim(),
               )
           )
             pass = false;
@@ -183,7 +183,7 @@ createRestrictions(
       },
       message: "No embed with that name exists",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -206,7 +206,7 @@ createRestrictions(
       ],
       message: "This must be under a interaction event",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["misc_addrow"] = {
@@ -231,14 +231,14 @@ Blockly.Blocks["misc_int_deferReply"] = {
     this.setNextStatement(true, "default");
     this.setColour("4192E9");
     this.setTooltip(
-      'This displays the "Bot is thinking..." message. Use this when you need to allow more time for your bot to reply to a command.'
+      'This displays the "Bot is thinking..." message. Use this when you need to allow more time for your bot to reply to a command.',
     );
   },
 };
 
 javascript.javascriptGenerator.forBlock["misc_int_deferReply"] = function (
   block,
-  generator
+  generator,
 ) {
   var ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
@@ -308,14 +308,14 @@ Blockly.Blocks["misc_permission"] = {
           ],
           ["ViewGuildInsights", "ViewGuildInsights"],
         ]),
-        "permission"
+        "permission",
       );
   },
 };
 
 javascript.javascriptGenerator.forBlock["misc_permission"] = function (
   block,
-  generator
+  generator,
 ) {
   var perm = block.getFieldValue("permission");
   return [`Discord.PermissionFlagsBits.${perm}`, Order.NONE];
@@ -323,7 +323,7 @@ javascript.javascriptGenerator.forBlock["misc_permission"] = function (
 
 javascript.javascriptGenerator.forBlock["misc_addrow"] = function (
   block,
-  generator
+  generator,
 ) {
   var statements_components = generator.statementToCode(block, "components");
 
@@ -351,7 +351,7 @@ createRestrictions(
       ],
       message: "This block must be under a block that has a 'rows' section",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["misc_addFile"] = {
@@ -378,7 +378,7 @@ createRestrictions(
       blockTypes: ["path"],
       message: "You must specify a valid path",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["misc_createcontainer"] = {
@@ -401,7 +401,7 @@ Blockly.Blocks["misc_createcontainer"] = {
 Blockly.Blocks["misc_createcontainer_global"] = {
   init: function () {
     this.appendDummyInput().appendField(
-      "create slash commands / context menus"
+      "create slash commands / context menus",
     );
     this.appendValueInput("guild")
       .setCheck("String")
@@ -417,7 +417,7 @@ Blockly.Blocks["misc_createcontainer_global"] = {
 
 javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "code");
@@ -488,13 +488,13 @@ Blockly.Blocks["misc_permissionChannel"] = {
           ["UseSlashCommands", "UseSlashCommands"],
           ["UseExternalStickers", "UseExternalStickers"],
         ]),
-        "permission"
+        "permission",
       );
   },
 };
 
 javascript.javascriptGenerator.forBlock["misc_permissionChannel"] = function (
-  block
+  block,
 ) {
   var perm = block.getFieldValue("permission");
   return [`'${perm}'`, Order.NONE];
@@ -509,7 +509,7 @@ createRestrictions(
       message:
         "This block must be be in a 'set permission ... to ... in channel' block",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["misc_messageSent"] = {
@@ -541,7 +541,7 @@ createRestrictions(
       message:
         "This block must be be in a 'reply to message' or 'send in channel' block",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["misc_channelType"] = {
@@ -558,7 +558,7 @@ Blockly.Blocks["misc_channelType"] = {
           ["text", "GuildText"],
           ["voice", "GuildVoice"],
         ]),
-        "type"
+        "type",
       );
     this.setOutput(true, "channelType");
     this.setColour("4192E9");
@@ -567,7 +567,7 @@ Blockly.Blocks["misc_channelType"] = {
 
 javascript.javascriptGenerator.forBlock["misc_channelType"] = (
   block,
-  generator
+  generator,
 ) => {
   return [`Discord.ChannelType.${block.getFieldValue("type")}`, Order.NONE];
 };
@@ -607,7 +607,7 @@ Blockly.Blocks["misc_int_member"] = {
     this.setOutput(true, "member");
     this.setColour("#4192E9");
     this.setTooltip(
-      "Returns the member who triggered the interaction (only available in servers)."
+      "Returns the member who triggered the interaction (only available in servers).",
     );
   },
 };

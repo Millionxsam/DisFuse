@@ -11,7 +11,7 @@ Blockly.Blocks["type_dropdown"] = {
         ["Boolean", "Boolean"],
         ["Array", "Array"],
       ]),
-      "DROPDOWN"
+      "DROPDOWN",
     );
     this.setOutput(true, "OutputType");
     this.setColour("#5ba55b");
@@ -20,7 +20,7 @@ Blockly.Blocks["type_dropdown"] = {
 
 javascript.javascriptGenerator.forBlock["type_dropdown"] = function (
   block,
-  generator
+  generator,
 ) {
   return [block.getFieldValue("DROPDOWN"), javascript.Order.ATOMIC];
 };
@@ -37,7 +37,7 @@ Blockly.Blocks["type_custom"] = {
 
 javascript.javascriptGenerator.forBlock["type_custom"] = function (
   block,
-  generator
+  generator,
 ) {
   return [block.getFieldValue("type"), javascript.Order.ATOMIC];
 };

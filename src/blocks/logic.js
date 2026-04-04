@@ -32,10 +32,7 @@ Blockly.Blocks["logic_default"] = {
   },
 };
 
-javascriptGenerator.forBlock["logic_switch"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["logic_switch"] = function (block, generator) {
   var switchValue = generator.valueToCode(block, "switch", Order.ATOMIC);
   var statement = generator.statementToCode(block, "cases");
 
@@ -45,10 +42,7 @@ javascriptGenerator.forBlock["logic_switch"] = function (
   return code;
 };
 
-javascriptGenerator.forBlock["logic_case"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["logic_case"] = function (block, generator) {
   var caseValue = generator.valueToCode(block, "case", Order.ATOMIC);
   var statement = generator.statementToCode(block, "code");
 
@@ -59,10 +53,7 @@ javascriptGenerator.forBlock["logic_case"] = function (
   return code;
 };
 
-javascriptGenerator.forBlock["logic_default"] = function (
-  block,
-  generator
-) {
+javascriptGenerator.forBlock["logic_default"] = function (block, generator) {
   var statement = generator.statementToCode(block, "code");
 
   var code = `default:
@@ -80,7 +71,7 @@ createRestrictions(
       blockTypes: ["logic_switch"],
       message: "This block must be under a 'check if' block",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["logic_nullishOperator"] = {
@@ -94,13 +85,13 @@ Blockly.Blocks["logic_nullishOperator"] = {
           ["null", "??"],
           ["null or false", "||"],
         ]),
-        "type"
+        "type",
       )
       .appendField("use:");
     this.setInputsInline(false);
     this.setColour("#4c97ff");
     this.setTooltip(
-      "Returns the second value if the first value is nullish; otherwise, it returns the first value."
+      "Returns the second value if the first value is nullish; otherwise, it returns the first value.",
     );
 
     this.setOutput(true, null);
@@ -109,7 +100,7 @@ Blockly.Blocks["logic_nullishOperator"] = {
 
 javascriptGenerator.forBlock["logic_nullishOperator"] = function (
   block,
-  generator
+  generator,
 ) {
   var value = generator.valueToCode(block, "value", Order.ATOMIC);
   var fallback = generator.valueToCode(block, "fallback", Order.ATOMIC);
@@ -133,7 +124,7 @@ createRestrictions(
       blockTypes: ["fallback"],
       message: "You must specify the fallback value",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["logic_equalsExactly"] = {
@@ -150,7 +141,7 @@ Blockly.Blocks["logic_equalsExactly"] = {
 
 javascriptGenerator.forBlock["logic_equalsExactly"] = function (
   block,
-  generator
+  generator,
 ) {
   var A = generator.valueToCode(block, "A", Order.ATOMIC);
   var B = generator.valueToCode(block, "B", Order.ATOMIC);

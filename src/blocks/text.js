@@ -45,7 +45,7 @@ Blockly.Blocks["text_regexp"] = {
             return null;
           }
         }),
-        "regexp"
+        "regexp",
       )
       .appendField("/");
     this.setOutput(true, "regexp");
@@ -93,7 +93,7 @@ Blockly.Blocks["text_regexp_match"] = {
 
 javascriptGenerator.forBlock["text_regexp_match"] = function (
   block,
-  generator
+  generator,
 ) {
   var regexp = generator.valueToCode(block, "regexp", Order.ATOMIC);
   var string = generator.valueToCode(block, "string", Order.ATOMIC);
@@ -130,9 +130,7 @@ Blockly.Blocks["text_regexp_replace"] = {
       .setCheck("regexp")
       .appendField("replace regexp");
     this.appendValueInput("string").setCheck("String").appendField("on");
-    this.appendValueInput("replace")
-      .setCheck("String")
-      .appendField("with");
+    this.appendValueInput("replace").setCheck("String").appendField("with");
     this.setStyle("regexp_blocks");
     this.setOutput(true, "String");
     this.setInputsInline(true);
@@ -141,7 +139,7 @@ Blockly.Blocks["text_regexp_replace"] = {
 
 javascriptGenerator.forBlock["text_regexp_replace"] = function (
   block,
-  generator
+  generator,
 ) {
   var regexp = generator.valueToCode(block, "regexp", Order.ATOMIC);
   var string = generator.valueToCode(block, "string", Order.ATOMIC);
@@ -165,7 +163,7 @@ Blockly.Blocks["text_regexp_search"] = {
 
 javascriptGenerator.forBlock["text_regexp_search"] = function (
   block,
-  generator
+  generator,
 ) {
   var regexp = generator.valueToCode(block, "regexp", Order.ATOMIC);
   var string = generator.valueToCode(block, "string", Order.ATOMIC);
@@ -202,7 +200,7 @@ Blockly.Blocks["text_startOrEndWith"] = {
           ["start", "starts"],
           ["end", "ends"],
         ]),
-        "name"
+        "name",
       )
       .appendField("with");
     this.setInputsInline(true);
@@ -213,7 +211,7 @@ Blockly.Blocks["text_startOrEndWith"] = {
 
 javascriptGenerator.forBlock["text_startOrEndWith"] = function (
   block,
-  generator
+  generator,
 ) {
   var val_text = generator.valueToCode(block, "text", Order.ATOMIC);
   var val_text2 = generator.valueToCode(block, "text2", Order.ATOMIC);

@@ -17,13 +17,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  esbuild: {
-    loader: "jsx",
-    include: [
-      /src\/.*\.jsx?$/,
-      /src\/.*\.js$/,
-    ],
-  },
   optimizeDeps: {
     include: ["react", "react-dom"],
   },

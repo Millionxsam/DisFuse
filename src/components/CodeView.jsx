@@ -63,7 +63,7 @@ function closeCode() {
 
 function copyCode(activeCode) {
   navigator.clipboard.writeText(
-    document.querySelector(`.${activeCode}.code #codecontent`).innerText
+    document.querySelector(`.${activeCode}.code #codecontent`).innerText,
   );
 
   document.querySelector(".code-view .top .check").style.display = "block";

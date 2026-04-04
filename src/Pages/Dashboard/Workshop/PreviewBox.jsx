@@ -5,7 +5,7 @@ import registerCustomBlocks from "../../../functions/registerCustomBlocks";
 import getToolbox from "../../../config/toolbox";
 import { javascriptGenerator } from "blockly/javascript";
 import hljs from "highlight.js/lib/core";
-import { js as beautifyJs } from 'js-beautify';
+import { js as beautifyJs } from "js-beautify";
 
 import javascript from "highlight.js/lib/languages/javascript";
 
@@ -50,7 +50,7 @@ export default function PreviewBox({ blocks = [] }) {
           minScale: 0.3,
           scaleSpeed: 1.2,
         },
-      }
+      },
     );
 
     setWorkspace(workspace);
@@ -66,7 +66,7 @@ export default function PreviewBox({ blocks = [] }) {
         }),
         {
           language: "javascript",
-        }
+        },
       ).value;
     });
   }, []);

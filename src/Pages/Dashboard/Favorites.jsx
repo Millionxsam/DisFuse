@@ -4,7 +4,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-const { apiUrl, discordUrl } = require("../../config/config.js");
+import { apiUrl, discordUrl } from "../../config/config.js";
 
 export default function Favorites() {
   const [projects, setProjects] = useState([]);
@@ -61,8 +61,8 @@ export default function Favorites() {
       projects.filter(
         (p) =>
           p?.name?.toLowerCase().includes(query.toLowerCase()) ||
-          p?.description?.toLowerCase().includes(query.toLowerCase())
-      )
+          p?.description?.toLowerCase().includes(query.toLowerCase()),
+      ),
     );
   }
 
@@ -83,8 +83,8 @@ export default function Favorites() {
           {shown.length > 0
             ? shown.map((project) => <PubProject project={project} />)
             : !isLoading
-            ? "No projects"
-            : ""}
+              ? "No projects"
+              : ""}
         </div>
       </div>
     </div>

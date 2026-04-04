@@ -11,7 +11,7 @@ Blockly.Blocks["embed_create"] = {
           if (/^(?![_$a-zA-Z])|[^_$a-zA-Z0-9]/.test(val)) return null;
           else return val;
         }),
-        "name"
+        "name",
       );
     this.appendStatementInput("config")
       .setCheck("embedBlockCreatorBlock")
@@ -42,7 +42,7 @@ createRestrictions(
       check: (val) => val.length <= 256,
       message: "Title cannot be greater than 256 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setdsc"] = {
@@ -65,7 +65,7 @@ createRestrictions(
       check: (val) => val.length <= 4096,
       message: "Description cannot be greater than 4096 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setcolor"] = {
@@ -90,7 +90,7 @@ createRestrictions(
         String(val).toLowerCase() === "Random",
       message: 'Color must be a valid hex color, or "Random"',
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_seturl"] = {
@@ -121,7 +121,7 @@ createRestrictions(
       },
       message: "URL must be a valid URL",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setauthor"] = {
@@ -174,7 +174,7 @@ createRestrictions(
       },
       message: "Click URL must be a valid URL",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setfooter"] = {
@@ -198,7 +198,7 @@ createRestrictions(
       check: (val) => val.length <= 2048,
       message: "Footer cannot be greater than 2048 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setimage"] = {
@@ -229,7 +229,7 @@ createRestrictions(
       },
       message: "Image URL must be a valid URL",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_setthumb"] = {
@@ -260,7 +260,7 @@ createRestrictions(
       },
       message: "Thumbnail URL must be a valid URL",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_addfield"] = {
@@ -290,7 +290,7 @@ createRestrictions(
       check: (val) => val.length <= 1024,
       message: "Field value cannot be greater than 1024 characters",
     },
-  ]
+  ],
 );
 
 Blockly.Blocks["embed_settimestamp"] = {
@@ -304,7 +304,7 @@ Blockly.Blocks["embed_settimestamp"] = {
 
 javascriptGenerator.forBlock["embed_settimestamp"] = function (
   block,
-  generator
+  generator,
 ) {
   return `.setTimestamp()`;
 };
@@ -404,5 +404,5 @@ createRestrictions(
       blockTypes: ["embed_create"],
       message: "This block must be under a 'create embed' block",
     },
-  ]
+  ],
 );

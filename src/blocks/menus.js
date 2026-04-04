@@ -50,28 +50,28 @@ Blockly.Blocks["menus_addChannelMenu"] = {
 
 javascript.javascriptGenerator.forBlock["menus_addChannelMenu"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_placeholder = generator.valueToCode(
     block,
     "placeholder",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var acceptedChannels = generator.valueToCode(
     block,
     "channelTypes",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
   var defaultChannels = generator.valueToCode(
     block,
     "defaultChannels",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
 
   return `new Discord.ChannelSelectMenuBuilder()
@@ -105,23 +105,23 @@ Blockly.Blocks["menus_addRoleMenu"] = {
 
 javascript.javascriptGenerator.forBlock["menus_addRoleMenu"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_placeholder = generator.valueToCode(
     block,
     "placeholder",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var defaultChannels = generator.valueToCode(
     block,
     "defaultRoles",
-    Order.ATOMIC
+    Order.ATOMIC,
   );
 
   return `new Discord.RoleSelectMenuBuilder()
@@ -154,18 +154,18 @@ Blockly.Blocks["menus_addMentionableMenu"] = {
 
 javascript.javascriptGenerator.forBlock["menus_addMentionableMenu"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_placeholder = generator.valueToCode(
     block,
     "placeholder",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var defaultVals = generator.valueToCode(block, "defaultVals", Order.ATOMIC);
 
@@ -199,18 +199,18 @@ Blockly.Blocks["menus_addUserMenu"] = {
 
 javascript.javascriptGenerator.forBlock["menus_addUserMenu"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_placeholder = generator.valueToCode(
     block,
     "placeholder",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var defaultUsers = generator.valueToCode(block, "defaultUsers", Order.ATOMIC);
 
@@ -349,7 +349,7 @@ Blockly.Blocks["menus_del"] = {
 
 javascript.javascriptGenerator.forBlock["menus_del"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.deleteReply();`;
   return code;
@@ -357,12 +357,12 @@ javascript.javascriptGenerator.forBlock["menus_del"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_edit"] = function (
   block,
-  generator
+  generator,
 ) {
   var content = generator.valueToCode(
     block,
     "content",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
@@ -375,12 +375,12 @@ javascript.javascriptGenerator.forBlock["menus_edit"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_update"] = function (
   block,
-  generator
+  generator,
 ) {
   var content = generator.valueToCode(
     block,
     "content",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
   var rows = generator.statementToCode(block, "rows");
@@ -396,12 +396,12 @@ javascript.javascriptGenerator.forBlock["menus_update"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_reply"] = function (
   block,
-  generator
+  generator,
 ) {
   var content = generator.valueToCode(
     block,
     "content",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
@@ -414,7 +414,7 @@ javascript.javascriptGenerator.forBlock["menus_reply"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_server"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.guild`;
   return [code, javascript.Order.NONE];
@@ -422,7 +422,7 @@ javascript.javascriptGenerator.forBlock["menus_server"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_channel"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.channel`;
   return [code, javascript.Order.NONE];
@@ -430,7 +430,7 @@ javascript.javascriptGenerator.forBlock["menus_channel"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_user"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.member.user`;
   return [code, javascript.Order.NONE];
@@ -438,7 +438,7 @@ javascript.javascriptGenerator.forBlock["menus_user"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_member"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.member`;
   return [code, javascript.Order.NONE];
@@ -446,7 +446,7 @@ javascript.javascriptGenerator.forBlock["menus_member"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_id"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.customId`;
   return [code, javascript.Order.NONE];
@@ -454,7 +454,7 @@ javascript.javascriptGenerator.forBlock["menus_id"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_value"] = function (
   block,
-  generator
+  generator,
 ) {
   var code = `interaction.values[0]`;
   return [code, javascript.Order.NONE];
@@ -462,7 +462,7 @@ javascript.javascriptGenerator.forBlock["menus_value"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_event"] = function (
   block,
-  generator
+  generator,
 ) {
   var code_statement = generator.statementToCode(block, "event");
 
@@ -474,18 +474,18 @@ javascript.javascriptGenerator.forBlock["menus_event"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_add"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_placeholder = generator.valueToCode(
     block,
     "placeholder",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var value_id = generator.valueToCode(block, "id", javascript.Order.ATOMIC);
   var value_disabled = generator.valueToCode(
     block,
     "disabled",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   var statements_options = generator.statementToCode(block, "options");
 
@@ -498,7 +498,7 @@ javascript.javascriptGenerator.forBlock["menus_add"] = function (
 
 javascript.javascriptGenerator.forBlock["menus_addoption"] = function (
   block,
-  generator
+  generator,
 ) {
   const label = generator.valueToCode(block, "label", javascript.Order.ATOMIC);
   const dsc = generator.valueToCode(block, "dsc", javascript.Order.ATOMIC);
@@ -506,7 +506,7 @@ javascript.javascriptGenerator.forBlock["menus_addoption"] = function (
   const selected = generator.valueToCode(
     block,
     "default",
-    javascript.Order.ATOMIC
+    javascript.Order.ATOMIC,
   );
   const value = generator.valueToCode(block, "value", javascript.Order.ATOMIC);
 
@@ -536,7 +536,7 @@ createRestrictions(
       blockTypes: ["menus_event"],
       message: 'This block must be in a "when a menu is clicked" event',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -552,7 +552,7 @@ createRestrictions(
       blockTypes: ["content", "embeds"],
       message: "You must specify the content and/or embed(s)",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -592,7 +592,7 @@ createRestrictions(
       message:
         "The ID only have lowercase letters, numbers, hyphens, and/or underscores",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -637,5 +637,5 @@ createRestrictions(
       check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
       message: "Emoji must be a single valid emoji",
     },
-  ]
+  ],
 );

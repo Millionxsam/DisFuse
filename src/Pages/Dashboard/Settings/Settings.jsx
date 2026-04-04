@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 
 export default function Settings() {
   const [category, setCategory] = useState(
-    window.location.pathname.split("/")[2] || "workspace"
+    window.location.pathname.split("/")[2] || "workspace",
   );
 
   return (

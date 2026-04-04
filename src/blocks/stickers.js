@@ -2,7 +2,10 @@ import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
-import { forEachCollection, getFromCollection } from "../functions/generatorUtils.js";
+import {
+  forEachCollection,
+  getFromCollection,
+} from "../functions/generatorUtils.js";
 
 Blockly.Blocks["sticker_getallinserver"] = {
   init: function () {
@@ -19,7 +22,7 @@ Blockly.Blocks["sticker_getallinserver"] = {
 
 javascriptGenerator.forBlock["sticker_getallinserver"] = function (
   block,
-  generator
+  generator,
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
@@ -95,7 +98,7 @@ Blockly.Blocks["sticker_getwith"] = {
           ["name", "name"],
           ["id", "id"],
         ]),
-        "with"
+        "with",
       )
       .appendField("equal to");
     this.appendValueInput("server")
@@ -110,7 +113,7 @@ javascriptGenerator.forBlock["sticker_getwith"] = function (block, generator) {
   var dropdown_with = block.getFieldValue("with");
   var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
   var value = generator.valueToCode(block, "server", Order.ATOMIC);
-  var code = `await ${getFromCollection}(${value}, "stickers", ${equal}, "${dropdown_with}")`
+  var code = `await ${getFromCollection}(${value}, "stickers", ${equal}, "${dropdown_with}")`;
   return [code, Order.FUNCTION_CALL];
 };
 
@@ -139,7 +142,7 @@ Blockly.Blocks["sticker_created"] = {
           ["date", "createdAt"],
           ["timestamp", "createdTimestamp"],
         ]),
-        "type"
+        "type",
       )
       .appendField("of sticker:");
     this.setOutput(true, "String");
@@ -270,7 +273,7 @@ createRestrictions(
       blockTypes: ["sticker"],
       message: "You must specify the sticker",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -286,7 +289,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to get the sticker from",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -297,7 +300,7 @@ createRestrictions(
       blockTypes: ["sticker_getallinserver"],
       message: 'This block must be in a "for each sticker in the server" block',
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -308,7 +311,7 @@ createRestrictions(
       blockTypes: ["server"],
       message: "You must specify the server to iterate stickers from.",
     },
-  ]
+  ],
 );
 
 createRestrictions(
@@ -330,5 +333,5 @@ createRestrictions(
       check: (val) => 0 < val.length && val.length <= 30,
       message: "Name must be between 1 and 30 characters",
     },
-  ]
+  ],
 );

@@ -39,16 +39,9 @@ import { userCache } from "../cache.ts";
 import InviteModal from "../components/InviteModal.jsx";
 import { io } from "socket.io-client";
 
-require
-  .context("../blocks", true, /\.js$/)
-  .keys()
-  .forEach((key) => {
-    key = key.replace("./", "");
+import.meta.glob("../blocks/**/*.js", { eager: false });
 
-    import(`../blocks/${key}`).catch(console.error);
-  });
-
-const { apiUrl, discordUrl } = require("../config/config.js");
+import { apiUrl, discordUrl } from "../config/config.js";
 
 const originalWarn = console.warn;
 

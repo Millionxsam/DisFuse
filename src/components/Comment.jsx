@@ -4,7 +4,7 @@ import Reply from "./Reply";
 import Swal from "sweetalert2";
 import UserTag from "./UserTag";
 
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function Comment({
   project,
@@ -22,7 +22,7 @@ export default function Comment({
 
     if (window.location.hash) {
       const commentEle = document.getElementById(
-        window.location.hash.replace("#", "")
+        window.location.hash.replace("#", ""),
       );
 
       commentEle?.scrollIntoView({ behavior: "smooth" });
@@ -69,7 +69,7 @@ export default function Comment({
         },
         {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
-        }
+        },
       )
       .then(({ data }) => {
         setComment(data);
@@ -90,7 +90,7 @@ export default function Comment({
         .patch(
           apiUrl + `/comments/${project._id}/${comment._id}`,
           { content: r.value },
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } }
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
         )
         .then(() => window.location.reload());
     });

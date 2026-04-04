@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const modalColors = modalThemeColor(null, true);
 
-const { apiUrl } = require("../config/config.js");
+import { apiUrl } from "../config/config";
 
 export default function PriProject({
   project,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function SecretsView({ project: p }) {
   const [project, setProject] = useState(p);
@@ -11,7 +11,7 @@ export default function SecretsView({ project: p }) {
   function addSecret() {
     const name = document.querySelector(".secrets-container #secret-key").value;
     const value = document.querySelector(
-      ".secrets-container #secret-val"
+      ".secrets-container #secret-val",
     ).value;
     const errorEle = document.querySelector(".errors");
 
@@ -30,7 +30,7 @@ export default function SecretsView({ project: p }) {
         },
         {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
-        }
+        },
       )
       .then(({ data }) => setProject(data))
       .catch((e) => (errorEle.innerHTML = e.response.data.error));
@@ -60,7 +60,7 @@ export default function SecretsView({ project: p }) {
         },
         {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
-        }
+        },
       )
       .then(({ data }) => setProject(data));
   }

@@ -10,9 +10,9 @@ root.render(
   <BrowserRouter
     future={{
       v7_startTransition: true,
-      v7_relativeSplatPath: true
+      v7_relativeSplatPath: true,
     }}
   >
     <App />
-  </BrowserRouter>
+  </BrowserRouter>,
 );

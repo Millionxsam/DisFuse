@@ -59,7 +59,10 @@ export function buildThenSuffix(thenCode) {
   return `.then((messageSent) => {\n${thenCode}});\n`;
 }
 
-export function buildLegacySend(target, { content, embeds, rows, files, then }) {
+export function buildLegacySend(
+  target,
+  { content, embeds, rows, files, then },
+) {
   const parts = [
     `content: ${content || "''"}`,
     `embeds: [${formatEmbeds(embeds)}]`,

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { userCache } from "../cache.ts";
 
-const { apiUrl } = require("../config/config");
+import { apiUrl } from "../config/config";
 
 export default function UserTag({ user: u, userId }) {
   const [user, setUser] = useState({});

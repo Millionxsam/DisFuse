@@ -5,7 +5,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-const { apiUrl } = require("../../config/config.js");
+import { apiUrl } from "../../config/config.js";
 
 export default function Explore() {
   const [projects, setProjects] = useState([]);
@@ -35,7 +35,7 @@ export default function Explore() {
         });
     } else {
       const sorted = userCache.explore.sort(
-        (a, b) => b.likes.length - a.likes.length
+        (a, b) => b.likes.length - a.likes.length,
       );
       setProjects(sorted);
     }
@@ -50,7 +50,7 @@ export default function Explore() {
     const filtered = projects.filter(
       (p) =>
         p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query)
+        p.description.toLowerCase().includes(query),
     );
     setShown(filtered);
   }

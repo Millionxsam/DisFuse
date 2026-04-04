@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingAnim from "../../../components/LoadingAnim";
 import WorkshopItem from "../../../components/WorkshopItem";
 
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+import { apiUrl, discordUrl } from "../../../config/config.js";
 
 export default function Library() {
   const [packs, setPacks] = useState([]);
@@ -32,8 +32,8 @@ export default function Library() {
                   headers: {
                     Authorization: localStorage.getItem("disfuse-token"),
                   },
-                })
-              )
+                }),
+              ),
             )
               .then((responses) => {
                 let packs = responses.map((response) => response.data);
@@ -67,8 +67,8 @@ export default function Library() {
             onChange={(e) => {
               setShown(
                 packs.filter((p) =>
-                  p.name.toLowerCase().includes(e.target.value.toLowerCase())
-                )
+                  p.name.toLowerCase().includes(e.target.value.toLowerCase()),
+                ),
               );
             }}
           />

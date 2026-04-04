@@ -14,16 +14,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import "@blockly/toolbox-search";
 import { userCache } from "../../../cache.ts";
 
-require
-  .context("./workshopBlocks", true, /\.js$/)
-  .keys()
-  .forEach((key) => {
-    key = key.replace("./", "");
+import.meta.glob("./workshopBlocks/**/*.js", { eager: false });
 
-    import(`./workshopBlocks/${key}`).catch(console.error);
-  });
-
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+import { apiUrl, discordUrl } from "../../../config/config.js";
 
 export default function WorkshopWorkspace() {
   const [pack, setPack] = useState({});

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { userCache } from "../../cache.ts";
 
-const { discordUrl, apiUrl } = require("../../config/config.js");
+import { discordUrl, apiUrl } from "../../config/config.js";
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
@@ -43,7 +43,6 @@ export default function Sidebar() {
         });
     }
   }, []);
-
 
   return (
     <>

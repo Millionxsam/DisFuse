@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const modalColors = modalThemeColor(null, true);
 
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+import { apiUrl, discordUrl } from "../../../config/config.js";
 
 export default function Workshop() {
   const [packs, setPacks] = useState([]);
@@ -43,7 +43,7 @@ export default function Workshop() {
                   (a, b) =>
                     b.likes.length +
                     b.users.length -
-                    (a.likes.length + a.users.length)
+                    (a.likes.length + a.users.length),
                 );
 
                 setUserPacks(sortedUserPacks);
@@ -54,7 +54,7 @@ export default function Workshop() {
                     (a, b) =>
                       b.likes.length +
                       b.users.length -
-                      (a.likes.length + a.users.length)
+                      (a.likes.length + a.users.length),
                   );
 
                   setPacks(sortedPacks);
@@ -82,13 +82,13 @@ export default function Workshop() {
           onChange={(e) => {
             setShown(
               packs.filter((p) =>
-                p.name.toLowerCase().includes(e.target.value.toLowerCase())
-              )
+                p.name.toLowerCase().includes(e.target.value.toLowerCase()),
+              ),
             );
             setShownUserPacks(
               userPacks.filter((p) =>
-                p.name.toLowerCase().includes(e.target.value.toLowerCase())
-              )
+                p.name.toLowerCase().includes(e.target.value.toLowerCase()),
+              ),
             );
           }}
         />
@@ -191,7 +191,7 @@ export default function Workshop() {
         },
         {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
-        }
+        },
       )
       .then((res) => navigate(`/workshop/${res.data._id}/workspace`))
       .catch((e) =>
@@ -199,7 +199,7 @@ export default function Workshop() {
           icon: "error",
           title: "Error",
           text: e.response.data.error,
-        })
+        }),
       );
   }
 }

@@ -13,7 +13,7 @@ import remarkGfm from "remark-gfm";
 import modalThemeColor from "../../../functions/modalThemeColor.js";
 import { userCache } from "../../../cache.ts";
 
-const { apiUrl, discordUrl } = require("../../../config/config.js");
+import { apiUrl, discordUrl } from "../../../config/config.js";
 
 export default function BlockPackPage() {
   const [pack, setPack] = useState({});

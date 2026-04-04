@@ -253,7 +253,7 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
 
 javascriptGenerator.forBlock["slash_createcontainer"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "commands");
@@ -311,7 +311,7 @@ javascriptGenerator.forBlock["misc_int_reply"] = function (block, generator) {
 
 javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
   block,
-  generator
+  generator,
 ) {
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);

@@ -1,6 +1,5 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-//import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["javascript_raw"] = {
   init: function () {
@@ -8,7 +7,7 @@ Blockly.Blocks["javascript_raw"] = {
       .appendField("raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
-        "CODE"
+        "CODE",
       );
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -27,7 +26,7 @@ Blockly.Blocks["javascript_raw_float"] = {
       .appendField("raw code:")
       .appendField(
         new Blockly.FieldMultilineInput("console.log('hi');"),
-        "CODE"
+        "CODE",
       );
     this.setColour("#c93a5e");
     this.setTooltip("Inserts raw javascript code.");
@@ -64,7 +63,7 @@ Blockly.Blocks["javascript_wait"] = {
     this.setNextStatement(true, "default");
     this.setColour("#c93a5e");
     this.setTooltip(
-      "Waits for an specific amount of time before continuing the code."
+      "Waits for an specific amount of time before continuing the code.",
     );
   },
 };
@@ -100,7 +99,7 @@ Blockly.Blocks["javascript_consolelog"] = {
 
 javascriptGenerator.forBlock["javascript_consolelog"] = function (
   block,
-  generator
+  generator,
 ) {
   var log = generator.valueToCode(block, "log", Order.ATOMIC);
 
@@ -119,7 +118,7 @@ Blockly.Blocks["javascript_consolewarn"] = {
 
 javascriptGenerator.forBlock["javascript_consolewarn"] = function (
   block,
-  generator
+  generator,
 ) {
   var log = generator.valueToCode(block, "log", Order.ATOMIC);
 
@@ -138,7 +137,7 @@ Blockly.Blocks["javascript_consoleerror"] = {
 
 javascriptGenerator.forBlock["javascript_consoleerror"] = function (
   block,
-  generator
+  generator,
 ) {
   var log = generator.valueToCode(block, "log", Order.ATOMIC);
 
@@ -159,7 +158,7 @@ Blockly.Blocks["javascript_consoleinput"] = {
 
 javascriptGenerator.forBlock["javascript_consoleinput"] = function (
   block,
-  generator
+  generator,
 ) {
   var promptMessage =
     generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
@@ -194,7 +193,7 @@ Blockly.Blocks["javascript_trycatch"] = {
 
 javascriptGenerator.forBlock["javascript_trycatch"] = function (
   block,
-  generator
+  generator,
 ) {
   var codeVar = generator.statementToCode(block, "code");
   var errorVar = generator.statementToCode(block, "error");
@@ -221,7 +220,7 @@ Blockly.Blocks["javascript_trycatchfinally"] = {
 
 javascriptGenerator.forBlock["javascript_trycatchfinally"] = function (
   block,
-  generator
+  generator,
 ) {
   var codeVar = generator.statementToCode(block, "code");
   var errorVar = generator.statementToCode(block, "error");
@@ -269,14 +268,14 @@ Blockly.Blocks["javascript_typeof"] = {
     this.setOutput(true, "String");
     this.setColour("#c93a5e");
     this.setTooltip(
-      "Detects the type (string, number, object, etc.) that a value is"
+      "Detects the type (string, number, object, etc.) that a value is",
     );
   },
 };
 
 javascriptGenerator.forBlock["javascript_typeof"] = function (
   block,
-  generator
+  generator,
 ) {
   let value = generator.valueToCode(block, "value", Order.ATOMIC);
   return [`typeof (${value})`, Order.NONE];

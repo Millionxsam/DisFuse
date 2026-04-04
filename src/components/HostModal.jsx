@@ -18,7 +18,7 @@ export default function HostModal({ socket, workspace, project, workspaceId }) {
     if (!project._id) return;
 
     socket.emit("botJoin", { projectId: project._id }, (status) =>
-      setStatus(status)
+      setStatus(status),
     );
 
     const handleLog = ({ log }) => {
@@ -145,8 +145,8 @@ export default function HostModal({ socket, workspace, project, workspaceId }) {
           headers: {
             Authorization: localStorage.getItem("disfuse-token"),
           },
-        })
-      )
+        }),
+      ),
     );
 
     installedBlockPacks = responses.map((response) => response.data);
