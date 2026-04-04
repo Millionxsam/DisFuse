@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { getCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["main_token"] = {
   init: function () {
@@ -164,7 +165,7 @@ Blockly.Blocks["main_destroy"] = {
 javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {
   const property = block.getFieldValue("property");
 
-  return [`client.${property}.cache.size`, Order.NONE];
+  return [`(await ${getCollection}(client, ${property}))?.size ?? 0`, Order.AWAIT];
 };
 
 javascriptGenerator.forBlock["main_ready"] = function (block, generator) {

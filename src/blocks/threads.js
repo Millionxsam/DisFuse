@@ -391,8 +391,8 @@ javascriptGenerator.forBlock["threads_memberCount"] = function (
   generator
 ) {
   var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
-  var code = `${thread}.members.cache.size`;
-  return [code, Order.NONE];
+  var code = `(await ${thread}.members.fetch())?.size ?? 0`;
+  return [code, Order.AWAIT];
 };
 
 Blockly.Blocks["threads_parentChannel"] = {

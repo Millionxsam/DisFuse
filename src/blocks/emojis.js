@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { forEachCollection, getFromCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["emoji_getallinserver"] = {
   init: function () {
@@ -21,11 +22,11 @@ javascriptGenerator.forBlock["emoji_getallinserver"] = function (
   generator,
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var statements_code = generator.statementToCode(block, "code");
+  var codeVal = generator.statementToCode(block, "code");
 
-  const code = `${server}.emojis.cache.forEach(async (ForEachemojiInServer) => {
-  ${statements_code}});\n`;
-  return code;
+  return `await ${forEachCollection}(${server}, "emojis", async (ForEachemojiInServer) => {
+    ${codeVal}
+  });`;
 };
 
 Blockly.Blocks["emoji_getallinserver_value"] = {
@@ -125,16 +126,9 @@ javascriptGenerator.forBlock["emoji_getemojiwith"] = function (
   generator,
 ) {
   var dropdown_with = block.getFieldValue("with");
-  var value_equal = generator.valueToCode(block, "equal", Order.ATOMIC);
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-
-  var code;
-  if (dropdown_with === "name") {
-    code = `${value_server}.emojis.cache.find(emoji => emoji.name === ${value_equal})`;
-  } else {
-    code = `${value_server}.emojis.cache.get(${value_equal})`;
-  }
-
+  var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var code = `await ${getFromCollection}(${server}, "emojis", ${equal}, "${dropdown_with}")`
   return [code, Order.FUNCTION_CALL];
 };
 

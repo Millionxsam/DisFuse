@@ -2,6 +2,7 @@ import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
+import { forEachCollection, getFromCollection } from "../functions/generatorUtils.js";
 
 Blockly.Blocks["sticker_getallinserver"] = {
   init: function () {
@@ -21,9 +22,10 @@ javascriptGenerator.forBlock["sticker_getallinserver"] = function (
   generator
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var statements_code = generator.statementToCode(block, "code");
-  return `${server}.stickers.cache.forEach(async (ForEachStickerInServer) => {
-  ${statements_code}});\n`;
+  var codeVal = generator.statementToCode(block, "code");
+  return `await ${forEachCollection}(${server}, "stickers", async (ForEachStickerInServer) => {
+    ${codeVal}
+  });`;
 };
 
 Blockly.Blocks["sticker_getallinserver_value"] = {
@@ -106,20 +108,10 @@ Blockly.Blocks["sticker_getwith"] = {
 
 javascriptGenerator.forBlock["sticker_getwith"] = function (block, generator) {
   var dropdown_with = block.getFieldValue("with");
-  var value_equal = generator.valueToCode(block, "equal", Order.ATOMIC);
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-
-  if (dropdown_with === "name") {
-    return [
-      `${value_server}.stickers.cache.find(sticker => sticker.name === ${value_equal})`,
-      Order.FUNCTION_CALL,
-    ];
-  } else {
-    return [
-      `${value_server}.stickers.cache.get(${value_equal})`,
-      Order.FUNCTION_CALL,
-    ];
-  }
+  var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
+  var value = generator.valueToCode(block, "server", Order.ATOMIC);
+  var code = `await ${getFromCollection}(${value}, "stickers", ${equal}, "${dropdown_with}")`
+  return [code, Order.FUNCTION_CALL];
 };
 
 Blockly.Blocks["sticker_getid"] = {

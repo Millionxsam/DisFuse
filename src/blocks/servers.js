@@ -2,6 +2,7 @@ import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import javascript from "blockly/javascript";
+import { forEachCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["server_getone"] = {
   init: function () {
@@ -368,12 +369,10 @@ javascriptGenerator.forBlock["server_getone"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["server_getall"] = function (block, generator) {
-  var statements_code = generator.statementToCode(block, "code");
-
-  var code = `client.guilds.cache.forEach(async (guild) => {
-    ${statements_code}
+  var codeVal = generator.statementToCode(block, "code");
+  return `await ${forEachCollection}(client, "guilds", async (guild) => {
+    ${codeVal}
   });`;
-  return code;
 };
 
 createRestrictions(

@@ -2,15 +2,18 @@ import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
+import {
+  formatEmbeds,
+  buildMessageOptions,
+  buildThenSuffix,
+} from "../functions/generatorUtils";
 
 Blockly.Blocks["msg_getone"] = {
   init: function () {
     this.appendValueInput("id")
       .setCheck("String")
       .appendField("get the message with id equal to");
-    this.appendValueInput("channel")
-      .setCheck("channel")
-      .appendField("on the channel");
+    this.appendValueInput("channel").setCheck("channel").appendField("on the channel");
     this.setInputsInline(false);
     this.setOutput(true, "message");
     this.setColour("#336EFF");
@@ -21,9 +24,7 @@ javascriptGenerator.forBlock["msg_getone"] = function (block, generator) {
   var id = generator.valueToCode(block, "id", Order.NONE);
   var channel = generator.valueToCode(block, "channel", Order.NONE);
 
-  var code = `await ${channel}.messages.fetch(${id})`;
-
-  return [code, Order.AWAIT];
+  return [`await ${channel}.messages.fetch(${id})`, Order.AWAIT];
 };
 
 Blockly.Blocks["msg_received"] = {
@@ -37,9 +38,7 @@ Blockly.Blocks["msg_received"] = {
 
 Blockly.Blocks["message_author_not_bot"] = {
   init: function () {
-    this.appendDummyInput().appendField(
-      "when a message is received from a human",
-    );
+    this.appendDummyInput().appendField("when a message is received from a human");
     this.appendStatementInput("name").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
@@ -92,28 +91,18 @@ createMutatorBlock({
   nextStatement: "default",
 });
 
-javascriptGenerator.forBlock["msg_reply_mutator"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) {
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
   const rows = generator.statementToCode(block, "rows");
   const files = generator.statementToCode(block, "files");
   const then = generator.statementToCode(block, "then");
-  let thenCode = ";\n";
 
-  const options = [`content: ${content}`];
-  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
-  if (rows) options.push(`components: [\n${rows}]`);
-  if (files) options.push(`files: [\n${files}]`);
-  if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
-  if (then) thenCode = `.then((messageSent) => {\n${then}});\n`;
+  const options = buildMessageOptions({ content, embeds, rows, files, ephemeral });
+  const thenCode = buildThenSuffix(then);
 
-  return `await message.reply({
-  ${options.join(",\n  ")}
-})${thenCode}`;
+  return `await message.reply({\n  ${options.join(",\n  ")}\n})${thenCode}`;
 };
 
 createMutatorBlock({
@@ -167,15 +156,9 @@ javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
   const rows = generator.statementToCode(block, "rows");
   const files = generator.statementToCode(block, "files");
 
-  const options = [`content: ${content}`];
-  if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
-  if (rows) options.push(`components: [\n${rows}]`);
-  if (files) options.push(`files: [\n${files}]`);
-  if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
+  const options = buildMessageOptions({ content, embeds, rows, files, ephemeral });
 
-  return `await (${message}).edit({
-  ${options.join(",\n  ")}
-});\n`;
+  return `await (${message}).edit({\n  ${options.join(",\n  ")}\n});\n`;
 };
 
 Blockly.Blocks["msg_msg"] = {
@@ -228,9 +211,7 @@ Blockly.Blocks["msg_server"] = {
 
 Blockly.Blocks["msg_react"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("react to message:");
+    this.appendValueInput("message").setCheck("message").appendField("react to message:");
     this.appendValueInput("reaction")
       .setCheck(["String", "emoji"])
       .appendField("with emoji:");
@@ -247,7 +228,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["reaction"],
-      check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
+      check: val => /^(|([\p{Emoji}]{1}))$/u.test(val),
       message: "Emoji must be a single valid emoji",
     },
   ],
@@ -262,55 +243,21 @@ javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
 
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   const codeState = generator.statementToCode(block, "event");
-  const code = `client.on("messageCreate", async (message) => {
-${codeState}});\n`;
-  return code;
+  return `client.on("messageCreate", async (message) => {\n${codeState}});\n`;
 };
 
-javascriptGenerator.forBlock["message_author_not_bot"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["message_author_not_bot"] = function (block, generator) {
   const codeState = generator.statementToCode(block, "name");
-  const code = `client.on("messageCreate", async (message) => {
-  if (message.author.bot) return;
-${codeState}});\n`;
-  return code;
+  return `client.on("messageCreate", async (message) => {\n  if (message.author.bot) return;\n${codeState}});\n`;
 };
 
-javascriptGenerator.forBlock["msg_msg"] = function (block, generator) {
-  var code = "message";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_content"] = function (block, generator) {
-  var code = "message.content";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_member"] = function (block, generator) {
-  var code = "message.member";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_user"] = function (block, generator) {
-  var code = "message.member.user";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_channel"] = function (block, generator) {
-  var code = "message.channel";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_server"] = function (block, generator) {
-  var code = "message.guild";
-  return [code, Order.NONE];
-};
-
-javascriptGenerator.forBlock["msg_delete"] = function (block, generator) {
-  return "message.delete();";
-};
+javascriptGenerator.forBlock["msg_msg"] = () => ["message", Order.NONE];
+javascriptGenerator.forBlock["msg_content"] = () => ["message.content", Order.NONE];
+javascriptGenerator.forBlock["msg_member"] = () => ["message.member", Order.NONE];
+javascriptGenerator.forBlock["msg_user"] = () => ["message.member.user", Order.NONE];
+javascriptGenerator.forBlock["msg_channel"] = () => ["message.channel", Order.NONE];
+javascriptGenerator.forBlock["msg_server"] = () => ["message.guild", Order.NONE];
+javascriptGenerator.forBlock["msg_delete"] = () => "message.delete();";
 
 Blockly.Blocks["msg_delete"] = {
   init: function () {
@@ -324,9 +271,7 @@ Blockly.Blocks["msg_delete"] = {
 
 Blockly.Blocks["msg_deleteOther"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("delete message:");
+    this.appendValueInput("message").setCheck("message").appendField("delete message:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
@@ -336,19 +281,14 @@ Blockly.Blocks["msg_deleteOther"] = {
 
 javascriptGenerator.forBlock["msg_deleteOther"] = function (block, generator) {
   var message = generator.valueToCode(block, "message", Order.ATOMIC);
-  var code = `${message}.delete();\n`;
-  return code;
+  return `${message}.delete();\n`;
 };
 
 Blockly.Blocks["msg_edit"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("edit message:");
+    this.appendValueInput("message").setCheck("message").appendField("edit message:");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -365,7 +305,7 @@ javascriptGenerator.forBlock["msg_edit"] = function (block, generator) {
 
   return `await (${message}).edit({
   content: ${content || "''"},
-  embeds: [${embeds.replaceAll("'", "") || ""}],
+  embeds: [${formatEmbeds(embeds)}],
   components: [
   ${rows}]
 });\n`;
@@ -376,12 +316,8 @@ Blockly.Blocks["captcha_reply"] = {
     this.appendValueInput("message")
       .setCheck("message")
       .appendField("reply captcha to message:");
-    this.appendValueInput("content")
-      .setCheck("String")
-      .appendField("with content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("content").setCheck("String").appendField("with content:");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -399,7 +335,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
   return `${message}.reply({
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
-  embeds: [${embeds.replaceAll("'", "") || ""}],
+  embeds: [${formatEmbeds(embeds)}],
   components: [
   ${rows}]
 });\n`;
@@ -466,12 +402,10 @@ javascriptGenerator.forBlock["message_property"] = function (block, generator) {
   const message = generator.valueToCode(block, "message", Order.ATOMIC);
   const property = block.getFieldValue("property");
 
-  let code;
-  if (property === "attachments") {
-    code = `[...${message}.attachments.values()]`;
-  } else {
-    code = `${message}.${property}`;
-  }
+  const code =
+    property === "attachments"
+      ? `[...${message}.attachments.values()]`
+      : `${message}.${property}`;
 
   return [code, Order.ATOMIC];
 };
@@ -511,7 +445,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["content"],
-      check: (val) => val.length <= 2000,
+      check: val => val.length <= 2000,
       message: "Content cannot be greater than 2,000 characters",
     },
     {
@@ -523,12 +457,12 @@ createRestrictions(
         let embeds = val.split(",");
         let pass = true;
 
-        embeds.forEach((embedName) => {
+        embeds.forEach(embedName => {
           if (
             !workspace
               .getAllBlocks(false)
               .find(
-                (b) =>
+                b =>
                   b.type === "embed_create" &&
                   b.getFieldValue("name") === embedName.trim(),
               )

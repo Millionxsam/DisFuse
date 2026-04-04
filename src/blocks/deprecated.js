@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { getCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["slash_reply"] = {
   init: function () {
@@ -73,7 +74,7 @@ Blockly.Blocks["slash_create"] = {
     this.appendDummyInput().appendField("add slash command");
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
-    this.appendValueInput("nsfw").setCheck("Boolean").appendField("nSFW:");
+    this.appendValueInput("nsfw").setCheck("Boolean").appendField("NSFW:");
     this.appendValueInput("dm")
       .setCheck("Boolean")
       .appendField("usable in DMs:");
@@ -260,7 +261,7 @@ javascriptGenerator.forBlock["slash_createcontainer"] = function (
   var code;
 
   if (value_guild?.length > 10)
-    code = `client.guilds.cache.get(${value_guild}).commands.set([${statements_code}]);`;
+    code = `(await ${getCollection}(client, "servers")).get(${value_guild}).commands.set([${statements_code}]);`;
   else code = `client.application.commands.set([${statements_code}]);`;
 
   return code;
@@ -340,6 +341,6 @@ javascriptGenerator.forBlock["misc_int_edit"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["main_amountservers"] = () => [
-  "client.guilds.cache.size",
+  `(await ${getCollection}(client, "servers")).size`,
   Order.NONE,
 ];

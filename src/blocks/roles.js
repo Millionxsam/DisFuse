@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
+import { forEachCollection, getFromCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["roles_foreach"] = {
   init: function () {
@@ -53,10 +54,9 @@ javascriptGenerator.forBlock["roles_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${server}.roles.cache.forEach(async (role) => {
+  return `await ${forEachCollection}(${server}, "roles", async (role) => {
     ${codeVal}
   });`;
-  return code;
 };
 
 Blockly.Blocks["roles_foreach_role"] = {
@@ -218,27 +218,9 @@ Blockly.Blocks["roles_getone"] = {
 
 javascriptGenerator.forBlock["roles_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
-  var value_value = generator.valueToCode(block, "value", Order.ATOMIC);
-  var value_server = generator.valueToCode(block, "server", Order.ATOMIC);
-
-  const func = javascriptGenerator.provideFunction_(
-    "getRole",
-    `async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(guild, value, type = "id") {
-  if (!guild) return null;
-
-  const roles = guild.roles.cache.size
-    ? guild.roles.cache
-    : await guild.roles.fetch();
-
-  if (type === "id") {
-    return roles.get(value) ?? null;
-  }
-
-  return roles.find(r => r.name === value) ?? null;
-}`,
-  );
-
-  var code = `await ${func}(${value_server}, ${value_value}, "${dropdown_type}")`;
+  var value = generator.valueToCode(block, "value", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var code = `await ${getFromCollection}(${server}, "roles", ${value}, "${dropdown_type}")`;
   return [code, Order.AWAIT];
 };
 
@@ -351,13 +333,13 @@ javascriptGenerator.forBlock["roles_hasRole"] = function (block, generator) {
   const roleId = typeof role === "string" ? role : role?.id;
   if (!roleId) return false;
 
-  if (member.roles?.cache?.has(roleId)) return true;
+  const memberRoles = await getCollection(member, "roles");
+  if (memberRoles?.has(roleId)) return true;
 
-  const roles = member.guild.roles.cache.size
-    ? member.guild.roles.cache
-    : await member.guild.roles.fetch();
+  const roles = await getCollection(member.guild, "roles");
+  if (!roles) return false;
 
-  return roles.has(roleId) && member.roles.cache.has(roleId);
+  return roles.has(roleId);
 }`,
   );
 
