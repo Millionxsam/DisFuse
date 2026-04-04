@@ -36,7 +36,7 @@ import WorkspaceBar from "../components/WorkspaceBar";
 import registerCustomBlocks from "../functions/registerCustomBlocks";
 import getExportFiles from "../config/getExportFiles";
 import { userCache } from "../cache.ts";
-import InviteModal from "../components/InviteModal.js";
+import InviteModal from "../components/InviteModal.jsx";
 import { io } from "socket.io-client";
 
 require

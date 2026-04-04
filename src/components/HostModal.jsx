@@ -3,7 +3,7 @@ import { userCache } from "../cache.ts";
 import { apiUrl } from "../config/config";
 import getExportFiles from "../config/getExportFiles";
 import { useEffect, useState } from "react";
-import LoadingAnim from "./LoadingAnim.js";
+import LoadingAnim from "./LoadingAnim.jsx";
 import { getWholeProjectWorkspace } from "../functions/updateCode.js";
 
 export default function HostModal({ socket, workspace, project, workspaceId }) {
