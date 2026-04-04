@@ -6,7 +6,6 @@ import {
   buildMessageOptions,
   buildThenSuffix,
   buildLegacySend,
-  forEachCollection,
 } from "../functions/generatorUtils";
 
 createMutatorBlock({
@@ -950,7 +949,7 @@ javascriptGenerator.forBlock["channel_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  return `await ${forEachCollection}(${server}, "channels", async (channel) => {
+  return `await forEachCollection(${server}, "channels", async (channel) => {
     ${codeVal}
   });\n`;
 };

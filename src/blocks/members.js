@@ -1,7 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
-import { buildDmSend, forEachCollection } from "../functions/generatorUtils";
+import { buildDmSend } from "../functions/generatorUtils";
 
 Blockly.Blocks["member_getone"] = {
   init: function () {
@@ -531,7 +531,7 @@ javascriptGenerator.forBlock["member_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  return `await ${forEachCollection}(${server}, "members", async (member) => {
+  return `await forEachCollection(${server}, "members", async (member) => {
     ${codeVal}
   });`;
 };

@@ -39,7 +39,7 @@ import { userCache } from "../cache.ts";
 import InviteModal from "../components/InviteModal.jsx";
 import { io } from "socket.io-client";
 
-import.meta.glob("../blocks/**/*.js", { eager: false });
+import.meta.glob("../blocks/**/*.js", { eager: true });
 
 import { apiUrl, discordUrl } from "../config/config.js";
 
@@ -417,7 +417,7 @@ export default function Workspace() {
                   }
 
                   javascriptGenerator.addReservedWords(
-                    "Discord,moment,gamecord,discord_gamecord,easyjsondatabase,Database,client,databases,wait,process,emoji,channel,channels,member,members,user,users,guild,guilds,server,servers,modalSubmitInteraction,ForEachemojiInServer,interaction,int,scratchUserProfileInformation,errorButWithLengthyName,error,PollCreator,leavingMember,AddMember,AddServer,messageDeleted,messageReaction,messageSent,role,roles,createdThread,lyrics,lyricsFinder,filePath,fs,readData,err,files,filterItem,localVar,newWebhook,captcha,Captcha,permsChannel,variable,list,disfuse,canvas,ctx,config,dotenv,lyrics_finder,@ddededodediamante/captcha-generator,axios,_napi_rs_canvas,response,_ddededodediamante_captcha_generator",
+                    "getCollection,getFromCollection,forEachCollection,Discord,moment,gamecord,discord_gamecord,easyjsondatabase,Database,client,databases,wait,process,emoji,channel,channels,member,members,user,users,guild,guilds,server,servers,modalSubmitInteraction,ForEachemojiInServer,interaction,int,scratchUserProfileInformation,errorButWithLengthyName,error,PollCreator,leavingMember,AddMember,AddServer,messageDeleted,messageReaction,messageSent,role,roles,createdThread,lyrics,lyricsFinder,filePath,fs,readData,err,files,filterItem,localVar,newWebhook,captcha,Captcha,permsChannel,variable,list,disfuse,canvas,ctx,config,dotenv,lyrics_finder,@ddededodediamante/captcha-generator,axios,_napi_rs_canvas,response,_ddededodediamante_captcha_generator",
                   );
 
                   if (project.data?.length && !project.workspaces?.length) {
@@ -790,7 +790,7 @@ export default function Workspace() {
                       }).then((result) => {
                         if (!result.isConfirmed) return;
 
-                        let data = require(`../templates/${result.value}`);
+                        let data = import(`../templates/${result.value}.js`);
 
                         data.blocks.blocks = data.blocks.blocks.concat(
                           Blockly.serialization.workspaces.save(workspace)

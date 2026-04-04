@@ -1,38 +1,25 @@
-import { javascriptGenerator } from "blockly/javascript";
-
-export const getCollection = javascriptGenerator.provideFunction_(
-  "getCollection",
-  `
-async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(guild = client, type) {
+export const utilFunctions = `
+async function getCollection(guild, type) {
   if (!guild) return null;
   const manager = guild[type];
   if (!manager) return null;
   if (manager.cache?.size) return manager.cache;
   return await manager.fetch();
-}`,
-);
-export const getFromCollection = javascriptGenerator.provideFunction_(
-  "getFromCollection",
-  `
-async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(guild, type, value, mode = "id") {
+},
+async function getFromCollection(guild, type, value, mode = "id") {
   const collection = await getCollection(guild, type);
   if (!collection) return null;
   if (mode === "id") return collection.get(value) ?? null;
   return collection.find(item => item.name === value) ?? null;
-}`,
-);
-export const forEachCollection = javascriptGenerator.provideFunction_(
-  "forEachCollection",
-  `
-async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(guild, type, callback) {
+},
+async function forEachCollection(guild, type, callback) {
   const collection = await getCollection(guild, type);
   if (!collection) return;
   for (const item of collection.values()) {
     await callback(item);
   }
 }
-`,
-);
+`.trim();
 
 export function formatEmbeds(embedsCode) {
   if (!embedsCode) return "";
@@ -59,10 +46,7 @@ export function buildThenSuffix(thenCode) {
   return `.then((messageSent) => {\n${thenCode}});\n`;
 }
 
-export function buildLegacySend(
-  target,
-  { content, embeds, rows, files, then },
-) {
+export function buildLegacySend(target, { content, embeds, rows, files, then }) {
   const parts = [
     `content: ${content || "''"}`,
     `embeds: [${formatEmbeds(embeds)}]`,

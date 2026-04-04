@@ -2,10 +2,6 @@ import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
-import {
-  forEachCollection,
-  getFromCollection,
-} from "../functions/generatorUtils.js";
 
 Blockly.Blocks["sticker_getallinserver"] = {
   init: function () {
@@ -26,7 +22,7 @@ javascriptGenerator.forBlock["sticker_getallinserver"] = function (
 ) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
-  return `await ${forEachCollection}(${server}, "stickers", async (ForEachStickerInServer) => {
+  return `await forEachCollection(${server}, "stickers", async (ForEachStickerInServer) => {
     ${codeVal}
   });`;
 };
@@ -113,7 +109,7 @@ javascriptGenerator.forBlock["sticker_getwith"] = function (block, generator) {
   var dropdown_with = block.getFieldValue("with");
   var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
   var value = generator.valueToCode(block, "server", Order.ATOMIC);
-  var code = `await ${getFromCollection}(${value}, "stickers", ${equal}, "${dropdown_with}")`;
+  var code = `await getFromCollection(${value}, "stickers", ${equal}, "${dropdown_with}")`;
   return [code, Order.FUNCTION_CALL];
 };
 

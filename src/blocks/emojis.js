@@ -1,10 +1,6 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
-import {
-  forEachCollection,
-  getFromCollection,
-} from "../functions/generatorUtils";
 
 Blockly.Blocks["emoji_getallinserver"] = {
   init: function () {
@@ -27,7 +23,7 @@ javascriptGenerator.forBlock["emoji_getallinserver"] = function (
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  return `await ${forEachCollection}(${server}, "emojis", async (ForEachemojiInServer) => {
+  return `await forEachCollection(${server}, "emojis", async (ForEachemojiInServer) => {
     ${codeVal}
   });`;
 };
@@ -131,7 +127,7 @@ javascriptGenerator.forBlock["emoji_getemojiwith"] = function (
   var dropdown_with = block.getFieldValue("with");
   var equal = generator.valueToCode(block, "equal", Order.ATOMIC);
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var code = `await ${getFromCollection}(${server}, "emojis", ${equal}, "${dropdown_with}")`;
+  var code = `await getFromCollection(${server}, "emojis", ${equal}, "${dropdown_with}")`;
   return [code, Order.FUNCTION_CALL];
 };
 

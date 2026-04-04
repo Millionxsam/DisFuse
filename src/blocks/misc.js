@@ -2,7 +2,6 @@ import * as Blockly from "blockly";
 import javascript, { javascriptGenerator, Order } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
 import { createMutatorBlock } from "../functions/createMutator.ts";
-import { getCollection } from "../functions/generatorUtils.js";
 
 createMutatorBlock({
   id: "misc_int_reply_mutator",
@@ -424,7 +423,7 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
 
   var code;
   if (value_guild?.length > 15)
-    code = `(await ${getCollection}(client, "servers")).get(${value_guild}).commands.set([${statements_code}
+    code = `(await getCollection(client, "servers")).get(${value_guild}).commands.set([${statements_code}
 ]);`;
   else
     code = `client.application.commands.set([${statements_code}
@@ -440,7 +439,7 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
 
     let code =
       guild && guild.length > 5
-        ? `(await ${getCollection}(client, "servers")).get(${guild})`
+        ? `(await getCollection(client, "servers")).get(${guild})`
         : "client.application";
 
     code = code + `.commands.set([${setCode}\n]);\n`;

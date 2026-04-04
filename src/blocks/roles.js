@@ -1,10 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
-import {
-  forEachCollection,
-  getFromCollection,
-} from "../functions/generatorUtils";
 
 Blockly.Blocks["roles_foreach"] = {
   init: function () {
@@ -60,7 +56,7 @@ javascriptGenerator.forBlock["roles_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  return `await ${forEachCollection}(${server}, "roles", async (role) => {
+  return `await forEachCollection(${server}, "roles", async (role) => {
     ${codeVal}
   });`;
 };
@@ -246,7 +242,7 @@ javascriptGenerator.forBlock["roles_getone"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
   var value = generator.valueToCode(block, "value", Order.ATOMIC);
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
-  var code = `await ${getFromCollection}(${server}, "roles", ${value}, "${dropdown_type}")`;
+  var code = `await getFromCollection(${server}, "roles", ${value}, "${dropdown_type}")`;
   return [code, Order.AWAIT];
 };
 

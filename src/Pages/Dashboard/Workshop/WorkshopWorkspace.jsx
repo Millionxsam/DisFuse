@@ -14,7 +14,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import "@blockly/toolbox-search";
 import { userCache } from "../../../cache.ts";
 
-import.meta.glob("./workshopBlocks/**/*.js", { eager: false });
+import.meta.glob("./workshopBlocks/**/*.js", { eager: true });
 
 import { apiUrl, discordUrl } from "../../../config/config.js";
 

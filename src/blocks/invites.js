@@ -1,7 +1,6 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
-import { forEachCollection } from "../functions/generatorUtils";
 
 Blockly.Blocks["invite_create"] = {
   init: function () {
@@ -315,7 +314,7 @@ javascriptGenerator.forBlock["invite_foreach"] = function (block, generator) {
   var server = generator.valueToCode(block, "server", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  return `await ${forEachCollection}(${server}, "invites", async (inviteForEachInLoop) => {
+  return `await forEachCollection(${server}, "invites", async (inviteForEachInLoop) => {
     ${codeVal}
   });`;
 };

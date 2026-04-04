@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import LoadingAnim from "../../../components/LoadingAnim";
 
-let { discordUrl, apiUrl } = require("../../../config/config.js");
+import { discordUrl, apiUrl } from "../../../config/config.js";
 
 export default function OptimizationSettings() {
   const token = localStorage.getItem("disfuse-token");
@@ -51,23 +51,19 @@ export default function OptimizationSettings() {
           <p>Fast block render:</p>
           <Switch
             defaultChecked={user.settings?.optimization.fastRenderMode ?? false}
-            onChange={(e) => {
+            onChange={e => {
               updateSetting("fastRenderMode", e.currentTarget.checked);
             }}
             id="optimization-fastRenderMode"
           />
         </div>
-        <h5>
-          Makes the workspace run faster, but it might look more pixelated.
-        </h5>
+        <h5>Makes the workspace run faster, but it might look more pixelated.</h5>
         <div className="option">
-          <label htmlFor="optimization-changesUntilSave">
-            Changes before saving:
-          </label>
+          <label htmlFor="optimization-changesUntilSave">Changes before saving:</label>
           <input
             type="number"
             defaultValue={user.settings?.optimization.changesUntilSave ?? 3}
-            onChange={(e) => {
+            onChange={e => {
               e.currentTarget.value = Math.max(e.currentTarget.value, 2);
               updateSetting("changesUntilSave", e.currentTarget.value);
             }}
