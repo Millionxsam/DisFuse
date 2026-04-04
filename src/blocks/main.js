@@ -39,7 +39,7 @@ javascriptGenerator.forBlock["main_botStart"] = function (block, generator) {
 
   const code = `
   client = new Discord.Client({
-    intents: 3276799
+    intents: Object.values(Discord.GatewayIntentBits)
   });
   
   client.login(${token});\n`;
@@ -173,7 +173,7 @@ javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {
 javascriptGenerator.forBlock["main_ready"] = function (block, generator) {
   var code_statement = generator.statementToCode(block, "event");
 
-  var code = `client.on("ready", async () => {
+  var code = `client.on("clientReady", async () => {
   ${code_statement}});\n`;
   return code;
 };

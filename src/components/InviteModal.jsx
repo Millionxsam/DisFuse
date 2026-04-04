@@ -55,7 +55,7 @@ export default function InviteModal({ project, onSave }) {
         <ul>
           {collaborators.length ? (
             collaborators.map((u, index) => (
-              <div>
+              <div key={index}>
                 <img src={u?.avatar} alt="" />
                 <div>
                   <h2>{u?.displayName}</h2>

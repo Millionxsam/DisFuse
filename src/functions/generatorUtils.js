@@ -1,17 +1,21 @@
 export const utilFunctions = `
+/* DisFuse utility functions */
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+};
 async function getCollection(guild, type) {
   if (!guild) return null;
   const manager = guild[type];
   if (!manager) return null;
-  if (manager.cache?.size) return manager.cache;
+  if (manager.cache) return manager.cache;
   return await manager.fetch();
-},
+}
 async function getFromCollection(guild, type, value, mode = "id") {
   const collection = await getCollection(guild, type);
   if (!collection) return null;
   if (mode === "id") return collection.get(value) ?? null;
   return collection.find(item => item.name === value) ?? null;
-},
+}
 async function forEachCollection(guild, type, callback) {
   const collection = await getCollection(guild, type);
   if (!collection) return;
@@ -19,7 +23,7 @@ async function forEachCollection(guild, type, callback) {
     await callback(item);
   }
 }
-`.trim();
+/* ------------------------- */`.trim();
 
 export function formatEmbeds(embedsCode) {
   if (!embedsCode) return "";

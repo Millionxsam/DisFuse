@@ -1,16 +1,16 @@
 import * as Blockly from "blockly";
-import { js as beautifyJs } from "js-beautify";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import "../hljs.css";
 import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
-import { setupFunctions, utilFunctions } from "./generatorUtils";
+import { utilFunctions } from "./generatorUtils";
+import { format } from "./pretty";
 
 hljs.registerLanguage("javascript", javascript);
 
-export function updateCode(workspace, project, workspaceId, onlyWarning = false) {
+export async function updateCode(workspace, project, workspaceId, onlyWarning = false) {
   javascriptGenerator.init(workspace);
 
   const workspaceCodeEle = document.querySelector(".workspace.code code");
@@ -21,10 +21,10 @@ export function updateCode(workspace, project, workspaceId, onlyWarning = false)
   var projectBlocks = tempWorkspace.getAllBlocks(true);
   var workspaceCode, projectCode;
 
-  if (!onlyWarning) projectCode = setUpCode(project, tempWorkspace, projectBlocks);
+  if (!onlyWarning) projectCode = await setUpCode(project, tempWorkspace, projectBlocks);
 
   var currentBlocks = workspace.getAllBlocks(true);
-  workspaceCode = setUpCode(project, workspace, currentBlocks, onlyWarning);
+  workspaceCode = await setUpCode(project, workspace, currentBlocks, onlyWarning);
 
   if (!onlyWarning) {
     workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
@@ -49,9 +49,8 @@ function fixPackageName(packageName = "") {
   return validName;
 }
 
-function setUpCode(project, workspace, blocks, onlyWarning = false) {
+async function setUpCode(project, workspace, blocks, onlyWarning = false) {
   javascriptGenerator.init(workspace);
-  setupFunctions(javascriptGenerator);
 
   function tokenAlertCheck() {
     if (project.private) return;
@@ -129,20 +128,19 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
     let client = new Discord.Client({
-      intents: 3276799
+      intents: Object.values(Discord.GatewayIntentBits)
     });
     ${
       mobilePresenceBot === true
         ? '\nDiscord.DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";\n'
         : ""
     }
-    const databases = {};
-    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
     const process = require("process");
     process.on("uncaughtException", (e) => {
       console.error(e);
     });
+
+    const databases = {};
 
     ${utilFunctions}
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""}
@@ -150,7 +148,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     
     client.setMaxListeners(0);
         
-    client.on("ready", async () => {
+    client.on("clientReady", async () => {
       console.log(client.user.tag + " is logged in!");
     });
         
@@ -158,17 +156,7 @@ function setUpCode(project, workspace, blocks, onlyWarning = false) {
     
     client.login(process.env.DISFUSE_SECURE_BOT_TOKEN);
     `;
-  return beautifyJs(js, {
-    indent_size: 2,
-    indent_with_tabs: false,
-    preserve_newlines: true,
-    max_preserve_newlines: 2,
-    space_in_empty_paren: true,
-    space_after_anon_function: true,
-    jslint_happy: true,
-    brace_style: "collapse-preserve-inline",
-    end_with_newline: false,
-  });
+  return await format(js);
 }
 
 export function getWholeProjectWorkspace(project, currentWorkspace, workspaceId) {

@@ -444,7 +444,7 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
 
     code = code + `.commands.set([${setCode}\n]);\n`;
 
-    return `client.on("ready", () => {
+    return `client.on("clientReady", () => {
       ${code}  
     });`;
   };

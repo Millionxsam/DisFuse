@@ -5,9 +5,9 @@ import registerCustomBlocks from "../../../functions/registerCustomBlocks";
 import getToolbox from "../../../config/toolbox";
 import { javascriptGenerator } from "blockly/javascript";
 import hljs from "highlight.js/lib/core";
-import { js as beautifyJs } from "js-beautify";
 
 import javascript from "highlight.js/lib/languages/javascript";
+import { format } from "../../../functions/pretty";
 
 hljs.registerLanguage("javascript", javascript);
 
@@ -55,15 +55,11 @@ export default function PreviewBox({ blocks = [] }) {
 
     setWorkspace(workspace);
 
-    workspace.addChangeListener(() => {
+    workspace.addChangeListener((event) => {
+      if (event.isUiEvent || event.isBlank || !event.isNull()) return
       const code = javascriptGenerator.workspaceToCode(workspace);
-
       document.getElementById("workshopPreviewCode").innerHTML = hljs.highlight(
-        beautifyJs(code, {
-          indent_size: 2,
-          preserve_newlines: true,
-          max_preserve_newlines: 2,
-        }),
+        format(code),
         {
           language: "javascript",
         },
