@@ -27,7 +27,13 @@ async function forEachCollection(guild, type, callback) {
 
 export function formatEmbeds(embedsCode) {
   if (!embedsCode) return "";
-  return embedsCode.replaceAll("'", "");
+  return embedsCode.replaceAll("'", "").replaceAll('"', "").replaceAll("`", "");
+}
+
+export function isEmptyString(str = "") {
+  if (!str) return true;
+  str = str?.trim();
+  return !str || str === "" || str === "''" || str === '""' || str == "``";
 }
 
 export function buildMessageOptions({
@@ -37,7 +43,8 @@ export function buildMessageOptions({
   files,
   ephemeral,
 } = {}) {
-  const options = [`content: ${content}`];
+  const options = [];
+  if (!isEmptyString(content)) options.push(`content: ${content}`);
   if (embeds) options.push(`embeds: [${formatEmbeds(embeds)}]`);
   if (rows) options.push(`components: [\n${rows}]`);
   if (files) options.push(`files: [\n${files}]`);
@@ -52,7 +59,7 @@ export function buildThenSuffix(thenCode) {
 
 export function buildLegacySend(target, { content, embeds, rows, files, then }) {
   const parts = [
-    `content: ${content || "''"}`,
+    ...(!isEmptyString(content) ? `content: ${content || "''"}` : []),
     `embeds: [${formatEmbeds(embeds)}]`,
     ...(rows ? [`components: [\n${rows}]`] : []),
     ...(files ? [`files: [\n${files}]`] : []),
@@ -63,7 +70,7 @@ export function buildLegacySend(target, { content, embeds, rows, files, then }) 
 
 export function buildDmSend(target, { content, embeds, rows }) {
   const parts = [
-    `content: ${content || "''"}`,
+    ...(!isEmptyString(content) ? `content: ${content || "''"}` : []),
     `embeds: [${formatEmbeds(embeds)}]`,
     ...(rows ? [`components: [${rows}]`] : []),
   ];

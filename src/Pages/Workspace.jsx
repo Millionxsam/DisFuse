@@ -877,7 +877,7 @@ export default function Workspace() {
 
                     zip.file(
                       "index.js",
-                      `${format(indexjs)}`,
+                      `${await format(indexjs)}`,
                     );
                     zip.file(".env", envFile);
                     zip.file(
