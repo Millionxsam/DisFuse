@@ -37,7 +37,7 @@ export function isEmptyString(str = "") {
 }
 
 export function buildMessageOptions({
-  content = "''",
+  content = "",
   embeds,
   rows,
   files,
@@ -55,17 +55,6 @@ export function buildMessageOptions({
 export function buildThenSuffix(thenCode) {
   if (!thenCode) return ";\n";
   return `.then((messageSent) => {\n${thenCode}});\n`;
-}
-
-export function buildLegacySend(target, { content, embeds, rows, files, then }) {
-  const parts = [
-    ...(!isEmptyString(content) ? [`content: ${content || "''"}`] : []),
-    `embeds: [${formatEmbeds(embeds)}]`,
-    ...(rows ? [`components: [\n${rows}]`] : []),
-    ...(files ? [`files: [\n${files}]`] : []),
-  ];
-
-  return `await ${target}.send({\n  ${parts.join(", ")}\n})${buildThenSuffix(then)}`;
 }
 
 export function buildDmSend(target, { content, embeds, rows }) {

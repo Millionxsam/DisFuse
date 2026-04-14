@@ -341,6 +341,7 @@ createRestrictions(
         "misc_int_edit_mutator",
         "misc_int_reply_mutator",
         "channel_send_mutator",
+        "member_dm_mutator",
         "msg_reply_rows",
         "misc_reply_rows",
         "channel_send_rows",

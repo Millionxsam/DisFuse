@@ -2059,18 +2059,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("member_kick"),
               {
                 kind: "block",
-                type: "member_dm",
-                inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "member_dm_rows",
+                type: "member_dm_mutator",
                 inputs: {
                   content: {
                     shadow: {
