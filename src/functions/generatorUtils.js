@@ -59,21 +59,21 @@ export function buildThenSuffix(thenCode) {
 
 export function buildLegacySend(target, { content, embeds, rows, files, then }) {
   const parts = [
-    ...(!isEmptyString(content) ? `content: ${content || "''"}` : []),
+    ...(!isEmptyString(content) ? [`content: ${content || "''"}`] : []),
     `embeds: [${formatEmbeds(embeds)}]`,
     ...(rows ? [`components: [\n${rows}]`] : []),
     ...(files ? [`files: [\n${files}]`] : []),
   ];
 
-  return `await ${target}.send({\n  ${parts.join(",\n  ")}\n}).then((messageSent) => {\n  ${then ?? ""}});\n`;
+  return `await ${target}.send({\n  ${parts.join(", ")}\n})${buildThenSuffix(then)}`;
 }
 
 export function buildDmSend(target, { content, embeds, rows }) {
   const parts = [
-    ...(!isEmptyString(content) ? `content: ${content || "''"}` : []),
+    ...(!isEmptyString(content) ? [`content: ${content || "''"}`] : []),
     `embeds: [${formatEmbeds(embeds)}]`,
     ...(rows ? [`components: [${rows}]`] : []),
   ];
 
-  return `await ${target}.send({\n    ${parts.join(",\n    ")}\n  });`;
+  return `await ${target}.send({\n  ${parts.join(", ")}\n});\n`;
 }
