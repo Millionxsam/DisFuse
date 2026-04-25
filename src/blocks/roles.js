@@ -383,10 +383,7 @@ javascriptGenerator.forBlock["roles_hasRole"] = function (block, generator) {
   const memberRoles = await getCollection(member, "roles");
   if (memberRoles?.has(roleId)) return true;
 
-  const roles = await getCollection(member.guild, "roles");
-  if (!roles) return false;
-
-  return roles.has(roleId);
+  return false;
 }`,
   );
 
