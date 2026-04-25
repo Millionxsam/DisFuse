@@ -55,11 +55,11 @@ export default function PreviewBox({ blocks = [] }) {
 
     setWorkspace(workspace);
 
-    workspace.addChangeListener((event) => {
+    workspace.addChangeListener(async (event) => {
       if (event.isUiEvent || event.isBlank || !event.isNull()) return
       const code = javascriptGenerator.workspaceToCode(workspace);
       document.getElementById("workshopPreviewCode").innerHTML = hljs.highlight(
-        format(code),
+        await format(code),
         {
           language: "javascript",
         },
