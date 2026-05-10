@@ -17,7 +17,9 @@ Blockly.Blocks["member_getone"] = {
         "type",
       )
       .appendField("equal to");
-    this.appendValueInput("server").setCheck("server").appendField("on the server");
+    this.appendValueInput("server")
+      .setCheck("server")
+      .appendField("on the server");
     this.setOutput(true, "member");
     this.setColour("#3c9e56");
   },
@@ -63,7 +65,9 @@ Blockly.Blocks["member_member"] = {
 
 Blockly.Blocks["member_ban"] = {
   init: function () {
-    this.appendValueInput("member").appendField("ban member:").setCheck("member");
+    this.appendValueInput("member")
+      .appendField("ban member:")
+      .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -73,7 +77,9 @@ Blockly.Blocks["member_ban"] = {
 
 Blockly.Blocks["member_timeout"] = {
   init: function () {
-    this.appendValueInput("member").appendField("timeout member:").setCheck("member");
+    this.appendValueInput("member")
+      .appendField("timeout member:")
+      .setCheck("member");
     this.appendValueInput("seconds").appendField("seconds:").setCheck("Number");
     this.appendValueInput("reason").setCheck("String").appendField("reason:");
     this.setPreviousStatement(true, "default");
@@ -84,7 +90,9 @@ Blockly.Blocks["member_timeout"] = {
 
 Blockly.Blocks["member_kick"] = {
   init: function () {
-    this.appendValueInput("member").appendField("kick member:").setCheck("member");
+    this.appendValueInput("member")
+      .appendField("kick member:")
+      .setCheck("member");
     this.appendValueInput("reason").appendField("reason:").setCheck("String");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -131,7 +139,10 @@ createMutatorBlock({
   nextStatement: "default",
 });
 
-javascriptGenerator.forBlock["member_dm_mutator"] = function (block, generator) {
+javascriptGenerator.forBlock["member_dm_mutator"] = function (
+  block,
+  generator,
+) {
   const user = generator.valueToCode(block, "member", Order.ATOMIC) || "null";
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
@@ -149,7 +160,9 @@ Blockly.Blocks["member_dm"] = {
       .appendField("send direct message to user/member:")
       .setCheck(["user", "member"]);
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -163,7 +176,9 @@ Blockly.Blocks["member_dm_rows"] = {
       .appendField("send direct message to user/member:")
       .setCheck(["user", "member"]);
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
+    this.appendValueInput("embeds")
+      .setCheck("String")
+      .appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
@@ -270,7 +285,9 @@ Blockly.Blocks["member_color"] = {
 
 Blockly.Blocks["member_status"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("status of member:");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("status of member:");
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
     this.setTooltip('Returns "idle", "online", "dnd", or "offline" as a text');
@@ -285,7 +302,9 @@ javascriptGenerator.forBlock["member_status"] = function (block, generator) {
 
 Blockly.Blocks["member_userFlags"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("flags of user:");
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("flags of user:");
     this.setOutput(true, "Array");
     this.setColour("#3c9e56");
     this.setTooltip(
@@ -336,7 +355,9 @@ Blockly.Blocks["member_joined"] = {
 
 Blockly.Blocks["member_nickname"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("nickname of member:");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("nickname of member:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
@@ -345,7 +366,9 @@ Blockly.Blocks["member_nickname"] = {
 
 Blockly.Blocks["member_user"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("user of member:");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("user of member:");
     this.setInputsInline(true);
     this.setOutput(true, "user");
     this.setColour("#3c9e56");
@@ -354,7 +377,9 @@ Blockly.Blocks["member_user"] = {
 
 Blockly.Blocks["member_username"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("username of user:");
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("username of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
@@ -363,7 +388,9 @@ Blockly.Blocks["member_username"] = {
 
 Blockly.Blocks["member_dmChannel"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("dM channel of user:");
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("dM channel of user:");
     this.setInputsInline(true);
     this.setOutput(true, "channel");
     this.setColour("#3c9e56");
@@ -390,7 +417,9 @@ Blockly.Blocks["member_avatarURL"] = {
 
 Blockly.Blocks["member_bannerURL"] = {
   init: function () {
-    this.appendValueInput("user").setCheck("user").appendField("banner URL of user:");
+    this.appendValueInput("user")
+      .setCheck("user")
+      .appendField("banner URL of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
@@ -419,7 +448,9 @@ Blockly.Blocks["member_system"] = {
 
 Blockly.Blocks["member_accent"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("user").appendField("accent color of user:");
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("accent color of user:");
     this.setInputsInline(true);
     this.setOutput(true, "String");
     this.setColour("#3c9e56");
@@ -440,7 +471,7 @@ Blockly.Blocks["member_created"] = {
       )
       .appendField("of user:");
     this.setInputsInline(true);
-    this.setOutput(true, "String");
+    this.setOutput(true, ["String", "date", "Number"]);
     this.setColour("#3c9e56");
   },
 };
@@ -520,7 +551,10 @@ javascriptGenerator.forBlock["member_bannable"] = (b, g) => [
   Order.NONE,
 ];
 
-javascriptGenerator.forBlock["member_removetimeout"] = function (block, generator) {
+javascriptGenerator.forBlock["member_removetimeout"] = function (
+  block,
+  generator,
+) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
 
@@ -595,15 +629,22 @@ javascriptGenerator.forBlock["member_getone"] = function (block, generator) {
 
 Blockly.Blocks["member_hasPermission"] = {
   init: function () {
-    this.appendValueInput("member").setCheck("member").appendField("does member");
-    this.appendValueInput("permission").setCheck("permission").appendField("have the");
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("does member");
+    this.appendValueInput("permission")
+      .setCheck("permission")
+      .appendField("have the");
     this.appendDummyInput().appendField("?");
     this.setOutput(true, "Boolean");
     this.setColour("#3c9e56");
   },
 };
 
-javascriptGenerator.forBlock["member_hasPermission"] = function (block, generator) {
+javascriptGenerator.forBlock["member_hasPermission"] = function (
+  block,
+  generator,
+) {
   var member = generator.valueToCode(block, "member", Order.ATOMIC);
   var permission = generator.valueToCode(block, "permission", Order.ATOMIC);
 
@@ -686,7 +727,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["reason"],
-      check: val => val.length <= 512,
+      check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
     },
   ],
