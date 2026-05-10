@@ -171,7 +171,7 @@ javascriptGenerator.forBlock["poll_whenvoteadded"] = function (
 ) {
   var code = generator.statementToCode(block, "CODE");
 
-  return `client.on(Events.MessagePollVoteAdd, async (pollVoteAdded, userVoteAdd) => {
+  return `client.on(Discord.Events.MessagePollVoteAdd, async (pollVoteAdded, userVoteAdd) => {
 ${code}
 });\n`;
 };
