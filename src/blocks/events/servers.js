@@ -1,8 +1,5 @@
 import { createRestrictions } from "../../functions/restrictions";
-import {
-  createEventBlock,
-  createEventVariable,
-} from "../../functions/createEvent.ts";
+import { createEventBlock, createEventVariable } from "../../functions/createEvent.ts";
 import * as Blockly from "blockly/core";
 import { javascriptGenerator } from "blockly/javascript";
 
@@ -28,8 +25,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["events_guild_created"],
-      message:
-        "This block must be in the 'when the bot is added to a server' event",
+      message: "This block must be in the 'when the bot is added to a server' event",
     },
   ],
 );
@@ -56,8 +52,7 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["events_guild_deleted"],
-      message:
-        "This block must be in the 'when the bot is removed from a server' event",
+      message: "This block must be in the 'when the bot is removed from a server' event",
     },
   ],
 );
@@ -72,13 +67,9 @@ Blockly.Blocks["events_guild_memberAdd"] = {
   },
 };
 
-javascriptGenerator.forBlock["events_guild_memberAdd"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["events_guild_memberAdd"] = function (block, generator) {
   const actions = generator.statementToCode(block, "code");
-  const code = `tracker.on("guildMemberAdd", async (...guildMemberAdded) => {${actions}});`;
-
+  const code = `tracker.on("guildMemberAdd", async (guildMemberAdded, _, guildMemberAddedUsedInvite) => {${actions}});`;
   return code;
 };
 
@@ -87,7 +78,7 @@ createEventVariable({
   text: "member that joined",
   colour: "#FF4F4F",
   blockType: "member",
-  blockOutput: "guildMemberAdded.member",
+  blockOutput: "guildMemberAdded",
 });
 
 createEventVariable({
@@ -95,7 +86,7 @@ createEventVariable({
   text: "server the member joined to",
   colour: "#FF4F4F",
   blockType: "server",
-  blockOutput: "guildMemberAdded.member.guild",
+  blockOutput: "guildMemberAdded.guild",
 });
 
 createEventVariable({
@@ -103,7 +94,7 @@ createEventVariable({
   text: "invite the member joined with",
   colour: "#FF4F4F",
   blockType: "invite",
-  blockOutput: "guildMemberAdded.invite",
+  blockOutput: "guildMemberAddedUsedInvite",
 });
 
 createRestrictions(
@@ -146,10 +137,7 @@ createEventVariable({
 });
 
 createRestrictions(
-  [
-    "events_remove_guildmemberremove_member",
-    "events_remove_guildmemberremove_server",
-  ],
+  ["events_remove_guildmemberremove_member", "events_remove_guildmemberremove_server"],
   [
     {
       type: "hasHat",

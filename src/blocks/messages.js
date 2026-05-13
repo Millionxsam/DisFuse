@@ -13,9 +13,7 @@ Blockly.Blocks["msg_getone"] = {
     this.appendValueInput("id")
       .setCheck("String")
       .appendField("get the message with id equal to");
-    this.appendValueInput("channel")
-      .setCheck("channel")
-      .appendField("on the channel");
+    this.appendValueInput("channel").setCheck("channel").appendField("on the channel");
     this.setInputsInline(false);
     this.setOutput(true, "message");
     this.setColour("#336EFF");
@@ -40,9 +38,7 @@ Blockly.Blocks["msg_received"] = {
 
 Blockly.Blocks["message_author_not_bot"] = {
   init: function () {
-    this.appendDummyInput().appendField(
-      "when a message is received from a human",
-    );
+    this.appendDummyInput().appendField("when a message is received from a human");
     this.appendStatementInput("name").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
@@ -95,10 +91,7 @@ createMutatorBlock({
   nextStatement: "default",
 });
 
-javascriptGenerator.forBlock["msg_reply_mutator"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) {
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   const embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   const ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
@@ -180,6 +173,36 @@ javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
   return `await (${message}).edit({\n  ${options.join(",\n  ")}\n});\n`;
 };
 
+Blockly.Blocks["msg_pin"] = {
+  init: function () {
+    this.appendValueInput("message").setCheck("message").appendField("pin message:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("336EFF");
+    this.setTooltip("Pins a message in its channel.");
+  },
+};
+
+javascriptGenerator.forBlock["msg_pin"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.ATOMIC);
+  return `await ${message}.pin();\n`;
+};
+
+Blockly.Blocks["msg_unpin"] = {
+  init: function () {
+    this.appendValueInput("message").setCheck("message").appendField("unpin message:");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("336EFF");
+    this.setTooltip("Unpins a message from its channel.");
+  },
+};
+
+javascriptGenerator.forBlock["msg_unpin"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.ATOMIC);
+  return `await ${message}.unpin();\n`;
+};
+
 Blockly.Blocks["msg_msg"] = {
   init: function () {
     this.appendDummyInput().appendField("message received");
@@ -230,9 +253,7 @@ Blockly.Blocks["msg_server"] = {
 
 Blockly.Blocks["msg_react"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("react to message:");
+    this.appendValueInput("message").setCheck("message").appendField("react to message:");
     this.appendValueInput("reaction")
       .setCheck(["String", "emoji"])
       .appendField("with emoji:");
@@ -249,7 +270,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["reaction"],
-      check: (val) => /^(|([\p{Emoji}]{1}))$/u.test(val),
+      check: val => /^(|([\p{Emoji}]{1}))$/u.test(val),
       message: "Emoji must be a single valid emoji",
     },
   ],
@@ -267,35 +288,17 @@ javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
   return `client.on("messageCreate", async (message) => {\n${codeState}});\n`;
 };
 
-javascriptGenerator.forBlock["message_author_not_bot"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["message_author_not_bot"] = function (block, generator) {
   const codeState = generator.statementToCode(block, "name");
   return `client.on("messageCreate", async (message) => {\n  if (message.author.bot) return;\n${codeState}});\n`;
 };
 
 javascriptGenerator.forBlock["msg_msg"] = () => ["message", Order.NONE];
-javascriptGenerator.forBlock["msg_content"] = () => [
-  "message.content",
-  Order.NONE,
-];
-javascriptGenerator.forBlock["msg_member"] = () => [
-  "message.member",
-  Order.NONE,
-];
-javascriptGenerator.forBlock["msg_user"] = () => [
-  "message.member.user",
-  Order.NONE,
-];
-javascriptGenerator.forBlock["msg_channel"] = () => [
-  "message.channel",
-  Order.NONE,
-];
-javascriptGenerator.forBlock["msg_server"] = () => [
-  "message.guild",
-  Order.NONE,
-];
+javascriptGenerator.forBlock["msg_content"] = () => ["message.content", Order.NONE];
+javascriptGenerator.forBlock["msg_member"] = () => ["message.member", Order.NONE];
+javascriptGenerator.forBlock["msg_user"] = () => ["message.member.user", Order.NONE];
+javascriptGenerator.forBlock["msg_channel"] = () => ["message.channel", Order.NONE];
+javascriptGenerator.forBlock["msg_server"] = () => ["message.guild", Order.NONE];
 javascriptGenerator.forBlock["msg_delete"] = () => "message.delete();";
 
 Blockly.Blocks["msg_delete"] = {
@@ -310,9 +313,7 @@ Blockly.Blocks["msg_delete"] = {
 
 Blockly.Blocks["msg_deleteOther"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("delete message:");
+    this.appendValueInput("message").setCheck("message").appendField("delete message:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
@@ -327,13 +328,9 @@ javascriptGenerator.forBlock["msg_deleteOther"] = function (block, generator) {
 
 Blockly.Blocks["msg_edit"] = {
   init: function () {
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("edit message:");
+    this.appendValueInput("message").setCheck("message").appendField("edit message:");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -361,12 +358,8 @@ Blockly.Blocks["captcha_reply"] = {
     this.appendValueInput("message")
       .setCheck("message")
       .appendField("reply captcha to message:");
-    this.appendValueInput("content")
-      .setCheck("String")
-      .appendField("with content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("content").setCheck("String").appendField("with content:");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
@@ -494,7 +487,7 @@ createRestrictions(
     {
       type: "validator",
       blockTypes: ["content"],
-      check: (val) => val.length <= 2000,
+      check: val => val.length <= 2000,
       message: "Content cannot be greater than 2,000 characters",
     },
     {
@@ -506,12 +499,12 @@ createRestrictions(
         let embeds = val.split(",");
         let pass = true;
 
-        embeds.forEach((embedName) => {
+        embeds.forEach(embedName => {
           if (
             !workspace
               .getAllBlocks(false)
               .find(
-                (b) =>
+                b =>
                   b.type === "embed_create" &&
                   b.getFieldValue("name") === embedName.trim(),
               )
@@ -533,6 +526,17 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["message"],
       message: "You must specify the message to get the properties from",
+    },
+  ],
+);
+
+createRestrictions(
+  ["msg_pin", "msg_unpin"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message"],
+      message: "You must specify the message to pin/unpin",
     },
   ],
 );
