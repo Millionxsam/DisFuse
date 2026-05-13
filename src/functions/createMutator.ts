@@ -100,9 +100,13 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
       });
       return m;
     },
-    domToMutation(xml: Element) {
+    domToMutation(xml: Element | Record<string, string>) {
       mutatorFields.forEach(f => {
-        this.settings_[f.name] = xml.getAttribute(f.name) === "true";
+        if (xml instanceof Element) {
+          this.settings_[f.name] = xml.getAttribute(f.name) === "true";
+        } else {
+          this.settings_[f.name] = xml[f.name] === "true";
+        }
       });
       this.update_();
     },
