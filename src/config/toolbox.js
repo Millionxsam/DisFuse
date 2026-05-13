@@ -1369,6 +1369,8 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
+              block("msg_pin"),
+              block("msg_unpin"),
             ],
           },
           {
@@ -1661,9 +1663,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              label(
-                "Use this block to check if a message should be accepted ↓",
-              ),
+              label("Use this block to check if a message should be accepted ↓"),
               block("channel_awaitResponses_filterMsg"),
               label("Get the responses after collecting has finished ↓"),
               block("channel_responses"),
@@ -1739,17 +1739,22 @@ export default function getToolbox(blockPacks = [], user) {
               label("----------------------------------------------------"),
               {
                 kind: "block",
-                type: "channel_set_permission",
+                type: "channel_set_permission_v2",
                 inputs: {
                   permission: {
-                    shadow: {
-                      type: "misc_permissionChannel",
-                    },
+                    shadow: { type: "misc_permissionChannel" },
                   },
                   role: {
-                    shadow: {
-                      type: "misc_everyone",
-                    },
+                    shadow: { type: "misc_everyone" },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "channel_delete_permission",
+                inputs: {
+                  role: {
+                    shadow: { type: "misc_everyone" },
                   },
                 },
               },
@@ -1981,9 +1986,7 @@ export default function getToolbox(blockPacks = [], user) {
                 kind: "label",
                 text: "(It won't let you drag in the wrong one)",
               },
-              label(
-                "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
-              ),
+              label("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"),
               label("Get a member or user ↓"),
               {
                 kind: "block",
@@ -2505,9 +2508,7 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Modals",
             colour: "1A8793",
             contents: [
-              label(
-                "Keep in mind that you can only show modals in slash commands!",
-              ),
+              label("Keep in mind that you can only show modals in slash commands!"),
               label("Show a modal to the user ↓"),
               block("modal_show"),
               label("Create a modal (put this in the block above) ↓"),
@@ -3275,9 +3276,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("fetch_responseData"),
               block("fetch_responseStatus"),
               block("fetch_responseHeaders"),
-              label(
-                "Get a key from the response data (from the objects category) ↓",
-              ),
+              label("Get a key from the response data (from the objects category) ↓"),
               {
                 kind: "block",
                 type: "object_getkey",
@@ -3790,19 +3789,17 @@ export default function getToolbox(blockPacks = [], user) {
                   : "s:"
             }`,
           ),
-          ...blockPacks.map((pack) =>
+          ...blockPacks.map(pack =>
             label(
               `- ${pack.name} v${pack.versions[pack.versions.length - 1]?.version || "0.0.0"}`,
             ),
           ),
-          ...blockPacks.map((pack) => ({
+          ...blockPacks.map(pack => ({
             kind: "category",
             name: pack.name,
             colour: pack.color || "#014f98",
             contents: pack.versions[pack.versions.length - 1]?.blocks?.length
-              ? pack.versions[pack.versions.length - 1]?.blocks?.map((b) =>
-                  block(b.name),
-                )
+              ? pack.versions[pack.versions.length - 1]?.blocks?.map(b => block(b.name))
               : [],
           })),
         ],
@@ -3813,7 +3810,7 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#014f98",
         contents: [
           label("Click BlockBuddy > Create to make new custom blocks"),
-          ...(user?.customBlocks || []).map((b) => block(b.definition.type)),
+          ...(user?.customBlocks || []).map(b => block(b.definition.type)),
         ],
       },
       ...(window.location.hostname === "localhost"

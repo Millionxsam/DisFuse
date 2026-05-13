@@ -1118,6 +1118,109 @@ javascriptGenerator.forBlock["channel_set_permission"] = function (block, genera
   }
 };
 
+Blockly.Blocks["channel_delete_permission"] = {
+  init: function () {
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("delete all permissions of");
+    this.appendValueInput("role")
+      .setCheck(["role", "everyone", "member"])
+      .appendField("role/everyone/member:");
+    this.appendValueInput("reason").setCheck("String").appendField("reason:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#AD509B");
+    this.setTooltip(
+      "Completely removes all permission overrides for a role, @everyone, or member from a channel. This resets them back to inheriting from the server/category.",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["channel_delete_permission"] = function (block, generator) {
+  const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+  const role = generator.valueToCode(block, "role", Order.ATOMIC);
+  const reason = generator.valueToCode(block, "reason", Order.ATOMIC);
+
+  if (role === "(everyone)") {
+    return (
+      `let permsChannel = ${channel};\n` +
+      `await permsChannel.permissionOverwrites.delete(` +
+      `permsChannel.guild.roles.everyone` +
+      `${reason ? `, ${reason}` : ""});\n`
+    );
+  }
+
+  return `await ${channel}.permissionOverwrites.delete(${role}${reason ? `, ${reason}` : ""});\n`;
+};
+
+Blockly.Blocks["channel_set_permission_v2"] = {
+  init: function () {
+    this.appendValueInput("permission").setCheck("permissionChannel").appendField("set");
+    this.appendDummyInput()
+      .appendField("to")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Allow", "allow"],
+          ["Deny", "deny"],
+          ["Inherit", "inherit"],
+        ]),
+        "action",
+      );
+    this.appendValueInput("channel").setCheck("channel").appendField("on channel:");
+    this.appendValueInput("role")
+      .setCheck(["role", "everyone", "member"])
+      .appendField("for role/everyone/member:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#AD509B");
+    this.setTooltip(
+      "Sets a specific permission to Allow, Deny, or Inherit (removes the override) for a role, @everyone or a member on a channel.",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["channel_set_permission_v2"] = function (block, generator) {
+  const permission = generator.valueToCode(block, "permission", Order.NONE);
+  const action = block.getFieldValue("action");
+  const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+  const role = generator.valueToCode(block, "role", Order.ATOMIC);
+
+  const value = action === "allow" ? "true" : action === "deny" ? "false" : "null";
+
+  const target =
+    role === "(everyone)"
+      ? `let permsChannel = ${channel};\npermsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone`
+      : `${channel}.permissionOverwrites.edit(${role}`;
+
+  if (role === "(everyone)") {
+    return `let permsChannel = ${channel};\npermsChannel.permissionOverwrites.edit(permsChannel.guild.roles.everyone, { ${permission}: ${value} });\n`;
+  }
+  return `${channel}.permissionOverwrites.edit(${role}, { ${permission}: ${value} });\n`;
+};
+
+createRestrictions(
+  ["channel_set_permission_v2"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["permission"],
+      message: "You must specify the permission to edit",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the channel",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["role"],
+      message: "You must specify the role, everyone or the member",
+    },
+  ],
+);
+
 createRestrictions(
   ["channel_getParent", "channel_syncPerms"],
   [
