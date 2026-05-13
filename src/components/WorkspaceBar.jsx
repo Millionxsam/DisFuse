@@ -12,7 +12,7 @@ import LoadingAnim from "./LoadingAnim";
 import { io } from "socket.io-client";
 import HostModal from "./HostModal";
 
-import { apiUrl, hostUrl } from "../config/config";
+import { apiUrl } from "../config/config";
 
 export default function WorkspaceBar({
   project,
@@ -26,15 +26,6 @@ export default function WorkspaceBar({
   const [blockbuddySuggestRes, setBlockbuddyRes] = useState("");
   const [fileDropdownOpen, setFileDropdown] = useState(false);
   const [utilDropdownOpen, setUtilDropdown] = useState(false);
-  const [socket, setSocket] = useState();
-
-  useEffect(() => {
-    setSocket(
-      io(hostUrl, {
-        auth: { token: localStorage.getItem("disfuse-token") },
-      }),
-    );
-  }, []);
 
   // exportBlockInfo();
 
@@ -67,12 +58,6 @@ export default function WorkspaceBar({
 
   return (
     <>
-      <HostModal
-        socket={socket}
-        project={project}
-        workspace={workspace}
-        workspaceId={currentWorkspace._id}
-      />
       <dialog className="blockBuddy-suggestions">
         <h1>Suggestions</h1>
         {blockbuddySuggestRes === "" ? (

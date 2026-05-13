@@ -1,6 +1,7 @@
 export function isValidEmoji(emoji = "") {
   if (
     !emoji ||
+    emoji === "''" ||
     emoji === "" ||
     emoji === "null" ||
     emoji === "undefined" ||

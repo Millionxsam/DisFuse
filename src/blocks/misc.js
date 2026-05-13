@@ -210,19 +210,30 @@ createRestrictions(
 
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
-    this.appendDummyInput().appendField("add a row");
+    this.appendDummyInput().appendField("Interactive row (buttons/menus)");
     this.appendStatementInput("components")
       .setCheck("default")
       .appendField("with:");
-    this.setPreviousStatement(true, "rows");
-    this.setNextStatement(true, "rows");
-    this.setColour("4192E9");
+    this.setPreviousStatement(true, [
+      "rows",
+      "rootComponents",
+      "containerComponents",
+    ]);
+    this.setNextStatement(true, [
+      "rows",
+      "rootComponents",
+      "containerComponents",
+    ]);
+    this.setColour("#26A4AF");
+    this.setTooltip(
+      "An action row inside a Components V2 message — place button or select menu blocks inside.",
+    );
   },
 };
 
 Blockly.Blocks["misc_int_deferReply"] = {
   init: function () {
-    this.appendDummyInput().appendField("defer reply");
+    this.appendDummyInput().appendField("Defer reply");
     this.appendValueInput("ephemeral")
       .appendField("visible only to the user?")
       .setCheck("Boolean");
@@ -348,8 +359,16 @@ createRestrictions(
         "member_dm_rows",
         "misc_int_reply_rows",
         "slash_editreply",
+        "cv2_sendMessage",
+        "cv2_sendDm",
+        "cv2_replyInteraction",
+        "cv2_replyMsg",
+        "cv2_editReplyInteraction",
+        "cv2_editMsg",
+        "cv2_container",
       ],
-      message: "This block must be under a block that has a 'rows' section",
+      message:
+        "This block must be under a block that has a 'components' section",
     },
   ],
 );
@@ -358,7 +377,7 @@ Blockly.Blocks["misc_addFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("add file from path:");
+      .appendField("Add file from path:");
     this.setPreviousStatement(true, "files");
     this.setNextStatement(true, "files");
     this.setColour("4192E9");
@@ -424,7 +443,7 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer"] = function (
 
   var code;
   if (value_guild?.length > 15)
-    code = `(await getCollection(client, "servers")).get(${value_guild}).commands.set([${statements_code}
+    code = `(await getCollection(client, "guilds")).get(${value_guild}).commands.set([${statements_code}
 ]);`;
   else
     code = `client.application.commands.set([${statements_code}
@@ -440,12 +459,12 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
 
     let code =
       guild && guild.length > 5
-        ? `(await getCollection(client, "servers")).get(${guild})`
+        ? `(await getCollection(client, "guilds")).get(${guild})`
         : "client.application";
 
     code = code + `.commands.set([${setCode}\n]);\n`;
 
-    return `client.on("clientReady", () => {
+    return `client.on("clientReady", async () => {
       ${code}  
     });`;
   };

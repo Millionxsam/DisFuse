@@ -338,7 +338,7 @@ Blockly.Blocks["menus_update"] = {
 
 Blockly.Blocks["menus_del"] = {
   init: function () {
-    this.appendDummyInput().appendField("delete the reply by the bot");
+    this.appendDummyInput().appendField("Delete the reply by the bot");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("26A483");

@@ -260,7 +260,7 @@ javascriptGenerator.forBlock["slash_createcontainer"] = function (
   var code;
 
   if (value_guild?.length > 10)
-    code = `(await getCollection(client, "servers")).get(${value_guild}).commands.set([${statements_code}]);`;
+    code = `(await getCollection(client, "guilds")).get(${value_guild}).commands.set([${statements_code}]);`;
   else code = `client.application.commands.set([${statements_code}]);`;
 
   return code;
@@ -340,6 +340,6 @@ javascriptGenerator.forBlock["misc_int_edit"] = function (block, generator) {
 };
 
 javascriptGenerator.forBlock["main_amountservers"] = () => [
-  `(await getCollection(client, "servers")).size`,
+  `(await getCollection(client, "guilds")).size`,
   Order.NONE,
 ];

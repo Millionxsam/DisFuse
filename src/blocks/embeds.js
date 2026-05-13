@@ -1,3 +1,9 @@
+/*
+
+  THIS WHOLE FILE IS DEPRECATED AFTER COMPONENTS V2 UPDATE
+
+*/
+
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";

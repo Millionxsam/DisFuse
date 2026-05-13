@@ -4,7 +4,7 @@ import { createRestrictions } from "../functions/restrictions";
 
 Blockly.Blocks["buttons_add"] = {
   init: function () {
-    this.appendDummyInput().appendField("add a button");
+    this.appendDummyInput().appendField("Add a button");
     this.appendValueInput("label").setCheck("String").appendField("label:");
     this.appendValueInput("emoji").setCheck("String").appendField("emoji:");
     this.appendDummyInput()
@@ -35,7 +35,7 @@ Blockly.Blocks["buttons_add"] = {
 
 Blockly.Blocks["buttons_event"] = {
   init: function () {
-    this.appendDummyInput().appendField("when a button is clicked");
+    this.appendDummyInput().appendField("When a button is clicked");
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#2677AF");
@@ -120,7 +120,7 @@ Blockly.Blocks["slash_edit"] = {
 
 Blockly.Blocks["buttons_del"] = {
   init: function () {
-    this.appendDummyInput().appendField("delete the reply by the bot");
+    this.appendDummyInput().appendField("Delete the reply by the bot");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("2677AF");

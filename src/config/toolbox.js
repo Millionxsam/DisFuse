@@ -891,7 +891,6 @@ export default function getToolbox(blockPacks = [], user) {
         contents: [
           block("colour_picker"),
           block("colour_convert"),
-          block("colour_hex"),
           block("colour_random"),
           {
             kind: "block",
@@ -1103,145 +1102,641 @@ export default function getToolbox(blockPacks = [], user) {
       },
       {
         kind: "category",
-        name: "Embeds",
-        colour: "00A58E",
+        name: "Components",
+        colour: "#26A4AF",
         contents: [
-          label("Create the embed first ↓"),
-          block("embed_create"),
           {
             kind: "label",
-            text: "Put all of these blocks INSIDE of the 'create embed' block above ↓",
+            text: "Layout & Content ↓",
           },
           {
             kind: "block",
-            type: "embed_settitle",
+            type: "cv2_textDisplay",
             inputs: {
-              value: {
+              content: {
                 shadow: {
                   type: "text",
+                  fields: { TEXT: "This is regular text" },
                 },
               },
             },
           },
           {
             kind: "block",
-            type: "embed_setdsc",
+            type: "cv2_separator",
+          },
+          {
+            kind: "block",
+            type: "cv2_container",
             inputs: {
-              value: {
+              color: {
                 shadow: {
-                  type: "text",
+                  type: "colour_picker",
+                  fields: { colour: "#00A58E" },
                 },
               },
             },
           },
           {
-            kind: "block",
-            type: "embed_setcolor",
-            inputs: {
-              value: {
-                shadow: {
-                  type: "text",
-                },
-              },
-            },
+            kind: "label",
+            text: "Sections ↓",
           },
           {
             kind: "block",
-            type: "embed_seturl",
-            inputs: {
-              value: {
-                shadow: {
-                  type: "text",
-                },
-              },
-            },
-          },
-          {
-            kind: "block",
-            type: "embed_setauthor",
-            inputs: {
-              name: {
-                shadow: {
-                  type: "text",
-                },
-              },
-              icon: {
-                shadow: {
-                  type: "text",
-                },
-              },
-              url: {
-                shadow: {
-                  type: "text",
-                },
-              },
-            },
-          },
-          {
-            kind: "block",
-            type: "embed_setfooter",
+            type: "cv2_section_thumbnail",
             inputs: {
               text: {
                 shadow: {
                   type: "text",
+                  fields: { TEXT: "Text goes here, with image next to it" },
                 },
               },
-              icon: {
+              thumbnailUrl: {
                 shadow: {
                   type: "text",
+                  fields: { TEXT: "https://example.com/image.png" },
                 },
+              },
+              thumbnailAlt: {
+                shadow: { type: "text", fields: { TEXT: "image description" } },
               },
             },
           },
           {
             kind: "block",
-            type: "embed_setimage",
+            type: "cv2_section_button",
             inputs: {
-              value: {
+              text: {
                 shadow: {
                   type: "text",
+                  fields: { TEXT: "Text goes here, with button next to it" },
                 },
+              },
+              buttonLabel: {
+                shadow: { type: "text", fields: { TEXT: "Click me" } },
+              },
+              buttonId: {
+                shadow: { type: "text", fields: { TEXT: "my-button" } },
               },
             },
           },
           {
-            kind: "block",
-            type: "embed_setthumb",
-            inputs: {
-              value: {
-                shadow: {
-                  type: "text",
-                },
-              },
-            },
+            kind: "label",
+            text: "Media Gallery ↓",
           },
           {
             kind: "block",
-            type: "embed_addfield",
+            type: "cv2_mediaGallery",
+          },
+          {
+            kind: "block",
+            type: "cv2_mediaGalleryItem",
             inputs: {
+              url: {
+                shadow: {
+                  type: "text",
+                  fields: { TEXT: "https://example.com/image.png" },
+                },
+              },
+              alt: {
+                shadow: { type: "text", fields: { TEXT: "image description" } },
+              },
+            },
+          },
+          label("File display ↓"),
+          label(
+            'Put this block in the "files" of your message to make it available to use in the components ↓',
+          ),
+          {
+            kind: "block",
+            type: "cv2_addFile",
+            inputs: {
+              path: {
+                shadow: {
+                  type: "text",
+                  fields: { TEXT: "https://example.com/file.txt" },
+                },
+              },
               name: {
+                shadow: { type: "text", fields: { TEXT: "file.txt" } },
+              },
+            },
+          },
+          label(
+            'Put this block in the "components" of your message to show the file ↓',
+          ),
+          {
+            kind: "block",
+            type: "cv2_file",
+            inputs: {
+              file: {
                 shadow: {
                   type: "text",
+                  fields: { TEXT: "file.txt" },
                 },
               },
-              val: {
-                shadow: {
-                  type: "text",
-                },
-              },
-              inline: {
-                shadow: {
-                  type: "logic_boolean",
-                  fields: {
-                    BOOL: "FALSE",
+            },
+          },
+          {
+            kind: "label",
+            text: "Interactive row (buttons / menus) ↓",
+          },
+          {
+            kind: "block",
+            type: "misc_addrow",
+          },
+          {
+            kind: "category",
+            name: "Buttons",
+            colour: "#2677AF",
+            contents: [
+              label("Add a button inside of an interactive row ↓"),
+              {
+                kind: "block",
+                type: "buttons_add",
+                inputs: {
+                  label: { shadow: shadow("text") },
+                  emoji: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  url: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
                   },
                 },
               },
-            },
+              label("Button events ↓"),
+              block("buttons_event"),
+              label("Info about the clicked button ↓"),
+              block("buttons_message"),
+              block("buttons_id"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
+              label("Button actions ↓"),
+              block("cv2_replyInteraction"),
+              {
+                kind: "label",
+                text: "Use 'defer reply' to show 'bot is thinking...' message",
+              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+              ),
+              {
+                kind: "block",
+                type: "misc_int_deferReply",
+                inputs: {
+                  ephemeral: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                },
+              },
+              block("cv2_editReplyInteraction"),
+              block("buttons_del"),
+            ],
           },
-          block("embed_settimestamp"),
+          {
+            kind: "category",
+            name: "Select Menus",
+            colour: "#26A483",
+            contents: [
+              label("Add menus inside of an interactive row"),
+              label("Create a menu with TEXT options ↓"),
+              {
+                kind: "block",
+                type: "menus_add",
+                inputs: {
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                },
+              },
+              {
+                kind: "block",
+                type: "menus_addoption",
+                inputs: {
+                  label: { shadow: shadow("text") },
+                  dsc: { shadow: shadow("text") },
+                  emoji: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
+                  default: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                },
+              },
+              label(
+                "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
+              ),
+              {
+                kind: "block",
+                type: "menus_addChannelMenu",
+                inputs: {
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  channelTypes: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          block: {
+                            type: "misc_channelType",
+                          },
+                        },
+                        ADD1: {
+                          block: {
+                            type: "misc_channelType",
+                          },
+                        },
+                        ADD2: {
+                          block: {
+                            type: "misc_channelType",
+                          },
+                        },
+                      },
+                    },
+                  },
+                  defaultChannels: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of channel to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              block("misc_channelType"),
+              label(
+                "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
+              ),
+              {
+                kind: "block",
+                type: "menus_addRoleMenu",
+                inputs: {
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultRoles: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              label(
+                "Create a menu with USER options (auto-adds all users in the server) ↓",
+              ),
+              {
+                kind: "block",
+                type: "menus_addUserMenu",
+                inputs: {
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultUsers: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of user to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              label(
+                "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
+              ),
+              {
+                kind: "block",
+                type: "menus_addMentionableMenu",
+                inputs: {
+                  placeholder: { shadow: shadow("text") },
+                  id: { shadow: shadow("text") },
+                  disabled: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                  defaultVals: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                        ADD1: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                        ADD2: {
+                          block: {
+                            type: "text",
+                            fields: {
+                              TEXT: "ID of role/user to select by default",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              label("Menu events ↓"),
+              block("menus_event"),
+              label("Info about the clicked menu ↓"),
+              block("menus_id"),
+              block("menus_value"),
+              block("misc_int_member"),
+              block("misc_int_user"),
+              block("misc_int_channel"),
+              block("misc_int_server"),
+              label("Menu actions ↓"),
+              {
+                kind: "label",
+                text: "Use 'defer reply' to show 'bot is thinking...' message",
+              },
+              label(
+                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
+              ),
+              {
+                kind: "block",
+                type: "misc_int_deferReply",
+                inputs: {
+                  ephemeral: {
+                    shadow: {
+                      type: "logic_boolean",
+                      fields: { BOOL: "FALSE" },
+                    },
+                  },
+                },
+              },
+              block("cv2_replyInteraction"),
+              block("cv2_editReplyInteraction"),
+              {
+                kind: "block",
+                type: "menus_update",
+                inputs: {
+                  content: { shadow: shadow("text") },
+                },
+              },
+              block("menus_del"),
+            ],
+          },
         ],
       },
+      // {
+      //   kind: "category",
+      //   name: "Embeds",
+      //   colour: "00A58E",
+      //   contents: [
+      //     label("Create the embed first ↓"),
+      //     block("embed_create"),
+      //     {
+      //       kind: "label",
+      //       text: "Put all of these blocks INSIDE of the 'create embed' block above ↓",
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_settitle",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setdsc",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setcolor",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_seturl",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setauthor",
+      //       inputs: {
+      //         name: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //         icon: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //         url: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setfooter",
+      //       inputs: {
+      //         text: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //         icon: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setimage",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_setthumb",
+      //       inputs: {
+      //         value: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       kind: "block",
+      //       type: "embed_addfield",
+      //       inputs: {
+      //         name: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //         val: {
+      //           shadow: {
+      //             type: "text",
+      //           },
+      //         },
+      //         inline: {
+      //           shadow: {
+      //             type: "logic_boolean",
+      //             fields: {
+      //               BOOL: "FALSE",
+      //             },
+      //           },
+      //         },
+      //       },
+      //     },
+      //     block("embed_settimestamp"),
+      //   ],
+      // },
       {
         kind: "category",
         name: "Messages",
@@ -1303,25 +1798,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               }),
               label("Actions ↓"),
-              {
-                kind: "block",
-                type: "msg_reply_mutator",
-                inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
-              },
-              block("misc_addrow"),
-              {
-                kind: "block",
-                type: "misc_addFile",
-                inputs: {
-                  path: { shadow: shadow("text") },
-                },
-              },
+              block("cv2_replyMsg"),
               block("misc_messageSent"),
               {
                 kind: "block",
@@ -1334,22 +1811,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "msg_edit_mutator",
-                inputs: {
-                  message: {
-                    shadow: {
-                      type: "misc_messageSent",
-                    },
-                  },
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
-              },
+              block("cv2_editMsg"),
               {
                 kind: "block",
                 type: "msg_react",
@@ -1545,6 +2007,7 @@ export default function getToolbox(blockPacks = [], user) {
           },
         ],
       },
+
       {
         kind: "category",
         name: "Servers",
@@ -1626,17 +2089,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("channel_created"),
               label("Channel actions ↓"),
               label("------------------------------------"),
-              {
-                kind: "block",
-                type: "channel_send_mutator",
-                inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
-              },
+              block("cv2_sendMessage"),
               block("misc_messageSent"),
               label("------------------------------------"),
               {
@@ -1689,16 +2142,6 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              label("------------------------------------"),
-              block("misc_addrow"),
-              {
-                kind: "block",
-                type: "misc_addFile",
-                inputs: {
-                  path: { shadow: shadow("text") },
-                },
-              },
-              label("------------------------------------"),
               {
                 kind: "block",
                 type: "channel_setParent",
@@ -2057,17 +2500,7 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
               block("member_kick"),
-              {
-                kind: "block",
-                type: "member_dm_mutator",
-                inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
-                },
-              },
+              block("cv2_sendDm"),
               {
                 kind: "block",
                 type: "member_setnick",
@@ -2363,9 +2796,8 @@ export default function getToolbox(blockPacks = [], user) {
               label("Actions ↓"),
               {
                 kind: "block",
-                type: "misc_int_reply_mutator",
+                type: "cv2_replyInteraction",
                 inputs: {
-                  content: { shadow: shadow("text") },
                   ephemeral: {
                     shadow: {
                       type: "logic_boolean",
@@ -2393,21 +2825,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              block("misc_addrow"),
-              {
-                kind: "block",
-                type: "misc_addFile",
-                inputs: {
-                  path: { shadow: shadow("text") },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_edit_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
+              block("cv2_editReplyInteraction"),
               label("Information about the command ran ↓"),
               block("slash_getoption"),
               block("slash_name"),
@@ -2415,89 +2833,6 @@ export default function getToolbox(blockPacks = [], user) {
               block("misc_int_user"),
               block("misc_int_channel"),
               block("misc_int_server"),
-            ],
-          },
-          {
-            kind: "category",
-            name: "Buttons",
-            colour: "#2677AF",
-            contents: [
-              label("Put this inside a block to send a row ↓"),
-              block("misc_addrow"),
-              {
-                kind: "block",
-                type: "buttons_add",
-                inputs: {
-                  label: { shadow: shadow("text") },
-                  emoji: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  url: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              label("Button events ↓"),
-              block("buttons_event"),
-              label("Info about the clicked button ↓"),
-              block("buttons_message"),
-              block("buttons_id"),
-              block("misc_int_member"),
-              block("misc_int_user"),
-              block("misc_int_channel"),
-              block("misc_int_server"),
-              label("Button actions ↓"),
-              {
-                kind: "block",
-                type: "misc_int_reply_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              block("misc_addrow"),
-              {
-                kind: "block",
-                type: "misc_addFile",
-                inputs: {
-                  path: { shadow: shadow("text") },
-                },
-              },
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
-              label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_edit_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
-              block("buttons_del"),
             ],
           },
           {
@@ -2559,19 +2894,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("modal_get_author"),
               block("modal_get_customId"),
               label("Reply to the modal after submitted ↓"),
-              {
-                kind: "block",
-                type: "misc_int_reply_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
+              block("cv2_replyInteraction"),
               {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
@@ -2591,325 +2914,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_int_edit_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
-            ],
-          },
-          {
-            kind: "category",
-            name: "Select Menus",
-            colour: "#26A483",
-            contents: [
-              label("Put this inside a block to send a row ↓"),
-              block("misc_addrow"),
-              label("Create a menu with TEXT options ↓"),
-              {
-                kind: "block",
-                type: "menus_add",
-                inputs: {
-                  placeholder: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "menus_addoption",
-                inputs: {
-                  label: { shadow: shadow("text") },
-                  dsc: { shadow: shadow("text") },
-                  emoji: { shadow: shadow("text") },
-                  value: { shadow: shadow("text") },
-                  default: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              label(
-                "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
-              ),
-              {
-                kind: "block",
-                type: "menus_addChannelMenu",
-                inputs: {
-                  placeholder: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  channelTypes: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: {
-                          block: {
-                            type: "misc_channelType",
-                          },
-                        },
-                        ADD1: {
-                          block: {
-                            type: "misc_channelType",
-                          },
-                        },
-                        ADD2: {
-                          block: {
-                            type: "misc_channelType",
-                          },
-                        },
-                      },
-                    },
-                  },
-                  defaultChannels: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of channel to select by default",
-                            },
-                          },
-                        },
-                        ADD1: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of channel to select by default",
-                            },
-                          },
-                        },
-                        ADD2: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of channel to select by default",
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              block("misc_channelType"),
-              label(
-                "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
-              ),
-              {
-                kind: "block",
-                type: "menus_addRoleMenu",
-                inputs: {
-                  placeholder: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  defaultRoles: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role to select by default",
-                            },
-                          },
-                        },
-                        ADD1: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role to select by default",
-                            },
-                          },
-                        },
-                        ADD2: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role to select by default",
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              label(
-                "Create a menu with USER options (auto-adds all users in the server) ↓",
-              ),
-              {
-                kind: "block",
-                type: "menus_addUserMenu",
-                inputs: {
-                  placeholder: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  defaultUsers: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of user to select by default",
-                            },
-                          },
-                        },
-                        ADD1: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of user to select by default",
-                            },
-                          },
-                        },
-                        ADD2: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of user to select by default",
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              label(
-                "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
-              ),
-              {
-                kind: "block",
-                type: "menus_addMentionableMenu",
-                inputs: {
-                  placeholder: { shadow: shadow("text") },
-                  id: { shadow: shadow("text") },
-                  disabled: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  defaultVals: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role/user to select by default",
-                            },
-                          },
-                        },
-                        ADD1: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role/user to select by default",
-                            },
-                          },
-                        },
-                        ADD2: {
-                          block: {
-                            type: "text",
-                            fields: {
-                              TEXT: "ID of role/user to select by default",
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              label("Menu events ↓"),
-              block("menus_event"),
-              label("Info about the clicked menu ↓"),
-              block("menus_id"),
-              block("menus_value"),
-              block("misc_int_member"),
-              block("misc_int_user"),
-              block("misc_int_channel"),
-              block("misc_int_server"),
-              label("Menu actions ↓"),
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
-              label(
-                "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
-              ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_reply_mutator",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  content: { shadow: shadow("text") },
-                },
-              },
-              {
-                kind: "block",
-                type: "misc_int_edit_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
-              {
-                kind: "block",
-                type: "menus_update",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
-              block("menus_del"),
+              block("cv2_editReplyInteraction"),
             ],
           },
           {
@@ -2939,19 +2944,7 @@ export default function getToolbox(blockPacks = [], user) {
               label("Events ↓"),
               block("contextMenu_received"),
               label("Actions ↓"),
-              {
-                kind: "block",
-                type: "misc_int_reply_mutator",
-                inputs: {
-                  ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                  content: { shadow: shadow("text") },
-                },
-              },
+              block("cv2_replyInteraction"),
               {
                 kind: "label",
                 text: "Use 'defer reply' to show 'bot is thinking...' message",
@@ -2971,13 +2964,7 @@ export default function getToolbox(blockPacks = [], user) {
                   },
                 },
               },
-              {
-                kind: "block",
-                type: "misc_int_edit_mutator",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
+              block("cv2_editReplyInteraction"),
               label("Information about the context menu clicked ↓"),
               block("contextMenu_name"),
               block("contextMenu_userMenu"),
@@ -3185,15 +3172,8 @@ export default function getToolbox(blockPacks = [], user) {
               label("Send captcha image ↓"),
               {
                 kind: "block",
-                type: "channel_send_mutator",
-                extraState:
-                  '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
+                type: "cv2_sendMessage",
                 inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
                   files: {
                     block: {
                       type: "captcha_addFile",
@@ -3330,15 +3310,8 @@ export default function getToolbox(blockPacks = [], user) {
               label("Export the Canvas ↓"),
               {
                 kind: "block",
-                type: "channel_send_mutator",
-                extraState:
-                  '<mutation xmlns="http://www.w3.org/1999/xhtml" embeds="false" rows="false" files="true" then="false"></mutation>',
+                type: "cv2_sendMessage",
                 inputs: {
-                  content: {
-                    shadow: {
-                      type: "text",
-                    },
-                  },
                   files: {
                     block: {
                       type: "canvas_addFile",
@@ -3745,32 +3718,6 @@ export default function getToolbox(blockPacks = [], user) {
             inputs: {
               path: { shadow: shadow("text") },
               newpath: { shadow: shadow("text") },
-            },
-          },
-          {
-            kind: "block",
-            type: "channel_send_mutator",
-            extraState:
-              '<mutation embeds="false" rows="false" files="true" then="false"></mutation>',
-            inputs: {
-              content: {
-                shadow: {
-                  type: "text",
-                },
-              },
-              files: {
-                block: {
-                  type: "misc_addFile",
-                  inputs: {
-                    path: {
-                      shadow: {
-                        type: "text",
-                        fields: { TEXT: "./file.txt" },
-                      },
-                    },
-                  },
-                },
-              },
             },
           },
         ],
