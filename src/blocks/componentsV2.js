@@ -1,8 +1,7 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../functions/restrictions";
-
-// ─── TEXT DISPLAY ────────────────────────────────────────────────────────────
+import { createMutatorBlock } from "../functions/createMutator";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
@@ -22,8 +21,6 @@ javascriptGenerator.forBlock["cv2_textDisplay"] = function (block, generator) {
   const content = generator.valueToCode(block, "content", Order.ATOMIC) || "''";
   return `new Discord.TextDisplayBuilder().setContent(${content}),\n`;
 };
-
-// ─── SEPARATOR ───────────────────────────────────────────────────────────────
 
 Blockly.Blocks["cv2_separator"] = {
   init: function () {
@@ -54,8 +51,6 @@ javascriptGenerator.forBlock["cv2_separator"] = function (block) {
   const divider = block.getFieldValue("divider") === "TRUE";
   return `new Discord.SeparatorBuilder().setDivider(${divider}).setSpacing(Discord.SeparatorSpacingSize.${spacing}),\n`;
 };
-
-// ─── SECTION (thumbnail accessory) ──────────────────────────────────────────
 
 Blockly.Blocks["cv2_section_thumbnail"] = {
   init: function () {
@@ -89,8 +84,6 @@ javascriptGenerator.forBlock["cv2_section_thumbnail"] = function (
   .addTextDisplayComponents(new Discord.TextDisplayBuilder().setContent(${text}))
   .setThumbnailAccessory(new Discord.ThumbnailBuilder().setURL(${thumbnailUrl}).setDescription(${alt})),\n`;
 };
-
-// ─── SECTION (button accessory) ──────────────────────────────────────────────
 
 Blockly.Blocks["cv2_section_button"] = {
   init: function () {
@@ -151,8 +144,6 @@ javascriptGenerator.forBlock["cv2_section_button"] = function (
   ),\n`;
 };
 
-// ─── MEDIA GALLERY ───────────────────────────────────────────────────────────
-
 Blockly.Blocks["cv2_mediaGallery"] = {
   init: function () {
     this.appendDummyInput().appendField("Media gallery");
@@ -200,8 +191,6 @@ javascriptGenerator.forBlock["cv2_mediaGalleryItem"] = function (
   return `new Discord.MediaGalleryItemBuilder().setURL(${url}).setDescription(${alt}).setSpoiler(${spoiler}),\n`;
 };
 
-// ─── CONTAINER ───────────────────────────────────────────────────────────────
-
 Blockly.Blocks["cv2_container"] = {
   init: function () {
     this.appendDummyInput().appendField("Container");
@@ -224,7 +213,6 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
   const color = generator.valueToCode(block, "color", Order.ATOMIC);
   const components = generator.statementToCode(block, "components");
 
-  // Build inner components array from statement code
   const innerItems = components
     ? components
         .trim()
@@ -236,15 +224,8 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
 
   let code = `new Discord.ContainerBuilder()`;
   if (color && color !== "''" && color !== '""') {
-    // Convert hex string like '#26A4AF' to integer 0x26A4AF
     code += `\n  .setAccentColor(parseInt(${color}.replace('#',''), 16))`;
   }
-  if (innerItems) {
-    // ContainerBuilder uses add* methods per component type;
-    // easiest approach: build raw components array using toJSON
-    code += `\n  /* NOTE: Add components via addTextDisplayComponents / addSeparatorComponents / etc. */`;
-  }
-  // Simpler raw approach that works with discord.js
   const inner = components
     ? `[\n    ${components
         .split(",\n")
@@ -272,8 +253,6 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
   return _container;
 })(),\n`;
 };
-
-// ─── FILE ────────────────────────────────────────────────────────────────────
 
 Blockly.Blocks["cv2_file"] = {
   init: function () {
@@ -310,34 +289,48 @@ createRestrictions(
   ],
 );
 
-// ─── SEND MESSAGE (Components V2) ───────────────────────────────────────────
-
-Blockly.Blocks["cv2_sendMessage"] = {
+Blockly.Blocks["cv2_addFile"] = {
   init: function () {
-    this.appendDummyInput().appendField("Send a message");
-    this.appendValueInput("channel")
-      .setCheck("channel")
-      .appendField("in channel:");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.appendStatementInput("then").setCheck("default").appendField("then:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#AD509B");
-    this.setTooltip(
-      "Sends a message using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
-    );
+    this.appendValueInput("path")
+      .setCheck("String")
+      .appendField("Add file from URL/path:");
+    this.appendValueInput("name").setCheck("String").appendField("with name:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "files");
+    this.setNextStatement(true, "files");
+    this.setColour("#26A4AF");
   },
 };
+
+javascriptGenerator.forBlock["cv2_addFile"] = function (block, generator) {
+  var path = generator.valueToCode(block, "path", Order.ATOMIC);
+  var name = generator.valueToCode(block, "name", Order.ATOMIC);
+  return `new Discord.AttachmentBuilder(${path}, { name: ${name} }),\n`;
+};
+
+createMutatorBlock({
+  id: "cv2_sendMessage",
+  optionsBlockId: "cv2_sendMessage_mutator",
+  colour: "#AD509B",
+  inputs: [
+    { type: "value", name: "channel", check: "channel", label: "Send message in channel:" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Sends a message using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
+});
 
 javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
   const channel =
     generator.valueToCode(block, "channel", Order.ATOMIC) || "null";
   const components = generator.statementToCode(block, "components");
-  const then = generator.statementToCode(block, "then");
-  const files = generator.statementToCode(block, "files");
+  const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -358,50 +351,28 @@ javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
 })${thenStr};\n`;
 };
 
-Blockly.Blocks["cv2_addFile"] = {
-  init: function () {
-    this.appendValueInput("path")
-      .setCheck("String")
-      .appendField("Add file from URL/path:");
-    this.appendValueInput("name").setCheck("String").appendField("with name:");
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, "files");
-    this.setNextStatement(true, "files");
-    this.setColour("#26A4AF");
-  },
-};
-
-javascriptGenerator.forBlock["cv2_addFile"] = function (block, generator) {
-  var path = generator.valueToCode(block, "path", Order.ATOMIC);
-  var name = generator.valueToCode(block, "name", Order.ATOMIC);
-  return `new Discord.AttachmentBuilder(${path}, { name: ${name} }),\n`;
-};
-
-Blockly.Blocks["cv2_sendDm"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Send a direct message");
-    this.appendValueInput("member")
-      .setCheck(["member", "user"])
-      .appendField("to user/member:");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.appendStatementInput("then").setCheck("default").appendField("then:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#3c9e56");
-    this.setTooltip(
-      "Sends a DM using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
-    );
-  },
-};
+createMutatorBlock({
+  id: "cv2_sendDm",
+  optionsBlockId: "cv2_sendDm_mutator",
+  colour: "#3c9e56",
+  inputs: [
+    { type: "value", name: "member", check: ["member", "user"], label: "Send a DM to user/member:" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Sends a DM using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
+});
 
 javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
   const member = generator.valueToCode(block, "member", Order.ATOMIC) || "null";
   const components = generator.statementToCode(block, "components");
-  const then = generator.statementToCode(block, "then");
-  const files = generator.statementToCode(block, "files");
+  const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -422,26 +393,22 @@ javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
 })${thenStr};\n`;
 };
 
-// ─── REPLY (Components V2) ───────────────────────────────────────────────────
-
-Blockly.Blocks["cv2_replyInteraction"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the interaction");
-    this.appendValueInput("ephemeral")
-      .setCheck("Boolean")
-      .appendField("visible only to the user?");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#4192E9");
-    this.setTooltip(
-      "Replies to a slash command / button / menu interaction using Components V2. Cannot use content or embeds.",
-    );
-  },
-};
+createMutatorBlock({
+  id: "cv2_replyInteraction",
+  optionsBlockId: "cv2_replyInteraction_mutator",
+  colour: "#4192E9",
+  inputs: [
+    { type: "dummy", label: "Reply to the interaction" },
+    { type: "value", name: "ephemeral", check: "Boolean", label: "visible only to the user?" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Replies to a slash command / button / menu interaction using Components V2. Cannot use content or embeds.",
+});
 
 javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
   block,
@@ -450,7 +417,7 @@ javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
   const ephemeral =
     generator.valueToCode(block, "ephemeral", Order.ATOMIC) || "false";
   const components = generator.statementToCode(block, "components");
-  const files = generator.statementToCode(block, "files");
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -471,27 +438,27 @@ javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
 });\n`;
 };
 
-Blockly.Blocks["cv2_replyMsg"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Reply to the message");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("then").setCheck("default").appendField("then:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#336EFF");
-    this.setTooltip(
-      "Replies to a message using Components V2. Cannot use content or embeds.",
-    );
-  },
-};
+createMutatorBlock({
+  id: "cv2_replyMsg",
+  optionsBlockId: "cv2_replyMsg_mutator",
+  colour: "#336EFF",
+  inputs: [
+    { type: "dummy", label: "Reply to the message" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Replies to a message using Components V2. Cannot use content or embeds.",
+});
 
 javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
-  const then = generator.statementToCode(block, "then");
+  const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
   const components = generator.statementToCode(block, "components");
-  const files = generator.statementToCode(block, "files");
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -512,30 +479,28 @@ javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
 })${thenStr};\n`;
 };
 
-// ─── EDIT REPLY (Components V2) ─────────────────────────────────────────────
-
-Blockly.Blocks["cv2_editReplyInteraction"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit the bot's reply");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#3366CC");
-    this.setTooltip(
-      "Edits a deferred or previously sent interaction reply using Components V2.",
-    );
-  },
-};
+createMutatorBlock({
+  id: "cv2_editReplyInteraction",
+  optionsBlockId: "cv2_editReplyInteraction_mutator",
+  colour: "#3366CC",
+  inputs: [
+    { type: "dummy", label: "Edit the bot's reply" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Edits a deferred or previously sent interaction reply using Components V2.",
+});
 
 javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
   block,
   generator,
 ) {
   const components = generator.statementToCode(block, "components");
-  const files = generator.statementToCode(block, "files");
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -555,30 +520,27 @@ javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
 });\n`;
 };
 
-Blockly.Blocks["cv2_editMsg"] = {
-  init: function () {
-    this.appendDummyInput().appendField("Edit message");
-    this.appendValueInput("message")
-      .setCheck("message")
-      .appendField("message to edit:");
-    this.appendStatementInput("components")
-      .setCheck("rootComponents")
-      .appendField("components:");
-    this.appendStatementInput("files").setCheck("files").appendField("files:");
-    this.setPreviousStatement(true, "default");
-    this.setNextStatement(true, "default");
-    this.setColour("#336EFF");
-    this.setTooltip(
-      "Edits a deferred or previously sent interaction reply using Components V2.",
-    );
-  },
-};
+createMutatorBlock({
+  id: "cv2_editMsg",
+  optionsBlockId: "cv2_editMsg_mutator",
+  colour: "#336EFF",
+  inputs: [
+    { type: "value", name: "message", check: "message", label: "Edit message:" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Edits a deferred or previously sent interaction reply using Components V2.",
+});
 
 javascriptGenerator.forBlock["cv2_editMsg"] = function (block, generator) {
   const message =
     generator.valueToCode(block, "message", Order.ATOMIC) || "null";
   const components = generator.statementToCode(block, "components");
-  const files = generator.statementToCode(block, "files");
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
   const componentArray = components
     ? `[\n    ${components
@@ -597,8 +559,6 @@ javascriptGenerator.forBlock["cv2_editMsg"] = function (block, generator) {
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
-
-// ─── RESTRICTIONS ────────────────────────────────────────────────────────────
 
 createRestrictions(
   ["cv2_mediaGalleryItem"],
