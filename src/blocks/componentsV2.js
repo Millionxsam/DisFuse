@@ -317,8 +317,8 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
-    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "include 'then'", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
   ],
   previousStatement: "default",
   nextStatement: "default",
@@ -360,8 +360,8 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
-    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "include then", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
   ],
   previousStatement: "default",
   nextStatement: "default",
@@ -403,7 +403,7 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
   ],
   previousStatement: "default",
   nextStatement: "default",
@@ -447,8 +447,8 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
-    { name: "then", label: "then:", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "then", label: "include 'then'", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
   ],
   previousStatement: "default",
   nextStatement: "default",
@@ -488,7 +488,7 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
   ],
   previousStatement: "default",
   nextStatement: "default",
@@ -529,7 +529,7 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "files:", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
   ],
   previousStatement: "default",
   nextStatement: "default",
