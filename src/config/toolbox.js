@@ -3174,10 +3174,6 @@ export default function getToolbox(blockPacks = [], user) {
               {
                 kind: "block",
                 type: "cv2_sendMessage",
-                mutation: {
-                  files: "true",
-                  then: "false",
-                },
                 inputs: {
                   files: {
                     block: {
@@ -3314,10 +3310,6 @@ export default function getToolbox(blockPacks = [], user) {
               {
                 kind: "block",
                 type: "cv2_sendMessage",
-                mutation: {
-                  files: "true",
-                  then: "false",
-                },
                 inputs: {
                   files: {
                     block: {

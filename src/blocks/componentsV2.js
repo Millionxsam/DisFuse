@@ -317,12 +317,12 @@ createMutatorBlock({
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
-    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+    { name: "files", default: true, label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
     { name: "then", label: "include 'then'", inputType: "statement", inputLabel: "then:", valueCheck: "default" },
   ],
   previousStatement: "default",
   nextStatement: "default",
-  tooltip: "Sends a message using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
+  tooltip: "Sends a message using Discord's Components V2 system.",
 });
 
 javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
@@ -365,7 +365,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
-  tooltip: "Sends a DM using Discord's Components V2 system. Cannot use content or embeds — use Text Display blocks instead.",
+  tooltip: "Sends a DM using Discord's Components V2 system.",
 });
 
 javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
