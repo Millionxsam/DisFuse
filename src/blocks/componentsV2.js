@@ -482,7 +482,7 @@ javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
 createMutatorBlock({
   id: "cv2_editReplyInteraction",
   optionsBlockId: "cv2_editReplyInteraction_mutator",
-  colour: "#3366CC",
+  colour: "#4192E9",
   inputs: [
     { type: "dummy", label: "Edit the bot's reply" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
