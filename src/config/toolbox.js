@@ -3051,6 +3051,28 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "category",
+            name: "Emojis & Stickers",
+            colour: "FF4F4F",
+            contents: [
+              block("events_emojis_created"),
+              block("events_emojis_deleted"),
+              block("events_emojis_createdOrDeletedEmoji"),
+              label("------------------------------------------------"),
+              block("events_emojis_changed"),
+              block("events_emojis_changedOldEmoji"),
+              block("events_emojis_changedNewEmoji"),
+              label("------------------------------------------------"),
+              block("events_stickers_created"),
+              block("events_stickers_deleted"),
+              block("events_stickers_createdOrDeletedSticker"),
+              label("------------------------------------------------"),
+              block("events_stickers_changed"),
+              block("events_stickers_changedOldSticker"),
+              block("events_stickers_changedNewSticker"),
+            ]
+          },
+          {
+            kind: "category",
             name: "Custom",
             colour: "#999999",
             contents: [
@@ -3760,17 +3782,6 @@ export default function getToolbox(blockPacks = [], user) {
           ...(user?.customBlocks || []).map(b => block(b.definition.type)),
         ],
       },
-      ...(window.location.hostname === "localhost"
-        ? [
-            sep(),
-            {
-              kind: "category",
-              name: "Testing",
-              colour: "#014f98",
-              contents: [block("my_custom_block")],
-            },
-          ]
-        : []),
       /*{
       kind: 'category',
       name: 'Games',
