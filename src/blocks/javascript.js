@@ -1,6 +1,63 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 
+Blockly.Blocks["string_binary"] = {
+  init() {
+    this.appendValueInput("TEXT")
+      .setCheck("String")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["convert string → binary", "ENCODE"],
+          ["convert binary → string", "DECODE"],
+        ]),
+        "MODE",
+      );
+
+    this.setOutput(true, "String");
+    this.setColour("#c93a5e");
+    this.setTooltip("Convert text to binary or binary back to text");
+    this.setHelpUrl("");
+  },
+};
+
+// JavaScript generator
+javascriptGenerator.forBlock["string_binary"] = function (block, generator) {
+  const mode = block.getFieldValue("MODE");
+
+  const text = generator.valueToCode(block, "TEXT", Order.NONE) || '""';
+
+  let code;
+
+  if (mode === "ENCODE") {
+    code = `
+(() => {
+  const bytes = new TextEncoder().encode(${text});
+
+  return [...bytes]
+    .map(byte =>
+      byte.toString(2).padStart(8, "0")
+    )
+    .join(" ");
+})()
+`;
+  } else {
+    code = `
+(() => {
+  const bytes = ${text}
+    .split(" ")
+    .map(bin =>
+      parseInt(bin, 2)
+    );
+
+  return new TextDecoder()
+    .decode(new Uint8Array(bytes));
+})()
+`;
+  }
+
+  return [code, Order.FUNCTION_CALL];
+};
+
 Blockly.Blocks["javascript_raw"] = {
   init: function () {
     this.appendDummyInput()
