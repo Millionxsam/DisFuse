@@ -80,7 +80,7 @@ createMutatorBlock({
     },
     {
       name: "then",
-      label: 'include "then"',
+      label: "include 'then'",
       default: false,
       inputType: "statement",
       inputLabel: "then:",
