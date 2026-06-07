@@ -10,12 +10,15 @@ const blockImports = {
   fetch_: "axios",
   time_: "ms",
   canvas_: "@napi-rs/canvas",
-  events_guild_memberAdd: {
+  events_: {
     package: "discord-logs",
     code: `
-      const discord_logs = require("discord-logs");
-      discord_logs(client);
-      
+      require("discord-logs")(client);
+    `,
+  },
+  events_guild_memberAdd: {
+    package: "@androz2091/discord-invites-tracker",
+    code: `      
       const InvitesTracker = require("@androz2091/discord-invites-tracker");
       const tracker = InvitesTracker.init(client, {
         fetchGuilds: true,
