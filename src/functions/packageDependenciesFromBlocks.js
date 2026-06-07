@@ -43,7 +43,6 @@ export default function packageDependenciesFromBlocks(blocks) {
         } else {
           dependencies.add(entry);
         }
-        break;
       }
     }
   }
