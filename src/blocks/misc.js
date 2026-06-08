@@ -556,6 +556,9 @@ createRestrictions(
         "channel_send",
         "channel_send_rows",
         "channel_send_mutator",
+        "cv2_sendMessage",
+        "cv2_replyMsg",
+        "cv2_sendDm",
       ],
       message:
         "This block must be be in a 'reply to message' or 'send in channel' block",

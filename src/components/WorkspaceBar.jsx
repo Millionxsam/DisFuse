@@ -460,7 +460,7 @@ export default function WorkspaceBar({
                 .querySelector("dialog.blockBuddy-suggestions")
                 .showModal();
 
-              const stream = await fetch(
+              const response = await fetch(
                 apiUrl + `/projects/${project._id}/blockbuddy/suggest`,
                 {
                   method: "POST",
@@ -479,15 +479,7 @@ export default function WorkspaceBar({
                 },
               );
 
-              const reader = stream.body.getReader();
-              const decoder = new TextDecoder();
-
-              while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                setBlockbuddyRes((prev) => prev + decoder.decode(value));
-              }
+              setBlockbuddyRes((await response.json()).content);
             });
           });
 
