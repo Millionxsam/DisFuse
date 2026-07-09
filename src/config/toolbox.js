@@ -1261,7 +1261,7 @@ export default function getToolbox(blockPacks = [], user) {
             },
           }
             ]
-          }
+          },
           {
             kind: "category",
             name: "Buttons",
