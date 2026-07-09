@@ -1120,6 +1120,10 @@ export default function getToolbox(blockPacks = [], user) {
             kind: "block",
             type: "misc_addrow",
           },
+               {
+            kind: "label",
+            text: "Layout & Content ↓",
+          },
               {
             kind: "block",
             type: "cv2_textDisplay",
@@ -1155,6 +1159,10 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#26A4AF",
             name: "Sections",
             contents: [
+              {
+            kind: "label",
+            text: "Sections can have an image or button right next to the text",
+          },
               {
             kind: "block",
             type: "cv2_section_thumbnail",
@@ -1201,6 +1209,10 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#26A4AF",
             name: "Media",
             contents: [
+              {
+            kind: "label",
+            text: "Media galleries can contain one or more images",
+          },
               {
             kind: "block",
             type: "cv2_mediaGallery",
