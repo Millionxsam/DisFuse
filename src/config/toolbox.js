@@ -1108,10 +1108,19 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#26A4AF",
         contents: [
           {
+            kind: "category",
+            name: "Layout",
+            colour: "#26A4AF",
+            contents: [
+              {
             kind: "label",
-            text: "Layout & Content ↓",
+            text: "Interactive row (buttons / menus) ↓",
           },
           {
+            kind: "block",
+            type: "misc_addrow",
+          },
+              {
             kind: "block",
             type: "cv2_textDisplay",
             inputs: {
@@ -1138,12 +1147,15 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
             },
+          }
+            ]
           },
           {
-            kind: "label",
-            text: "Sections ↓",
-          },
-          {
+            kind: "category",
+            colour: "#26A4AF",
+            name: "Sections",
+            contents: [
+              {
             kind: "block",
             type: "cv2_section_thumbnail",
             inputs: {
@@ -1182,11 +1194,14 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          {
-            kind: "label",
-            text: "Media Gallery ↓",
+            ]
           },
           {
+            kind: "category",
+            colour: "#26A4AF",
+            name: "Media",
+            contents: [
+              {
             kind: "block",
             type: "cv2_mediaGallery",
           },
@@ -1205,8 +1220,14 @@ export default function getToolbox(blockPacks = [], user) {
               },
             },
           },
-          label("File display ↓"),
-          label(
+            ]
+          },
+          {
+            kind: "category",
+            colour: "#26A4AF",
+            name: "File display",
+            contents: [
+              label(
             'Put this block in the "files" of your message to make it available to use in the components ↓',
           ),
           {
@@ -1238,15 +1259,9 @@ export default function getToolbox(blockPacks = [], user) {
                 },
               },
             },
-          },
-          {
-            kind: "label",
-            text: "Interactive row (buttons / menus) ↓",
-          },
-          {
-            kind: "block",
-            type: "misc_addrow",
-          },
+          }
+            ]
+          }
           {
             kind: "category",
             name: "Buttons",
