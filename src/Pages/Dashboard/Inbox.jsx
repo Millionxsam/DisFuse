@@ -15,13 +15,13 @@ export default function Inbox() {
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
+          Authorization: localStorage.getItem("disfuse-token")
+        }
       })
       .then(({ data }) => {
         axios
           .get(apiUrl + `/users/${data.id}`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
+            headers: { Authorization: localStorage.getItem("disfuse-token") }
           })
           .then(({ data: user }) => {
             setUser(user);
@@ -29,15 +29,15 @@ export default function Inbox() {
             setShown(user.inbox);
 
             setTimeout(() => {
-              user.inbox = user.inbox.map((i) => {
+              user.inbox = user.inbox.map(i => {
                 i.read = true;
                 return i;
               });
 
               axios.put(apiUrl + `/users/${user.id}/inbox`, user.inbox, {
                 headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
+                  Authorization: localStorage.getItem("disfuse-token")
+                }
               });
             }, 700);
           });
@@ -50,14 +50,14 @@ export default function Inbox() {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, clear all",
-    }).then((response) => {
+      confirmButtonText: "Yes, clear all"
+    }).then(response => {
       if (response.isConfirmed) {
         axios
           .put(apiUrl + `/users/${user.id}/inbox`, [], {
             headers: {
-              Authorization: localStorage.getItem("disfuse-token"),
-            },
+              Authorization: localStorage.getItem("disfuse-token")
+            }
           })
           .then(({ data }) => setUser(data))
           .then(() => window.location.reload());
@@ -93,11 +93,12 @@ export default function Inbox() {
         </div>
       ) : (
         <div className="df-empty">
-          <i className="fa-solid fa-inbox"></i>
-          <h3>Nothing here yet</h3>
-          <p>
-            Likes, comments, and invites on your projects will show up here.
-          </p>
+          <h3>
+            <i className="fa-solid fa-inbox" />
+            Nothing here yet
+          </h3>
+          <img src="/media/noInboxGraphics.svg" style={{ maxHeight: "12rem" }}></img>
+          <p>Likes, comments, and invites on your projects will show up here.</p>
         </div>
       )}
     </div>
