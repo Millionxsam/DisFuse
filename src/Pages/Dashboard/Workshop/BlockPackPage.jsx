@@ -119,36 +119,33 @@ export default function BlockPackPage() {
   return loading ? (
     <LoadingAnim />
   ) : (
-    <div className="blockPackPage">
-      <div className="head">
-        <div className="info">
-          <div>
-            <h1>{pack.name}</h1>
-            {pack.private ? (
-              <div>
-                <i className="fa-solid fa-lock"></i>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-          <UserTag user={owner} />
+    <div className="df-pack-page">
+      <div className="df-pack-page-head">
+        <div className="title-row">
+          <h1>{pack.name}</h1>
+          {pack.private ? <i className="fa-solid fa-lock"></i> : ""}
         </div>
-        <div className="stats">
-          <p>
+
+        <UserTag user={owner} />
+
+        <div className="stat-row">
+          <span className="stat-chip">
+            <i className="fa-solid fa-cubes"></i>{" "}
             {pack.versions[pack.versions?.length - 1]?.blocks?.length || 0}{" "}
             Block
             {(pack.versions[pack.versions?.length - 1]?.blocks?.length || 0) ===
             1
               ? ""
               : "s"}
-          </p>
-          <p>
-            {pack.users?.length || 0} User
+          </span>
+          <span className="stat-chip">
+            <i className="fa-solid fa-users"></i> {pack.users?.length || 0}{" "}
+            User
             {(pack.users?.length || 0) === 1 ? "" : "s"}
-          </p>
+          </span>
         </div>
-        <div className="buttons">
+
+        <div className="df-detail-actions">
           <div
             onClick={installPack}
             className={`darkBtn install${
@@ -167,15 +164,14 @@ export default function BlockPackPage() {
             onClick={toggleLike}
             className={`darkBtn like${
               pack.likes?.includes(user.id) ? " active" : ""
-            }
-            ${newLike ? " newLike" : ""}
-            `}
+            }${newLike ? " newLike" : ""}`}
           >
             <i className="fa-solid fa-heart"></i>
             <div>{pack.likes?.length} Likes</div>
           </div>
         </div>
       </div>
+
       {pack.flags?.length ? (
         <div className="flags-container">
           {pack.flags.map((flag, index) => {
@@ -198,12 +194,18 @@ export default function BlockPackPage() {
       ) : (
         ""
       )}
+
       <p>
-        {pack.description?.split("\n").map((l) => {
-          if (!l.length) return <br />;
-          return <ReactMarkdown remarkPlugins={[remarkGfm]}>{l}</ReactMarkdown>;
+        {pack.description?.split("\n").map((l, i) => {
+          if (!l.length) return <br key={i} />;
+          return (
+            <ReactMarkdown remarkPlugins={[remarkGfm]} key={i}>
+              {l}
+            </ReactMarkdown>
+          );
         })}
       </p>
+
       <div className="body">
         <h1>Blocks</h1>
         <div className="blocksList">
@@ -228,8 +230,10 @@ export default function BlockPackPage() {
             <p>No blocks found</p>
           )}
         </div>
+
         <h1>Preview</h1>
         <div id="blockPackPreviewWorkspace"></div>
+
         <h1>Versions</h1>
         <div className="versionList">
           {pack.versions?.length ? (

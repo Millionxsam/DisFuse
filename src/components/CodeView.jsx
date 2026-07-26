@@ -31,13 +31,13 @@ export default function CodeView() {
     <div className="code-view">
       <div className="top">
         <h1>JavaScript Code</h1>
-        <button id="close" onClick={closeCode}>
-          Close
-        </button>
         <button id="copy" onClick={() => copyCode(activeCode)}>
-          Copy
+          <i className="fa-solid fa-copy"></i> Copy
         </button>
         <i style={{ display: "none" }} className="fa-solid fa-check check"></i>
+        <button id="close" onClick={closeCode}>
+          <i className="fa-solid fa-xmark"></i> Close
+        </button>
       </div>
       <div className="code-view-tabs">
         <div id="currentWorkspace" onClick={() => setActiveCode("workspace")}>

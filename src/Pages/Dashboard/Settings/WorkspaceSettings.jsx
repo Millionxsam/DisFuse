@@ -84,7 +84,7 @@ export default function WorkspaceSettings() {
           </select>
         </div>
         <div className="option">
-          <p>Workspace sounds:</p>
+          <label htmlFor="workspace-sounds">Workspace sounds:</label>
           <Switch
             defaultChecked={user.settings?.workspace.sounds ?? true}
             onChange={(e) => updateSetting("sounds", e.currentTarget.checked)}
@@ -92,7 +92,7 @@ export default function WorkspaceSettings() {
           />
         </div>
         <div className="option">
-          <p>Show grid:</p>
+          <label htmlFor="workspace-showGrid">Show grid:</label>
           <Switch
             defaultChecked={user.settings?.workspace.grid.enabled ?? true}
             onChange={(e) => {
@@ -103,7 +103,7 @@ export default function WorkspaceSettings() {
           />
         </div>
         <div className="option">
-          <p>Snap to grid:</p>
+          <label htmlFor="workspace-gridSnap">Snap to grid:</label>
           <Switch
             defaultChecked={user.settings?.workspace.grid.snap ?? false}
             onChange={(e) =>
@@ -127,7 +127,7 @@ export default function WorkspaceSettings() {
           />
         </div>
         <div className="option">
-          <p>Icons on toolbar:</p>
+          <label htmlFor="workspace-toolboxBtIcons">Icons on toolbar:</label>
           <Switch
             defaultChecked={user.settings?.workspace.toolboxBtIcons ?? true}
             onChange={(e) => {
@@ -137,7 +137,9 @@ export default function WorkspaceSettings() {
           />
         </div>
         <div className="option">
-          <p>Show Autosave on toolbar:</p>
+          <label htmlFor="workspace-toolboxAutosaveLabel">
+            Show Autosave on toolbar:
+          </label>
           <Switch
             defaultChecked={
               user.settings?.workspace.toolboxAutosaveLabel ?? true

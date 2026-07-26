@@ -7,6 +7,15 @@ import { userCache } from "../cache.ts";
 
 import { apiUrl } from "../config/config";
 
+const icons = {
+  likesOnProjects: "fa-solid fa-heart",
+  commentsOnProjects: "fa-solid fa-comment",
+  clonesOnProjects: "fa-solid fa-code-fork",
+  repliesOnComments: "fa-solid fa-reply",
+  tosChange: "fa-solid fa-file-contract",
+  projectInvite: "fa-solid fa-user-plus",
+};
+
 export default function InboxItem({ item, user, index }) {
   let link, title, body;
 
@@ -100,7 +109,7 @@ export default function InboxItem({ item, user, index }) {
 
     case "commentsOnProjects":
       link = `/@${user?.username}/${item.notification.projectId}#${item.notification.commentId}`;
-      title = alertProject.name
+      title = alertProject?.name
         ? `New comment on project: "${alertProject.name}"`
         : "Loading...";
       body = alertComment?.content ? (
@@ -183,27 +192,30 @@ export default function InboxItem({ item, user, index }) {
       headers: { Authorization: token },
     });
 
-    const element = document.querySelectorAll(".inbox-item");
-    element[index].style.display = "none";
+    const element = document.querySelectorAll(".df-inbox-item");
+    if (element[index]) element[index].style.display = "none";
   }
 
   return (
     <div
       onClick={() => navigate(link)}
-      className={`inbox-item${item.read ? "" : " unread"}`}
+      className={`df-inbox-item${item.read ? "" : " unread"}`}
     >
-      <div className="info">
-        <div className="title">
-          <div className="clearBtn" onClick={clearItem}>
-            <i className="fa-solid fa-xmark"></i>
-          </div>
-          {title}
-        </div>
-        <div className="body">{body}</div>
+      <div className="icon">
+        <i className={icons[item.notification.alertType] || "fa-solid fa-bell"}></i>
+      </div>
+
+      <div className="body-wrap">
+        <div className="title-row">{title}</div>
+        <div className="row-body">{body}</div>
         <i className="date">
           {ms(Date.now() - new Date(item.created).getTime(), { long: true })}{" "}
           ago
         </i>
+      </div>
+
+      <div className="clearBtn" onClick={clearItem}>
+        <i className="fa-solid fa-xmark"></i>
       </div>
     </div>
   );

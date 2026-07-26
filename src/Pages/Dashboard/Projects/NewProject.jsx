@@ -19,8 +19,11 @@ export default function NewProject() {
 
   return (
     <div className="newProject-page-container">
-      <div className="head">
-        <i class="fa-solid fa-circle-plus"></i> New Project
+      <div className="df-page-head">
+        <h1>
+          <i class="fa-solid fa-circle-plus"></i>
+          New Project
+        </h1>
       </div>
       <div className="body">
         {!bot ? (

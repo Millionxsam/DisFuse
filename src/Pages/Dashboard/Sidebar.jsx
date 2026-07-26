@@ -1,21 +1,29 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { userCache } from "../../cache.ts";
 
 import { discordUrl, apiUrl } from "../../config/config.js";
+
+const navItems = [
+  { to: "/projects", label: "Projects", icon: "fa-solid fa-cubes" },
+  { to: "/explore", label: "Explore", icon: "fa-solid fa-earth-americas" },
+  { to: "/favorites", label: "Favorites", icon: "fa-solid fa-star" },
+  { to: "/workshop", label: "Workshop", icon: "fa-solid fa-tools" },
+  { to: "/inbox", label: "Inbox", icon: "fa-solid fa-inbox" },
+  { to: "/settings", label: "Settings", icon: "fa-solid fa-gear" },
+];
 
 export default function Sidebar() {
   const [active, setActive] = useState(false);
   const [user, setUser] = useState({});
   const [isStaff, setIsStaff] = useState(userCache?.isStaff ?? false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!active)
-      document.querySelector(".sidebar-container").classList.remove("active");
-    else document.querySelector(".sidebar-container").classList.add("active");
-  }, [active]);
+    setActive(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (userCache.user) {
@@ -44,118 +52,88 @@ export default function Sidebar() {
     }
   }, []);
 
+  const unread = user.inbox?.filter((i) => !i.read).length || 0;
+
+  const sidebarLinks = (
+    <ul className="df-nav-list">
+      {navItems.map((item) => (
+        <li key={item.to}>
+          <Link
+            to={item.to}
+            className={location.pathname.startsWith(item.to) ? "active" : ""}
+          >
+            <i className={item.icon}></i>
+            <span>{item.label}</span>
+            {item.to === "/inbox" && unread > 0 && (
+              <span className="badge">{unread}</span>
+            )}
+          </Link>
+        </li>
+      ))}
+      {isStaff && (
+        <li>
+          <Link
+            to="/staff/panel"
+            className={
+              location.pathname.startsWith("/staff/panel") ? "active" : ""
+            }
+          >
+            <i className="fa-solid fa-user-tie"></i>
+            <span>Staff</span>
+          </Link>
+        </li>
+      )}
+    </ul>
+  );
+
   return (
-    <>
-      <div className="dashboard-container">
-        <div onClick={() => setActive(true)} className="hamburger">
+    <div className="df-shell">
+      <div className="df-mobile-bar">
+        <button className="icon-btn" onClick={() => setActive(true)}>
           <i className="fa-solid fa-bars"></i>
-          <div>DisFuse</div>
-        </div>
-        <div className="sidebar-container">
-          <div className="top">
-            <i
-              style={{ fontSize: "2rem" }}
-              onClick={() => setActive(false)}
-              className="fa-solid fa-xmark close-sidebar"
-            ></i>
-            <Link to="/">
-              <div className="logo">
-                <img src="/media/disfuse.png" alt="" />
-                <div>DisFuse</div>
-              </div>
+        </button>
+        <Link to="/" className="brand">
+          <img src="/media/disfuse.png" alt="" style={{ height: "1.7rem", borderRadius: "50%" }} />
+          DisFuse
+        </Link>
+        <div style={{ width: "2.4rem" }} />
+      </div>
+
+      <aside className={`df-sidebar ${active ? "active" : ""}`}>
+        <div className="df-sidebar-top">
+          <div className="df-sidebar-brand">
+            <button className="df-sidebar-close" onClick={() => setActive(false)}>
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+            <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+              <img src="/media/disfuse.png" alt="" />
+              <span>DisFuse</span>
             </Link>
-            <ul>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/projects"
-              >
-                <li>
-                  <i className="fa-solid fa-cubes"></i>
-                  <div>Projects</div>
-                </li>
-              </Link>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/explore"
-              >
-                <li>
-                  <i className="fa-solid fa-earth-americas"></i>{" "}
-                  <div>Explore</div>
-                </li>
-              </Link>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/favorites"
-              >
-                <li>
-                  <i className="fa-solid fa-star"></i> <div>Favorites</div>
-                </li>
-              </Link>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/workshop"
-              >
-                <li>
-                  <i className="fa-solid fa-tools"></i> <div>Workshop</div>
-                </li>
-              </Link>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/inbox"
-              >
-                <li>
-                  <i className="fa-solid fa-inbox"></i> <div>Inbox</div>
-                  {user.inbox?.filter((i) => !i.read).length ? (
-                    <span>{user.inbox?.filter((i) => !i.read).length}</span>
-                  ) : (
-                    ""
-                  )}
-                </li>
-              </Link>
-              <Link
-                onClick={() => setActive(false)}
-                className="underline-effect"
-                to="/settings"
-              >
-                <li>
-                  <i className="fa-solid fa-gear"></i> <div>Settings</div>
-                </li>
-              </Link>
-              {isStaff && (
-                <Link
-                  onClick={() => setActive(false)}
-                  className="underline-effect"
-                  to="/staff/panel"
-                >
-                  <li>
-                    <i className="fa-solid fa-user-tie"></i> <div>Staff</div>
-                  </li>
-                </Link>
-              )}
-            </ul>
           </div>
-          <div className="bottom">
-            <div
-              className="nametag"
-              onClick={() => navigate(`/@${user.username}`)}
-            >
-              <img src={user?.avatar} alt="" />
-              <div>{user?.global_name || user.username}</div>
-              <i
-                onClick={logout}
-                className="fa-solid fa-arrow-right-from-bracket"
-              ></i>
-            </div>
+          {sidebarLinks}
+        </div>
+
+        <div className="df-sidebar-bottom">
+          <div className="df-nametag" onClick={() => navigate(`/@${user.username}`)}>
+            <img src={user?.avatar} alt="" />
+            <div className="name">{user?.global_name || user.username}</div>
+            <i
+              onClick={logout}
+              className="fa-solid fa-arrow-right-from-bracket"
+            ></i>
           </div>
         </div>
+      </aside>
+
+      <div
+        className={`df-overlay ${active ? "active" : ""}`}
+        onClick={() => setActive(false)}
+      ></div>
+
+      <div className="df-shell-main">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
 

@@ -67,61 +67,74 @@ export default function Workshop() {
   }, []);
 
   return (
-    <div className="workshop-container">
-      <div className="head">
-        <i className="fa-solid fa-screwdriver-wrench"></i> Workshop
+    <div className="df-workshop-page">
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-screwdriver-wrench"></i> Workshop
+        </h1>
+        <div className="df-toolbar">
+          <input
+            type="text"
+            placeholder="Search workshop..."
+            className="search"
+            onChange={(e) => {
+              setShown(
+                packs.filter((p) =>
+                  p.name.toLowerCase().includes(e.target.value.toLowerCase()),
+                ),
+              );
+              setShownUserPacks(
+                userPacks.filter((p) =>
+                  p.name.toLowerCase().includes(e.target.value.toLowerCase()),
+                ),
+              );
+            }}
+          />
+          <div className="df-btn-group">
+            <button className="df-primary-btn" onClick={createPack}>
+              <i className="fa-solid fa-plus"></i> Create
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="buttons">
-        <button onClick={createPack}>
-          <i className="fa-solid fa-plus"></i> Create
-        </button>
-        <input
-          type="text"
-          placeholder="Search workshop..."
-          className="search"
-          onChange={(e) => {
-            setShown(
-              packs.filter((p) =>
-                p.name.toLowerCase().includes(e.target.value.toLowerCase()),
-              ),
-            );
-            setShownUserPacks(
-              userPacks.filter((p) =>
-                p.name.toLowerCase().includes(e.target.value.toLowerCase()),
-              ),
-            );
-          }}
-        />
-      </div>
-      <div className="workshop">
-        {isLoading ? (
-          <LoadingAnim />
-        ) : (
-          <>
-            <div className="library">
-              <Link to="/workshop/library">
+
+      {isLoading ? (
+        <LoadingAnim />
+      ) : (
+        <>
+          <Link to="/workshop/library" className="df-library-banner">
+            <i className="fa-solid fa-cubes-stacked"></i>
+            <span>Your Library</span>
+            <i className="fa-solid fa-chevron-right"></i>
+          </Link>
+
+          <div className="df-workshop-section">
+            <h2>Your Packs</h2>
+            {shownUserPacks.length ? (
+              <div className="df-grid">
+                {shownUserPacks.map((pack, index) => (
+                  <WorkshopItem pack={pack} editable={true} key={index} />
+                ))}
+              </div>
+            ) : (
+              <div className="df-empty">
                 <i className="fa-solid fa-cubes-stacked"></i>
-                <span style={{ textWrap: "nowrap" }}>Your Library</span>
-                <i className="fa-solid fa-chevron-right"></i>
-              </Link>
-            </div>
-            <h1>Your Packs</h1>
-            <div className="content">
-              {shownUserPacks.length
-                ? shownUserPacks.map((pack, index) => (
-                    <WorkshopItem pack={pack} editable={true} key={index} />
-                  ))
-                : "No packs"}
-            </div>
-            <h1>Featured</h1>
-            <div className="content">
+                <h3>No packs yet</h3>
+                <p>Create a block pack to share your own blocks with the community.</p>
+              </div>
+            )}
+          </div>
+
+          <div className="df-workshop-section">
+            <h2>Featured</h2>
+            <div className="df-grid">
               {shown.map((pack, index) => (
                 <WorkshopItem pack={pack} key={index} />
               ))}
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 

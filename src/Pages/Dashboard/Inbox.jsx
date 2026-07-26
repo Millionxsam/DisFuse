@@ -66,31 +66,40 @@ export default function Inbox() {
   }
 
   return (
-    <div className="inbox-container">
-      <div className="head">
-        <i className="fa-solid fa-inbox"></i> Inbox
+    <div className="df-page">
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-inbox"></i> Inbox
+        </h1>
+        <div className="df-toolbar">
+          <div className="df-btn-group">
+            <button onClick={clearAll} className="red" disabled={!shown?.length}>
+              <i className="fa-solid fa-trash"></i> Clear All
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="buttons">
-        <button onClick={clearAll} className="red">
-          <i className="fa-solid fa-trash"></i> Clear All
-        </button>
-      </div>
-
-      <div className="notifications">
-        {loading ? (
-          <LoadingAnim />
-        ) : shown?.length ? (
-          shown
-            ?.slice()
+      {loading ? (
+        <LoadingAnim />
+      ) : shown?.length ? (
+        <div className="df-inbox-list">
+          {shown
+            .slice()
             .reverse()
             .map((item, index) => (
               <InboxItem item={item} user={user} index={index} key={index} />
-            ))
-        ) : (
-          "No notifications"
-        )}
-      </div>
+            ))}
+        </div>
+      ) : (
+        <div className="df-empty">
+          <i className="fa-solid fa-inbox"></i>
+          <h3>Nothing here yet</h3>
+          <p>
+            Likes, comments, and invites on your projects will show up here.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

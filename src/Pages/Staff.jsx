@@ -18,22 +18,34 @@ export default function Staff() {
     }
   }, []);
 
+  console.log(staff);
+
   return (
-    <div className="staff-container">
-      <h1>DisFuse Staff</h1>
-      <div className="staff hidden shown">
+    <div className="df-staff-page">
+      <div className="df-section-head">
+        <span className="df-tag">The Team</span>
+        <h2>DisFuse Staff</h2>
+        <p>The people building and moderating DisFuse.</p>
+      </div>
+
+      <div className="df-staff-grid">
         {staff.map((i, index) => (
-          <Link to={"https://discord.com/users/" + i.id} key={index}>
-            <div>
+          <Link
+            to={"https://discord.com/users/" + i.id}
+            key={index}
+            target="_blank"
+            rel="noopener"
+          >
+            <div className="df-staff-card">
               <img src={i.avatar} alt={i.username + "'s Avatar"} />
               <h3>{i.username}</h3>
-              <p className="staff-roles-card">
+              <p className="roles">
                 {i.owner ? (
-                  <span>Owner</span>
+                  <span className="owner">Owner</span>
                 ) : (
                   <>
-                    {i.moderator && <span>Moderator</span>}
                     {i.admin && <span>Admin</span>}
+                    {i.moderator && <span>Moderator</span>}
                     {i.developer && <span>Developer</span>}
                   </>
                 )}

@@ -48,30 +48,44 @@ export default function OptimizationSettings() {
         <h1>Optimization</h1>
         <p>Optimize the DisFuse website or workspace</p>
         <div className="option">
-          <p>Fast block render:</p>
-          <Switch
-            defaultChecked={user.settings?.optimization.fastRenderMode ?? false}
-            onChange={e => {
-              updateSetting("fastRenderMode", e.currentTarget.checked);
-            }}
-            id="optimization-fastRenderMode"
-          />
+          <div>
+            <label htmlFor="optimization-fastRenderMode">
+              Fast block render:
+            </label>
+            <Switch
+              defaultChecked={
+                user.settings?.optimization.fastRenderMode ?? false
+              }
+              onChange={(e) => {
+                updateSetting("fastRenderMode", e.currentTarget.checked);
+              }}
+              id="optimization-fastRenderMode"
+            />
+          </div>
+          <h5>
+            Makes the workspace run faster, but it might look more pixelated.
+          </h5>
         </div>
-        <h5>Makes the workspace run faster, but it might look more pixelated.</h5>
         <div className="option">
-          <label htmlFor="optimization-changesUntilSave">Changes before saving:</label>
-          <input
-            type="number"
-            defaultValue={user.settings?.optimization.changesUntilSave ?? 3}
-            onChange={e => {
-              e.currentTarget.value = Math.max(e.currentTarget.value, 2);
-              updateSetting("changesUntilSave", e.currentTarget.value);
-            }}
-            placeholder="Default: 2"
-            id="optimization-changesUntilSave"
-          />
+          <div>
+            <label htmlFor="optimization-changesUntilSave">
+              Changes before saving:
+            </label>
+            <input
+              type="number"
+              defaultValue={user.settings?.optimization.changesUntilSave ?? 3}
+              onChange={(e) => {
+                e.currentTarget.value = Math.max(e.currentTarget.value, 2);
+                updateSetting("changesUntilSave", e.currentTarget.value);
+              }}
+              placeholder="Default: 2"
+              id="optimization-changesUntilSave"
+            />
+          </div>
+          <h5>
+            How many changes (add, remove, modify blocks) before autosaving
+          </h5>
         </div>
-        <h5>How many changes (add, remove, modify blocks) before autosaving</h5>
       </div>
     </>
   );

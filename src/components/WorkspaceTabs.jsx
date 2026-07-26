@@ -19,7 +19,7 @@ export default function WorkspaceTabs({
     document.querySelector("#workspace").style.height = "92.5vh";
 
     document.getElementById("workspace-tabs-open-container").style.width =
-      "1.8rem";
+      "2.5rem";
 
     Blockly.svgResize(workspace);
 
@@ -167,11 +167,7 @@ export default function WorkspaceTabs({
   return (
     <div className="workspace-tabs">
       {editable ? (
-        <div
-          key={"unknown1"}
-          onClick={() => closeTabs(workspace)}
-          style={{ height: "2rem", width: "2rem" }}
-        >
+        <div key={"unknown1"} onClick={() => closeTabs(workspace)}>
           <i className="fa-solid fa-xmark"></i>
         </div>
       ) : (
@@ -180,6 +176,7 @@ export default function WorkspaceTabs({
 
       {project.workspaces?.map((workspace, index) => (
         <div
+          style={!editable && index === 0 ? { marginLeft: "1rem" } : undefined}
           onClick={() => onClick(index)}
           className={`tab${currentTab._id === workspace._id ? " active" : ""}`}
           key={index}
@@ -195,15 +192,15 @@ export default function WorkspaceTabs({
               />
               <i
                 onClick={(e) =>
-                  deleteWorkspace(e, workspace, project, modalColors)
-                }
-                className="fa-solid fa-trash"
-              />
-              <i
-                onClick={(e) =>
                   duplicateWorkspace(e, workspace, project, modalColors)
                 }
                 className="fa-solid fa-clone"
+              />
+              <i
+                onClick={(e) =>
+                  deleteWorkspace(e, workspace, project, modalColors)
+                }
+                className="fa-solid fa-trash"
               />
             </div>
           ) : (

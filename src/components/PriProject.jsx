@@ -18,120 +18,115 @@ export default function PriProject({
   if (!project) return;
 
   let lastEdited = new Date(project?.lastEdited);
+  const isOwner = project?.owner?.id === userCache?.user?.id;
+  const isSuspended = project?.suspension?.status === true;
 
   return (
-    <>
-      <div className="priProject">
-        <div className="top">
-          <div className="name-container">
-            <h1
-              onClick={() =>
-                navigate(`/@${project?.owner?.username}/${project?._id}`)
-              }
-            >
-              {project?.bot?.id ? (
-                <img
-                  src={
-                    "https://cdn.discordapp.com/avatars/" +
-                    project?.bot?.id +
-                    "/" +
-                    project?.bot?.avatar +
-                    ".png"
-                  }
-                  alt="Bot avatar"
-                />
-              ) : (
-                <i
-                  className="fa-solid fa-circle-exclamation"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    Swal.fire({
-                      title: "Project Setup Incomplete",
-                      text: "This project is currently unusable. Open the project for more details.",
-                      icon: "warning",
-                      ...modalThemeColor(userCache.user),
-                    });
-                  }}
-                ></i>
-              )}
+    <div className={`df-project-card${isSuspended ? " suspended" : ""}`}>
+      <div className="card-top">
+        {project?.bot?.id ? (
+          <img
+            className="avatar"
+            src={
+              "https://cdn.discordapp.com/avatars/" +
+              project?.bot?.id +
+              "/" +
+              project?.bot?.avatar +
+              ".png"
+            }
+            alt=""
+            onClick={() =>
+              navigate(`/@${project?.owner?.username}/${project?._id}`)
+            }
+          />
+        ) : (
+          <div
+            className="avatar-fallback"
+            onClick={(e) => {
+              e.stopPropagation();
+              Swal.fire({
+                title: "Project Setup Incomplete",
+                text: "This project is currently unusable. Open the project for more details.",
+                icon: "warning",
+                ...modalThemeColor(userCache.user),
+              });
+            }}
+          >
+            <i className="fa-solid fa-circle-exclamation"></i>
+          </div>
+        )}
 
-              {project.name}
-            </h1>
+        <div className="title-block">
+          <h1
+            onClick={() =>
+              navigate(`/@${project?.owner?.username}/${project?._id}`)
+            }
+          >
+            {project.name}
+          </h1>
 
-            {project.private && project.botPrivate ? (
-              <i className="fa-solid fa-lock" />
-            ) : (
-              ""
+          <div className="badges">
+            {project.private && project.botPrivate && (
+              <span className="badge private">
+                <i className="fa-solid fa-lock"></i> Private
+              </span>
             )}
-
-            {project?.owner?.id === userCache?.user?.id &&
-              project?.suspension?.status !== true && (
-                <i
-                  className="fa-solid fa-pen-to-square"
-                  style={{ cursor: "pointer", marginLeft: "auto" }}
-                  onClick={() =>
-                    navigate(`/@${project.owner.username}/${project._id}/edit`)
-                  }
-                />
-              )}
+            {isSuspended && (
+              <span
+                className="badge suspended"
+                onClick={() => openSuspendedReason(project)}
+              >
+                <i className="fa-solid fa-triangle-exclamation"></i>{" "}
+                Suspended
+              </span>
+            )}
           </div>
         </div>
 
-        <p>{project.description || "No description"}</p>
-
-        <div className="info">
-          {project?.owner?.id === userCache.user.id &&
-            project?.lastEdited &&
-            lastEdited &&
-            lastEdited.getTime() !== 0 && (
-              <p>
-                Edited{" "}
-                {ms(Date.now() - lastEdited.getTime(), {
-                  long: true,
-                })}{" "}
-                ago
-              </p>
-            )}
-
-          {project?.owner?.id !== userCache.user.id && (
-            <p>
-              <i className="fa-solid fa-share-from-square"></i> Shared by{" "}
-              {project?.owner?.displayName}
-            </p>
-          )}
-
-          {project?.suspension?.status === true && (
-            <p className="suspended">
-              Suspended,{" "}
-              <span onClick={() => openSuspendedReason(project)}>
-                check why
-              </span>
-            </p>
-          )}
-        </div>
-
-        <div className="buttons">
-          <button
+        {isOwner && !isSuspended && (
+          <i
+            className="fa-solid fa-pen-to-square card-edit"
             onClick={() =>
-              (window.location = `/@${project.owner.username}/${project._id}/workspace`)
+              navigate(`/@${project.owner.username}/${project._id}/edit`)
             }
-            disabled={project?.suspension?.status === true}
-          >
-            <i className="fa-solid fa-square-arrow-up-right"></i>
-            Open
-          </button>
-          {project?.owner?.id === userCache.user.id && (
-            <button
-              onClick={() => deleteProject(project, onDelete)}
-              className="red"
-            >
-              <i className="fa-solid fa-trash"></i>
-              Delete
-            </button>
-          )}
-        </div>
+          />
+        )}
       </div>
-    </>
+
+      <p className="description">{project.description || "No description"}</p>
+
+      {isOwner && project?.lastEdited && lastEdited.getTime() !== 0 && (
+        <p className="meta">
+          Edited {ms(Date.now() - lastEdited.getTime(), { long: true })} ago
+        </p>
+      )}
+
+      {!isOwner && (
+        <p className="meta">
+          <i className="fa-solid fa-share-from-square"></i> Shared by{" "}
+          {project?.owner?.displayName}
+        </p>
+      )}
+
+      <div className="card-buttons">
+        <button
+          className="primary"
+          onClick={() =>
+            (window.location = `/@${project.owner.username}/${project._id}/workspace`)
+          }
+          disabled={isSuspended}
+        >
+          <i className="fa-solid fa-square-arrow-up-right"></i>
+          Open
+        </button>
+        {isOwner && (
+          <button onClick={() => deleteProject(project, onDelete)} className="red">
+            <i className="fa-solid fa-trash"></i>
+            Delete
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 

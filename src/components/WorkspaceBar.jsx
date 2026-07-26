@@ -103,11 +103,11 @@ export default function WorkspaceBar({
         ) : (
           ""
         )}
-        <div id="workspace-tabs-open-container">
-          <i
-            onClick={() => openWorkspaceTabs(workspace)}
-            className="workspace-tabs-open fa-solid fa-chevron-down"
-          ></i>
+        <div
+          onClick={() => openWorkspaceTabs(workspace)}
+          id="workspace-tabs-open-container"
+        >
+          <i className="workspace-tabs-open fa-solid fa-chevron-down"></i>
         </div>
         <div className="content-container">
           <div className="left">

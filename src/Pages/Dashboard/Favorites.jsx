@@ -67,26 +67,39 @@ export default function Favorites() {
   }
 
   return (
-    <div className="fav-container">
-      <div className="head">
-        <i className="fa-solid fa-star"></i> Favorites
-      </div>
-      <div className="favorites">
-        <input
-          onChange={search}
-          type="search"
-          placeholder="Search Favorites"
-          className="search"
-        />
-        {isLoading ? <LoadingAnim /> : ""}
-        <div className="content">
-          {shown.length > 0
-            ? shown.map((project) => <PubProject project={project} />)
-            : !isLoading
-              ? "No projects"
-              : ""}
+    <div className="df-page">
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-star"></i> Favorites
+        </h1>
+        <div className="df-toolbar">
+          <input
+            onChange={search}
+            type="search"
+            placeholder="Search favorites"
+            className="search"
+          />
         </div>
       </div>
+
+      {isLoading ? (
+        <LoadingAnim />
+      ) : shown.length > 0 ? (
+        <div className="df-grid">
+          {shown.map((project) => (
+            <PubProject project={project} key={project._id} />
+          ))}
+        </div>
+      ) : (
+        <div className="df-empty">
+          <i className="fa-solid fa-star"></i>
+          <h3>No favorites yet</h3>
+          <p>
+            Star projects from the Explore page and they'll show up here for
+            quick access.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

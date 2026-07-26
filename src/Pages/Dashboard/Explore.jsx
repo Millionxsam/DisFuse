@@ -38,6 +38,8 @@ export default function Explore() {
         (a, b) => b.likes.length - a.likes.length,
       );
       setProjects(sorted);
+      setShown(sorted);
+      setLoading(false);
     }
   }, []);
 
@@ -100,51 +102,63 @@ export default function Explore() {
   const displayed = shown.slice(startIdx, startIdx + pageSize);
 
   return (
-    <div className="explore-container">
-      <div className="head">
-        <i className="fa-solid fa-earth-americas"></i> Explore
+    <div className="df-page">
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-earth-americas"></i> Explore
+        </h1>
+        <div className="df-toolbar">
+          <input
+            onChange={search}
+            type="search"
+            placeholder="Search projects"
+            className="search"
+          />
+          <div className="df-btn-group">
+            <button onClick={sort}>
+              <i className="fa-solid fa-arrow-up-wide-short"></i> Sort
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="buttons">
-        <input
-          onChange={search}
-          type="search"
-          placeholder="Search Projects"
-          className="search"
-        />
-        <button onClick={sort}>
-          <i className="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
-        </button>
-      </div>
-      <div className="exploration">
-        <h1>Featured</h1>
-        {isLoading && <LoadingAnim />}
-        <div className="content">
-          {!isLoading && displayed.length === 0 && "No projects"}
-          {displayed.map((project, _) => (
+
+      {isLoading && <LoadingAnim />}
+
+      {!isLoading && displayed.length === 0 && (
+        <div className="df-empty">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <h3>No projects found</h3>
+          <p>Try a different search, or check back once more bots are shared publicly.</p>
+        </div>
+      )}
+
+      {!isLoading && displayed.length > 0 && (
+        <div className="df-grid">
+          {displayed.map((project) => (
             <PubProject project={project} key={project._id} />
           ))}
         </div>
+      )}
 
-        {!isLoading && totalPages > 1 && (
-          <div className="pagination">
-            <button
-              onClick={() => setPage((p) => Math.max(p - 1, 1))}
-              disabled={page === 1}
-            >
-              Prev
-            </button>
-            <span>
-              Page {page} of {totalPages}
-            </span>
-            <button
-              onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-              disabled={page === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        )}
-      </div>
+      {!isLoading && totalPages > 1 && (
+        <div className="df-pagination">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+          >
+            <i className="fa-solid fa-chevron-left"></i> Prev
+          </button>
+          <span className="page-indicator">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages}
+          >
+            Next <i className="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

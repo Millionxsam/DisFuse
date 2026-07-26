@@ -48,18 +48,15 @@ export default function Library() {
   }, []);
 
   return (
-    <div className="library-container">
-      <div className="head">
-        <i className="fa-solid fa-cubes-stacked"></i> Library
-      </div>
-      <div className="buttons">
-        <button
-          style={{ width: "min-content" }}
-          onClick={() => navigate("/workshop")}
-        >
-          <i className="fa-solid fa-arrow-left"></i> Workshop
-        </button>
-        {
+    <div className="df-page">
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-cubes-stacked"></i> Library
+        </h1>
+        <div className="df-toolbar">
+          <div className="df-back-link" onClick={() => navigate("/workshop")}>
+            <i className="fa-solid fa-arrow-left"></i> Workshop
+          </div>
           <input
             type="text"
             className="search"
@@ -72,23 +69,24 @@ export default function Library() {
               );
             }}
           />
-        }
+        </div>
       </div>
-      <div className="content">
-        {isLoading ? (
-          <LoadingAnim />
-        ) : (
-          <>
-            {shown.length ? (
-              shown.map((pack, index) => (
-                <WorkshopItem pack={pack} key={index} />
-              ))
-            ) : (
-              <p>No packs installed</p>
-            )}
-          </>
-        )}
-      </div>
+
+      {isLoading ? (
+        <LoadingAnim />
+      ) : shown.length ? (
+        <div className="df-grid">
+          {shown.map((pack, index) => (
+            <WorkshopItem pack={pack} key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="df-empty">
+          <i className="fa-solid fa-cubes-stacked"></i>
+          <h3>No packs installed</h3>
+          <p>Install block packs from the Workshop to see them here.</p>
+        </div>
+      )}
     </div>
   );
 }

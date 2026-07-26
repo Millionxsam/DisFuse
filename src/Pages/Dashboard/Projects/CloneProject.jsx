@@ -42,8 +42,10 @@ export default function CloneProject() {
 
   return (
     <div className="newProject-page-container">
-      <div className="head">
-        <i className="fa-solid fa-clone"></i> Clone "{project.name}"
+      <div className="df-page-head">
+        <h1>
+          <i className="fa-solid fa-clone"></i> Clone "{project.name}"
+        </h1>
       </div>
       <div className="body">
         {!bot ? (

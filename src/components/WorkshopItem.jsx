@@ -77,78 +77,64 @@ export default function WorkshopItem({ pack: p, editable = false }) {
       });
   }
 
+  const installed = localUser?.installedBlockPacks?.includes(pack._id);
+
   return (
-    <div className="workshop-item">
-      <div className="info">
-        <div>
-          <h1>{pack.name}</h1>
-          {pack.private ? (
-            <div>
-              <i className="fa-solid fa-lock"></i>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-        <UserTag user={user} />
+    <div className="df-pack-card">
+      <div className="card-top">
+        <h3>
+          {pack.private && <i className="fa-solid fa-lock"></i>}
+          {pack.name}
+        </h3>
       </div>
-      <p>
+
+      <UserTag user={user} />
+
+      <p className="description">
         {pack.description.slice(0, 150) +
           (pack.description.length > 150 ? "..." : "")}
       </p>
-      <div className="stats">
-        <p>
+
+      <div className="stat-row">
+        <span className="stat-chip">
+          <i className="fa-solid fa-cubes"></i>{" "}
           {pack.versions[pack.versions.length - 1]?.blocks?.length || 0} Blocks
-        </p>
-        <p>{pack.users?.length || 0} Users</p>
-        <p>{pack.likes?.length || 0} Likes</p>
+        </span>
+        <span className="stat-chip">
+          <i className="fa-solid fa-users"></i> {pack.users?.length || 0} Users
+        </span>
+        <span className="stat-chip">
+          <i className="fa-solid fa-heart"></i> {pack.likes?.length || 0} Likes
+        </span>
       </div>
-      <div className="buttons">
-        {editable ? (
-          <>
-            <button
-              onClick={() =>
-                (window.location = `/workshop/${pack._id}/workspace`)
-              }
-            >
-              <i className="fa-solid fa-square-arrow-up-right"></i>
-              Edit
-            </button>
-            <button onClick={() => (window.location = `/workshop/${pack._id}`)}>
-              <i className="fa-solid fa-eye"></i>
-              View
-            </button>
-            <button onClick={installPack}>
-              {localUser?.installedBlockPacks?.includes(pack._id) ? (
-                <>
-                  <i className="fa-solid fa-xmark"></i> Uninstall
-                </>
-              ) : (
-                <>
-                  <i className="fa-solid fa-plus"></i> Install
-                </>
-              )}
-            </button>
-          </>
-        ) : (
-          <>
-            <button onClick={() => (window.location = `/workshop/${pack._id}`)}>
-              <i className="fa-solid fa-eye"></i>
-              View
-            </button>
-            <button onClick={installPack}>
-              {localUser?.installedBlockPacks?.includes(pack._id) ? (
-                <>
-                  <i className="fa-solid fa-xmark"></i> Uninstall
-                </>
-              ) : (
-                <>
-                  <i className="fa-solid fa-plus"></i> Install
-                </>
-              )}
-            </button>
-          </>
+
+      <div className="card-buttons">
+        {editable && (
+          <button
+            className="primary"
+            onClick={() =>
+              (window.location = `/workshop/${pack._id}/workspace`)
+            }
+          >
+            <i className="fa-solid fa-square-arrow-up-right"></i>
+            Edit
+          </button>
         )}
+        <button onClick={() => (window.location = `/workshop/${pack._id}`)}>
+          <i className="fa-solid fa-eye"></i>
+          View
+        </button>
+        <button onClick={installPack}>
+          {installed ? (
+            <>
+              <i className="fa-solid fa-xmark"></i> Uninstall
+            </>
+          ) : (
+            <>
+              <i className="fa-solid fa-plus"></i> Install
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

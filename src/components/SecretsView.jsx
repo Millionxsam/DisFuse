@@ -40,7 +40,7 @@ export default function SecretsView({ project: p }) {
     navigator.clipboard.writeText(project.secrets[index].value);
     document.querySelectorAll(".secrets div.button.copy")[
       index
-    ].style.backgroundColor = "green";
+    ].style.backgroundColor = "var(--main-color)";
 
     setTimeout(() => {
       document.querySelectorAll(".secrets div.button.copy")[
@@ -74,28 +74,28 @@ export default function SecretsView({ project: p }) {
             Close
           </button>
         </div>
+
         <div className="secrets">
           <ul>
             {project?.secrets?.map((secret, i) => (
-              <>
-                <li key={i}>
-                  <div>{secret.name}</div>
-                  <div>
-                    {secret.value
-                      .split("")
-                      .map(() => "*")
-                      .join("")}
-                  </div>
-                  <div className="button copy" onClick={() => copySecret(i)}>
-                    <i className="fa-solid fa-copy"></i>
-                  </div>
-                  <div className="button delete" onClick={() => delSecret(i)}>
-                    <i className="fa-solid fa-trash"></i>
-                  </div>
-                </li>
-              </>
+              <li key={i}>
+                <div>{secret.name}</div>
+                <div>
+                  {secret.value
+                    .split("")
+                    .map(() => "*")
+                    .join("")}
+                </div>
+                <div className="button copy" onClick={() => copySecret(i)}>
+                  <i className="fa-solid fa-copy"></i>
+                </div>
+                <div className="button delete" onClick={() => delSecret(i)}>
+                  <i className="fa-solid fa-trash"></i>
+                </div>
+              </li>
             ))}
           </ul>
+
           <h2>Add a secret</h2>
           <p className="errors"></p>
           <div>

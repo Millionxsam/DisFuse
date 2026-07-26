@@ -140,6 +140,7 @@ export default function Comment({
         </div>
         <div onClick={showReply} className="reply">
           <i className="fa-solid fa-reply"></i>
+          <div>Reply</div>
         </div>
         {user.id === author.id ? (
           <>

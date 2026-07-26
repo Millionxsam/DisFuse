@@ -98,50 +98,58 @@ export default function UserPage() {
   }
 
   return (
-    <>
-      <div className="user-profile-container">
-        <div className="head">
-          <div className="nametag">
-            <img
-              src={
-                user?.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
-              }
-              alt=""
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "https://cdn.discordapp.com/embed/avatars/0.png";
-              }}
-            />
-            <div>
-              <h1>{user.displayName || user.username}</h1>
-              <p>@{user.username}</p>
-            </div>
-            {user.id !== localUser.id && (
-              <button
-                id={blocked ? "" : "rdbt"}
-                onClick={() => toggleBlockUser(user)}
-              >
-                {blocked ? "Unblock User" : "Block User"}
-                <i className="fa-solid fa-ban"></i>
-              </button>
-            )}
-          </div>
-          <div className="stats">
-            <p>{projects.length || 0} Projects</p>
+    <div className="df-user-page">
+      <div className="df-user-head">
+        <div className="df-user-identity">
+          <img
+            src={
+              user?.avatar || "https://cdn.discordapp.com/embed/avatars/0.png"
+            }
+            alt=""
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+            }}
+          />
+          <div>
+            <h1>{user.displayName || user.username}</h1>
+            <p>@{user.username}</p>
           </div>
         </div>
-        <h1>Projects</h1>
-        {isLoading ? <LoadingAnim /> : null}
-        <div className="body">
-          {projects.length > 0
-            ? projects.map((project) => (
-                <PubProject key={project.id} project={project} />
-              ))
-            : !isLoading
-              ? "No public projects"
-              : null}
+
+        <div className="df-user-meta">
+          <span className="stat-chip">
+            <i className="fa-solid fa-cubes"></i> {projects.length || 0}{" "}
+            Projects
+          </span>
+          {user.id !== localUser.id && user.id && (
+            <button
+              id={blocked ? "" : "rdbt"}
+              onClick={() => toggleBlockUser(user)}
+            >
+              <i className="fa-solid fa-ban"></i>{" "}
+              {blocked ? "Unblock User" : "Block User"}
+            </button>
+          )}
         </div>
       </div>
-    </>
+
+      <h2>Projects</h2>
+      {isLoading ? <LoadingAnim /> : null}
+      {!isLoading &&
+        (projects.length > 0 ? (
+          <div className="df-grid">
+            {projects.map((project) => (
+              <PubProject key={project.id} project={project} />
+            ))}
+          </div>
+        ) : (
+          <div className="df-empty">
+            <i className="fa-solid fa-cubes"></i>
+            <h3>No public projects</h3>
+            <p>This user hasn't shared any public projects yet.</p>
+          </div>
+        ))}
+    </div>
   );
 }

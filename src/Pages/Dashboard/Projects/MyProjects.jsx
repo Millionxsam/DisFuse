@@ -233,52 +233,64 @@ export default function MyProjects() {
   }
 
   return (
-    <>
-      <div className="projects-container">
-        <div className="head">
+    <div className="df-page">
+      <div className="df-page-head">
+        <h1>
           <i className="fa-solid fa-cubes"></i> My Projects
+        </h1>
+        <div className="df-toolbar">
+          <input
+            onChange={search}
+            type="search"
+            placeholder="Search projects"
+            className="search"
+          />
+          <div className="df-btn-group">
+            <Link to="/projects/new">
+              <button className="df-primary-btn">
+                <i className="fa-solid fa-plus"></i> New Project
+              </button>
+            </Link>
+            <button onClick={sort}>
+              <i className="fa-solid fa-arrow-up-wide-short"></i> Sort
+            </button>
+            <button onClick={filter}>
+              <i className="fa-solid fa-filter"></i> Filter
+            </button>
+          </div>
         </div>
-        <div className="buttons">
+      </div>
+
+      {isLoading ? (
+        <LoadingAnim />
+      ) : shown.length > 0 ? (
+        <div className="df-grid">
+          {shown.map((project, index) => (
+            <PriProject
+              project={project}
+              onDelete={() => {
+                setLoading(true);
+                fetchProjects(user);
+              }}
+              key={index}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="df-empty">
+          <i className="fa-solid fa-cubes"></i>
+          <h3>No projects yet</h3>
+          <p>
+            Create your first project and start snapping blocks together to
+            build a Discord bot.
+          </p>
           <Link to="/projects/new">
-            <button
-            // onClick={() => newProject()}
-            >
+            <button className="df-primary-btn">
               <i className="fa-solid fa-plus"></i> New Project
             </button>
           </Link>
-          <button onClick={sort}>
-            <i className="fa-solid fa-arrow-up-wide-short"></i> Sort Projects
-          </button>
-          <button onClick={filter}>
-            <i className="fa-solid fa-filter"></i> Filter Projects
-          </button>
         </div>
-        <input
-          onChange={search}
-          type="search"
-          placeholder="Search Projects"
-          className="search"
-          style={{ marginLeft: "1rem" }}
-        />
-        {isLoading ? (
-          <LoadingAnim />
-        ) : (
-          <div className="projects">
-            {shown.length > 0
-              ? shown.map((project, index) => (
-                  <PriProject
-                    project={project}
-                    onDelete={() => {
-                      setLoading(true);
-                      fetchProjects(user);
-                    }}
-                    key={index}
-                  />
-                ))
-              : "No projects"}
-          </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }

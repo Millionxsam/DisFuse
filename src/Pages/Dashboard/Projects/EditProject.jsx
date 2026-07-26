@@ -64,8 +64,10 @@ export default function EditProject() {
 
   return (
     <div className="newProject-page-container">
-      <div className="head">
-        <i class="fa-solid fa-pen-to-square"></i> Edit Project
+      <div className="df-page-head">
+        <h1>
+          <i class="fa-solid fa-pen-to-square"></i> Edit Project
+        </h1>
       </div>
       <div className="body">
         {loading ? (

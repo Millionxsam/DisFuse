@@ -10,6 +10,7 @@ import UserTag from "../../../components/UserTag";
 import WorkspaceTabs from "../../../components/WorkspaceTabs";
 import javascript from "blockly/javascript.js";
 import { apiUrl } from "../../../config/config.js";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewProject() {
   let { projectId } = useParams();
@@ -17,6 +18,8 @@ export default function ViewProject() {
   const [project, setProject] = useState({});
   const [currentWorkspace, setCurrentWorkspace] = useState({});
   const [workspace, setWorkspace] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -133,7 +136,14 @@ export default function ViewProject() {
         </Link>
 
         <div>
-          <h1 className="projectName">{project.name}</h1>
+          <div
+            className="projectName"
+            onClick={() =>
+              navigate("/@" + project.owner?.username + "/" + project._id)
+            }
+          >
+            <p>{project.name}</p>
+          </div>
           by
           <UserTag user={project.owner} />
         </div>

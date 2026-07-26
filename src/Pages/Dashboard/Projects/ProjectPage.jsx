@@ -136,76 +136,71 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="project-page-container">
-      <div className="head">
-        <div className="info">
-          <h1
-            className={project.owner?.id === user?.id ? "editable" : ""}
-            onClick={
-              project.owner?.id === user?.id
-                ? () =>
-                    navigate(`/@${project.owner.username}/${project._id}/edit`)
-                : null
-            }
-          >
-            {!isLoading &&
-            project?.bot?.avatar &&
-            (!project.botPrivate || project.owner?.id === user?.id) ? (
-              <img
-                src={
-                  "https://cdn.discordapp.com/avatars/" +
-                  project?.bot?.id +
-                  "/" +
-                  project?.bot?.avatar +
-                  ".png"
-                }
-                alt="Bot avatar"
-              />
-            ) : (
-              ""
-            )}
-            {isLoading ? <LoadingAnim /> : project.name}
-            {project?.private && project?.botPrivate ? (
-              <i class="fa-solid fa-lock"></i>
-            ) : (
-              ""
-            )}
-          </h1>
-          <div className="owner">
-            {isLoading ? (
-              ""
-            ) : (
-              <>
-                <UserTag user={project.owner} />
-                {project.collaborators?.length ? (
-                  <i>and {project.collaborators.length} more</i>
-                ) : (
-                  ""
-                )}
-              </>
-            )}
-          </div>
-          <p>{project.description}</p>
-          {(project?.private || project?.botPrivate) &&
-          project?.owner?.id === user?.id ? (
-            <i style={{ opacity: ".5", marginTop: "1rem" }}>
-              One or more option(s) below will not be visible to other users due
-              to visibility settings
-            </i>
+    <div className="df-project-detail">
+      <div className="df-project-detail-head">
+        <h1
+          className={`title-row${project.owner?.id === user?.id ? " editable" : ""}`}
+          onClick={
+            project.owner?.id === user?.id
+              ? () =>
+                  navigate(`/@${project.owner.username}/${project._id}/edit`)
+              : null
+          }
+        >
+          {!isLoading &&
+          project?.bot?.avatar &&
+          (!project.botPrivate || project.owner?.id === user?.id) ? (
+            <img
+              src={
+                "https://cdn.discordapp.com/avatars/" +
+                project?.bot?.id +
+                "/" +
+                project?.bot?.avatar +
+                ".png"
+              }
+              alt="Bot avatar"
+            />
           ) : (
             ""
           )}
+          {isLoading ? <LoadingAnim /> : project.name}
+          {project?.private && project?.botPrivate ? (
+            <i className="fa-solid fa-lock"></i>
+          ) : (
+            ""
+          )}
+        </h1>
+
+        <div className="owner">
+          {isLoading ? (
+            ""
+          ) : (
+            <>
+              <UserTag user={project.owner} />
+              {project.collaborators?.length ? (
+                <i>and {project.collaborators.length} more</i>
+              ) : (
+                ""
+              )}
+            </>
+          )}
         </div>
+
+        <p>{project.description}</p>
+
+        {(project?.private || project?.botPrivate) &&
+        project?.owner?.id === user?.id ? (
+          <i className="visibility-note">
+            One or more option(s) below will not be visible to other users due
+            to visibility settings
+          </i>
+        ) : (
+          ""
+        )}
+
         <div
-          className="buttons"
-          style={
-            isLoading
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {
-                  marginTop:
-                    project?.private || project?.botPrivate ? "-1rem" : "0",
-                }
-          }
+          className="df-detail-actions"
+          style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
         >
           {project?.bot?.id &&
           (!project.botPrivate || project?.owner?.id === user?.id) ? (
@@ -270,19 +265,21 @@ export default function ProjectPage() {
           </div>
         </div>
       </div>
+
       {project?.collaborators?.length ? (
-        <>
-          <h1>Collaborators</h1>
-          <ul className="collaborators">
+        <div>
+          <h2>Collaborators</h2>
+          <ul className="df-collab-list">
             {[project.owner?.id, ...project.collaborators].map((id) => (
-              <UserTag userId={id} />
+              <UserTag userId={id} key={id} />
             ))}
           </ul>
-        </>
+        </div>
       ) : (
         ""
       )}
-      <h1>Comments</h1>
+
+      <h2>Comments</h2>
       <div className="addComment">
         <textarea
           placeholder="Add a comment..."
