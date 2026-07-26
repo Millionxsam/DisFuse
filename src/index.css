@@ -3925,8 +3925,6 @@ input::placeholder {
 }
 
 .newProject-page-container #projectCreationGraphic {
-  height: 15rem;
-  width: 30rem;
   animation: projectCreationGraphic 1s ease;
 }
 
