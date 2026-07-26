@@ -30,7 +30,7 @@ export default function NewProject() {
           <>
             <img
               id="projectCreationGraphic"
-              src="/media/projectCreationGraphic.png"
+              src="/media/projectCreationGraphic.svg"
               alt="Project creation"
             />
             <div className="textAnim">
