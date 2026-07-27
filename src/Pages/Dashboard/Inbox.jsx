@@ -93,11 +93,8 @@ export default function Inbox() {
         </div>
       ) : (
         <div className="df-empty">
-          <h3>
-            <i className="fa-solid fa-inbox" />
-            Nothing here yet
-          </h3>
-          <img src="/media/noInboxGraphics.svg" style={{ maxHeight: "12rem" }}></img>
+          <img src="/media/noInboxGraphics.svg" style={{ maxHeight: "8rem" }}></img>
+          <h3>Nothing here yet</h3>
           <p>Likes, comments, and invites on your projects will show up here.</p>
         </div>
       )}
