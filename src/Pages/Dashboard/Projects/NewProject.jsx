@@ -7,6 +7,9 @@ import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
 
+import Lottie from "lottie-react";
+import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
+
 export default function NewProject() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
@@ -28,10 +31,10 @@ export default function NewProject() {
       <div className="body">
         {!bot ? (
           <>
-            <img
+            <Lottie
+              animationData={projectCreationLottie}
               id="projectCreationGraphic"
-              src="/media/projectCreationGraphic.png"
-              alt="Project creation"
+              style={{ width: "20rem", height: "20rem" }}
             />
             <div className="textAnim">
               <h2>Enter your bot token</h2>

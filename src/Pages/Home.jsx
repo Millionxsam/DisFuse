@@ -194,29 +194,28 @@ export default function Home() {
             className="df-hb"
             style={{ "--hb-color": "var(--df-amber)", "--hb-delay": "0s" }}
           >
-            <span className="tab"></span>
             <i className="fa-solid fa-bolt"></i>
             <span>
               When <b>/welcome</b> is used
             </span>
+            <span className="tab"></span>
           </div>
           <div className="df-hb-wire"></div>
           <div
             className="df-hb"
             style={{ "--hb-color": "#4aa8f5", "--hb-delay": "0.4s" }}
           >
-            <span className="tab"></span>
             <i className="fa-solid fa-code-branch"></i>
             <span>
               If member has <b>no role</b>
             </span>
+            <span className="tab"></span>
           </div>
           <div className="df-hb-wire"></div>
           <div
             className="df-hb"
             style={{ "--hb-color": "var(--df-mint)", "--hb-delay": "0.8s" }}
           >
-            <span className="tab"></span>
             <i className="fa-brands fa-discord"></i>
             <span>Send welcome message</span>
           </div>
@@ -225,7 +224,7 @@ export default function Home() {
 
       <section className="df-section">
         <div className="df-section-head hidden">
-          <span className="df-tag">Why DisFuse</span>
+          <span className="df-tag">Why DisFuse?</span>
           <h2>Everything a bot needs, none of the code</h2>
           <p>
             Nine reasons builders pick DisFuse over writing a bot from scratch.

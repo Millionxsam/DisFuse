@@ -1081,6 +1081,43 @@ export default function Workspace() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    Object.keys(Blockly.Blocks).forEach((type) => {
+      const block = Blockly.Blocks[type];
+      if (!block || typeof block.init !== "function") return;
+
+      const originalInit = block.init;
+      block.init = function () {
+        originalInit.call(this);
+
+        if (
+          this.previousConnection &&
+          this.previousConnection.getCheck() === null
+        ) {
+          this.setPreviousStatement(true, "default");
+        }
+
+        if (
+          this.nextConnection &&
+          this.nextConnection.getCheck() === null
+        ) {
+          this.setNextStatement(true, "default");
+        }
+
+        if (this.inputList) {
+          this.inputList.forEach((input) => {
+            if (
+              input.type === Blockly.inputTypes.STATEMENT &&
+              input.connection &&
+              input.connection.getCheck() === null
+            )
+              input.connection.setCheck("default");
+          });
+        }
+      };
+    });
+  });
+
   return (
     <>
       <WorkspaceBar

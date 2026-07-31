@@ -3925,8 +3925,6 @@ input::placeholder {
 }
 
 .newProject-page-container #projectCreationGraphic {
-  height: 15rem;
-  width: 30rem;
   animation: projectCreationGraphic 1s ease;
 }
 
@@ -4064,7 +4062,6 @@ input::placeholder {
   border-radius: 6px;
 }
 
-/* small reusable block-style eyebrow tag, used above section headings */
 .df-tag {
   display: inline-flex;
   align-items: center;
@@ -4072,12 +4069,11 @@ input::placeholder {
   width: fit-content;
   font-family: monospace;
   font-size: 12.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--df-amber);
   background: rgba(255, 182, 72, 0.1);
   border: 1px solid rgba(255, 182, 72, 0.35);
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 999px;
 }
 
@@ -4504,6 +4500,7 @@ html:has(.df-home)::before {
 }
 
 .df-hero-copy h1 span {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
   background: linear-gradient(100deg, #4aa8f5 0%, var(--df-amber) 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -4609,18 +4606,14 @@ html:has(.df-home)::before {
 
 .df-hb .tab {
   position: absolute;
-  top: -7px;
-  left: 1.4rem;
+  bottom: -7px;
+  left: 1rem;
   width: 1.6rem;
-  height: 7px;
+  height: 8px;
   background: var(--df-surface);
   border: 1px solid var(--df-border-strong);
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-}
-
-.df-hb:first-child .tab {
-  display: none;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
 }
 
 .df-hb i {
@@ -5185,13 +5178,18 @@ html:has(.df-home)::before {
 }
 
 .df-empty i {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--df-text-faint);
 }
 
 .df-empty h3 {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   color: white;
   font-size: 18px;
+  gap: 0.5rem;
 }
 
 .df-empty p {
