@@ -66,6 +66,8 @@ export default function Workspace() {
   const [activeUsers, setActiveUsers] = useState([]);
   const currentWorkspace = useRef({});
 
+  let toolboxVisible = true;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -545,6 +547,7 @@ export default function Workspace() {
                   }
 
                   registerContextMenus(project, currentWorkspace.current);
+                  toolboxCntxtMenu();
 
                   Blockly.Events.disable();
 
@@ -826,6 +829,11 @@ export default function Workspace() {
                       });
                     });
                   });
+
+                  // Toggle toolbox button
+                  document
+                    .querySelector(".workspace-navbar #toggleToolbox")
+                    .addEventListener("click", () => toggleToolbox(workspace));
 
                   // Show code event
                   document
@@ -1145,7 +1153,26 @@ export default function Workspace() {
     Blockly.ContextMenuRegistry.registry.unregister("copyCode");
     Blockly.ContextMenuRegistry.registry.unregister("moveBlock");
     Blockly.ContextMenuRegistry.registry.unregister("mergeWorkspace");
+    Blockly.ContextMenuRegistry.registry.unregister("toggleToolbox");
     registerContextMenus(project, currentWorkspace);
+    toolboxCntxtMenu();
+  }
+
+  // this context menu is in this file instead of the registerContextMenus file so the context menu and the button in the Utilities dropdown use the same variable to check whether the toolbox is hidden
+  function toolboxCntxtMenu() {
+    Blockly.ContextMenuRegistry.registry.register({
+      displayText: "Toggle Toolbox",
+      scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+      preconditionFn: () => "enabled",
+      id: "toggleToolbox",
+      callback: (scope) => toggleToolbox(scope.workspace),
+    });
+  }
+
+  function toggleToolbox(workspace) {
+    toolboxVisible = !toolboxVisible;
+    workspace.getToolbox().setVisible(toolboxVisible);
+    workspace.resize();
   }
 
   function titleCase(str) {

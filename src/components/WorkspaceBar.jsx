@@ -229,6 +229,16 @@ export default function WorkspaceBar({
                     <i className="fa-solid fa-shapes"></i>
                     <div>Templates</div>
                   </button>
+                  <button
+                    onClick={() => {
+                      setFileDropdown(false);
+                      setUtilDropdown(false);
+                    }}
+                    id="toggleToolbox"
+                  >
+                    <i className="fa-solid fa-screwdriver-wrench"></i>
+                    <div>Toggle Toolbox</div>
+                  </button>
                 </div>
               </div>
 
