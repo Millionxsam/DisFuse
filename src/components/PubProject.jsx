@@ -8,14 +8,15 @@ export default function PubProject({ project }) {
   const hiddenFromViewer =
     project.private &&
     project.botPrivate &&
-    project.owner !== userCache?.user?._id;
+    project.owner !== userCache?.user?._id &&
+    project.collaborators?.includes(userCache?.user?._id);
 
   const canAddBot = project?.bot?.id && !project.botPrivate;
 
   return (
     <div className="df-project-card">
       <div className="card-top">
-        {!project.botPrivate && project?.bot?.id ? (
+        {project?.bot?.id ? (
           <img
             className="avatar"
             src={
