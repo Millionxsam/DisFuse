@@ -148,8 +148,7 @@ export default function ProjectPage() {
           }
         >
           {!isLoading &&
-          project?.bot?.avatar &&
-          (!project.botPrivate || project.owner?.id === user?.id) ? (
+          project?.bot?.avatar ? (
             <img
               src={
                 "https://cdn.discordapp.com/avatars/" +
