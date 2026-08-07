@@ -124,7 +124,6 @@ export default function Workspace() {
                 "projectJoin",
                 { projectId },
                 async (project, activeUsers) => {
-                  console.log(project);
                   if (project?.error || activeUsers?.error) {
                     socket.disconnect();
 
