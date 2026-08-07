@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 import Lottie from "lottie-react";
 import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
+import joinServer from "../../../functions/joinServer.js";
 
 export default function NewProject() {
   const [loading, setLoading] = useState(false);
@@ -224,6 +225,12 @@ export default function NewProject() {
           (window.location = `/@${userCache.user.username}/${data._id}/workspace`),
       )
       .catch((err) => {
+        if (
+          err.response?.data?.error ===
+          "You must be in the DisFuse server to create a project"
+        )
+          return joinServer(createProject);
+
         console.error(err);
         Swal.fire({
           icon: "error",

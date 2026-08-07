@@ -42,6 +42,7 @@ import.meta.glob("../blocks/**/*.js", { eager: true });
 
 import { apiUrl, discordUrl } from "../config/config.js";
 import { format } from "../functions/pretty.js";
+import joinServer from "../functions/joinServer.js";
 
 const originalWarn = console.warn;
 
@@ -83,6 +84,12 @@ export default function Workspace() {
       console.log("Disconnected from socket, reason:", reason);
     });
 
+    socket.on("error", ({ error }) => {
+      console.log(error);
+      if (error === "You must be in the DisFuse server to use this feature")
+        joinServer(() => window.location.reload());
+    });
+
     axios
       .get(discordUrl + "/users/@me", {
         headers: {
@@ -117,6 +124,7 @@ export default function Workspace() {
                 "projectJoin",
                 { projectId },
                 async (project, activeUsers) => {
+                  console.log(project);
                   if (project?.error || activeUsers?.error) {
                     socket.disconnect();
 
@@ -1097,10 +1105,7 @@ export default function Workspace() {
           this.setPreviousStatement(true, "default");
         }
 
-        if (
-          this.nextConnection &&
-          this.nextConnection.getCheck() === null
-        ) {
+        if (this.nextConnection && this.nextConnection.getCheck() === null) {
           this.setNextStatement(true, "default");
         }
 
