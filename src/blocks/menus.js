@@ -467,7 +467,7 @@ javascript.javascriptGenerator.forBlock["menus_event"] = function (
   var code_statement = generator.statementToCode(block, "event");
 
   var code = `client.on("interactionCreate", async (interaction) => {
-  if(!interaction.isStringSelectMenu()) return;
+  if(!interaction.isAnySelectMenu()) return;
   ${code_statement}});\n`;
   return code;
 };
