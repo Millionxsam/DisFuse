@@ -764,6 +764,11 @@ export default function Workspace() {
                   });
 
                   workspace.addChangeListener(() => {
+                    reloadContextMenus(project, currentWorkspace.current);
+                    setBackpackStorage();
+                    addTooltips(workspace);
+                    executeRestrictions(workspace);
+
                     const blocksIndicator = document.querySelector(
                       ".workspace-navbar #blocks-indicator",
                     );
@@ -800,11 +805,6 @@ export default function Workspace() {
                     if (ignoredEvents.includes(e.type)) return;
 
                     updates++;
-
-                    reloadContextMenus(project, currentWorkspace.current);
-                    setBackpackStorage();
-                    addTooltips(workspace);
-                    executeRestrictions(workspace);
 
                     if (updates < changesUntilSave) return;
                     updates = 0;
