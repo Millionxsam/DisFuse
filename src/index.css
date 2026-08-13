@@ -6851,3 +6851,8 @@ html:has(.df-home)::before {
   border-color: rgba(53, 208, 160, 0.4);
   color: var(--df-mint);
 }
+
+html > iframe:first-child {
+  inset: auto -5px -5px auto !important;
+  scale: 0.9 !important;
+}
