@@ -1135,20 +1135,31 @@ export default function Workspace() {
   }, []);
 
   useEffect(() => {
-    function applyStyles() {
-      const iframe = document.querySelector('html > iframe');
-      if (iframe) {
-        iframe.style.setProperty('inset', 'auto 0px 0px auto', 'important');
-        iframe.style.setProperty('transform', 'scale(0.9)', 'important');
-        iframe.style.setProperty('transform-origin', 'bottom right', 'important');
-      }
-    }
+    const root = document.documentElement;
+    const applyStyles = (el) => {
+      el.style.setProperty('inset', 'auto 0px 0px auto', 'important');
+      el.style.setProperty('transform', 'scale(0.9)', 'important');
+      el.style.setProperty('transform-origin', 'bottom right', 'important');
+    };
 
-    // Apply multiple times just in case the iframe has not appeared yet.
-    applyStyles();
-    setTimeout(applyStyles, 250);
-    setTimeout(applyStyles, 500);
-    setTimeout(applyStyles, 750);
+    const domObserver = new MutationObserver((mutations, obs) => {
+      const iframe = document.querySelector('html > iframe');
+
+      if (iframe) {
+        applyStyles(iframe);
+
+        const styleObserver = new MutationObserver(() => {
+          applyStyles(iframe);
+        });
+
+        styleObserver.observe(iframe, { attributes: true, attributeFilter: ['style'] });
+
+        obs.disconnect();
+      }
+    });
+    domObserver.observe(root, { childList: true });
+
+    return () => domObserver.disconnect();
   }, []);
 
   return (
