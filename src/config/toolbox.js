@@ -890,6 +890,7 @@ export default function getToolbox(blockPacks = [], user) {
         colour: "#ad794c",
         contents: [
           block("colour_picker"),
+          block("colour_hex"),
           block("colour_convert"),
           block("colour_random"),
           {

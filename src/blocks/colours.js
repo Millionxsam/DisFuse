@@ -23,9 +23,9 @@ Blockly.Blocks["colour_hex"] = {
   },
 };
 
-javascriptGenerator.forBlock["colour_hex"] = function (block) {
+javascriptGenerator.forBlock["colour_hex"] = function (block, generator) {
   var colour = block.getFieldValue("colour");
-  return [colour, Order.ATOMIC];
+  return [generator.quote_(colour), Order.ATOMIC];
 };
 
 Blockly.Blocks["colour_convert"] = {
