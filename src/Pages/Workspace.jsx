@@ -1142,7 +1142,7 @@ export default function Workspace() {
       el.style.setProperty('transform-origin', 'bottom right', 'important');
     };
 
-    const domObserver = new MutationObserver((mutations, obs) => {
+    const domObserver = new MutationObserver((mutations) => {
       const iframe = document.querySelector('html > iframe');
 
       if (iframe) {
@@ -1153,8 +1153,6 @@ export default function Workspace() {
         });
 
         styleObserver.observe(iframe, { attributes: true, attributeFilter: ['style'] });
-
-        obs.disconnect();
       }
     });
     domObserver.observe(root, { childList: true });
