@@ -5,7 +5,7 @@ import { createMutatorBlock } from "../functions/createMutator.ts";
 import {
   formatEmbeds,
   buildMessageOptions,
-  buildThenSuffix,
+  buildThenSuffix
 } from "../functions/generatorUtils";
 
 Blockly.Blocks["msg_getone"] = {
@@ -17,7 +17,7 @@ Blockly.Blocks["msg_getone"] = {
     this.setInputsInline(false);
     this.setOutput(true, "message");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["msg_getone"] = function (block, generator) {
@@ -33,7 +33,7 @@ Blockly.Blocks["msg_received"] = {
     this.appendStatementInput("event").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["message_author_not_bot"] = {
@@ -42,7 +42,7 @@ Blockly.Blocks["message_author_not_bot"] = {
     this.appendStatementInput("name").setCheck("default");
     this.setInputsInline(false);
     this.setColour("#336EFF");
-  },
+  }
 };
 
 createMutatorBlock({
@@ -51,7 +51,7 @@ createMutatorBlock({
   colour: "#336EFF",
   inputs: [
     { type: "dummy", label: "reply to the message" },
-    { type: "value", name: "content", check: "String", label: "content:" },
+    { type: "value", name: "content", check: "String", label: "content:" }
   ],
   mutatorFields: [
     {
@@ -60,7 +60,7 @@ createMutatorBlock({
       default: false,
       inputType: "value",
       inputLabel: "embed name(s):",
-      valueCheck: "String",
+      valueCheck: "String"
     },
     {
       name: "rows",
@@ -68,7 +68,7 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "rows:",
-      valueCheck: "rows",
+      valueCheck: "rows"
     },
     {
       name: "files",
@@ -76,7 +76,7 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "files:",
-      valueCheck: "files",
+      valueCheck: "files"
     },
     {
       name: "then",
@@ -84,11 +84,11 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "then:",
-      valueCheck: "default",
-    },
+      valueCheck: "default"
+    }
   ],
   previousStatement: "default",
-  nextStatement: "default",
+  nextStatement: "default"
 });
 
 javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) {
@@ -104,7 +104,7 @@ javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) 
     embeds,
     rows,
     files,
-    ephemeral,
+    ephemeral
   });
   const thenCode = buildThenSuffix(then);
 
@@ -120,9 +120,9 @@ createMutatorBlock({
       type: "value",
       name: "message",
       check: "message",
-      label: "edit message:",
+      label: "edit message:"
     },
-    { type: "value", name: "content", check: "String", label: "content:" },
+    { type: "value", name: "content", check: "String", label: "content:" }
   ],
   mutatorFields: [
     {
@@ -131,7 +131,7 @@ createMutatorBlock({
       default: false,
       inputType: "value",
       inputLabel: "embed name(s):",
-      valueCheck: "String",
+      valueCheck: "String"
     },
     {
       name: "rows",
@@ -139,7 +139,7 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "rows:",
-      valueCheck: "rows",
+      valueCheck: "rows"
     },
     {
       name: "files",
@@ -147,11 +147,11 @@ createMutatorBlock({
       default: false,
       inputType: "statement",
       inputLabel: "files:",
-      valueCheck: "files",
-    },
+      valueCheck: "files"
+    }
   ],
   previousStatement: "default",
-  nextStatement: "default",
+  nextStatement: "default"
 });
 
 javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
@@ -167,7 +167,7 @@ javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
     embeds,
     rows,
     files,
-    ephemeral,
+    ephemeral
   });
 
   return `await (${message}).edit({\n  ${options.join(",\n  ")}\n});\n`;
@@ -180,7 +180,7 @@ Blockly.Blocks["msg_pin"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Pins a message in its channel.");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["msg_pin"] = function (block, generator) {
@@ -195,7 +195,7 @@ Blockly.Blocks["msg_unpin"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Unpins a message from its channel.");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["msg_unpin"] = function (block, generator) {
@@ -208,7 +208,7 @@ Blockly.Blocks["msg_msg"] = {
     this.appendDummyInput().appendField("message received");
     this.setOutput(true, "message");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_content"] = {
@@ -216,7 +216,7 @@ Blockly.Blocks["msg_content"] = {
     this.appendDummyInput().appendField("content of the message");
     this.setOutput(true, "String");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_member"] = {
@@ -224,7 +224,7 @@ Blockly.Blocks["msg_member"] = {
     this.appendDummyInput().appendField("member who sent the message");
     this.setOutput(true, "member");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_user"] = {
@@ -232,7 +232,7 @@ Blockly.Blocks["msg_user"] = {
     this.appendDummyInput().appendField("user who sent the message");
     this.setOutput(true, "user");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_channel"] = {
@@ -240,7 +240,7 @@ Blockly.Blocks["msg_channel"] = {
     this.appendDummyInput().appendField("channel of the message");
     this.setOutput(true, "channel");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_server"] = {
@@ -248,7 +248,7 @@ Blockly.Blocks["msg_server"] = {
     this.appendDummyInput().appendField("server of the message");
     this.setOutput(true, "server");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_react"] = {
@@ -261,7 +261,7 @@ Blockly.Blocks["msg_react"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 createRestrictions(
@@ -271,9 +271,9 @@ createRestrictions(
       type: "validator",
       blockTypes: ["reaction"],
       check: val => /^(|([\p{Emoji}]{1}))$/u.test(val),
-      message: "Emoji must be a single valid emoji",
-    },
-  ],
+      message: "Emoji must be a single valid emoji"
+    }
+  ]
 );
 
 javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
@@ -281,6 +281,105 @@ javascriptGenerator.forBlock["msg_react"] = function (block, generator) {
   var reaction = generator.valueToCode(block, "reaction", Order.ATOMIC);
 
   return `${message}.react(${reaction});\n`;
+};
+
+Blockly.Blocks["msg_get_reactions"] = {
+  init: function () {
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("for each reaction in");
+    this.appendStatementInput("code").setCheck("default");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#336EFF");
+    this.setTooltip("Loops through each reaction in the message.");
+  }
+};
+
+javascriptGenerator.forBlock["msg_get_reactions"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.ATOMIC);
+  var statement = generator.statementToCode(block, "code");
+
+  return `for (const reaction of ${message}.reactions.cache.values()) {\n  if (reaction.partial) await reaction.fetch();\n${statement}}`;
+};
+
+Blockly.Blocks["msg_reaction_emoji"] = {
+  init: function () {
+    this.appendDummyInput().appendField("emoji of the reaction");
+    this.setOutput(true, "String");
+    this.setColour("#336EFF");
+  }
+};
+
+Blockly.Blocks["msg_reaction_count"] = {
+  init: function () {
+    this.appendDummyInput().appendField("amount of the reaction");
+    this.setOutput(true, "Number");
+    this.setColour("#336EFF");
+  }
+};
+
+Blockly.Blocks["msg_reaction_users"] = {
+  init: function () {
+    this.appendDummyInput().appendField("members who reacted to the reaction");
+    this.setOutput(true, "Array");
+    this.setColour("#336EFF");
+  }
+};
+
+javascriptGenerator.forBlock["msg_reaction_emoji"] = () => [
+  "reaction.emoji.toString()",
+  Order.ATOMIC
+];
+javascriptGenerator.forBlock["msg_reaction_count"] = () => [
+  "reaction.count",
+  Order.ATOMIC
+];
+javascriptGenerator.forBlock["msg_reaction_users"] = () => [
+  "[...(await reaction.users.fetch()).values()]",
+  Order.ATOMIC
+];
+
+Blockly.Blocks["msg_reaction_property"] = {
+  init: function () {
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("get")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["users", "users"],
+          ["amount", "count"]
+        ]),
+        "property"
+      )
+      .appendField("of reaction");
+    this.appendValueInput("reaction").setCheck("String").appendField("with emoji:");
+    this.setInputsInline(false);
+    this.setOutput(true, "Array");
+    this.setColour("#336EFF");
+    this.setOnChange(function () {
+      this.setOutput(
+        true,
+        this.getFieldValue("property") === "count" ? "Number" : "Array"
+      );
+    });
+  }
+};
+
+javascriptGenerator.forBlock["msg_reaction_property"] = function (block, generator) {
+  var property = block.getFieldValue("property");
+  var reaction = generator.valueToCode(block, "reaction", Order.ATOMIC);
+  var message = generator.valueToCode(block, "message", Order.ATOMIC);
+
+  if (property === "count") {
+    return [`${message}.reactions.cache.get(${reaction})?.count ?? 0`, Order.ATOMIC];
+  }
+
+  return [
+    `[...((await ${message}.reactions.cache.get(${reaction})?.users.fetch())?.values() ?? [])]`,
+    Order.ATOMIC
+  ];
 };
 
 javascriptGenerator.forBlock["msg_received"] = function (block, generator) {
@@ -308,7 +407,7 @@ Blockly.Blocks["msg_delete"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete the message received");
-  },
+  }
 };
 
 Blockly.Blocks["msg_deleteOther"] = {
@@ -318,7 +417,7 @@ Blockly.Blocks["msg_deleteOther"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Delete a message");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["msg_deleteOther"] = function (block, generator) {
@@ -336,7 +435,7 @@ Blockly.Blocks["msg_edit"] = {
     this.setNextStatement(true, "default");
     this.setColour("336EFF");
     this.setTooltip("Edits a message sent by the bot.");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["msg_edit"] = function (block, generator) {
@@ -365,7 +464,7 @@ Blockly.Blocks["captcha_reply"] = {
     this.setNextStatement(true, "default");
     this.setColour("#0fbd8c");
     this.setTooltip("Replies to a message with a captcha");
-  },
+  }
 };
 
 javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
@@ -398,9 +497,9 @@ Blockly.Blocks["message_property"] = {
           ["channel", "channel"],
           ["server", "guild"],
           ["creation date", "createdAt"],
-          ["URL", "url"],
+          ["URL", "url"]
         ]),
-        "property",
+        "property"
       )
       .appendField("of");
     this.setColour("336EFF");
@@ -437,7 +536,7 @@ Blockly.Blocks["message_property"] = {
           break;
       }
     });
-  },
+  }
 };
 
 javascriptGenerator.forBlock["message_property"] = function (block, generator) {
@@ -460,15 +559,15 @@ createRestrictions(
     "msg_channel",
     "msg_server",
     "msg_delete",
-    "msg_msg",
+    "msg_msg"
   ],
   [
     {
       type: "hasHat",
       blockTypes: ["msg_received", "message_author_not_bot"],
-      message: 'This block must be in a "when a message is received" event',
-    },
-  ],
+      message: 'This block must be in a "when a message is received" event'
+    }
+  ]
 );
 
 createRestrictions(
@@ -477,18 +576,18 @@ createRestrictions(
     {
       type: "hasHat",
       blockTypes: ["msg_received", "message_author_not_bot"],
-      message: 'This block must be in a "when a message is received" event',
+      message: 'This block must be in a "when a message is received" event'
     },
     {
       type: "notEmpty",
       blockTypes: ["content", "embeds"],
-      message: "You must specify the content and/or embed(s) to send",
+      message: "You must specify the content and/or embed(s) to send"
     },
     {
       type: "validator",
       blockTypes: ["content"],
       check: val => val.length <= 2000,
-      message: "Content cannot be greater than 2,000 characters",
+      message: "Content cannot be greater than 2,000 characters"
     },
     {
       type: "validator",
@@ -506,7 +605,7 @@ createRestrictions(
               .find(
                 b =>
                   b.type === "embed_create" &&
-                  b.getFieldValue("name") === embedName.trim(),
+                  b.getFieldValue("name") === embedName.trim()
               )
           )
             pass = false;
@@ -514,9 +613,9 @@ createRestrictions(
 
         return pass;
       },
-      message: "No embed with that name exists",
-    },
-  ],
+      message: "No embed with that name exists"
+    }
+  ]
 );
 
 createRestrictions(
@@ -525,9 +624,9 @@ createRestrictions(
     {
       type: "notEmpty",
       blockTypes: ["message"],
-      message: "You must specify the message to get the properties from",
-    },
-  ],
+      message: "You must specify the message to get the properties from"
+    }
+  ]
 );
 
 createRestrictions(
@@ -536,7 +635,40 @@ createRestrictions(
     {
       type: "notEmpty",
       blockTypes: ["message"],
-      message: "You must specify the message to pin/unpin",
-    },
-  ],
+      message: "You must specify the message to pin/unpin"
+    }
+  ]
+);
+
+createRestrictions(
+  ["msg_get_reactions"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message"],
+      message: "You must specify the message to get the reactions from"
+    }
+  ]
+);
+
+createRestrictions(
+  ["msg_reaction_emoji", "msg_reaction_count", "msg_reaction_users"],
+  [
+    {
+      type: "hasParent",
+      blockTypes: ["msg_get_reactions"],
+      message: 'This block must be inside a "for each reaction in a message" block'
+    }
+  ]
+);
+
+createRestrictions(
+  ["msg_reaction_property"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message", "reaction"],
+      message: "You must specify the reaction emoji and the message"
+    }
+  ]
 );

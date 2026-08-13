@@ -1,5 +1,5 @@
 const DEFAULT_SHADOWS = {
-  Number: { type: "math_number", fields: { NUM: 0 } },
+  Number: { type: "math_number", fields: { NUM: 5 } },
   String: { type: "text", fields: { TEXT: "" } },
   Boolean: { type: "logic_boolean" },
 };
@@ -82,36 +82,31 @@ export default function getToolbox(blockPacks = [], user) {
             },
           }),
           block("controls_whileUntil"),
-          {
-            kind: "block",
-            type: "controls_for",
+          block("controls_for", {
             inputs: {
               FROM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
               TO: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 10,
                   },
-                },
+                }),
               },
               BY: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("controls_forEach"),
           block("controls_flow_statements"),
         ],
@@ -125,231 +120,173 @@ export default function getToolbox(blockPacks = [], user) {
           block("text_multiline"),
           block("text_join"),
           block("text_newline"),
-          {
-            kind: "block",
-            type: "text_append",
+          block("text_append", {
             inputs: {
               TEXT: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_length",
+          }),
+          block("text_length", {
             inputs: {
               VALUE: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_isEmpty",
+          }),
+          block("text_isEmpty", {
             inputs: {
               VALUE: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_startOrEndWith",
+          }),
+          block("text_startOrEndWith", {
             inputs: {
               text: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
               text2: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_indexOf",
+          }),
+          block("text_indexOf", {
             inputs: {
               VALUE: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
               FIND: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_charAt",
+          }),
+          block("text_charAt", {
             inputs: {
               VALUE: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_getSubstring",
+          }),
+          block("text_getSubstring", {
             inputs: {
               STRING: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_changeCase",
+          }),
+          block("text_changeCase", {
             inputs: {
               TEXT: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_trim",
+          }),
+          block("text_trim", {
             inputs: {
               TEXT: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_count",
+          }),
+          block("text_count", {
             inputs: {
               SUB: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
               TEXT: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_repeat",
+          }),
+          block("text_repeat", {
             inputs: {
               text: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
               times: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 3,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_replace",
+          }),
+          block("text_replace", {
             inputs: {
               FROM: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
               TO: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
               TEXT: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_reverse",
+          }),
+          block("text_reverse", {
             inputs: {
               TEXT: {
-                shadow: {
-                  type: "text",
-                },
+                shadow: shadow("text"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "text_contains",
+          }),
+          block("text_contains", {
             inputs: {
               text: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "abc",
                   },
-                },
+                }),
               },
               query: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "def",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           label("Advanced | RegExp Blocks ↓"),
           block("text_regexp"),
           block("text_regexp_test", {
@@ -380,200 +317,163 @@ export default function getToolbox(blockPacks = [], user) {
         name: "Math",
         colour: "#cfa23a",
         contents: [
-          {
-            kind: "block",
-            type: "math_number",
+          block("math_number", {
             fields: {
               NUM: 123,
             },
-          },
+          }),
           block("math_toNumber"),
-          {
-            kind: "block",
-            type: "math_arithmetic",
+          block("math_arithmetic", {
             inputs: {
               A: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
               B: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_single",
+          }),
+          block("math_single", {
             inputs: {
               NUM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 9,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_trig",
+          }),
+          block("math_trig", {
             inputs: {
               NUM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 45,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("math_constant"),
-          {
-            kind: "block",
-            type: "math_number_property",
+          block("math_number_property", {
             inputs: {
               NUMBER_TO_CHECK: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 0,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_round",
+          }),
+          block("math_round", {
             fields: {
               OP: "ROUND",
             },
             inputs: {
               NUM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 3.1,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_on_list",
+          }),
+          block("math_on_list", {
             fields: {
               OP: "SUM",
             },
-          },
-          {
-            kind: "block",
-            type: "math_modulo",
+          }),
+          block("math_modulo", {
             inputs: {
               DIVIDEND: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 64,
                   },
-                },
+                }),
               },
               DIVISOR: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 10,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_constrain",
+          }),
+          block("math_constrain", {
             inputs: {
               VALUE: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 50,
                   },
-                },
+                }),
               },
               LOW: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
               HIGH: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 100,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "math_random_int",
+          }),
+          block("math_random_int", {
             inputs: {
               FROM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
               TO: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 100,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("math_random_float"),
-          {
-            kind: "block",
-            type: "math_atan2",
+          block("math_atan2", {
             inputs: {
               X: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
               Y: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
         ],
       },
       {
@@ -582,139 +482,99 @@ export default function getToolbox(blockPacks = [], user) {
         categorystyle: "list_category",
         contents: [
           block("lists_create_with"),
-          {
-            kind: "block",
-            type: "lists_repeat",
+          block("lists_repeat", {
             inputs: {
               NUM: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 5,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("lists_length"),
           block("lists_isEmpty"),
-          {
-            kind: "block",
-            type: "lists_indexOf",
+          block("lists_indexOf", {
             inputs: {
               VALUE: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "lists_getIndex",
+          }),
+          block("lists_getIndex", {
             inputs: {
               VALUE: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "lists_setIndex",
+          }),
+          block("lists_setIndex", {
             inputs: {
               LIST: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "lists_getSublist",
+          }),
+          block("lists_getSublist", {
             inputs: {
               LIST: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "lists_split",
+          }),
+          block("lists_split", {
             inputs: {
               DELIM: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: ",",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("lists_sort"),
           block("lists_reverse"),
-          {
-            kind: "block",
-            type: "list_merge",
+          block("list_merge", {
             inputs: {
               list: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "list_filter",
+          }),
+          block("list_filter", {
             inputs: {
               list: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
               method: {
-                block: {
-                  type: "logic_compare",
+                block: block("logic_compare", {
                   inputs: {
                     A: {
-                      block: {
-                        type: "list_filter_item",
-                      },
+                      block: block("list_filter_item"),
                     },
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "list_find",
+          }),
+          block("list_find", {
             inputs: {
               list: {
-                block: {
-                  type: "variables_get",
-                },
+                block: block("variables_get"),
               },
               method: {
-                block: {
-                  type: "logic_compare",
+                block: block("logic_compare", {
                   inputs: {
                     A: {
-                      block: {
-                        type: "list_filter_item",
-                      },
+                      block: block("list_filter_item"),
                     },
                   },
-                },
+                }),
               },
             },
-          },
+          }),
         ],
       },
       {
@@ -727,78 +587,63 @@ export default function getToolbox(blockPacks = [], user) {
           block("object_new"),
           block("object_addkey"),
           label("Object actions ↓"),
-          {
-            kind: "block",
-            type: "object_setkey",
+          block("object_setkey", {
             inputs: {
               key: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "object_deletekey",
+          }),
+          block("object_deletekey", {
             inputs: {
               key: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("object_stringify"),
-          {
-            kind: "block",
-            type: "object_parse",
+          block("object_parse", {
             inputs: {
               string: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           label("Information about object ↓"),
-          {
-            kind: "block",
-            type: "object_getkey",
+          block("object_getkey", {
             inputs: {
               key: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "object_has",
+          }),
+          block("object_has", {
             inputs: {
               string: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("object_length"),
           block("object_keys"),
           block("object_values"),
@@ -814,74 +659,60 @@ export default function getToolbox(blockPacks = [], user) {
           block("time_date"),
           block("time_createdate"),
           label("Timestamp creation ↓"),
-          block("time_timestampFromDate"),
+          block("time_timestampFromDate", {
+            inputs: {
+              DATE: shadow("time_date")
+            },
+          }),
           label("Convertion / Operations ↓"),
-          {
-            kind: "block",
-            type: "time_convert",
+          block("time_convert", {
             inputs: {
               NUMBER: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 10,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "time_operation",
+          }),
+          block("time_operation", {
             inputs: {
-              NUMBER: {
-                shadow: {
-                  type: "math_number",
-                  fields: {
-                    NUM: 10,
-                  },
-                },
-              },
+              NUMBER: shadow("math_number"),
+              DATE: shadow("time_date")
             },
-          },
+          }),
           block("time_between"),
           label("String convertion ↓"),
-          {
-            kind: "block",
-            type: "time_stringToMS",
+          block("time_stringToMS", {
             inputs: {
               TIME: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "10m",
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "time_msToString",
+          }),
+          block("time_msToString", {
             inputs: {
               TIME: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 1000,
                   },
-                },
+                }),
               },
               LONG: {
-                shadow: {
-                  type: "logic_boolean",
+                shadow: shadow("logic_boolean", {
                   fields: {
                     BOOL: "FALSE",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
         ],
       },
       {
@@ -893,66 +724,56 @@ export default function getToolbox(blockPacks = [], user) {
           block("colour_hex"),
           block("colour_convert"),
           block("colour_random"),
-          {
-            kind: "block",
-            type: "colour_rgb",
+          block("colour_rgb", {
             inputs: {
               RED: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 100,
                   },
-                },
+                }),
               },
               GREEN: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 50,
                   },
-                },
+                }),
               },
               BLUE: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 0,
                   },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "colour_blend",
+          }),
+          block("colour_blend", {
             inputs: {
               COLOUR1: {
-                shadow: {
-                  type: "colour_picker",
+                shadow: shadow("colour_picker", {
                   fields: {
                     COLOUR: "#ff0000",
                   },
-                },
+                }),
               },
               COLOUR2: {
-                shadow: {
-                  type: "colour_picker",
+                shadow: shadow("colour_picker", {
                   fields: {
                     COLOUR: "#3333ff",
                   },
-                },
+                }),
               },
               RATIO: {
-                shadow: {
-                  type: "math_number",
+                shadow: shadow("math_number", {
                   fields: {
                     NUM: 0.5,
                   },
-                },
+                }),
               },
             },
-          },
+          }),
         ],
       },
       sep(),
@@ -1058,15 +879,13 @@ export default function getToolbox(blockPacks = [], user) {
             'Looking for the "login with token" block? It\'s been moved to project settings',
           ),
           label("Get the value of a secret ↓"),
-          {
-            kind: "block",
-            type: "main_env",
+          block("main_env", {
             inputs: {
               value: {
-                shadow: { type: "text", fields: { TEXT: "Secret name" } },
+                shadow: shadow("text", { fields: { TEXT: "Secret name" } }),
               },
             },
-          },
+          }),
           label("The bot itself, represented as a Discord user ↓"),
           block("main_bot"),
           label("Properties of the bot ↓"),
@@ -1076,28 +895,24 @@ export default function getToolbox(blockPacks = [], user) {
           label("Events ↓"),
           block("main_ready"),
           label("Actions ↓"),
-          {
-            kind: "block",
-            type: "main_presence",
+          block("main_presence", {
             inputs: {
               afk: {
-                shadow: {
-                  type: "logic_boolean",
+                shadow: shadow("logic_boolean", {
                   fields: {
                     BOOL: "FALSE",
                   },
-                },
+                }),
               },
               activity_name: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: {
                     TEXT: "Name of activity",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
           block("main_destroy"),
           label("ONLY use the block below if you shutdown the bot first ↓"),
           block("main_botStart"),
@@ -1113,46 +928,28 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Layout",
             colour: "#26A4AF",
             contents: [
-              {
-            kind: "label",
-            text: "Interactive row (buttons / menus) ↓",
-          },
-          {
-            kind: "block",
-            type: "misc_addrow",
-          },
-               {
-            kind: "label",
-            text: "Layout & Content ↓",
-          },
-              {
-            kind: "block",
-            type: "cv2_textDisplay",
+              label("Interactive row (buttons / menus) ↓"),
+          block("misc_addrow"),
+               label("Layout & Content ↓"),
+              block("cv2_textDisplay", {
             inputs: {
               content: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "This is regular text" },
-                },
+                }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "cv2_separator",
-          },
-          {
-            kind: "block",
-            type: "cv2_container",
+          }),
+          block("cv2_separator"),
+          block("cv2_container", {
             inputs: {
               color: {
-                shadow: {
-                  type: "colour_picker",
+                shadow: shadow("colour_picker", {
                   fields: { colour: "#00A58E" },
-                },
+                }),
               },
             },
-          }
+          })
             ]
           },
           {
@@ -1160,49 +957,39 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#26A4AF",
             name: "Sections",
             contents: [
-              {
-            kind: "label",
-            text: "Sections can have an image or button right next to the text",
-          },
-              {
-            kind: "block",
-            type: "cv2_section_thumbnail",
+              label("Sections can have an image or button right next to the text"),
+              block("cv2_section_thumbnail", {
             inputs: {
               text: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "Text goes here, with image next to it" },
-                },
+                }),
               },
               thumbnailUrl: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "https://example.com/image.png" },
-                },
+                }),
               },
               thumbnailAlt: {
-                shadow: { type: "text", fields: { TEXT: "image description" } },
+                shadow: shadow("text", { fields: { TEXT: "image description" } }),
               },
             },
-          },
-          {
-            kind: "block",
-            type: "cv2_section_button",
+          }),
+          block("cv2_section_button", {
             inputs: {
               text: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "Text goes here, with button next to it" },
-                },
+                }),
               },
               buttonLabel: {
-                shadow: { type: "text", fields: { TEXT: "Click me" } },
+                shadow: shadow("text", { fields: { TEXT: "Click me" } }),
               },
               buttonId: {
-                shadow: { type: "text", fields: { TEXT: "my-button" } },
+                shadow: shadow("text", { fields: { TEXT: "my-button" } }),
               },
             },
-          },
+          }),
             ]
           },
           {
@@ -1210,29 +997,20 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#26A4AF",
             name: "Media",
             contents: [
-              {
-            kind: "label",
-            text: "Media galleries can contain one or more images",
-          },
-              {
-            kind: "block",
-            type: "cv2_mediaGallery",
-          },
-          {
-            kind: "block",
-            type: "cv2_mediaGalleryItem",
+              label("Media galleries can contain one or more images"),
+              block("cv2_mediaGallery"),
+          block("cv2_mediaGalleryItem", {
             inputs: {
               url: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "https://example.com/image.png" },
-                },
+                }),
               },
               alt: {
-                shadow: { type: "text", fields: { TEXT: "image description" } },
+                shadow: shadow("text", { fields: { TEXT: "image description" } }),
               },
             },
-          },
+          }),
             ]
           },
           {
@@ -1243,36 +1021,30 @@ export default function getToolbox(blockPacks = [], user) {
               label(
             'Put this block in the "files" of your message to make it available to use in the components ↓',
           ),
-          {
-            kind: "block",
-            type: "cv2_addFile",
+          block("cv2_addFile", {
             inputs: {
               path: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "https://example.com/file.txt" },
-                },
+                }),
               },
               name: {
-                shadow: { type: "text", fields: { TEXT: "file.txt" } },
+                shadow: shadow("text", { fields: { TEXT: "file.txt" } }),
               },
             },
-          },
+          }),
           label(
             'Put this block in the "components" of your message to show the file ↓',
           ),
-          {
-            kind: "block",
-            type: "cv2_file",
+          block("cv2_file", {
             inputs: {
               file: {
-                shadow: {
-                  type: "text",
+                shadow: shadow("text", {
                   fields: { TEXT: "file.txt" },
-                },
+                }),
               },
             },
-          }
+          })
             ]
           },
           {
@@ -1281,22 +1053,19 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#2677AF",
             contents: [
               label("Add a button inside of an interactive row ↓"),
-              {
-                kind: "block",
-                type: "buttons_add",
+              block("buttons_add", {
                 inputs: {
                   label: { shadow: shadow("text") },
                   emoji: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   url: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label("Button events ↓"),
               block("buttons_event"),
               label("Info about the clicked button ↓"),
@@ -1308,25 +1077,19 @@ export default function getToolbox(blockPacks = [], user) {
               block("misc_int_server"),
               label("Button actions ↓"),
               block("cv2_replyInteraction"),
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
+              label("Use 'defer reply' to show 'bot is thinking...' message"),
               label(
                 "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
+              block("misc_int_deferReply", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("cv2_editReplyInteraction"),
               block("buttons_del"),
             ],
@@ -1338,251 +1101,210 @@ export default function getToolbox(blockPacks = [], user) {
             contents: [
               label("Add menus inside of an interactive row"),
               label("Create a menu with TEXT options ↓"),
-              {
-                kind: "block",
-                type: "menus_add",
+              block("menus_add", {
                 inputs: {
                   placeholder: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "menus_addoption",
+              }),
+              block("menus_addoption", {
                 inputs: {
                   label: { shadow: shadow("text") },
                   dsc: { shadow: shadow("text") },
                   emoji: { shadow: shadow("text") },
                   value: { shadow: shadow("text") },
                   default: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label(
                 "Create a menu with CHANNEL options (auto-adds all channels in the server) ↓",
               ),
-              {
-                kind: "block",
-                type: "menus_addChannelMenu",
+              block("menus_addChannelMenu", {
                 inputs: {
                   placeholder: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                   channelTypes: {
-                    block: {
-                      type: "lists_create_with",
+                    block: block("lists_create_with", {
                       inputs: {
                         ADD0: {
-                          block: {
-                            type: "misc_channelType",
-                          },
+                          block: block("misc_channelType"),
                         },
                         ADD1: {
-                          block: {
-                            type: "misc_channelType",
-                          },
+                          block: block("misc_channelType"),
                         },
                         ADD2: {
-                          block: {
-                            type: "misc_channelType",
-                          },
+                          block: block("misc_channelType"),
                         },
                       },
-                    },
+                    }),
                   },
                   defaultChannels: {
-                    block: {
-                      type: "lists_create_with",
+                    block: block("lists_create_with", {
                       inputs: {
                         ADD0: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of channel to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD1: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of channel to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD2: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of channel to select by default",
                             },
-                          },
+                          }),
                         },
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("misc_channelType"),
               label(
                 "Create a menu with ROLE options (auto-adds all roles in the server) ↓",
               ),
-              {
-                kind: "block",
-                type: "menus_addRoleMenu",
+              block("menus_addRoleMenu", {
                 inputs: {
                   placeholder: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                   defaultRoles: {
-                    block: {
-                      type: "lists_create_with",
+                    block: block("lists_create_with", {
                       inputs: {
                         ADD0: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD1: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD2: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role to select by default",
                             },
-                          },
+                          }),
                         },
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label(
                 "Create a menu with USER options (auto-adds all users in the server) ↓",
               ),
-              {
-                kind: "block",
-                type: "menus_addUserMenu",
+              block("menus_addUserMenu", {
                 inputs: {
                   placeholder: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                   defaultUsers: {
-                    block: {
-                      type: "lists_create_with",
+                    block: block("lists_create_with", {
                       inputs: {
                         ADD0: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of user to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD1: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of user to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD2: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of user to select by default",
                             },
-                          },
+                          }),
                         },
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label(
                 "Create a menu with USER AND ROLE options (auto-adds all users and roles in the server) ↓",
               ),
-              {
-                kind: "block",
-                type: "menus_addMentionableMenu",
+              block("menus_addMentionableMenu", {
                 inputs: {
                   placeholder: { shadow: shadow("text") },
                   id: { shadow: shadow("text") },
                   disabled: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                   defaultVals: {
-                    block: {
-                      type: "lists_create_with",
+                    block: block("lists_create_with", {
                       inputs: {
                         ADD0: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role/user to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD1: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role/user to select by default",
                             },
-                          },
+                          }),
                         },
                         ADD2: {
-                          block: {
-                            type: "text",
+                          block: block("text", {
                             fields: {
                               TEXT: "ID of role/user to select by default",
                             },
-                          },
+                          }),
                         },
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label("Menu events ↓"),
               block("menus_event"),
               label("Info about the clicked menu ↓"),
@@ -1593,34 +1315,26 @@ export default function getToolbox(blockPacks = [], user) {
               block("misc_int_channel"),
               block("misc_int_server"),
               label("Menu actions ↓"),
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
+              label("Use 'defer reply' to show 'bot is thinking...' message"),
               label(
                 "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
+              block("misc_int_deferReply", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("cv2_replyInteraction"),
               block("cv2_editReplyInteraction"),
-              {
-                kind: "block",
-                type: "menus_update",
+              block("menus_update", {
                 inputs: {
                   content: { shadow: shadow("text") },
                 },
-              },
+              }),
               block("menus_del"),
             ],
           },
@@ -1778,17 +1492,13 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#336EFF",
             contents: [
               label("Get a message ↓"),
-              {
-                kind: "block",
-                type: "msg_getone",
+              block("msg_getone", {
                 inputs: {
                   id: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Events ↓"),
               block("msg_received"),
               block("message_author_not_bot"),
@@ -1797,18 +1507,14 @@ export default function getToolbox(blockPacks = [], user) {
               block("message_property", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                 },
               }),
               block("message_property", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                 },
                 fields: {
@@ -1818,9 +1524,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("message_property", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                 },
                 fields: {
@@ -1830,39 +1534,59 @@ export default function getToolbox(blockPacks = [], user) {
               label("Actions ↓"),
               block("cv2_replyMsg"),
               block("misc_messageSent"),
-              {
-                kind: "block",
-                type: "msg_deleteOther",
+              block("msg_deleteOther", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                 },
-              },
+              }),
               block("cv2_editMsg"),
-              {
-                kind: "block",
-                type: "msg_react",
+              block("msg_react", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                   reaction: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "😋",
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("msg_pin"),
               block("msg_unpin"),
+              label("View reactions ↓"),
+              block("msg_reaction_property", {
+                inputs: {
+                  message: {
+                    shadow: shadow("msg_msg"),
+                  },
+                  reaction: {
+                    shadow: shadow("text", {
+                      fields: {
+                        TEXT: "😋",
+                      },
+                    }),
+                  },
+                },
+                fields: {
+                  property: "users",
+                },
+              }),
+              sep(40),
+              block("msg_get_reactions", {
+                inputs: {
+                  message: {
+                    shadow: shadow("msg_msg"),
+                  },
+                },
+              }),
+              block("msg_reaction_emoji"),
+              block("msg_reaction_count"),
+              block("msg_reaction_users"),
             ],
           },
           {
@@ -1871,57 +1595,39 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#5b67a5",
             contents: [
               label("Get a thread ↓"),
-              {
-                kind: "block",
-                type: "threads_getone",
+              block("threads_getone", {
                 inputs: {
                   value: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("threads_msgHasThread"),
               block("threads_msgThread"),
               label("Create a thread ↓"),
-              {
-                kind: "block",
-                type: "threads_msgCreateThread",
+              block("threads_msgCreateThread", {
                 inputs: {
                   message: {
-                    shadow: {
-                      type: "msg_msg",
-                    },
+                    shadow: shadow("msg_msg"),
                   },
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   slowmode: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "threads_channelCreateThread",
+              }),
+              block("threads_channelCreateThread", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   slowmode: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                 },
-              },
+              }),
               block("threads_createdThread"),
               label("Information about a thread ↓"),
               block("threads_name"),
@@ -1933,50 +1639,34 @@ export default function getToolbox(blockPacks = [], user) {
               block("threads_memberCount"),
               block("threads_parentChannel"),
               label("Thread actions ↓"),
-              {
-                kind: "block",
-                type: "threads_setName",
+              block("threads_setName", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "threads_setArchived",
+              }),
+              block("threads_setArchived", {
                 inputs: {
                   archived: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "threads_setLocked",
+              }),
+              block("threads_setLocked", {
                 inputs: {
                   locked: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "threads_setSlowmode",
+              }),
+              block("threads_setSlowmode", {
                 inputs: {
                   slowmode: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                 },
-              },
+              }),
               block("threads_pin"),
               block("threads_unpin"),
               block("threads_join"),
@@ -1991,44 +1681,34 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#656b75",
             contents: [
               label("Create a poll ↓"),
-              {
-                kind: "block",
-                type: "poll_create",
+              block("poll_create", {
                 inputs: {
                   QUESTION: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   DURATION: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 2,
                       },
-                    },
+                    }),
                   },
                   MULTISELECT: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: {
                         BOOL: "FALSE",
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "poll_choice",
+              }),
+              block("poll_choice", {
                 inputs: {
                   TEXT: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("poll_sendchannel"),
               label("Events ↓"),
               block("poll_whenvoteadded"),
@@ -2080,32 +1760,24 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#AD509B",
             contents: [
               label("Get a channel ↓"),
-              {
-                kind: "block",
-                type: "channel_getone",
+              block("channel_getone", {
                 inputs: {
                   value: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Get all channels ↓"),
               block("channel_foreach"),
               block("channel_channel"),
               label("Create a channel ↓"),
-              {
-                kind: "block",
-                type: "channel_create",
+              block("channel_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("channel_createdChannel"),
               label("Information about a channel ↓"),
               block("channel_getslowmode"),
@@ -2124,207 +1796,155 @@ export default function getToolbox(blockPacks = [], user) {
               block("cv2_sendMessage"),
               block("misc_messageSent"),
               label("------------------------------------"),
-              {
-                kind: "block",
-                type: "channel_waitForResponse",
+              block("channel_waitForResponse", {
                 inputs: {
                   time: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 60,
                       },
-                    },
+                    }),
                   },
                   max: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 1,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label(
                 "Use this block to check if a message should be accepted ↓",
               ),
               block("channel_awaitResponses_filterMsg"),
               label("Get the responses after collecting has finished ↓"),
               block("channel_responses"),
-              {
-                kind: "block",
-                type: "lists_getIndex",
+              block("lists_getIndex", {
                 inputs: {
                   VALUE: {
-                    shadow: {
-                      type: "channel_responses",
-                    },
+                    shadow: shadow("channel_responses"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "lists_length",
+              }),
+              block("lists_length", {
                 inputs: {
                   VALUE: {
-                    shadow: {
-                      type: "channel_responses",
-                    },
+                    shadow: shadow("channel_responses"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_setParent",
+              }),
+              block("channel_setParent", {
                 inputs: {
                   syncPerms: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
+              }),
               block("channel_syncPerms"),
-              {
-                kind: "block",
-                type: "channel_setPosition",
+              block("channel_setPosition", {
                 inputs: {
                   position: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 1,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_setnsfw",
+              }),
+              block("channel_setnsfw", {
                 inputs: {
                   set: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
+              }),
               label("----------------------------------------------------"),
-              {
-                kind: "block",
-                type: "channel_set_permission_v2",
+              block("channel_set_permission_v2", {
                 inputs: {
                   permission: {
-                    shadow: { type: "misc_permissionChannel" },
+                    shadow: shadow("misc_permissionChannel"),
                   },
                   role: {
-                    shadow: { type: "misc_everyone" },
+                    shadow: shadow("misc_everyone"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_delete_permission",
+              }),
+              block("channel_delete_permission", {
                 inputs: {
                   role: {
-                    shadow: { type: "misc_everyone" },
+                    shadow: shadow("misc_everyone"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_setslowmode",
+              }),
+              block("channel_setslowmode", {
                 inputs: {
                   time: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_settopic",
+              }),
+              block("channel_settopic", {
                 inputs: {
                   topic: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_starttyping",
+              }),
+              block("channel_starttyping", {
                 inputs: {
                   wait: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_bulkdelete",
+              }),
+              block("channel_bulkdelete", {
                 inputs: {
                   amount: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 10,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("channel_setautoarchive"),
-              {
-                kind: "block",
-                type: "channel_clone",
+              block("channel_clone", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("channel_createdChannel"),
               block("channel_del"),
               block("channel_setname"),
               label("----------------------------------------------------"),
               label("Get the latest messages of a channel ↓"),
-              {
-                kind: "block",
-                type: "channel_fetchLastMessages",
+              block("channel_fetchLastMessages", {
                 inputs: {
                   amount: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 5,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "channel_fetchedLastMessages",
+              }),
+              block("channel_fetchedLastMessages", {
                 inputs: {
                   number: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 1,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label("----------------------------------------------------"),
             ],
           },
@@ -2334,17 +1954,13 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#B76489",
             contents: [
               label("Get a role ↓"),
-              {
-                kind: "block",
-                type: "roles_getone",
+              block("roles_getone", {
                 inputs: {
                   value: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Loop through each role in a server ↓"),
               block("roles_foreach"),
               block("roles_foreach_role"),
@@ -2355,32 +1971,22 @@ export default function getToolbox(blockPacks = [], user) {
               label("Get the highest role in a server ↓"),
               block("roles_highest"),
               label("Create a role in a server ↓"),
-              {
-                kind: "block",
-                type: "roles_create",
+              block("roles_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   color: {
-                    shadow: {
-                      type: "colour_picker",
-                    },
+                    shadow: shadow("colour_picker"),
                   },
                   position: {
-                    shadow: {
-                      type: "math_number",
-                    },
+                    shadow: shadow("math_number"),
                   },
                   mentionable: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
+              }),
               block("misc_permission"),
               label("Check whether a certain member has a role ↓"),
               block("roles_hasRole"),
@@ -2390,30 +1996,22 @@ export default function getToolbox(blockPacks = [], user) {
               block("roles_position"),
               block("roles_hexColor"),
               block("roles_createdAt"),
-              {
-                kind: "block",
-                type: "roles_hasPermission",
+              block("roles_hasPermission", {
                 inputs: {
                   permission: {
-                    shadow: {
-                      type: "misc_permission",
-                    },
+                    shadow: shadow("misc_permission"),
                   },
                 },
-              },
+              }),
               label("Role actions ↓"),
               block("roles_delete"),
-              {
-                kind: "block",
-                type: "roles_rename",
+              block("roles_rename", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("roles_addToMember"),
               block("roles_removeFromMember"),
               block("roles_setPermissions"),
@@ -2457,36 +2055,25 @@ export default function getToolbox(blockPacks = [], user) {
               label("Some blocks only accept users"),
               label("Other blocks only accept members"),
               label("Some blocks can accept either one"),
-              {
-                kind: "label",
-                text: "(It won't let you drag in the wrong one)",
-              },
+              label("(It won't let you drag in the wrong one)"),
               label(
                 "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
               ),
               label("Get a member or user ↓"),
-              {
-                kind: "block",
-                type: "member_getone",
+              block("member_getone", {
                 inputs: {
                   value: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "member_getuser",
+              }),
+              block("member_getuser", {
                 inputs: {
                   value: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Do something for every member in a server ↓"),
               block("member_foreach"),
               block("member_member"),
@@ -2497,17 +2084,13 @@ export default function getToolbox(blockPacks = [], user) {
               block("member_bannable"),
               block("member_kickable"),
               block("member_timedout"),
-              {
-                kind: "block",
-                type: "member_hasPermission",
+              block("member_hasPermission", {
                 inputs: {
                   permission: {
-                    shadow: {
-                      type: "misc_permission",
-                    },
+                    shadow: shadow("misc_permission"),
                   },
                 },
-              },
+              }),
               block("member_color"),
               block("member_id"),
               block("member_joined"),
@@ -2522,33 +2105,26 @@ export default function getToolbox(blockPacks = [], user) {
               block("member_user"),
               label("Actions on users/members ↓"),
               block("member_ban"),
-              {
-                kind: "block",
-                type: "member_timeout",
+              block("member_timeout", {
                 inputs: {
                   seconds: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 60,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("member_kick"),
               block("cv2_sendDm"),
-              {
-                kind: "block",
-                type: "member_setnick",
+              block("member_setnick", {
                 inputs: {
                   nickname: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("member_removetimeout"),
             ],
           },
@@ -2558,87 +2134,59 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#4f85db",
             contents: [
               label("Get a webhook ↓"),
-              {
-                kind: "block",
-                type: "webhooks_fetch",
+              block("webhooks_fetch", {
                 inputs: {
                   id: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   token: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Create a webhook ↓"),
-              {
-                kind: "block",
-                type: "webhooks_create",
+              block("webhooks_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("webhooks_createdWebhook"),
               label("Get token of a webhook ↓"),
               label("WARNING: This should be kept private!"),
-              {
-                kind: "block",
-                type: "webhooks_token",
+              block("webhooks_token", {
                 inputs: {
                   webhook: {
-                    shadow: {
-                      type: "webhooks_createdWebhook",
-                    },
+                    shadow: shadow("webhooks_createdWebhook"),
                   },
                 },
-              },
+              }),
               label("Actions ↓"),
-              {
-                kind: "block",
-                type: "webhooks_send",
+              block("webhooks_send", {
                 inputs: {
                   webhook: {
-                    shadow: {
-                      type: "webhooks_createdWebhook",
-                    },
+                    shadow: shadow("webhooks_createdWebhook"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "webhooks_delete",
+              }),
+              block("webhooks_delete", {
                 inputs: {
                   webhook: {
-                    shadow: {
-                      type: "webhooks_createdWebhook",
-                    },
+                    shadow: shadow("webhooks_createdWebhook"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "webhooks_edit",
+              }),
+              block("webhooks_edit", {
                 inputs: {
                   webhook: {
-                    shadow: {
-                      type: "webhooks_createdWebhook",
-                    },
+                    shadow: shadow("webhooks_createdWebhook"),
                   },
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Information about a webhook ↓"),
               block("webhooks_name"),
               block("webhooks_id"),
@@ -2652,17 +2200,13 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#DEB144",
             contents: [
               label("Get an emoji ↓"),
-              {
-                kind: "block",
-                type: "emoji_getemojiwith",
+              block("emoji_getemojiwith", {
                 inputs: {
                   equal: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Get all emojis ↓"),
               block("emoji_getallinserver"),
               block("emoji_getallinserver_value"),
@@ -2675,34 +2219,24 @@ export default function getToolbox(blockPacks = [], user) {
               block("emoji_created"),
               block("emoji_author"),
               label("Emoji actions ↓"),
-              {
-                kind: "block",
-                type: "emoji_create",
+              block("emoji_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   url: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("emoji_delete"),
-              {
-                kind: "block",
-                type: "emoji_setname",
+              block("emoji_setname", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
             ],
           },
           {
@@ -2711,17 +2245,13 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#7a9e37",
             contents: [
               label("Get a sticker ↓"),
-              {
-                kind: "block",
-                type: "sticker_getwith",
+              block("sticker_getwith", {
                 inputs: {
                   equal: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               label("Get all stickers ↓"),
               block("sticker_getallinserver"),
               block("sticker_getallinserver_value"),
@@ -2732,34 +2262,24 @@ export default function getToolbox(blockPacks = [], user) {
               block("sticker_geturl"),
               block("sticker_created"),
               label("Sticker actions ↓"),
-              {
-                kind: "block",
-                type: "sticker_create",
+              block("sticker_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   file: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("sticker_delete"),
-              {
-                kind: "block",
-                type: "sticker_setname",
+              block("sticker_setname", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
             ],
           },
         ],
@@ -2777,91 +2297,68 @@ export default function getToolbox(blockPacks = [], user) {
               label("Setup slash commands ↓"),
               block("misc_createcontainer_global"),
               label("Add a slash command ↓"),
-              {
-                kind: "block",
-                type: "slash_create_mutator",
+              block("slash_create_mutator", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   dsc: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                 },
-              },
+              }),
               block("misc_permission"),
-              {
-                kind: "block",
-                type: "slash_addoption",
+              block("slash_addoption", {
                 inputs: {
                   name: { shadow: shadow("text") },
                   dsc: { shadow: shadow("text") },
                   required: { shadow: shadow("logic_boolean") },
                 },
-              },
-              {
-                kind: "block",
-                type: "slash_addchoice",
+              }),
+              block("slash_addchoice", {
                 inputs: {
                   name: { shadow: shadow("text") },
                   value: { shadow: shadow("text") },
                 },
-              },
+              }),
               label("Subcommands (advanced) ↓"),
-              {
-                kind: "block",
-                type: "slash_addsubcommand",
+              block("slash_addsubcommand", {
                 inputs: {
                   name: { shadow: shadow("text") },
                   dsc: { shadow: shadow("text") },
                 },
-              },
-              {
-                kind: "block",
-                type: "slash_addsubcommandgroup",
+              }),
+              block("slash_addsubcommandgroup", {
                 inputs: {
                   name: { shadow: shadow("text") },
                   dsc: { shadow: shadow("text") },
                 },
-              },
+              }),
               label("Events ↓"),
               block("slash_received"),
               label("Actions ↓"),
-              {
-                kind: "block",
-                type: "cv2_replyInteraction",
+              block("cv2_replyInteraction", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
+              }),
+              label("Use 'defer reply' to show 'bot is thinking...' message"),
               label(
                 "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
+              block("misc_int_deferReply", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("cv2_editReplyInteraction"),
               label("Information about the command ran ↓"),
               block("slash_getoption"),
@@ -2883,74 +2380,57 @@ export default function getToolbox(blockPacks = [], user) {
               label("Show a modal to the user ↓"),
               block("modal_show"),
               label("Create a modal (put this in the block above) ↓"),
-              {
-                kind: "block",
-                type: "modal_create",
+              block("modal_create", {
                 inputs: {
                   title: { shadow: shadow("text") },
                   customId: { shadow: shadow("text") },
                 },
-              },
-              {
-                kind: "label",
-                text: "Put text input(s) inside the 'create modal' block ↓",
-              },
-              {
-                kind: "block",
-                type: "modal_add_text_input",
+              }),
+              label("Put text input(s) inside the 'create modal' block ↓"),
+              block("modal_add_text_input", {
                 inputs: {
                   label: { shadow: shadow("text") },
                   customId: { shadow: shadow("text") },
                   required: { shadow: shadow("logic_boolean") },
                 },
-              },
-              {
-                kind: "block",
-                type: "modal_add_text_input_advanced",
+              }),
+              block("modal_add_text_input_advanced", {
                 inputs: {
                   label: { shadow: shadow("text") },
                   customId: { shadow: shadow("text") },
                   required: { shadow: shadow("logic_boolean") },
                   placeholder: { shadow: shadow("text") },
                   max: {
-                    shadow: { type: "math_number", fields: { NUM: 100 } },
+                    shadow: shadow("math_number", { fields: { NUM: 100 } }),
                   },
-                  min: { shadow: { type: "math_number", fields: { NUM: 10 } } },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 10 } }) },
                 },
-              },
+              }),
               label("Events ↓"),
               block("modal_handle_interaction"),
               label("Information about the submitted modal ↓"),
-              {
-                kind: "block",
-                type: "modal_get_input_value",
+              block("modal_get_input_value", {
                 inputs: {
                   customId: { shadow: shadow("text") },
                 },
-              },
+              }),
               block("modal_get_author"),
               block("modal_get_customId"),
               label("Reply to the modal after submitted ↓"),
               block("cv2_replyInteraction"),
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
+              label("Use 'defer reply' to show 'bot is thinking...' message"),
               label(
                 "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
+              block("misc_int_deferReply", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("cv2_editReplyInteraction"),
             ],
           },
@@ -2962,45 +2442,33 @@ export default function getToolbox(blockPacks = [], user) {
               label("Setup context menus ↓"),
               block("misc_createcontainer_global"),
               label("Add a context menu ↓"),
-              {
-                kind: "block",
-                type: "contextMenu_create",
+              block("contextMenu_create", {
                 inputs: {
                   name: {
-                    shadow: {
-                      type: "text",
-                    },
+                    shadow: shadow("text"),
                   },
                   dms: {
-                    shadow: {
-                      type: "logic_boolean",
-                    },
+                    shadow: shadow("logic_boolean"),
                   },
                 },
-              },
+              }),
               label("Events ↓"),
               block("contextMenu_received"),
               label("Actions ↓"),
               block("cv2_replyInteraction"),
-              {
-                kind: "label",
-                text: "Use 'defer reply' to show 'bot is thinking...' message",
-              },
+              label("Use 'defer reply' to show 'bot is thinking...' message"),
               label(
                 "If you defer reply, you should EDIT the reply when you want to respond, instead of sending a new reply",
               ),
-              {
-                kind: "block",
-                type: "misc_int_deferReply",
+              block("misc_int_deferReply", {
                 inputs: {
                   ephemeral: {
-                    shadow: {
-                      type: "logic_boolean",
+                    shadow: shadow("logic_boolean", {
                       fields: { BOOL: "FALSE" },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("cv2_editReplyInteraction"),
               label("Information about the context menu clicked ↓"),
               block("contextMenu_name"),
@@ -3133,61 +2601,47 @@ export default function getToolbox(blockPacks = [], user) {
               label("Create a database first ↓"),
               block("db_create"),
               label("Get information from the database ↓"),
-              {
-                kind: "block",
-                type: "db_get",
+              block("db_get", {
                 inputs: {
                   id: { shadow: shadow("text") },
                 },
-              },
-              {
-                kind: "block",
-                type: "db_has",
+              }),
+              block("db_has", {
                 inputs: {
                   id: { shadow: shadow("text") },
                 },
-              },
+              }),
               block("db_all"),
               label("Actions in the database ↓"),
-              {
-                kind: "block",
-                type: "db_set",
+              block("db_set", {
                 inputs: {
                   id: { shadow: shadow("text") },
                   val: { shadow: shadow("text") },
                 },
-              },
-              {
-                kind: "block",
-                type: "db_del",
+              }),
+              block("db_del", {
                 inputs: {
                   id: { shadow: shadow("text") },
                 },
-              },
-              {
-                kind: "block",
-                type: "db_add",
+              }),
+              block("db_add", {
                 inputs: {
                   id: { shadow: shadow("text") },
-                  val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+                  val: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
                 },
-              },
-              {
-                kind: "block",
-                type: "db_sub",
+              }),
+              block("db_sub", {
                 inputs: {
                   id: { shadow: shadow("text") },
-                  val: { shadow: { type: "math_number", fields: { NUM: 1 } } },
+                  val: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
                 },
-              },
-              {
-                kind: "block",
-                type: "db_push",
+              }),
+              block("db_push", {
                 inputs: {
                   id: { shadow: shadow("text") },
                   val: { shadow: shadow("text") },
                 },
-              },
+              }),
               block("db_clear"),
             ],
           },
@@ -3203,21 +2657,17 @@ export default function getToolbox(blockPacks = [], user) {
             name: "Scratch",
             colour: "#e6a53e",
             contents: [
-              {
-                kind: "block",
-                type: "scratch_getprofile",
+              block("scratch_getprofile", {
                 inputs: {
                   username: { shadow: shadow("text") },
                 },
-              },
+              }),
               block("scratch_getprofileinfo"),
-              {
-                kind: "block",
-                type: "scratch_getmessages",
+              block("scratch_getmessages", {
                 inputs: {
                   username: { shadow: shadow("text") },
                 },
-              },
+              }),
             ],
           },
           {
@@ -3229,17 +2679,13 @@ export default function getToolbox(blockPacks = [], user) {
               block("captcha_create_mutator"),
               block("captcha_value"),
               label("Send captcha image ↓"),
-              {
-                kind: "block",
-                type: "cv2_sendMessage",
+              block("cv2_sendMessage", {
                 inputs: {
                   files: {
-                    block: {
-                      type: "captcha_addFile",
-                    },
+                    block: block("captcha_addFile"),
                   },
                 },
-              },
+              }),
             ],
           },
           {
@@ -3248,67 +2694,56 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#0fbd8c",
             contents: [
               label("Send a request to a url ↓"),
-              {
-                kind: "block",
-                type: "fetch_send",
+              block("fetch_send", {
                 inputs: {
                   url: { shadow: shadow("text") },
                 },
-              },
+              }),
               label("----------------------------------------------"),
               label("Advanced request ↓"),
-              {
-                kind: "block",
-                type: "fetch_sendAdvanced",
+              block("fetch_sendAdvanced", {
                 inputs: {
                   url: { shadow: shadow("text") },
                   config: {
-                    block: {
-                      type: "fetch_configSection",
+                    block: block("fetch_configSection", {
                       inputs: {
                         key: {
-                          shadow: {
-                            type: "text",
+                          shadow: shadow("text", {
                             fields: {
                               TEXT: "data",
                             },
-                          },
+                          }),
                         },
                         value: {
-                          block: {
-                            type: "object_new",
+                          block: block("object_new", {
                             inputs: {
                               keys: {
-                                block: {
-                                  type: "object_addkey",
+                                block: block("object_addkey", {
                                   inputs: {
                                     value: {
-                                      shadow: {
-                                        type: "text",
+                                      shadow: shadow("text", {
                                         fields: {
                                           TEXT: "value",
                                         },
-                                      },
+                                      }),
                                     },
                                   },
-                                },
+                                }),
                               },
                             },
-                          },
+                          }),
                         },
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "fetch_configSection",
+              }),
+              block("fetch_configSection", {
                 inputs: {
                   key: { shadow: shadow("text") },
                   value: { shadow: shadow("text") },
                 },
-              },
+              }),
               label("----------------------------------------------"),
               label("Information about the response ↓"),
               block("fetch_responseData"),
@@ -3317,25 +2752,20 @@ export default function getToolbox(blockPacks = [], user) {
               label(
                 "Get a key from the response data (from the objects category) ↓",
               ),
-              {
-                kind: "block",
-                type: "object_getkey",
+              block("object_getkey", {
                 inputs: {
                   key: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "",
                       },
-                    },
+                    }),
                   },
                   object: {
-                    shadow: {
-                      type: "fetch_responseData",
-                    },
+                    shadow: shadow("fetch_responseData"),
                   },
                 },
-              },
+              }),
             ],
           },
           {
@@ -3344,347 +2774,284 @@ export default function getToolbox(blockPacks = [], user) {
             colour: "#4C9F70",
             contents: [
               label("Create a Canvas ↓"),
-              {
-                kind: "block",
-                type: "canvas_createCanvas",
+              block("canvas_createCanvas", {
                 inputs: {
                   WIDTH: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                   HEIGHT: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               label("Export the Canvas ↓"),
-              {
-                kind: "block",
-                type: "cv2_sendMessage",
+              block("cv2_sendMessage", {
                 inputs: {
                   files: {
-                    block: {
-                      type: "canvas_addFile",
-                    },
+                    block: block("canvas_addFile"),
                   },
                 },
-              },
+              }),
               block("canvas_asData"),
               label("Properties ↓"),
               block("canvas_width"),
               block("canvas_height"),
               label("Actions ↓"),
-              {
-                kind: "block",
-                type: "canvas_setFillColor",
+              block("canvas_setFillColor", {
                 inputs: {
                   COLOR: {
-                    shadow: {
-                      type: "colour_picker",
-                    },
+                    shadow: shadow("colour_picker"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_setStrokeColor",
+              }),
+              block("canvas_setStrokeColor", {
                 inputs: {
                   COLOR: {
-                    shadow: {
-                      type: "colour_picker",
-                    },
+                    shadow: shadow("colour_picker"),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_setLineWidth",
+              }),
+              block("canvas_setLineWidth", {
                 inputs: {
                   WIDTH: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 5,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_setFont",
+              }),
+              block("canvas_setFont", {
                 inputs: {
                   FONT: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "20px Arial",
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_fillText",
+              }),
+              block("canvas_fillText", {
                 inputs: {
                   TEXT: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "Hello!",
                       },
-                    },
+                    }),
                   },
                   X: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 10,
                       },
-                    },
+                    }),
                   },
                   Y: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 50,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_strokeText",
+              }),
+              block("canvas_strokeText", {
                 inputs: {
                   TEXT: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "Outlined!",
                       },
-                    },
+                    }),
                   },
                   X: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 10,
                       },
-                    },
+                    }),
                   },
                   Y: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 90,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_drawRectangle",
+              }),
+              block("canvas_drawRectangle", {
                 inputs: {
                   X: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   Y: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   W: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                   H: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_drawCircle",
+              }),
+              block("canvas_drawCircle", {
                 inputs: {
                   X: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   Y: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   R: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 256,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_drawLine",
+              }),
+              block("canvas_drawLine", {
                 inputs: {
                   X1: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   Y1: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   X2: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                   Y2: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 512,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_drawImage",
+              }),
+              block("canvas_drawImage", {
                 inputs: {
                   SRC: {
-                    shadow: {
-                      type: "text",
+                    shadow: shadow("text", {
                       fields: {
                         TEXT: "https://www.disfuse.xyz/media/disfuse.png",
                       },
-                    },
+                    }),
                   },
                   X: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   Y: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   W: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 128,
                       },
-                    },
+                    }),
                   },
                   H: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 128,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
               block("canvas_clearCanvas"),
               label("Transforms ↓"),
               block("canvas_save"),
               block("canvas_restore"),
-              {
-                kind: "block",
-                type: "canvas_translate",
+              block("canvas_translate", {
                 inputs: {
                   DX: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                   DY: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0,
                       },
-                    },
+                    }),
                   },
                 },
-              },
-              {
-                kind: "block",
-                type: "canvas_rotate",
+              }),
+              block("canvas_rotate", {
                 inputs: {
                   ANGLE: {
-                    shadow: {
-                      type: "math_number",
+                    shadow: shadow("math_number", {
                       fields: {
                         NUM: 0.5,
                       },
-                    },
+                    }),
                   },
                 },
-              },
+              }),
             ],
           },
         ],
@@ -3699,20 +3066,17 @@ export default function getToolbox(blockPacks = [], user) {
           block("comment_multiline"),
           block("comment_statement"),
           block("comment_float"),
-          {
-            kind: "block",
-            type: "comment_value",
+          block("comment_value", {
             inputs: {
               VALUE: {
-                block: {
-                  type: "text",
+                block: block("text", {
                   fields: {
                     TEXT: "value",
                   },
-                },
+                }),
               },
             },
-          },
+          }),
         ],
       },
       {
@@ -3737,48 +3101,38 @@ export default function getToolbox(blockPacks = [], user) {
         contents: [
           label("Files will be created AFTER the bot is run"),
           label("Read data from files ↓"),
-          {
-            kind: "block",
-            type: "fs_readFile",
+          block("fs_readFile", {
             inputs: {
               path: { shadow: shadow("text") },
             },
-          },
+          }),
           block("fs_readFile_data"),
-          {
-            kind: "block",
-            type: "fs_readdir",
+          block("fs_readdir", {
             inputs: {
               path: { shadow: shadow("text") },
             },
-          },
+          }),
           block("fs_readdir_name"),
           block("fs_readdir_path"),
           label("Write a file ↓"),
-          {
-            kind: "block",
-            type: "fs_writeFile",
+          block("fs_writeFile", {
             inputs: {
               path: { shadow: shadow("text") },
               data: { shadow: shadow("text") },
             },
-          },
+          }),
           label("File actions ↓"),
-          {
-            kind: "block",
-            type: "fs_deleteFile",
+          block("fs_deleteFile", {
             inputs: {
               path: { shadow: shadow("text") },
             },
-          },
-          {
-            kind: "block",
-            type: "fs_renameFile",
+          }),
+          block("fs_renameFile", {
             inputs: {
               path: { shadow: shadow("text") },
               newpath: { shadow: shadow("text") },
             },
-          },
+          }),
         ],
       },
       sep(),
