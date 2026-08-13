@@ -1134,6 +1134,23 @@ export default function Workspace() {
     );
   }, []);
 
+  useEffect(() => {
+    function applyStyles() {
+      const iframe = document.querySelector('html > iframe');
+      if (iframe) {
+        iframe.style.setProperty('inset', 'auto 0px 0px auto', 'important');
+        iframe.style.setProperty('transform', 'scale(0.9)', 'important');
+        iframe.style.setProperty('transform-origin', 'bottom right', 'important');
+      }
+    }
+
+    // Apply multiple times just in case the iframe has not appeared yet.
+    applyStyles();
+    setTimeout(applyStyles, 250);
+    setTimeout(applyStyles, 500);
+    setTimeout(applyStyles, 750);
+  }, []);
+
   return (
     <>
       <WorkspaceBar
