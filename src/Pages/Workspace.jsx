@@ -7,6 +7,7 @@ import { Backpack } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
 import "@blockly/toolbox-search";
+import "../fields/fieldColourHsvSliders";
 
 import Swal from "sweetalert2";
 import JSZip from "jszip";

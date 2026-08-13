@@ -2807,6 +2807,10 @@ div.hidden:not(.shown) {
   outline: none;
 }
 
+.blocklyDropDownContent {
+  max-height: 350px !important;
+}
+
 .inbox-container .notifications {
   display: flex;
   flex-direction: column;
@@ -3921,7 +3925,7 @@ input::placeholder {
 }
 
 .newProject-page-container select {
-  height: 2rem;
+  min-height: 2.5rem;
 }
 
 .newProject-page-container #projectCreationGraphic {

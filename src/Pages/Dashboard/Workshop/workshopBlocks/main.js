@@ -50,7 +50,7 @@ Blockly.Blocks["main_blockcreator"] = {
       .appendField("set help url to:")
       .appendField(new Blockly.FieldTextInput("url"), "HELPURL");
     this.appendValueInput("COLOR")
-      .setCheck("Color")
+      .setCheck("Colour")
       .appendField("set color to:");
     this.appendValueInput("OUTPUTCODE")
       .setCheck("String")

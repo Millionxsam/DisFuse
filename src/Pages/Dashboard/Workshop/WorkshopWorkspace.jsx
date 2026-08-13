@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { renderToStaticMarkup } from "react-dom/server";
 import "@blockly/toolbox-search";
+import "../../../fields/fieldColourHsvSliders";
 import { userCache } from "../../../cache.ts";
 
 import.meta.glob("./workshopBlocks/**/*.js", { eager: true });

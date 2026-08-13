@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import javascript from "blockly/javascript";
+import { FieldColourHsvSliders } from "../../../../fields/fieldColourHsvSliders";
 
 function randomColor() {
   const r = Math.floor(Math.random() * 206) + 50;
@@ -14,8 +15,8 @@ Blockly.Blocks["color_picker"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("color")
-      .appendField(new Blockly.FieldColour(randomColor()), "color");
-    this.setOutput(true, "Color");
+      .appendField(new FieldColourHsvSliders(randomColor()), "color");
+    this.setOutput(true, "Colour");
     this.setColour(20);
   },
 };
@@ -25,7 +26,7 @@ javascript.javascriptGenerator.forBlock["color_picker"] = function (
   generator,
 ) {
   var colour = block.getFieldValue("color");
-  return [colour, javascript.Order.ATOMIC];
+  return [generator.quote_(colour), javascript.Order.ATOMIC];
 };
 
 Blockly.Blocks["color_custom"] = {
@@ -46,7 +47,7 @@ Blockly.Blocks["color_custom"] = {
       .appendField("custom hex")
       .appendField(field, "color");
     this.setColour(20);
-    this.setOutput(true, "Color");
+    this.setOutput(true, "Colour");
   },
 };
 
@@ -55,5 +56,5 @@ javascript.javascriptGenerator.forBlock["color_custom"] = function (
   generator,
 ) {
   var colour = block.getFieldValue("color");
-  return [colour, javascript.Order.ATOMIC];
+  return [generator.quote_(colour), javascript.Order.ATOMIC];
 };
