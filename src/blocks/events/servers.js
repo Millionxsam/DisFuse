@@ -6,7 +6,7 @@ import { javascriptGenerator } from "blockly/javascript";
 createEventBlock({
   id: "events_guild_created",
   text: "when the bot is added to a server",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   event: "guildCreate",
   variables: "guildClientJoined",
 });
@@ -14,7 +14,7 @@ createEventBlock({
 createEventVariable({
   id: "events_guild_created_guild",
   text: "server the bot joined",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "server",
   blockOutput: "guildClientJoined",
 });
@@ -33,7 +33,7 @@ createRestrictions(
 createEventBlock({
   id: "events_guild_deleted",
   text: "when the bot is removed from a server",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   event: "guildDelete",
   variables: "guildRemovedClient",
 });
@@ -41,7 +41,7 @@ createEventBlock({
 createEventVariable({
   id: "events_guild_deleted_guild",
   text: "server that removed the bot",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "server",
   blockOutput: "guildRemovedClient",
 });
@@ -60,7 +60,7 @@ createRestrictions(
 Blockly.Blocks["events_guild_memberAdd"] = {
   init: function () {
     this.appendDummyInput().appendField("when a member joins a server");
-    this.setColour("#FF4F4F");
+    this.setColour("#A33DAC");
     this.appendStatementInput("code").setCheck(null);
     this.setPreviousStatement(false);
     this.setNextStatement(false);
@@ -76,7 +76,7 @@ javascriptGenerator.forBlock["events_guild_memberAdd"] = function (block, genera
 createEventVariable({
   id: "events_guild_memberAdd_member",
   text: "member that joined",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "member",
   blockOutput: "guildMemberAdded",
 });
@@ -84,7 +84,7 @@ createEventVariable({
 createEventVariable({
   id: "events_guild_memberAdd_server",
   text: "server the member joined to",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "server",
   blockOutput: "guildMemberAdded.guild",
 });
@@ -92,7 +92,7 @@ createEventVariable({
 createEventVariable({
   id: "events_guild_memberAdd_invite",
   text: "invite the member joined with",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "invite",
   blockOutput: "guildMemberAddedUsedInvite",
 });
@@ -115,7 +115,7 @@ createRestrictions(
 createEventBlock({
   id: "events_remove_guildmemberremove",
   text: "when a member leaves / gets kicked from a server",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   event: "guildMemberRemove",
   variables: "leavingMember",
 });
@@ -123,7 +123,7 @@ createEventBlock({
 createEventVariable({
   id: "events_remove_guildmemberremove_member",
   text: "leaving member",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "member",
   blockOutput: "leavingMember",
 });
@@ -131,7 +131,7 @@ createEventVariable({
 createEventVariable({
   id: "events_remove_guildmemberremove_server",
   text: "server that the member left from",
-  colour: "#FF4F4F",
+  colour: "#A33DAC",
   blockType: "server",
   blockOutput: "leavingMember.guild",
 });

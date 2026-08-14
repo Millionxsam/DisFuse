@@ -7,7 +7,7 @@ import {
 createEventBlock({
   id: "events_message_pinned",
   text: "when a message is pinned",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   event: "messagePinned",
   variables: "pinnedMessage",
 });
@@ -17,13 +17,13 @@ createEventVariable({
   text: "pinned message",
   blockOutput: "pinnedMessage",
   blockType: "message",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
 });
 
 createEventBlock({
   id: "events_message_edited",
   text: "when a message is edited",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   event: "messageContentEdited",
   variables: ["messageEdited", "oldContent", "newContent"],
 });
@@ -33,7 +33,7 @@ createEventVariable({
   text: "edited message",
   blockOutput: "messageEdited",
   blockType: "message",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
 });
 
 createEventVariable({
@@ -41,7 +41,7 @@ createEventVariable({
   text: "old content",
   blockOutput: "oldContent",
   blockType: "String",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
 });
 
 createEventVariable({
@@ -49,13 +49,13 @@ createEventVariable({
   text: "new content",
   blockOutput: "newContent",
   blockType: "String",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
 });
 
 createEventBlock({
   id: "events_message_deleted",
   text: "when a message gets deleted",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   event: "messageDelete",
   variables: "messageDeleted",
 });
@@ -63,7 +63,7 @@ createEventBlock({
 createEventVariable({
   id: "events_message_deleted_message",
   text: "message that got deleted",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   blockType: "message",
   blockOutput: "messageDeleted",
 });
@@ -82,7 +82,7 @@ createRestrictions(
 createEventBlock({
   id: "events_message_ReactionAdd",
   text: "when a reaction is added to a message",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   event: "messageReactionAdd",
   variables: ["messageReaction", "user"],
   blockOutput: "if (messageReaction.partial) await messageReaction.fetch();",
@@ -91,7 +91,7 @@ createEventBlock({
 createEventVariable({
   id: "events_message_ReactionAdd_user",
   text: "user that added reaction",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   blockType: "user",
   blockOutput: "user",
 });
@@ -99,7 +99,7 @@ createEventVariable({
 createEventVariable({
   id: "events_message_ReactionAdd_msg",
   text: "message the reaction was added to",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   blockType: "message",
   blockOutput: "messageReaction.message",
 });
@@ -107,7 +107,7 @@ createEventVariable({
 createEventVariable({
   id: "events_message_ReactionAdd_emoji",
   text: "emoji of the reaction",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   blockType: "String",
   blockOutput: "messageReaction.emoji.toString()",
 });
@@ -115,7 +115,7 @@ createEventVariable({
 createEventVariable({
   id: "events_message_ReactionAdd_count",
   text: "amount of the reaction",
-  colour: "#FF4F4F",
+  colour: "#336EFF",
   blockType: "Number",
   blockOutput: "messageReaction.count",
 });

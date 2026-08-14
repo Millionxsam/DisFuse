@@ -7,7 +7,7 @@ import { createRestrictions } from "../../functions/restrictions";
 createEventBlock({
   id: "events_members_nickname",
   text: "when a member's nickname changes",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   event: "guildMemberNicknameUpdate",
   variables: ["member", "oldNickname", "newNickname"],
 });
@@ -15,7 +15,7 @@ createEventBlock({
 createEventVariable({
   id: "events_members_nickname_member",
   text: "member whose nickname has changed",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "member",
   blockOutput: "member",
 });
@@ -23,7 +23,7 @@ createEventVariable({
 createEventVariable({
   id: "events_members_nickname_oldNickname",
   text: "old nickname",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "String",
   blockOutput: "oldNickname",
 });
@@ -31,7 +31,7 @@ createEventVariable({
 createEventVariable({
   id: "events_members_nickname_newNickname",
   text: "new nickname",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "String",
   blockOutput: "newNickname",
 });
@@ -39,7 +39,7 @@ createEventVariable({
 createEventBlock({
   id: "events_members_addRole",
   text: "when a member is given a role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   event: "guildMemberRoleAdd",
   variables: ["member", "role"],
 });
@@ -47,7 +47,7 @@ createEventBlock({
 createEventVariable({
   id: "events_members_addRole_member",
   text: "member who was given a role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "member",
   blockOutput: "member",
 });
@@ -55,7 +55,7 @@ createEventVariable({
 createEventVariable({
   id: "events_members_addRole_role",
   text: "added role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "role",
   blockOutput: "role",
 });
@@ -63,7 +63,7 @@ createEventVariable({
 createEventBlock({
   id: "events_members_removeRole",
   text: "when a member is removed from a role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   event: "guildMemberRoleRemove",
   variables: ["member", "role"],
 });
@@ -71,7 +71,7 @@ createEventBlock({
 createEventVariable({
   id: "events_members_removeRole_member",
   text: "member who was removed from a role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "member",
   blockOutput: "member",
 });
@@ -79,7 +79,7 @@ createEventVariable({
 createEventVariable({
   id: "events_members_removeRole_role",
   text: "removed role",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "role",
   blockOutput: "role",
 });

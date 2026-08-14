@@ -7,7 +7,7 @@ import {
 createEventBlock({
   id: "events_joins_guildmemberadd",
   text: "when a member joins a server",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   event: "guildMemberAdd",
   variables: "joinedMember",
 });
@@ -15,7 +15,7 @@ createEventBlock({
 createEventVariable({
   id: "events_joins_guildmemberadd_member",
   text: "joining member",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "member",
   blockOutput: "joinedMember",
 });
@@ -23,7 +23,7 @@ createEventVariable({
 createEventVariable({
   id: "events_joins_guildmemberadd_server",
   text: "joining server",
-  colour: "#FF4F4F",
+  colour: "#3c9e56",
   blockType: "server",
   blockOutput: "joinedMember.guild",
 });

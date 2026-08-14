@@ -7,7 +7,7 @@ import { createRestrictions } from "../../functions/restrictions";
 createEventBlock({
   id: "events_emojis_created",
   text: "when an emoji is created",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   event: "emojiCreate",
   variables: ["createdOrDeletedEmoji"],
 });
@@ -15,7 +15,7 @@ createEventBlock({
 createEventBlock({
   id: "events_emojis_deleted",
   text: "when an emoji is deleted",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   event: "emojiDelete",
   variables: ["createdOrDeletedEmoji"],
 });
@@ -23,7 +23,7 @@ createEventBlock({
 createEventVariable({
   id: "events_emojis_createdOrDeletedEmoji",
   text: "created/deleted emoji",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   blockType: "emoji",
   blockOutput: "createdOrDeletedEmoji",
 });
@@ -31,7 +31,7 @@ createEventVariable({
 createEventBlock({
   id: "events_emojis_changed",
   text: "when an emoji is changed",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   event: "emojiUpdate",
   variables: ["oldEmoji"  , "newEmoji"],
 });
@@ -39,7 +39,7 @@ createEventBlock({
 createEventVariable({
   id: "events_emojis_changedOldEmoji",
   text: "emoji before changes",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   blockType: "emoji",
   blockOutput: "oldEmoji",
 });
@@ -47,7 +47,7 @@ createEventVariable({
 createEventVariable({
   id: "events_emojis_changedNewEmoji",
   text: "emoji after changes",
-  colour: "#FF4F4F",
+  colour: "#DEB144",
   blockType: "emoji",
   blockOutput: "newEmoji",
 });
@@ -79,7 +79,7 @@ createRestrictions(
 createEventBlock({
   id: "events_stickers_created",
   text: "when a sticker is created",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   event: "stickerCreate",
   variables: ["createdOrDeletedSticker"],
 });
@@ -87,7 +87,7 @@ createEventBlock({
 createEventBlock({
   id: "events_stickers_deleted",
   text: "when a sticker is deleted",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   event: "stickerDelete",
   variables: ["createdOrDeletedSticker"],
 });
@@ -95,7 +95,7 @@ createEventBlock({
 createEventVariable({
   id: "events_stickers_createdOrDeletedSticker",
   text: "created/deleted sticker",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   blockType: "sticker",
   blockOutput: "createdOrDeletedSticker",
 });
@@ -103,7 +103,7 @@ createEventVariable({
 createEventBlock({
   id: "events_stickers_changed",
   text: "when a sticker is changed",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   event: "stickerUpdate",
   variables: ["oldSticker"  , "newSticker"],
 });
@@ -111,7 +111,7 @@ createEventBlock({
 createEventVariable({
   id: "events_stickers_changedOldSticker",
   text: "sticker before changes",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   blockType: "sticker",
   blockOutput: "oldSticker",
 });
@@ -119,7 +119,7 @@ createEventVariable({
 createEventVariable({
   id: "events_stickers_changedNewSticker",
   text: "sticker after changes",
-  colour: "#FF4F4F",
+  colour: "#7a9e37",
   blockType: "sticker",
   blockOutput: "newSticker",
 });

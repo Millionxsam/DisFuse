@@ -1749,9 +1749,19 @@ export default function getToolbox(blockPacks = [], user) {
               block("server_systemchannel"),
               block("server_ruleschannel"),
               block("server_verified"),
+              block("boost_count"),
+              block("boost_level"),
+              block("boost_progressBar"),
               label("Actions on a server ↓"),
               block("server_disableinvites"),
               block("server_leave"),
+              block("boost_setProgressBar", {
+                inputs: {
+                  enabled: {
+                    shadow: shadow("logic_boolean"),
+                  },
+                },
+              }),
             ],
           },
           {
@@ -2494,7 +2504,7 @@ export default function getToolbox(blockPacks = [], user) {
           {
             kind: "category",
             name: "Server Actions",
-            colour: "FF4F4F",
+            colour: "#A33DAC",
             contents: [
               block("events_guild_memberAdd"),
               block("events_guild_memberAdd_member"),
@@ -2513,8 +2523,32 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "category",
+            name: "Boosts",
+            colour: "#A33DAC",
+            contents: [
+              block("events_boosts_serverBoosted"),
+              block("events_boosts_serverBoosted_member"),
+              block("events_boosts_serverBoosted_server"),
+              label("------------------------------------------------"),
+              block("events_boosts_serverUnboosted"),
+              block("events_boosts_serverUnboosted_member"),
+              block("events_boosts_serverUnboosted_server"),
+              label("------------------------------------------------"),
+              block("events_boosts_levelUp"),
+              block("events_boosts_levelUp_server"),
+              block("events_boosts_levelUp_oldLevel"),
+              block("events_boosts_levelUp_newLevel"),
+              label("------------------------------------------------"),
+              block("events_boosts_levelDown"),
+              block("events_boosts_levelDown_server"),
+              block("events_boosts_levelDown_oldLevel"),
+              block("events_boosts_levelDown_newLevel"),
+            ],
+          },
+          {
+            kind: "category",
             name: "Message Actions",
-            colour: "FF4F4F",
+            colour: "#336EFF",
             contents: [
               block("events_message_deleted"),
               block("events_message_deleted_message"),
@@ -2537,7 +2571,7 @@ export default function getToolbox(blockPacks = [], user) {
           {
             kind: "category",
             name: "Member Actions",
-            colour: "FF4F4F",
+            colour: "#3c9e56",
             contents: [
               block("events_members_addRole"),
               block("events_members_addRole_member"),
@@ -2556,7 +2590,7 @@ export default function getToolbox(blockPacks = [], user) {
           {
             kind: "category",
             name: "Emojis & Stickers",
-            colour: "FF4F4F",
+            colour: "#DEB144",
             contents: [
               block("events_emojis_created"),
               block("events_emojis_deleted"),
