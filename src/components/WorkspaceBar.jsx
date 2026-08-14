@@ -13,6 +13,11 @@ import { io } from "socket.io-client";
 import HostModal from "./HostModal";
 
 import { apiUrl } from "../config/config";
+import {
+  buildProjectDf,
+  isProjectDfFile,
+  parseDfWorkspaceData,
+} from "../functions/dfFile";
 
 export default function WorkspaceBar({
   project,
@@ -351,6 +356,10 @@ export default function WorkspaceBar({
           return Swal.fire("Error", String(error), "error");
         }
 
+        if (isProjectDfFile(json)) {
+          return importProjectFile(json);
+        }
+
         if (!json.blocks || !json.blocks.blocks) {
           return Swal.fire(
             "Error",
@@ -359,31 +368,10 @@ export default function WorkspaceBar({
           );
         }
 
-        Swal.fire({
-          title: "Load Blocks from File",
-          text: "Do you want to replace the blocks in the current workspace?",
-          showCancelButton: true,
-          showDenyButton: true,
-          cancelButtonText: "Cancel",
-          confirmButtonText: "Combine with current workspace",
-          denyButtonText: "Replace blocks",
-          icon: "question",
-          animation: true,
-          ...modalThemeColor(userCache.user),
-        }).then((result) => {
-          if (result.isDismissed) return;
-
-          if (result.isDenied) {
-            Blockly.serialization.workspaces.load(json, workspace);
-          } else {
-            json.blocks.blocks = json.blocks.blocks.concat(
-              Blockly.serialization.workspaces.save(workspace)?.blocks
-                ?.blocks || [],
-            );
-
-            Blockly.serialization.workspaces.load(json, workspace);
-          }
-        });
+        loadWorkspaceData(
+          json,
+          "Do you want to replace the blocks in the current workspace?",
+        );
       };
 
       reader.readAsText(file);
@@ -393,20 +381,144 @@ export default function WorkspaceBar({
     fileInput.remove();
   }
 
-  async function saveFile() {
-    await Swal.fire({
-      title: "Save Current Workspace",
-      text: "This will only save the blocks in the current workspace. To save your entire project to a file, you will need to use the save button in each workspace.",
-      icon: "info",
-      showConfirmButton: true,
-      confirmButtonText: "Save",
+  function loadWorkspaceData(wsData, text) {
+    Swal.fire({
+      title: "Load Blocks from File",
+      text,
+      showCancelButton: true,
+      showDenyButton: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Combine with current workspace",
+      denyButtonText: "Replace blocks",
+      icon: "question",
+      animation: true,
+      ...modalThemeColor(userCache.user),
+    }).then((result) => {
+      if (result.isDismissed) return;
+
+      if (result.isDenied) {
+        Blockly.serialization.workspaces.load(wsData, workspace);
+      } else {
+        wsData.blocks = wsData.blocks || { blocks: [] };
+        wsData.blocks.blocks = (wsData.blocks.blocks || []).concat(
+          Blockly.serialization.workspaces.save(workspace)?.blocks?.blocks || [],
+        );
+
+        Blockly.serialization.workspaces.load(wsData, workspace);
+      }
+    });
+  }
+
+  async function importProjectFile(json) {
+    const fileWorkspaces = (json.workspaces || []).filter((ws) => ws?.name);
+
+    const result = await Swal.fire({
+      title: "Import Project File",
+      text: `This file contains ${
+        fileWorkspaces.length
+      } workspace${fileWorkspaces.length === 1 ? "" : "s"}. How would you like to import it?`,
+      icon: "question",
+      showCancelButton: true,
+      showDenyButton: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Import whole project",
+      denyButtonText: "Load into current workspace",
       ...modalThemeColor(userCache.user),
     });
 
-    const data = JSON.stringify(
-      Blockly.serialization.workspaces.save(workspace),
-    );
-    const blob = new Blob([data], {
+    if (result.isDismissed) return;
+
+    if (result.isDenied) {
+      let target = fileWorkspaces[0];
+
+      if (fileWorkspaces.length > 1) {
+        const pick = await Swal.fire({
+          title: "Select a workspace",
+          input: "select",
+          inputOptions: Object.fromEntries(
+            fileWorkspaces.map((ws, i) => [i, ws.name]),
+          ),
+          showCancelButton: true,
+          ...modalThemeColor(userCache.user),
+        });
+
+        if (!pick.isConfirmed) return;
+        target = fileWorkspaces[Number(pick.value)];
+      }
+
+      return loadWorkspaceData(
+        parseDfWorkspaceData(target.data),
+        `Do you want to load "${target.name}" into the current workspace?`,
+      );
+    }
+
+    const projectWorkspaces = project.workspaces || [];
+    let created = 0;
+    let updated = 0;
+
+    for (const ws of fileWorkspaces) {
+      const existing = projectWorkspaces.find((pw) => pw.name === ws.name);
+      const body = {
+        name: ws.name,
+        data: JSON.stringify(parseDfWorkspaceData(ws.data)),
+      };
+
+      if (existing) {
+        await axios.patch(
+          apiUrl +
+            `/projects/${project._id}/workspaces/${existing._id}/data`,
+          body,
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
+        );
+        updated++;
+      } else {
+        await axios.post(
+          apiUrl + `/projects/${project._id}/workspaces`,
+          body,
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
+        );
+        created++;
+      }
+    }
+
+    Swal.fire({
+      toast: true,
+      position: "top-right",
+      timer: 5000,
+      timerProgressBar: true,
+      icon: "success",
+      title: `Imported ${fileWorkspaces.length} workspace${
+        fileWorkspaces.length === 1 ? "" : "s"
+      } (${created} created, ${updated} updated)`,
+      showConfirmButton: false,
+      ...modalThemeColor(userCache.user),
+    }).then(() => window.location.reload());
+  }
+
+  async function saveFile() {
+    const response = await Swal.fire({
+      title: "Save to File",
+      text: "What would you like to save?",
+      icon: "question",
+      input: "select",
+      inputOptions: {
+        project: "Whole project (all workspaces)",
+        workspace: "Current workspace only",
+      },
+      inputValue: "project",
+      confirmButtonText: "Save",
+      showCancelButton: true,
+      ...modalThemeColor(userCache.user),
+    });
+
+    if (!response.isConfirmed || !response.value) return;
+
+    const data =
+      response.value === "project"
+        ? buildProjectDf(project, workspace, currentWorkspace._id)
+        : Blockly.serialization.workspaces.save(workspace);
+
+    const blob = new Blob([JSON.stringify(data)], {
       type: "text/plain",
     });
 
@@ -425,7 +537,10 @@ export default function WorkspaceBar({
       timer: 5000,
       timerProgressBar: true,
       icon: "success",
-      title: "Successfully saved",
+      title:
+        response.value === "project"
+          ? "Successfully saved whole project"
+          : "Successfully saved current workspace",
       showConfirmButton: false,
       ...modalThemeColor(userCache.user),
     });

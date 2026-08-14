@@ -35,6 +35,7 @@ import WorkspaceTabs from "../components/WorkspaceTabs";
 import WorkspaceBar from "../components/WorkspaceBar";
 import registerCustomBlocks from "../functions/registerCustomBlocks";
 import getExportFiles from "../config/getExportFiles";
+import { buildProjectDf } from "../functions/dfFile";
 import { userCache } from "../cache.ts";
 import InviteModal from "../components/InviteModal.jsx";
 import { io } from "socket.io-client";
@@ -1026,7 +1027,15 @@ export default function Workspace() {
                         zip.file(
                           `${project.name}.df`,
                           JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace),
+                            result.value === "project"
+                              ? buildProjectDf(
+                                  project,
+                                  workspace,
+                                  currentWorkspace.current._id,
+                                )
+                              : Blockly.serialization.workspaces.save(
+                                  workspace,
+                                ),
                           ),
                         );
 

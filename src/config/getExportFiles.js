@@ -31,7 +31,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       
       package.json - Pre-generated information about the project, including required dependencies. This is one of the base files required to run any javascript project.
       index.js - The main file of the project. This file contains ALL of the javascript code for your bot. When you use a block in the DisFuse workspace, it automatically converts it to javascript code and adds it to the index.js file.
-      (project name).df - This is a .df (DisFuse) file, which you can use to load the project back into the DisFuse workspace in case you didn't save it to another file. You can go to the DisFuse website, and click the "load" button at the top, and select this file to bring back all the blocks that you had at the time of exporting.
+      (project name).df - This is a .df (DisFuse) file, which you can use to load the project back into the DisFuse workspace in case you didn't save it to another file. When you export the whole project, this file contains ALL of your project's workspaces, so it can restore your entire project. When you export only the current workspace, it contains just that workspace's blocks. You can go to the DisFuse website, and click the "load" button at the top, and select this file to bring back all the blocks that you had at the time of exporting.
       instructions.txt - These instructions
       
       What to do next:
