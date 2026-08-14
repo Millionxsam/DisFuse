@@ -3,6 +3,9 @@ export const utilFunctions = `
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 };
+
+/* Command cooldowns */
+const disfuseCooldowns = new Map();
 async function getCollection(guild, type) {
   if (!guild) return null;
   const manager = guild[type];

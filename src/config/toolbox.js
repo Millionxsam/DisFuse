@@ -2621,6 +2621,26 @@ export default function getToolbox(blockPacks = [], user) {
           },
         ],
       },
+      {
+        kind: "category",
+        name: "Cooldowns",
+        colour: "#FF6E33",
+        contents: [
+          label("Run a command on cooldown ↓"),
+          block("cooldown_check", {
+            inputs: {
+              duration: { shadow: shadow("math_number", { fields: { NUM: 5000 } }) },
+            },
+          }),
+          label("Check if on cooldown ↓"),
+          block("cooldown_has"),
+          block("cooldown_get"),
+          label("Cooldown actions ↓"),
+          block("cooldown_set"),
+          block("cooldown_clear"),
+          block("cooldown_clearAll"),
+        ],
+      },
       sep(),
       {
         kind: "category",

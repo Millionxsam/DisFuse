@@ -103,7 +103,9 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
     domToMutation(xml: Element | Record<string, string>) {
       mutatorFields.forEach(f => {
         if (xml instanceof Element) {
-          this.settings_[f.name] = xml.getAttribute(f.name) === "true";
+          this.settings_[f.name] =
+            (xml.getAttribute(f.name) ?? xml.getAttribute(f.name.toLowerCase())) ===
+            "true";
         } else {
           this.settings_[f.name] = xml[f.name] === "true";
         }
