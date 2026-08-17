@@ -136,3 +136,12 @@ createRestrictions(
     },
   ],
 );
+
+createEventBlock({
+  id: "events_message_reply",
+  text: "when a message is replied to",
+  colour: "#336EFF",
+  event: "messageCreate",
+  variables: "message",
+  blockOutput: "if (!message.reference) return;",
+});

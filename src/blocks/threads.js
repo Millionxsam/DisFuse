@@ -688,3 +688,114 @@ createRestrictions(
     },
   ],
 );
+
+Blockly.Blocks["threads_msgInThread"] = {
+  init: function () {
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("is");
+    this.appendDummyInput().appendField("in a thread?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#5b67a5");
+    this.setTooltip("Checks if a message is in a thread. A message starting a thread is counted as being in the thread.");
+  },
+};
+
+javascriptGenerator.forBlock["threads_msgInThread"] = function (
+  block,
+  generator,
+) {
+  var value_message = generator.valueToCode(block, "message", Order.NONE);
+  var code = `(${value_message}.channel.isThread() || ${value_message}.hasThread)`;
+  return [code, Order.NONE];
+};
+
+Blockly.Blocks["threads_getThread"] = {
+  init: function () {
+    this.appendValueInput("message")
+      .setCheck("message")
+      .appendField("thread that message");
+    this.appendDummyInput().appendField("is in");
+    this.setInputsInline(true);
+    this.setOutput(true, "channel");
+    this.setColour("#5b67a5");
+    this.setTooltip("Gets the thread that a message is in. Works for messages sent in threads and messages that started a thread.");
+  },
+};
+
+javascriptGenerator.forBlock["threads_getThread"] = function (
+  block,
+  generator,
+) {
+  var value_message = generator.valueToCode(block, "message", Order.NONE);
+  var code = `(${value_message}.channel.isThread() ? ${value_message}.channel : ${value_message}.thread)`;
+  return [code, Order.NONE];
+};
+
+Blockly.Blocks["threads_isStatus"] = {
+  init: function () {
+    this.appendValueInput("thread")
+      .setCheck("channel")
+      .appendField("is thread");
+    this.appendDummyInput()
+      .appendField("")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["locked", "locked"],
+          ["archived", "archived"],
+        ]),
+        "status",
+      );
+    this.appendDummyInput().appendField("?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#5b67a5");
+    this.setTooltip("Checks if a thread is locked or archived.");
+  },
+};
+
+javascriptGenerator.forBlock["threads_isStatus"] = function (block, generator) {
+  var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
+  var status = block.getFieldValue("status");
+  return [`${thread}.${status}`, Order.NONE];
+};
+
+Blockly.Blocks["threads_delete"] = {
+  init: function () {
+    this.appendValueInput("thread")
+      .setCheck("channel")
+      .appendField("delete thread");
+    this.setPreviousStatement("default", null);
+    this.setNextStatement("default", null);
+    this.setColour("#5b67a5");
+    this.setTooltip("Deletes a specified thread.");
+  },
+};
+
+javascriptGenerator.forBlock["threads_delete"] = function (block, generator) {
+  var thread = generator.valueToCode(block, "thread", Order.ATOMIC);
+  return `await ${thread}.delete();\n`;
+};
+
+createRestrictions(
+  ["threads_msgInThread", "threads_getThread"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message"],
+      message: "You must specify the message",
+    },
+  ],
+);
+
+createRestrictions(
+  ["threads_isStatus", "threads_delete"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["thread"],
+      message: "You must specify the thread",
+    },
+  ],
+);

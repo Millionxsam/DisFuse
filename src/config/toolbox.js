@@ -1585,7 +1585,23 @@ export default function getToolbox(blockPacks = [], user) {
               }),
               block("msg_reaction_emoji"),
               block("msg_reaction_count"),
-              block("msg_reaction_users")
+              block("msg_reaction_users"),
+              label("Reply information ↓"),
+              block("msg_isReply", {
+                inputs: {
+                  message: { shadow: shadow("msg_msg") }
+                }
+              }),
+              block("msg_replyPing", {
+                inputs: {
+                  message: { shadow: shadow("msg_msg") }
+                }
+              }),
+              block("msg_replyTo", {
+                inputs: {
+                  message: { shadow: shadow("msg_msg") }
+                }
+              })
             ]
           },
           {
@@ -1671,7 +1687,28 @@ export default function getToolbox(blockPacks = [], user) {
               block("threads_join"),
               block("threads_leave"),
               block("threads_addUser"),
-              block("threads_removeUser")
+              block("threads_removeUser"),
+              block("threads_delete", {
+                inputs: {
+                  thread: { shadow: shadow("threads_createdThread") }
+                }
+              }),
+              label("Thread information ↓"),
+              block("threads_msgInThread", {
+                inputs: {
+                  message: { shadow: shadow("msg_msg") }
+                }
+              }),
+              block("threads_getThread", {
+                inputs: {
+                  message: { shadow: shadow("msg_msg") }
+                }
+              }),
+              block("threads_isStatus", {
+                inputs: {
+                  thread: { shadow: shadow("threads_createdThread") }
+                }
+              })
             ]
           },
           {
@@ -2558,7 +2595,10 @@ export default function getToolbox(blockPacks = [], user) {
               block("events_message_edited_newContent"),
               label("------------------------------------------------"),
               block("events_message_pinned"),
-              block("events_message_pinned_message")
+              block("events_message_pinned_message"),
+              label("------------------------------------------------"),
+              block("events_message_reply"),
+              block("msg_msg")
             ]
           },
           {
@@ -2578,6 +2618,19 @@ export default function getToolbox(blockPacks = [], user) {
               block("events_members_nickname_member"),
               block("events_members_nickname_oldNickname"),
               block("events_members_nickname_newNickname")
+            ]
+          },
+          {
+            kind: "category",
+            name: "Thread Actions",
+            colour: "#5b67a5",
+            contents: [
+              block("events_thread_created"),
+              block("events_thread_created_thread"),
+              block("events_thread_created_parent"),
+              label("------------------------------------------------"),
+              block("events_thread_deleted"),
+              block("events_thread_deleted_thread")
             ]
           },
           {

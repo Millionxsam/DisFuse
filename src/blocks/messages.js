@@ -672,3 +672,62 @@ createRestrictions(
     }
   ]
 );
+
+Blockly.Blocks["msg_isReply"] = {
+  init: function () {
+    this.appendValueInput("message").setCheck("message").appendField("is");
+    this.appendDummyInput().appendField("a reply?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#336EFF");
+    this.setTooltip("Checks if a message is a reply to another message.");
+  }
+};
+
+javascriptGenerator.forBlock["msg_isReply"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.NONE);
+  return [`!!${message}.reference`, Order.NONE];
+};
+
+Blockly.Blocks["msg_replyPing"] = {
+  init: function () {
+    this.appendValueInput("message").setCheck("message").appendField("does");
+    this.appendDummyInput().appendField("have reply ping?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#336EFF");
+    this.setTooltip("Checks if a reply has the reply ping (mention author) activated.");
+  }
+};
+
+javascriptGenerator.forBlock["msg_replyPing"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.NONE);
+  return [`!!${message}.mentions.repliedUser`, Order.NONE];
+};
+
+Blockly.Blocks["msg_replyTo"] = {
+  init: function () {
+    this.appendValueInput("message").setCheck("message").appendField("message that");
+    this.appendDummyInput().appendField("replied to");
+    this.setInputsInline(true);
+    this.setOutput(true, "message");
+    this.setColour("#336EFF");
+    this.setTooltip("Gets the message that a reply was replying to.");
+  }
+};
+
+javascriptGenerator.forBlock["msg_replyTo"] = function (block, generator) {
+  var message = generator.valueToCode(block, "message", Order.NONE);
+  return [`await ${message}.channel.messages.fetch(${message}.reference?.messageId)`, Order.AWAIT];
+};
+
+createRestrictions(
+  ["msg_isReply", "msg_replyPing", "msg_replyTo"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["message"],
+      message: "You must specify the message to check"
+    }
+  ]
+);
