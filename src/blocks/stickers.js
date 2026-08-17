@@ -159,7 +159,7 @@ createMutatorBlock({
   inputs: [
     {
       type: "dummy",
-      label: "Create a sticker",
+      label: "create a sticker",
     },
     {
       type: "value",

@@ -5,9 +5,7 @@ Blockly.Blocks["slash_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -15,16 +13,14 @@ Blockly.Blocks["slash_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-  },
+  }
 };
 
 Blockly.Blocks["slash_reply_rows"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -33,22 +29,20 @@ Blockly.Blocks["slash_reply_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-  },
+  }
 };
 
 Blockly.Blocks["slash_editreply"] = {
   init: function () {
     this.appendDummyInput().appendField("edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#3366CC");
-  },
+  }
 };
 
 Blockly.Blocks["slash_createcontainer"] = {
@@ -57,15 +51,12 @@ Blockly.Blocks["slash_createcontainer"] = {
     this.appendValueInput("guild")
       .setCheck("String")
       .appendField("guild ID (leave blank for global commands):");
-    this.appendStatementInput("commands").setCheck([
-      "contextMenuCreate",
-      "slashCreate",
-    ]);
+    this.appendStatementInput("commands").setCheck(["contextMenuCreate", "slashCreate"]);
     this.setInputsInline(false);
     this.setColour("#3366CC");
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
-  },
+  }
 };
 
 Blockly.Blocks["slash_create"] = {
@@ -74,60 +65,50 @@ Blockly.Blocks["slash_create"] = {
     this.appendValueInput("name").setCheck("String").appendField("name:");
     this.appendValueInput("dsc").setCheck("String").appendField("description:");
     this.appendValueInput("nsfw").setCheck("Boolean").appendField("NSFW:");
-    this.appendValueInput("dm")
-      .setCheck("Boolean")
-      .appendField("usable in DMs:");
+    this.appendValueInput("dm").setCheck("Boolean").appendField("usable in DMs:");
     this.appendValueInput("perms")
       .setCheck(["Array", "permission"])
       .appendField("required user permission(s):");
-    this.appendStatementInput("options")
-      .setCheck("default")
-      .appendField("option(s):");
+    this.appendStatementInput("options").setCheck("default").appendField("option(s):");
     this.setInputsInline(false);
     this.setColour("#3366CC");
     this.setPreviousStatement(true, ["slashCreate", "contextMenuCreate"]);
     this.setNextStatement(true, ["slashCreate", "contextMenuCreate"]);
-  },
+  }
 };
 
 Blockly.Blocks["msg_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("then").appendField("then:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["msg_reply_rows"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the message");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.appendStatementInput("then").appendField("then:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#336EFF");
-  },
+  }
 };
 
 Blockly.Blocks["misc_int_reply"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -135,16 +116,14 @@ Blockly.Blocks["misc_int_reply"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-  },
+  }
 };
 
 Blockly.Blocks["misc_int_reply_rows"] = {
   init: function () {
     this.appendDummyInput().appendField("reply to the interaction");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendValueInput("ephemeral")
       .setCheck("Boolean")
       .appendField("visible only to the user?");
@@ -153,22 +132,20 @@ Blockly.Blocks["misc_int_reply_rows"] = {
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-  },
+  }
 };
 
 Blockly.Blocks["misc_int_edit"] = {
   init: function () {
     this.appendDummyInput().appendField("edit the reply");
     this.appendValueInput("content").setCheck("String").appendField("content:");
-    this.appendValueInput("embeds")
-      .setCheck("String")
-      .appendField("embed name(s):");
+    this.appendValueInput("embeds").setCheck("String").appendField("embed name(s):");
     this.appendStatementInput("rows").setCheck("rows").appendField("rows:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "default");
     this.setNextStatement(true, "default");
     this.setColour("#4192E9");
-  },
+  }
 };
 
 Blockly.Blocks["main_amountservers"] = {
@@ -177,7 +154,7 @@ Blockly.Blocks["main_amountservers"] = {
     this.setOutput(true, "Number");
     this.setColour("#FF6E33");
     this.setInputsInline(true);
-  },
+  }
 };
 
 javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
@@ -250,10 +227,7 @@ javascriptGenerator.forBlock["slash_create"] = function (block, generator) {
   return code;
 };
 
-javascriptGenerator.forBlock["slash_createcontainer"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["slash_createcontainer"] = function (block, generator) {
   var value_guild = generator.valueToCode(block, "guild", Order.ATOMIC);
   var statements_code = generator.statementToCode(block, "commands");
 
@@ -308,10 +282,7 @@ javascriptGenerator.forBlock["misc_int_reply"] = function (block, generator) {
   return code;
 };
 
-javascriptGenerator.forBlock["misc_int_reply_rows"] = function (
-  block,
-  generator,
-) {
+javascriptGenerator.forBlock["misc_int_reply_rows"] = function (block, generator) {
   var value_content = generator.valueToCode(block, "content", Order.ATOMIC);
   var value_embeds = generator.valueToCode(block, "embeds", Order.ATOMIC);
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
@@ -341,5 +312,30 @@ javascriptGenerator.forBlock["misc_int_edit"] = function (block, generator) {
 
 javascriptGenerator.forBlock["main_amountservers"] = () => [
   `(await getCollection(client, "guilds")).size`,
-  Order.NONE,
+  Order.NONE
 ];
+
+Blockly.Blocks["colour_hex"] = {
+  init: function () {
+    var validator = function (newValue) {
+      let regExp = /^#([0-9a-fA-F]{3}){1,2}$/i;
+      if (regExp.test(newValue)) {
+        return newValue;
+      } else {
+        return null;
+      }
+    };
+
+    var field = new Blockly.FieldTextInput("#ffffff");
+    field.setValidator(validator);
+
+    this.appendDummyInput().appendField("hex colour").appendField(field, "colour");
+    this.setColour("#ad794c");
+    this.setOutput(true, "Colour");
+  }
+};
+
+javascriptGenerator.forBlock["colour_hex"] = function (block, generator) {
+  var colour = block.getFieldValue("colour");
+  return [generator.quote_(colour), Order.ATOMIC];
+};

@@ -63,10 +63,10 @@ ${oncooldown}`;
 
 Blockly.Blocks["cooldown_has"] = {
   init: function () {
-    this.appendValueInput("user").setCheck("user").appendField("is user:");
+    this.appendValueInput("user").setCheck("user").appendField("is user");
     this.appendValueInput("command")
       .setCheck("String")
-      .appendField("on cooldown for command:");
+      .appendField("on cooldown for command");
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour(COLOUR);
@@ -87,8 +87,8 @@ javascriptGenerator.forBlock["cooldown_has"] = function (block, generator) {
 
 Blockly.Blocks["cooldown_get"] = {
   init: function () {
-    this.appendValueInput("user").setCheck("user").appendField("cooldown left for user:");
-    this.appendValueInput("command").setCheck("String").appendField("on command:");
+    this.appendValueInput("user").setCheck("user").appendField("cooldown left for user");
+    this.appendValueInput("command").setCheck("String").appendField("on command");
     this.setInputsInline(true);
     this.setOutput(true, "Number");
     this.setColour(COLOUR);

@@ -7,7 +7,7 @@ Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
     this.appendValueInput("content")
       .setCheck("String")
-      .appendField("Text display:");
+      .appendField("text display:");
     this.setPreviousStatement(true, ["rootComponents", "containerComponents"]);
     this.setNextStatement(true, ["rootComponents", "containerComponents"]);
     this.setColour("#26A4AF");
@@ -25,7 +25,7 @@ javascriptGenerator.forBlock["cv2_textDisplay"] = function (block, generator) {
 Blockly.Blocks["cv2_separator"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("Separator with")
+      .appendField("separator with")
       .appendField(
         new Blockly.FieldDropdown([
           ["small spacing", "Small"],
@@ -54,7 +54,7 @@ javascriptGenerator.forBlock["cv2_separator"] = function (block) {
 
 Blockly.Blocks["cv2_section_thumbnail"] = {
   init: function () {
-    this.appendDummyInput().appendField("Section with thumbnail");
+    this.appendDummyInput().appendField("section with thumbnail");
     this.appendValueInput("text").setCheck("String").appendField("text:");
     this.appendValueInput("thumbnailUrl")
       .setCheck("String")
@@ -146,7 +146,7 @@ javascriptGenerator.forBlock["cv2_section_button"] = function (
 
 Blockly.Blocks["cv2_mediaGallery"] = {
   init: function () {
-    this.appendDummyInput().appendField("Media gallery");
+    this.appendDummyInput().appendField("media gallery");
     this.appendStatementInput("items")
       .setCheck("cv2galleryitem")
       .appendField("images:");
@@ -168,7 +168,7 @@ Blockly.Blocks["cv2_mediaGalleryItem"] = {
   init: function () {
     this.appendValueInput("url")
       .setCheck("String")
-      .appendField("Image with URL:");
+      .appendField("image with URL:");
     this.appendValueInput("alt").setCheck("String").appendField("description:");
     this.appendDummyInput()
       .appendField("spoiler?")
@@ -193,7 +193,7 @@ javascriptGenerator.forBlock["cv2_mediaGalleryItem"] = function (
 
 Blockly.Blocks["cv2_container"] = {
   init: function () {
-    this.appendDummyInput().appendField("Container");
+    this.appendDummyInput().appendField("container");
     this.appendValueInput("color")
       .setCheck(["Colour", "String"])
       .appendField("accent color (optional):");
@@ -258,7 +258,7 @@ Blockly.Blocks["cv2_file"] = {
   init: function () {
     this.appendValueInput("file")
       .setCheck("String")
-      .appendField("Show file with name:");
+      .appendField("show file with name:");
     this.appendDummyInput()
       .appendField("spoiler?")
       .appendField(new Blockly.FieldCheckbox("FALSE"), "spoiler");
@@ -293,7 +293,7 @@ Blockly.Blocks["cv2_addFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Add file from URL/path:");
+      .appendField("add file from URL/path:");
     this.appendValueInput("name").setCheck("String").appendField("with name:");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "files");
@@ -313,7 +313,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_sendMessage_mutator",
   colour: "#AD509B",
   inputs: [
-    { type: "value", name: "channel", check: "channel", label: "Send message in channel:" },
+    { type: "value", name: "channel", check: "channel", label: "send message in channel:" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
@@ -356,7 +356,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_sendDm_mutator",
   colour: "#3c9e56",
   inputs: [
-    { type: "value", name: "member", check: ["member", "user"], label: "Send a DM to user/member:" },
+    { type: "value", name: "member", check: ["member", "user"], label: "send a DM to user/member:" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
@@ -398,7 +398,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_replyInteraction_mutator",
   colour: "#4192E9",
   inputs: [
-    { type: "dummy", label: "Reply to the interaction" },
+    { type: "dummy", label: "reply to the interaction" },
     { type: "value", name: "ephemeral", check: "Boolean", label: "visible only to the user?" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
@@ -443,7 +443,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_replyMsg_mutator",
   colour: "#336EFF",
   inputs: [
-    { type: "dummy", label: "Reply to the message" },
+    { type: "dummy", label: "reply to the message" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
@@ -484,7 +484,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_editReplyInteraction_mutator",
   colour: "#4192E9",
   inputs: [
-    { type: "dummy", label: "Edit the bot's reply" },
+    { type: "dummy", label: "edit the bot's reply" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [
@@ -525,7 +525,7 @@ createMutatorBlock({
   optionsBlockId: "cv2_editMsg_mutator",
   colour: "#336EFF",
   inputs: [
-    { type: "value", name: "message", check: "message", label: "Edit message:" },
+    { type: "value", name: "message", check: "message", label: "edit message:" },
     { type: "statement", name: "components", check: "rootComponents", label: "components:" },
   ],
   mutatorFields: [

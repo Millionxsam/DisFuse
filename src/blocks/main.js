@@ -41,7 +41,7 @@ javascriptGenerator.forBlock["main_botStart"] = function (block, generator) {
   client = new Discord.Client({
     intents: Object.values(Discord.GatewayIntentBits)
   });
-  
+
   client.login(${token});\n`;
   return code;
 };

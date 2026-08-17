@@ -73,7 +73,7 @@ createMutatorBlock({
   optionsBlockId: "misc_int_edit_mutator_options",
   colour: "#4192E9",
   inputs: [
-    { type: "dummy", label: "Edit the reply" },
+    { type: "dummy", label: "edit the reply" },
     { type: "value", name: "content", check: "String", label: "content:" },
   ],
   mutatorFields: [
@@ -210,7 +210,7 @@ createRestrictions(
 
 Blockly.Blocks["misc_addrow"] = {
   init: function () {
-    this.appendDummyInput().appendField("Interactive row (buttons/menus)");
+    this.appendDummyInput().appendField("interactive row (buttons/menus)");
     this.appendStatementInput("components")
       .setCheck("default")
       .appendField("with:");
@@ -233,7 +233,7 @@ Blockly.Blocks["misc_addrow"] = {
 
 Blockly.Blocks["misc_int_deferReply"] = {
   init: function () {
-    this.appendDummyInput().appendField("Defer reply");
+    this.appendDummyInput().appendField("defer reply");
     this.appendValueInput("ephemeral")
       .appendField("visible only to the user?")
       .setCheck("Boolean");
@@ -377,7 +377,7 @@ Blockly.Blocks["misc_addFile"] = {
   init: function () {
     this.appendValueInput("path")
       .setCheck("String")
-      .appendField("Add file from path:");
+      .appendField("add file from path:");
     this.setPreviousStatement(true, "files");
     this.setNextStatement(true, "files");
     this.setColour("4192E9");
@@ -465,7 +465,7 @@ javascript.javascriptGenerator.forBlock["misc_createcontainer_global"] =
     code = code + `.commands.set([${setCode}\n]);\n`;
 
     return `client.on("clientReady", async () => {
-      ${code}  
+      ${code}
     });`;
   };
 
