@@ -2933,6 +2933,85 @@ export default function getToolbox(blockPacks = [], user) {
           },
           {
             kind: "category",
+            name: "Roblox",
+            colour: "#e2231a",
+            contents: [
+              label("No API key needed, all of this is public info ↓"),
+              label("----------------------------------------------"),
+              label("Get a user first, then use the info block ↓"),
+              block("roblox_getUser", {
+                inputs: {
+                  username: {
+                    shadow: shadow("text", { fields: { TEXT: "Roblox" } })
+                  }
+                }
+              }),
+              block("roblox_userInfo"),
+              label("----------------------------------------------"),
+              label("Quick user info (no need to get the user first) ↓"),
+              block("roblox_userId", {
+                inputs: {
+                  username: { shadow: shadow("text") }
+                }
+              }),
+              block("roblox_userAvatar", {
+                inputs: {
+                  username: { shadow: shadow("text") }
+                }
+              }),
+              block("roblox_profileLink", {
+                inputs: {
+                  username: { shadow: shadow("text") }
+                }
+              }),
+              label("----------------------------------------------"),
+              label("Groups ↓"),
+              block("roblox_getGroup", {
+                inputs: {
+                  id: { shadow: shadow("math_number", { fields: { NUM: 7 } }) }
+                }
+              }),
+              block("roblox_groupInfo"),
+              block("roblox_userInGroup", {
+                inputs: {
+                  username: { shadow: shadow("text") },
+                  id: { shadow: shadow("math_number", { fields: { NUM: 7 } }) }
+                }
+              }),
+              block("roblox_userGroupRank", {
+                inputs: {
+                  username: { shadow: shadow("text") },
+                  id: { shadow: shadow("math_number", { fields: { NUM: 7 } }) }
+                }
+              }),
+              label("----------------------------------------------"),
+              label("Games (the place ID is the number in the game's link) ↓"),
+              block("roblox_getGame", {
+                inputs: {
+                  id: {
+                    shadow: shadow("math_number", { fields: { NUM: 1818 } })
+                  }
+                }
+              }),
+              block("roblox_gameInfo"),
+              label("----------------------------------------------"),
+              label("Gamepasses & badges ↓"),
+              block("roblox_ownsGamepass", {
+                inputs: {
+                  username: { shadow: shadow("text") },
+                  id: { shadow: shadow("math_number", { fields: { NUM: 0 } }) }
+                }
+              }),
+              block("roblox_ownsBadge", {
+                inputs: {
+                  username: { shadow: shadow("text") },
+                  id: { shadow: shadow("math_number", { fields: { NUM: 0 } }) }
+                }
+              })
+            ]
+          },
+          {
+            kind: "category",
             name: "Captcha",
             colour: "#0fbd8c",
             contents: [
