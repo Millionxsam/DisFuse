@@ -339,3 +339,110 @@ javascriptGenerator.forBlock["colour_hex"] = function (block, generator) {
   var colour = block.getFieldValue("colour");
   return [generator.quote_(colour), Order.ATOMIC];
 };
+
+Blockly.Blocks["modal_add_text_input"] = {
+  init: function () {
+    this.appendValueInput("label")
+      .setCheck("String")
+      .appendField("add text input with label:");
+    this.appendValueInput("customId")
+      .setCheck("String")
+      .appendField("set custom ID to:");
+    this.appendValueInput("required")
+      .setCheck("Boolean")
+      .appendField("set required to:");
+    this.appendDummyInput()
+      .appendField("set style to")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["short", "Short"],
+          ["paragraph", "Paragraph"],
+        ]),
+        "style",
+      );
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "Array");
+    this.setNextStatement(true, "Array");
+    this.setColour("#1A8793");
+    this.setTooltip("Adds a text input to a modal.");
+  },
+};
+
+javascriptGenerator.forBlock["modal_add_text_input"] = function (
+  block,
+  generator,
+) {
+  var label = generator.valueToCode(block, "label", Order.ATOMIC);
+  var required = generator.valueToCode(block, "required", Order.ATOMIC);
+  var customId = generator.valueToCode(block, "customId", Order.ATOMIC);
+  var style = block.getFieldValue("style");
+
+  const code = `new Discord.ActionRowBuilder().addComponents(
+  new Discord.TextInputBuilder()
+    .setCustomId(${customId})
+    .setLabel(${label})
+    .setRequired(${required})
+    .setStyle('${style}')
+),\n`;
+  return code;
+};
+
+Blockly.Blocks["modal_add_text_input_advanced"] = {
+  init: function () {
+    this.appendValueInput("label")
+      .setCheck("String")
+      .appendField("add advanced text input with label:");
+    this.appendValueInput("customId")
+      .setCheck("String")
+      .appendField("set custom ID to:");
+    this.appendValueInput("required")
+      .setCheck("Boolean")
+      .appendField("set required to:");
+    this.appendDummyInput()
+      .appendField("set style to")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["short", "Short"],
+          ["paragraph", "Paragraph"],
+        ]),
+        "style",
+      );
+    this.appendValueInput("placeholder")
+      .setCheck("String")
+      .appendField("set placeholder to:");
+    this.appendValueInput("max")
+      .setCheck("Number")
+      .appendField("maximum length:");
+    this.appendValueInput("min")
+      .setCheck("Number")
+      .appendField("minimum length:");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, "Array");
+    this.setNextStatement(true, "Array");
+    this.setColour("#1A8793");
+    this.setTooltip("Adds a text input to a modal. (Advanced creation)");
+  },
+};
+
+javascriptGenerator.forBlock["modal_add_text_input_advanced"] = function (
+  block,
+  generator,
+) {
+  var label = generator.valueToCode(block, "label", Order.ATOMIC);
+  var required = generator.valueToCode(block, "required", Order.ATOMIC);
+  var customId = generator.valueToCode(block, "customId", Order.ATOMIC);
+  var placeholder = generator.valueToCode(block, "placeholder", Order.ATOMIC);
+  var max = generator.valueToCode(block, "max", Order.ATOMIC);
+  var min = generator.valueToCode(block, "min", Order.ATOMIC);
+  var style = block.getFieldValue("style");
+
+  const code = `new Discord.TextInputBuilder()
+    .setCustomId(${customId})
+    .setLabel(${label})
+    .setRequired(${required})
+    .setPlaceholder(${placeholder})
+    .setMaxLength(${max})
+    .setMinLength(${min})
+    .setStyle('${style}'),\n`;
+  return code;
+};

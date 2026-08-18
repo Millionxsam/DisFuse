@@ -2426,34 +2426,179 @@ export default function getToolbox(blockPacks = [], user) {
                   customId: { shadow: shadow("text") }
                 }
               }),
-              label("Put text input(s) inside the 'create modal' block ↓"),
-              block("modal_add_text_input", {
+              label("Put these inside the 'create modal' block ↓"),
+              label("A modal can hold up to 5 of them"),
+              block("modalc_label", {
                 inputs: {
                   label: { shadow: shadow("text") },
+                  description: { shadow: shadow("text") }
+                }
+              }),
+              block("modalc_textDisplay", {
+                inputs: {
+                  content: { shadow: shadow("text") }
+                }
+              }),
+              label("Plug one of these into the label block ↓"),
+              block("modalc_textInput", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 0 } }) },
+                  max: {
+                    shadow: shadow("math_number", { fields: { NUM: 1000 } })
+                  },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_stringSelect", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_userSelect", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_roleSelect", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_mentionableSelect", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_channelSelect", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  placeholder: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") },
+                  channelTypes: {
+                    block: {
+                      type: "lists_create_with",
+                      inputs: {
+                        ADD0: { block: { type: "misc_channelType" } },
+                        ADD1: { block: { type: "misc_channelType" } },
+                        ADD2: { block: { type: "misc_channelType" } }
+                      }
+                    }
+                  }
+                }
+              }),
+              block("modalc_fileUpload", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_radioGroup", {
+                inputs: {
                   customId: { shadow: shadow("text") },
                   required: { shadow: shadow("logic_boolean") }
                 }
               }),
-              block("modal_add_text_input_advanced", {
+              block("modalc_checkboxGroup", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  min: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  max: { shadow: shadow("math_number", { fields: { NUM: 1 } }) },
+                  required: { shadow: shadow("logic_boolean") }
+                }
+              }),
+              block("modalc_checkbox", {
+                inputs: {
+                  customId: { shadow: shadow("text") },
+                  checked: {
+                    shadow: shadow("logic_boolean", { fields: { BOOL: "FALSE" } })
+                  }
+                }
+              }),
+              label("Options for the select menu ↓"),
+              block("modalc_selectOption", {
                 inputs: {
                   label: { shadow: shadow("text") },
-                  customId: { shadow: shadow("text") },
-                  required: { shadow: shadow("logic_boolean") },
-                  placeholder: { shadow: shadow("text") },
-                  max: {
-                    shadow: shadow("math_number", { fields: { NUM: 100 } })
-                  },
-                  min: { shadow: shadow("math_number", { fields: { NUM: 10 } }) }
+                  description: { shadow: shadow("text") },
+                  emoji: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
+                  default: {
+                    shadow: shadow("logic_boolean", { fields: { BOOL: "FALSE" } })
+                  }
+                }
+              }),
+              label("Options for the radio buttons / checkboxes ↓"),
+              block("modalc_choiceOption", {
+                inputs: {
+                  label: { shadow: shadow("text") },
+                  description: { shadow: shadow("text") },
+                  value: { shadow: shadow("text") },
+                  default: {
+                    shadow: shadow("logic_boolean", { fields: { BOOL: "FALSE" } })
+                  }
                 }
               }),
               label("Events ↓"),
               block("modal_handle_interaction"),
-              label("Information about the submitted modal ↓"),
+              label("Get what the user submitted ↓"),
               block("modal_get_input_value", {
                 inputs: {
                   customId: { shadow: shadow("text") }
                 }
               }),
+              block("modalc_getStringSelectValues", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getSelectedUsers", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getSelectedMembers", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getSelectedRoles", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getSelectedChannels", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getSelectedMentionables", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getUploadedFileUrls", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getRadioGroup", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getCheckboxGroup", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              block("modalc_getCheckbox", {
+                inputs: { customId: { shadow: shadow("text") } }
+              }),
+              label("Information about the submitted modal ↓"),
               block("modal_get_author"),
               block("modal_get_customId"),
               label("Reply to the modal after submitted ↓"),
@@ -2473,244 +2618,6 @@ export default function getToolbox(blockPacks = [], user) {
               }),
               block("cv2_editReplyInteraction")
             ]
-          },
-          {
-            kind: "category",
-            name: "Modal Components",
-            colour: "1A8793",
-            contents: [
-              label(
-                "These blocks go inside the 'create modal with title' block in the Modals category",
-              ),
-              label("A modal can hold up to 5 of the blocks below ↓"),
-              {
-                kind: "block",
-                type: "modalc_label",
-                inputs: {
-                  label: { shadow: shadow("text") },
-                  description: { shadow: shadow("text") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_textDisplay",
-                inputs: {
-                  content: { shadow: shadow("text") },
-                },
-              },
-              label("Plug one of these into the block above ↓"),
-              {
-                kind: "block",
-                type: "modalc_textInput",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  value: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 0 } } },
-                  max: {
-                    shadow: { type: "math_number", fields: { NUM: 1000 } },
-                  },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_stringSelect",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_userSelect",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_roleSelect",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_mentionableSelect",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_channelSelect",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  placeholder: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                  channelTypes: {
-                    block: {
-                      type: "lists_create_with",
-                      inputs: {
-                        ADD0: { block: { type: "misc_channelType" } },
-                        ADD1: { block: { type: "misc_channelType" } },
-                        ADD2: { block: { type: "misc_channelType" } },
-                      },
-                    },
-                  },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_fileUpload",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_radioGroup",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_checkboxGroup",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  min: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  max: { shadow: { type: "math_number", fields: { NUM: 1 } } },
-                  required: { shadow: shadow("logic_boolean") },
-                },
-              },
-              {
-                kind: "block",
-                type: "modalc_checkbox",
-                inputs: {
-                  customId: { shadow: shadow("text") },
-                  checked: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              label("Options for the select menu ↓"),
-              {
-                kind: "block",
-                type: "modalc_selectOption",
-                inputs: {
-                  label: { shadow: shadow("text") },
-                  description: { shadow: shadow("text") },
-                  emoji: { shadow: shadow("text") },
-                  value: { shadow: shadow("text") },
-                  default: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              label("Options for the radio buttons / checkboxes ↓"),
-              {
-                kind: "block",
-                type: "modalc_choiceOption",
-                inputs: {
-                  label: { shadow: shadow("text") },
-                  description: { shadow: shadow("text") },
-                  value: { shadow: shadow("text") },
-                  default: {
-                    shadow: {
-                      type: "logic_boolean",
-                      fields: { BOOL: "FALSE" },
-                    },
-                  },
-                },
-              },
-              label(
-                "Get what the user submitted (use these under the 'when a modal is submitted' event) ↓",
-              ),
-              {
-                kind: "block",
-                type: "modalc_getStringSelectValues",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getSelectedUsers",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getSelectedMembers",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getSelectedRoles",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getSelectedChannels",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getSelectedMentionables",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getUploadedFiles",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getUploadedFileUrls",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getRadioGroup",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getCheckboxGroup",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-              {
-                kind: "block",
-                type: "modalc_getCheckbox",
-                inputs: { customId: { shadow: shadow("text") } },
-              },
-            ],
           },
           {
             kind: "category",

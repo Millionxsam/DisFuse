@@ -614,17 +614,8 @@ const getters = [
       "Gets everything the user picked in a mentionable select menu, as one list of users and roles.",
   },
   {
-    type: "modalc_getUploadedFiles",
-    text: "uploaded files of the file upload with custom ID:",
-    output: "Array",
-    code: (id) =>
-      `[...((interaction).fields.getUploadedFiles(${id})?.values() ?? [])]`,
-    tooltip:
-      "Gets the list of files the user uploaded. Each item is an attachment.",
-  },
-  {
     type: "modalc_getUploadedFileUrls",
-    text: "links of the uploaded files of the file upload with custom ID:",
+    text: "links of the files uploaded to the file upload with custom ID:",
     output: "Array",
     code: (id) =>
       `[...((interaction).fields.getUploadedFiles(${id})?.values() ?? [])].map(f => f.url)`,
