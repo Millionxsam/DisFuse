@@ -15,32 +15,35 @@ export default function Explore() {
   const pageSize = 10;
 
   useEffect(() => {
-    if (!userCache.explore) {
-      axios
-        .get(`${apiUrl}/projects`, {
-          headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
-          },
-        })
-        .then(({ data }) => {
-          const sorted = data.sort((a, b) => b.likes.length - a.likes.length);
-          userCache.explore = sorted;
-          setProjects(sorted);
-          setShown(sorted);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching projects:", err);
-          setLoading(false);
-        });
-    } else {
-      const sorted = userCache.explore.sort(
+    if (userCache.explore) {
+      const sorted = [...userCache.explore].sort(
         (a, b) => b.likes.length - a.likes.length,
       );
       setProjects(sorted);
       setShown(sorted);
       setLoading(false);
+      return;
     }
+
+    axios
+      .get(`${apiUrl}/projects?limit=200`, {
+        headers: {
+          Authorization: localStorage.getItem("disfuse-token"),
+        },
+      })
+      .then(({ data }) => {
+        const sorted = data.projects.sort(
+          (a, b) => b.likes.length - a.likes.length,
+        );
+        userCache.explore = sorted;
+        setProjects(sorted);
+        setShown(sorted);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching projects:", err);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {

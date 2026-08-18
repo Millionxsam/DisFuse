@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { userCache } from "../../cache.ts";
 
-import { discordUrl, apiUrl } from "../../config/config.js";
+import { apiUrl } from "../../config/config.js";
 
 const navItems = [
   { to: "/projects", label: "Projects", icon: "fa-solid fa-cubes" },
@@ -30,23 +30,19 @@ export default function Sidebar() {
       setUser(userCache.user);
       setIsStaff(userCache?.isStaff ?? false);
     } else {
+      const token = localStorage.getItem("disfuse-token");
       axios
-        .get(discordUrl + "/users/@me", {
-          headers: {
-            Authorization: localStorage.getItem("disfuse-token"),
-          },
+        .post(`${apiUrl}/users`, null, {
+          headers: { Authorization: token },
         })
-        .then(({ data }) => {
-          axios.get(apiUrl + "/users").then(({ data: users }) => {
-            const foundUser = users.find((u) => u.id === data.id);
-            setUser(foundUser);
-            userCache.user = foundUser;
+        .then(({ data: foundUser }) => {
+          setUser(foundUser);
+          userCache.user = foundUser;
 
-            axios.get(apiUrl + "/users/staff").then(({ data: staff }) => {
-              let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
-              setIsStaff(isStaff);
-              userCache.isStaff = isStaff;
-            });
+          axios.get(`${apiUrl}/users/staff`).then(({ data: staff }) => {
+            let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
+            setIsStaff(isStaff);
+            userCache.isStaff = isStaff;
           });
         });
     }

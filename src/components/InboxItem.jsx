@@ -54,10 +54,8 @@ export default function InboxItem({ item, user, index }) {
       setProject(inCache);
     } else {
       axios
-        .get(`${apiUrl}/projects`, { headers: { Authorization: token } })
-        .then(({ data: projects }) =>
-          setProject(projects.find((p) => p._id === pid) || null),
-        )
+        .get(`${apiUrl}/projects/${pid}`, { headers: { Authorization: token } })
+        .then(({ data }) => setProject(data || null))
         .catch(() => setProject(null));
     }
   }, [item.notification.projectId, allProjects, token]);

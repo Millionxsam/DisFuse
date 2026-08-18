@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { userCache } from "../../cache.ts";
-import { apiUrl, discordUrl } from "../../config/config.js";
+import { apiUrl } from "../../config/config.js";
 
 export default function StaffPanel() {
   const [activeTab, setActiveTab] = useState("users");
@@ -20,22 +20,28 @@ export default function StaffPanel() {
     if (!localUser && !userCache.localUser) {
       const token = localStorage.getItem("disfuse-token");
 
-      axios
-        .get(discordUrl + "/users/@me", { headers: { Authorization: token } })
-        .then(({ data: user }) => {
-          setLocalUser(user);
-          userCache.localUser = user;
+      async function loadUser() {
+        if (userCache.user?.id) return userCache.user;
 
-          return axios.get(apiUrl + "/users/staff", {
-            headers: { Authorization: token },
-          });
-        })
-        .then(({ data: newStaff }) => {
+        const { data } = await axios.post(`${apiUrl}/users`, null, {
+          headers: { Authorization: token },
+        });
+        userCache.user = data;
+        return data;
+      }
+
+      loadUser().then((userData) => {
+        setLocalUser(userData);
+        userCache.localUser = userData;
+
+        axios.get(apiUrl + "/users/staff", {
+          headers: { Authorization: token },
+        }).then(({ data: newStaff }) => {
           setStaff(newStaff);
           userCache.allStaff = newStaff;
 
           const staffUser = newStaff.users.find(
-            (u) => u.id === userCache.localUser?.id,
+            (u) => u.id === userData?.id,
           );
           if (
             !staffUser ||
@@ -44,6 +50,7 @@ export default function StaffPanel() {
             return;
           }
         });
+      });
 
       if (!userCache.allUsers) {
         axios
@@ -67,15 +74,13 @@ export default function StaffPanel() {
 
       if (!userCache.allProjects) {
         axios
-          .get(apiUrl + "/projects", { headers: { Authorization: token } })
+          .get(apiUrl + "/projects?limit=100", { headers: { Authorization: token } })
           .then(({ data }) => {
-            userCache.allProjects = data;
-            setProjects(data);
-            console.log(userCache.allProjects);
+            userCache.allProjects = data.projects;
+            setProjects(data.projects);
           });
       } else {
         setProjects(userCache.allProjects);
-        console.log(userCache.allProjects);
       }
     }
   }, [localUser]);

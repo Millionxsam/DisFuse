@@ -7,7 +7,7 @@ import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
 
-import { discordUrl, apiUrl } from "../../../config/config.js";
+import { apiUrl } from "../../../config/config.js";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -102,13 +102,7 @@ export default function MyProjects() {
   }, []);
 
   useEffect(() => {
-    if (!(userCache.user && userCache.projects)) {
-      axios
-        .get(discordUrl + "/users/@me", { headers: { Authorization: token } })
-        .then(({ data: userData }) => {
-          setUser(userData);
-        });
-    } else {
+    if (userCache.user && userCache.projects) {
       setUser(userCache.user);
       setProjects(userCache.projects);
       setShown(userCache.projects);
@@ -116,19 +110,25 @@ export default function MyProjects() {
       return;
     }
 
-    axios
-      .get(discordUrl + "/users/@me", {
+    const token = localStorage.getItem("disfuse-token");
+
+    async function loadUser() {
+      if (userCache.user?.id) return userCache.user;
+
+      const { data } = await axios.post(`${apiUrl}/users`, null, {
         headers: { Authorization: token },
-      })
-      .then(({ data: userData }) => {
-        setUser(userData);
-        userCache.user = userData;
-        fetchProjects(userData);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
       });
+      userCache.user = data;
+      return data;
+    }
+
+    loadUser().then((userData) => {
+      setUser(userData);
+      fetchProjects(userData);
+    }).catch((err) => {
+      console.error(err);
+      setLoading(false);
+    });
   }, [token, fetchProjects]);
 
   function sort() {

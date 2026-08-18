@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import InboxItem from "../../components/InboxItem";
 import LoadingAnim from "../../components/LoadingAnim";
 import Swal from "sweetalert2";
+import { userCache } from "../../cache.ts";
 
-import { discordUrl, apiUrl } from "../../config/config.js";
+import { apiUrl } from "../../config/config.js";
 
 export default function Inbox() {
   const [user, setUser] = useState({});
@@ -12,35 +13,45 @@ export default function Inbox() {
   const [shown, setShown] = useState([]);
 
   useEffect(() => {
+    if (userCache.user?.inbox) {
+      setUser(userCache.user);
+      setShown(userCache.user.inbox);
+      setLoading(false);
+
+      setTimeout(() => {
+        userCache.user.inbox = userCache.user.inbox.map((i) => {
+          i.read = true;
+          return i;
+        });
+
+        axios.put(
+          apiUrl + `/users/${userCache.user.id}/inbox`,
+          userCache.user.inbox,
+          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
+        );
+      }, 700);
+      return;
+    }
+
+    const token = localStorage.getItem("disfuse-token");
     axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token")
-        }
-      })
-      .then(({ data }) => {
-        axios
-          .get(apiUrl + `/users/${data.id}`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") }
-          })
-          .then(({ data: user }) => {
-            setUser(user);
-            setLoading(false);
-            setShown(user.inbox);
+      .post(`${apiUrl}/users`, null, { headers: { Authorization: token } })
+      .then(({ data: userData }) => {
+        userCache.user = userData;
+        setUser(userData);
+        setShown(userData.inbox);
+        setLoading(false);
 
-            setTimeout(() => {
-              user.inbox = user.inbox.map(i => {
-                i.read = true;
-                return i;
-              });
-
-              axios.put(apiUrl + `/users/${user.id}/inbox`, user.inbox, {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token")
-                }
-              });
-            }, 700);
+        setTimeout(() => {
+          userData.inbox = userData.inbox.map((i) => {
+            i.read = true;
+            return i;
           });
+
+          axios.put(apiUrl + `/users/${userData.id}/inbox`, userData.inbox, {
+            headers: { Authorization: token },
+          });
+        }, 700);
       });
   }, []);
 

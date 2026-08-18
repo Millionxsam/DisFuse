@@ -5,10 +5,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingAnim from "../../../components/LoadingAnim";
 import { Link, useNavigate } from "react-router-dom";
+import { userCache } from "../../../cache.ts";
 
 const modalColors = modalThemeColor(null, true);
 
-import { apiUrl, discordUrl } from "../../../config/config.js";
+import { apiUrl } from "../../../config/config.js";
 
 export default function Workshop() {
   const [packs, setPacks] = useState([]);
@@ -20,50 +21,46 @@ export default function Workshop() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      })
-      .then(({ data }) => {
-        axios
-          .get(apiUrl + `/users/${data.id}`, {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
-          })
-          .then(({ data: u }) => {
-            axios
-              .get(apiUrl + `/users/${u.id}/blockPacks`, {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
-              })
-              .then((res) => {
-                let sortedUserPacks = res.data.sort(
-                  (a, b) =>
-                    b.likes.length +
-                    b.users.length -
-                    (a.likes.length + a.users.length),
-                );
+    const token = localStorage.getItem("disfuse-token");
 
-                setUserPacks(sortedUserPacks);
-                setShownUserPacks(sortedUserPacks);
+    async function loadUser() {
+      if (userCache.user?.id) return userCache.user.id;
 
-                axios.get(apiUrl + "/workshop").then(({ data: packs }) => {
-                  let sortedPacks = packs.sort(
-                    (a, b) =>
-                      b.likes.length +
-                      b.users.length -
-                      (a.likes.length + a.users.length),
-                  );
-
-                  setPacks(sortedPacks);
-                  setShown(sortedPacks);
-                  setLoading(false);
-                });
-              });
-          });
+      const { data } = await axios.post(`${apiUrl}/users`, null, {
+        headers: { Authorization: token },
       });
+      userCache.user = data;
+      return data.id;
+    }
+
+    loadUser().then((userId) => {
+      Promise.all([
+        axios.get(`${apiUrl}/users/${userId}/blockPacks`, {
+          headers: { Authorization: token },
+        }),
+        axios.get(`${apiUrl}/workshop`),
+      ]).then(([userPacksRes, workshopRes]) => {
+        let sortedUserPacks = userPacksRes.data.sort(
+          (a, b) =>
+            b.likes.length +
+            b.users.length -
+            (a.likes.length + a.users.length),
+        );
+
+        let sortedPacks = workshopRes.data.sort(
+          (a, b) =>
+            b.likes.length +
+            b.users.length -
+            (a.likes.length + a.users.length),
+        );
+
+        setUserPacks(sortedUserPacks);
+        setShownUserPacks(sortedUserPacks);
+        setPacks(sortedPacks);
+        setShown(sortedPacks);
+        setLoading(false);
+      });
+    });
   }, []);
 
   return (

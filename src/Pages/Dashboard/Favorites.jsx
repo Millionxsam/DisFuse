@@ -4,7 +4,7 @@ import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
 
-import { apiUrl, discordUrl } from "../../config/config.js";
+import { apiUrl } from "../../config/config.js";
 
 export default function Favorites() {
   const [projects, setProjects] = useState([]);
@@ -12,45 +12,39 @@ export default function Favorites() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (userCache.user && userCache.user?.favorites) {
-      let favoriteProjects = userCache.user.favorites;
+    const favIds = userCache.user?.favorites;
+    if (!favIds?.length) {
+      setProjects([]);
+      setShown([]);
+      setLoading(false);
+      return;
+    }
 
-      setProjects(favoriteProjects);
-      setShown(favoriteProjects);
+    function resolveFavorites(allProjects) {
+      const favSet = new Set(favIds);
+      return allProjects.filter((p) => favSet.has(p._id));
+    }
+
+    if (userCache.explore) {
+      setProjects(resolveFavorites(userCache.explore));
+      setShown(resolveFavorites(userCache.explore));
       setLoading(false);
       return;
     }
 
     axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
+      .get(`${apiUrl}/projects?limit=200`, {
+        headers: { Authorization: localStorage.getItem("disfuse-token") },
       })
       .then(({ data }) => {
-        axios
-          .get(apiUrl + "/users/" + data.id, {
-            headers: {
-              Authorization: localStorage.getItem("disfuse-token"),
-            },
-          })
-          .then(({ data: user }) => {
-            axios
-              .get(apiUrl + "/projects", {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
-              })
-              .then(({ data: allProjects }) => {
-                let favoriteProjects = user.favorites
-                  .filter((f) => allProjects.find((p) => p._id === f))
-                  .map((f) => allProjects.find((p) => p._id === f));
-
-                setProjects(favoriteProjects);
-                setShown(favoriteProjects);
-                setLoading(false);
-              });
-          });
+        userCache.explore = data.projects;
+        const favProjects = resolveFavorites(data.projects);
+        setProjects(favProjects);
+        setShown(favProjects);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
       });
   }, []);
 
