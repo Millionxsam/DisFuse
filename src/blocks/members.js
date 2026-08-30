@@ -75,6 +75,21 @@ Blockly.Blocks["member_ban"] = {
   },
 };
 
+Blockly.Blocks["member_unban"] = {
+  init: function () {
+    this.appendValueInput("user")
+      .appendField("unban user:")
+      .setCheck(["user", "String"]);
+    this.appendValueInput("server")
+      .appendField("from server:")
+      .setCheck("server");
+    this.appendValueInput("reason").appendField("reason:").setCheck("String");
+    this.setPreviousStatement(true, "default");
+    this.setNextStatement(true, "default");
+    this.setColour("#3c9e56");
+  },
+};
+
 Blockly.Blocks["member_timeout"] = {
   init: function () {
     this.appendValueInput("member")
@@ -591,6 +606,14 @@ javascriptGenerator.forBlock["member_ban"] = function (block, generator) {
   return `${member}.ban({ reason: ${reason} });`;
 };
 
+javascriptGenerator.forBlock["member_unban"] = function (block, generator) {
+  var user = generator.valueToCode(block, "user", Order.ATOMIC);
+  var server = generator.valueToCode(block, "server", Order.ATOMIC);
+  var reason = generator.valueToCode(block, "reason", Order.ATOMIC);
+
+  return `${server}.bans.remove(${user}, ${reason || "''"});`;
+};
+
 javascriptGenerator.forBlock["member_member"] = () => [`member`, Order.NONE];
 
 javascriptGenerator.forBlock["member_foreach"] = function (block, generator) {
@@ -718,6 +741,7 @@ createRestrictions(
 createRestrictions(
   [
     "member_ban",
+    "member_unban",
     "member_timeout",
     "member_kick",
     "member_setnick",
@@ -729,6 +753,22 @@ createRestrictions(
       blockTypes: ["reason"],
       check: (val) => val.length <= 512,
       message: "Reason cannot be greater than 512 characters",
+    },
+  ],
+);
+
+createRestrictions(
+  ["member_unban"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["user"],
+      message: "You must specify the user to unban.",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["server"],
+      message: "You must specify the server to unban the user from.",
     },
   ],
 );
