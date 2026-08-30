@@ -2147,13 +2147,7 @@ export default function getToolbox(blockPacks = [], user) {
               block("member_user"),
               label("Actions on users/members ↓"),
               block("member_ban"),
-              block("member_unban", {
-                inputs: {
-                  user: {
-                    shadow: shadow("text")
-                  }
-                }
-              }),
+              block("member_unban"),
               block("member_timeout", {
                 inputs: {
                   seconds: {
