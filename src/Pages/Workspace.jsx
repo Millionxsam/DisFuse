@@ -29,6 +29,10 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import autosave from "../functions/autosave";
 import addTooltips from "../functions/addTooltips";
 import { getWholeProjectWorkspace, updateCode } from "../functions/updateCode";
+import {
+  mergeProjectUpdate,
+  refreshProjectWorkspaces,
+} from "../functions/projectData";
 import modalThemeColor from "../functions/modalThemeColor";
 
 import WorkspaceTabs from "../components/WorkspaceTabs";
@@ -811,10 +815,14 @@ export default function Workspace() {
                     if (updates < changesUntilSave) return;
                     updates = 0;
 
-                    project = await autosave(
+                    // Kept around because the user can switch workspaces
+                    // while the save is on its way
+                    const savedWorkspace = currentWorkspace.current;
+
+                    const saved = await autosave(
                       workspace,
                       projectId,
-                      currentWorkspace.current,
+                      savedWorkspace,
                       socket,
                       e.toJson(),
                       user.settings?.workspace.toolboxAutosaveLabel ?? true,
@@ -837,6 +845,17 @@ export default function Workspace() {
                         if (value.isConfirmed) window.location.reload();
                       });
                     });
+
+                    // The autosave response leaves out the blocks of every
+                    // workspace, so it's merged into the project we already
+                    // have instead of replacing it. Otherwise the rest of the
+                    // project is lost and exporting it, generating its code, or
+                    // moving blocks between workspaces only sees this workspace
+                    if (saved)
+                      project = mergeProjectUpdate(project, saved.project, {
+                        workspaceId: savedWorkspace._id,
+                        data: saved.data,
+                      });
                   });
 
                   // Toggle toolbox button
@@ -912,6 +931,14 @@ export default function Workspace() {
                   document
                     .querySelector("button.export")
                     .addEventListener("click", async () => {
+                      // Pick up the latest blocks of every workspace, not just
+                      // the one that's open, so exporting the whole project
+                      // really exports the whole project
+                      project = await refreshProjectWorkspaces(
+                        project,
+                        projectId,
+                      );
+
                       await updateCode(
                         workspace,
                         project,
@@ -943,18 +970,20 @@ export default function Workspace() {
                           ".workspace.code code",
                         ).innerText;
 
-                        const fullWorkspace = getWholeProjectWorkspace(
-                          project,
-                          workspace,
-                          currentWorkspace.current._id,
-                        );
+                        // Every workspace of the project merged into one,
+                        // only needed when the whole project is exported
+                        const fullWorkspace =
+                          result.value === "project"
+                            ? getWholeProjectWorkspace(
+                                project,
+                                workspace,
+                                currentWorkspace.current._id,
+                              )
+                            : null;
 
                         let warningBlocks = [];
 
-                        let exportingWs;
-                        if (result.value === "project")
-                          exportingWs = fullWorkspace;
-                        else exportingWs = workspace;
+                        const exportingWs = fullWorkspace ?? workspace;
 
                         const exportingWsBlocks =
                           exportingWs.getAllBlocks(false);
@@ -1000,7 +1029,10 @@ export default function Workspace() {
                             },
                           });
 
-                          if (!isConfirmed) return;
+                          if (!isConfirmed) {
+                            fullWorkspace?.dispose();
+                            return;
+                          }
                         }
 
                         const indexjs =
@@ -1038,6 +1070,8 @@ export default function Workspace() {
                                 ),
                           ),
                         );
+
+                        fullWorkspace?.dispose();
 
                         zip.generateAsync({ type: "blob" }).then((content) => {
                           let url = window.URL.createObjectURL(content);

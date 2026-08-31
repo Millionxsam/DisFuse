@@ -7,6 +7,7 @@ import "../hljs.css";
 import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
 import { utilFunctions } from "./generatorUtils";
 import { format } from "./pretty";
+import { parseDfWorkspaceData } from "./dfFile";
 
 hljs.registerLanguage("javascript", javascript);
 
@@ -165,19 +166,50 @@ export function getWholeProjectWorkspace(project, currentWorkspace, workspaceId)
   const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
   const tempData = Blockly.serialization.workspaces.save(currentWorkspace);
 
-  project.workspaces
+  if (!tempData.blocks?.blocks) tempData.blocks = { blocks: [] };
+  if (!tempData.variables) tempData.variables = [];
+
+  (project?.workspaces || [])
     .filter(ws => ws._id !== workspaceId)
     .forEach(ws => {
-      if (!ws.data?.length) return;
-      if (!JSON.parse(ws.data)?.blocks?.blocks) return;
-      if (!tempData.blocks?.blocks) tempData.blocks = { blocks: [] };
+      const data = parseDfWorkspaceData(ws.data);
+      if (!data?.blocks?.blocks?.length) return;
 
-      tempData.blocks.blocks =
-        tempData.blocks.blocks.concat(...JSON.parse(ws.data).blocks.blocks) ||
-        tempData.blocks.blocks;
+      tempData.blocks.blocks.push(...data.blocks.blocks);
+
+      // Blocks point at their variables by id, so the variables of every
+      // workspace have to come along too. Without them Blockly makes up a new
+      // name for each one and the exported code loses the original names
+      mergeVariables(tempData.variables, data.variables);
     });
 
   Blockly.serialization.workspaces.load(tempData, tempWorkspace);
 
   return tempWorkspace;
+}
+
+/**
+ * Adds the variables of another workspace to the ones already merged. Blockly
+ * refuses to load two variables that share a name, so variables that clash with
+ * one from another workspace are numbered instead. Their ids stay the same, so
+ * the blocks using them still work.
+ */
+function mergeVariables(variables, otherVariables = []) {
+  otherVariables.forEach(variable => {
+    if (!variable?.id) return;
+    if (variables.some(v => v.id === variable.id)) return;
+
+    const taken = name =>
+      variables.some(
+        v =>
+          (v.type || "") === (variable.type || "") &&
+          `${v.name}`.toLowerCase() === `${name}`.toLowerCase(),
+      );
+
+    let name = variable.name;
+
+    for (let i = 2; taken(name); i++) name = `${variable.name}${i}`;
+
+    variables.push({ ...variable, name });
+  });
 }

@@ -55,7 +55,7 @@ export default async function autosave(
           }
 
           console.log("Autosaved");
-          resolve(response);
+          resolve({ project: response, data });
         },
       );
     } catch (err) {
