@@ -1250,6 +1250,11 @@ export default function Workspace() {
 
     currentWorkspace.current = p.workspaces[index];
 
+    // The tab bar, saving to a file and everything else built from the
+    // project need the blocks of every workspace as they are now, not as
+    // they were when the page was opened
+    setProject(p);
+
     setSearchParams((params) => {
       params.set("id", p.workspaces[index]._id);
       return params;

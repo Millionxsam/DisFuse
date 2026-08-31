@@ -18,6 +18,7 @@ import {
   isProjectDfFile,
   parseDfWorkspaceData,
 } from "../functions/dfFile";
+import { refreshProjectWorkspaces } from "../functions/projectData";
 
 export default function WorkspaceBar({
   project,
@@ -513,10 +514,19 @@ export default function WorkspaceBar({
 
     if (!response.isConfirmed || !response.value) return;
 
-    const data =
-      response.value === "project"
-        ? buildProjectDf(project, workspace, currentWorkspace._id)
-        : Blockly.serialization.workspaces.save(workspace);
+    let data;
+
+    if (response.value === "project") {
+      // Saving the whole project needs the latest blocks of every workspace,
+      // not only the ones this page was opened with. The workspace that's open
+      // keeps its unsaved blocks, buildProjectDf takes those from Blockly
+      const latestProject = await refreshProjectWorkspaces(
+        project,
+        project._id,
+      );
+
+      data = buildProjectDf(latestProject, workspace, currentWorkspace._id);
+    } else data = Blockly.serialization.workspaces.save(workspace);
 
     const blob = new Blob([JSON.stringify(data)], {
       type: "text/plain",
