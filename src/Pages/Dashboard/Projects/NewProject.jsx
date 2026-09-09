@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import Lottie from "lottie-react";
 import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
@@ -23,6 +24,9 @@ export default function NewProject() {
 
   return (
     <div className="newProject-page-container">
+      <Helmet>
+        <title>New Project | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i class="fa-solid fa-circle-plus"></i>

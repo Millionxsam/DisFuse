@@ -3,10 +3,30 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { userCache } from "../../cache.ts";
 
-import { apiUrl } from "../../config/config.js";
+import api, { authToken, data } from "../../api/client.js";
+import { discordUrl } from "../../config/config.js";
+import { premiumLogo } from "../../config/premiumPlans";
 
 const navItems = [
   { to: "/projects", label: "Projects", icon: "fa-solid fa-cubes" },
+  {
+    to: "/control",
+    label: "Control",
+    icon: "fa-solid fa-satellite-dish",
+    premium: true,
+  },
+  {
+    to: "/insights",
+    label: "Insights",
+    icon: "fa-solid fa-chart-line",
+    premium: true,
+  },
+  {
+    to: "/websites",
+    label: "Websites",
+    icon: "fa-solid fa-globe",
+    premium: true,
+  },
   { to: "/explore", label: "Explore", icon: "fa-solid fa-earth-americas" },
   { to: "/favorites", label: "Favorites", icon: "fa-solid fa-star" },
   { to: "/workshop", label: "Workshop", icon: "fa-solid fa-tools" },
@@ -32,18 +52,31 @@ export default function Sidebar() {
     } else {
       const token = localStorage.getItem("disfuse-token");
       axios
-        .post(`${apiUrl}/users`, null, {
-          headers: { Authorization: token },
+        .get(discordUrl + "/users/@me", {
+          headers: { Authorization: authToken() },
         })
-        .then(({ data: foundUser }) => {
-          setUser(foundUser);
-          userCache.user = foundUser;
+        .then(({ data: discordUser }) => {
+          /* Our own record, rather than a scan of the whole collection:
+             `GET /users` is authenticated and redacted, and the unread
+             badge needs the inbox that a redacted listing leaves out. */
+          api
+            .get("/users/" + discordUser.id)
+            .then(data)
+            .then((foundUser) => {
+              setUser(foundUser);
+              userCache.user = foundUser;
 
-          axios.get(`${apiUrl}/users/staff`).then(({ data: staff }) => {
-            let isStaff = staff.users.some((i) => i?.id === foundUser?.id);
-            setIsStaff(isStaff);
-            userCache.isStaff = isStaff;
-          });
+              api
+                .get("/users/staff")
+                .then(data)
+                .then((staff) => {
+                  let isStaff = staff.users.some(
+                    (i) => i?.id === foundUser?.id,
+                  );
+                  setIsStaff(isStaff);
+                  userCache.isStaff = isStaff;
+                });
+            });
         });
     }
   }, []);
@@ -89,7 +122,11 @@ export default function Sidebar() {
           <i className="fa-solid fa-bars"></i>
         </button>
         <Link to="/" className="brand">
-          <img src="/media/disfuse.png" alt="" style={{ height: "1.7rem", borderRadius: "50%" }} />
+          <img
+            src="/media/disfuse.png"
+            alt=""
+            style={{ height: "1.7rem", borderRadius: "50%" }}
+          />
           DisFuse
         </Link>
         <div style={{ width: "2.4rem" }} />
@@ -98,10 +135,16 @@ export default function Sidebar() {
       <aside className={`df-sidebar ${active ? "active" : ""}`}>
         <div className="df-sidebar-top">
           <div className="df-sidebar-brand">
-            <button className="df-sidebar-close" onClick={() => setActive(false)}>
+            <button
+              className="df-sidebar-close"
+              onClick={() => setActive(false)}
+            >
               <i className="fa-solid fa-xmark"></i>
             </button>
-            <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+            <Link
+              to="/"
+              style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}
+            >
               <img src="/media/disfuse.png" alt="" />
               <span>DisFuse</span>
             </Link>
@@ -110,7 +153,10 @@ export default function Sidebar() {
         </div>
 
         <div className="df-sidebar-bottom">
-          <div className="df-nametag" onClick={() => navigate(`/@${user.username}`)}>
+          <div
+            className="df-nametag"
+            onClick={() => navigate(`/@${user.username}`)}
+          >
             <img src={user?.avatar} alt="" />
             <div className="name">{user?.global_name || user.username}</div>
             <i

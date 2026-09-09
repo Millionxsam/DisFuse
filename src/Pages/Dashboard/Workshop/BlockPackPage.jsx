@@ -2,12 +2,19 @@ import * as Blockly from "blockly";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import UserTag from "../../../components/UserTag";
 import { DFTheme } from "../../../components/themes/DFTheme";
-import registerCustomBlocks from "../../../functions/registerCustomBlocks";
+import registerCustomBlocks from "../../../blocks/lib/registerCustomBlocks";
 import Swal from "sweetalert2";
 import ReactMarkdown from "react-markdown";
 import getToolbox from "../../../config/toolbox";
+
+/* Registers every DisFuse block definition and generator. Without it
+   this page injects a toolbox full of block types Blockly has never been
+   told about, and a saved project loaded here renders as nothing. It used
+   to be a glob that only the editor page had. */
+import "../../../blocks/index.js";
 import LoadingAnim from "../../../components/LoadingAnim";
 import remarkGfm from "remark-gfm";
 import modalThemeColor from "../../../functions/modalThemeColor.js";
@@ -120,6 +127,9 @@ export default function BlockPackPage() {
     <LoadingAnim />
   ) : (
     <div className="df-pack-page">
+      <Helmet>
+        <title>{`${pack.name || "Block Pack"} | DisFuse`}</title>
+      </Helmet>
       <div className="df-pack-page-head">
         <div className="title-row">
           <h1>{pack.name}</h1>

@@ -1,8 +1,8 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
-import { buildMessageOptions } from "../functions/generatorUtils";
-import { createMutatorBlock } from "../functions/createMutator";
+import { createRestrictions } from "./lib/restrictions";
+import { buildMessageOptions } from "./lib/generatorUtils";
+import { createMutatorBlock } from "./lib/createMutator";
 
 Blockly.Blocks["member_getone"] = {
   init: function () {

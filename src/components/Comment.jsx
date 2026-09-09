@@ -18,7 +18,8 @@ export default function Comment({
   const [comment, setComment] = useState(c);
 
   useEffect(() => {
-    setAuthor(allUsers.find((u) => u.id === comment.authorId));
+    /* Not everyone who left a comment is still around to be found. */
+    setAuthor(allUsers.find((u) => u.id === comment.authorId) ?? {});
 
     if (window.location.hash) {
       const commentEle = document.getElementById(

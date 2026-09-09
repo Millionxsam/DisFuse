@@ -1,10 +1,19 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+
+import { premiumLogo } from "../../../config/premiumPlans";
 
 const tabs = [
   { to: "/settings/workspace", key: "workspace", label: "Workspace" },
   { to: "/settings/notifications", key: "notifications", label: "Notifications" },
   { to: "/settings/optimization", key: "optimization", label: "Optimization" },
+  {
+    to: "/settings/premium",
+    key: "premium",
+    label: "Premium",
+    image: premiumLogo,
+  },
 ];
 
 export default function Settings() {
@@ -14,6 +23,11 @@ export default function Settings() {
 
   return (
     <div className="df-settings-page">
+      {/* Fallback title — each settings tab renders its own Helmet, which
+          takes precedence once it has finished loading. */}
+      <Helmet>
+        <title>Settings | DisFuse</title>
+      </Helmet>
       <h1>
         <i className="fa-solid fa-gear"></i> Settings
       </h1>
@@ -26,6 +40,7 @@ export default function Settings() {
                 onClick={() => setCategory(tab.key)}
                 className={category === tab.key ? "active" : ""}
               >
+                {tab.image && <img src={tab.image} alt="" />}
                 {tab.label}
               </li>
             </Link>

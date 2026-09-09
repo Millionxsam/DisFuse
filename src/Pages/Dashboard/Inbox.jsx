@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import InboxItem from "../../components/InboxItem";
 import LoadingAnim from "../../components/LoadingAnim";
 import Swal from "sweetalert2";
@@ -78,6 +79,9 @@ export default function Inbox() {
 
   return (
     <div className="df-page">
+      <Helmet>
+        <title>Inbox | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i className="fa-solid fa-inbox"></i> Inbox

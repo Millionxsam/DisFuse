@@ -1,0 +1,69 @@
+/* =====================================================================
+   Canvas
+   ---------------------------------------------------------------------
+   The Blockly canvas and the frame around it.
+   ===================================================================== */
+
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+.workspace-container {
+  display: flex;
+}
+
+.workspace-container .right {
+  width: 100%;
+}
+
+#workspace,
+#previewWorkspace {
+  height: 87.5vh;
+  width: 100%;
+}
+
+#workshopWorkspace {
+  height: 92.5vh;
+  width: 100%;
+}
+
+.blockly-ws-search {
+  box-shadow: 0 10px 20px black;
+  padding: 1vh;
+  border: none;
+  border-radius: 10px;
+}
+
+#workspace input,
+#previewWorkspace input,
+#workshopWorkspace input,
+#blockPackPreviewWorkspace input,
+#workshopPreviewWorkspace input {
+  border: none;
+  padding: 0.25vh;
+  background-color: transparent;
+  color: white;
+  width: 6rem;
+  font-size: 16px;
+  margin-left: 1vw;
+  border-radius: 5px;
+}
+
+#workspace input::placeholder,
+#previewWorkspace input::placeholder,
+#workshopWorkspace input::placeholder,
+#blockPackPreviewWorkspace input::placeholder {
+  color: white;
+}

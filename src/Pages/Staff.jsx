@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { userCache } from "../cache.ts";
 import { apiUrl } from "../config/config.js";
 
@@ -18,10 +19,12 @@ export default function Staff() {
     }
   }, []);
 
-  console.log(staff);
 
   return (
     <div className="df-staff-page">
+      <Helmet>
+        <title>Staff | DisFuse</title>
+      </Helmet>
       <div className="df-section-head">
         <span className="df-tag">The Team</span>
         <h2>DisFuse Staff</h2>

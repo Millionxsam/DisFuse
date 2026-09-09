@@ -1,339 +1,380 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Blockly from "blockly";
+import Swal from "sweetalert2";
+
 import UserTag from "./UserTag";
 import { userCache } from "../cache.ts";
-import Swal from "sweetalert2";
 import modalThemeColor from "../functions/modalThemeColor.js";
-import { renderToStaticMarkup } from "react-dom/server";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import LoadingAnim from "./LoadingAnim";
-import { io } from "socket.io-client";
-import HostModal from "./HostModal";
-
-import { apiUrl } from "../config/config";
 import {
-  buildProjectDf,
+  buildDf,
   isProjectDfFile,
   parseDfWorkspaceData,
 } from "../functions/dfFile";
 import { refreshProjectWorkspaces } from "../functions/projectData";
+import {
+  pickVersionAndScope,
+  workspacesForChoice,
+} from "../functions/versionPicker";
+import {
+  createVersionWorkspace,
+  saveVersionWorkspaceData,
+} from "../api/versions";
+import { openVersionControl } from "./VersionControl";
 
+/* =====================================================================
+   The workspace toolbar
+   ---------------------------------------------------------------------
+   The bar across the top of the editor: the project's name, the File and
+   Utilities menus, who else is here, the two live indicators, and the
+   project-wide actions.
+
+   Everything it does is now a prop. It used to render bare buttons with
+   no handlers — `button.invite`, `button.export`, `#showCode`,
+   `#templates`, `#toggleToolbox` — and the editor reached across the
+   tree with `document.querySelector(...).addEventListener(...)` to make
+   them work. The same went for the two indicators, whose contents were
+   written by `innerHTML` from two other files, and for the project name,
+   which was assigned into an empty `<p>` and blanked again by any
+   re-render.
+
+   About six hundred lines of commented-out BlockBuddy and
+   block-metadata code were removed with it.
+   ===================================================================== */
+
+/**
+ * @param {object} props
+ * @param {Array}  props.versions        version summaries, empty on a
+ *                                       project that has never used
+ *                                       Version Control
+ * @param {object} [props.activeVersion] the version being edited
+ * @param {number} [props.blockCount]    blocks in the open workspace
+ * @param {string} [props.savedAt]       when autosave last succeeded
+ * @param {string} [props.saveState]     "saving" | "saved" | "error"
+ */
 export default function WorkspaceBar({
   project,
   workspace,
   currentWorkspace,
   activeUsers = [],
+  versions = [],
+  activeVersion = null,
+  blockCount = null,
+  savedAt = null,
+  saveState = "idle",
+  canManage = false,
+  reconnecting = false,
+  onOpenSecrets,
+  onOpenInvite,
+  onToggleToolbox,
+  onShowCode,
+  onExport,
+  onLoadTemplate,
 }) {
   const navigate = useNavigate();
 
   const [active, setActive] = useState(false);
-  const [blockbuddySuggestRes, setBlockbuddyRes] = useState("");
   const [fileDropdownOpen, setFileDropdown] = useState(false);
   const [utilDropdownOpen, setUtilDropdown] = useState(false);
+  const [usersOpen, setUsersOpen] = useState(false);
 
-  // exportBlockInfo();
+  /* Clicking anywhere else closes whichever menu is open. Both used to
+     stay open until their own button was pressed again. */
+  useEffect(() => {
+    if (!fileDropdownOpen && !utilDropdownOpen && !usersOpen) return undefined;
 
-  function showSecrets() {
-    if (project.owner?.id !== userCache.user.id) return;
-    document.querySelector(".secrets-view").showModal();
+    function onDocumentClick(event) {
+      if (event.target.closest(".dropdown, .activeUsers")) return;
+
+      setFileDropdown(false);
+      setUtilDropdown(false);
+      setUsersOpen(false);
+    }
+
+    document.addEventListener("click", onDocumentClick);
+    return () => document.removeEventListener("click", onDocumentClick);
+  }, [fileDropdownOpen, usersOpen, utilDropdownOpen]);
+
+  function closeMenus() {
+    setFileDropdown(false);
+    setUtilDropdown(false);
+  }
+
+  /** Runs a menu action and closes the menu it came from. */
+  function run(action) {
+    return () => {
+      closeMenus();
+      action?.();
+    };
   }
 
   function openMenu() {
-    if (!active) {
-      if (document.body.clientWidth <= 396) {
-        document.querySelector(
-          ".workspace-navbar .content-container",
-        ).style.height = "45%";
-      } else {
-        document.querySelector(
-          ".workspace-navbar .content-container",
-        ).style.height = "30vh";
-      }
+    const container = document.querySelector(
+      ".workspace-navbar .content-container",
+    );
 
-      setActive(true);
-    } else {
-      document.querySelector(
-        ".workspace-navbar .content-container",
-      ).style.height = "0";
+    if (!container) return;
 
+    if (active) {
+      container.style.height = "0";
       setActive(false);
+      return;
     }
+
+    container.style.height =
+      document.body.clientWidth <= 396 ? "45%" : "30vh";
+    setActive(true);
   }
 
+  const ownerName = project?.owner?.username;
+
   return (
-    <>
-      <dialog className="blockBuddy-suggestions">
-        <h1>Suggestions</h1>
-        {blockbuddySuggestRes === "" ? (
-          <LoadingAnim />
-        ) : (
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {blockbuddySuggestRes}
-          </ReactMarkdown>
-        )}
+    <div className="workspace-navbar">
+      <div className="logo">
+        <Link to="/projects">
+          <img src="/media/disfuse-clear.png" alt="DisFuse" />
+        </Link>
+      </div>
 
-        <button
-          onClick={() =>
-            document.querySelector("dialog.blockBuddy-suggestions").close()
-          }
-        >
-          Close
-        </button>
-      </dialog>
-      <div className="workspace-navbar">
-        <div className="logo">
-          <Link to="/projects">
-            <img src="/media/disfuse-clear.png" alt="" />
-          </Link>
-        </div>
-        <div
-          className="projectName"
-          onClick={() =>
-            navigate("/@" + project.owner?.username + "/" + project._id)
-          }
-        >
-          <p></p>
-        </div>
-        {project?.owner?.id === userCache?.user?.id ? (
-          <i
-            onClick={() =>
-              navigate(
-                "/@" + project.owner.username + "/" + project._id + "/edit",
-              )
-            }
-            className="fa-solid fa-pen-to-square"
-            id="editProject-icon"
-          ></i>
-        ) : (
-          ""
-        )}
-        <div
-          onClick={() => openWorkspaceTabs(workspace)}
-          id="workspace-tabs-open-container"
-        >
-          <i className="workspace-tabs-open fa-solid fa-chevron-down"></i>
-        </div>
-        <div className="content-container">
-          <div className="left">
-            <ul>
-              <div className="dropdown" style={{ position: "relative" }}>
-                <button
-                  className="dropdown-button"
-                  onClick={() => {
-                    setFileDropdown(!fileDropdownOpen);
-                    setUtilDropdown(false);
-                  }}
-                >
-                  <i className="fa-solid fa-file"></i>
-                  <div>File</div>
-                  <i
-                    className={`fa-solid fa-chevron-${
-                      fileDropdownOpen ? "up" : "down"
-                    } noRotate`}
-                  ></i>
-                </button>
-                <div
-                  className="dropdown-content"
-                  style={{
-                    position: "absolute",
-                    top: "calc(100% + 5px)",
-                    zIndex: 1000,
-                    flexDirection: "column",
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyItems: "center",
-                    justifyContent: "center",
-                    gap: "5px",
-                    display: fileDropdownOpen ? "flex" : "none",
-                  }}
-                >
-                  <button
-                    id="save"
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                      saveFile();
-                    }}
-                  >
-                    <i className="fa-solid fa-floppy-disk"></i>
-                    Save File
-                  </button>
-                  <button
-                    id="load"
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                      loadFile();
-                    }}
-                  >
-                    <i className="fa-solid fa-upload"></i>
-                    Load File
-                  </button>
-                  <button
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                    }}
-                    id="showCode"
-                  >
-                    <i className="fa-brands fa-square-js"></i>
-                    <div>Show Code</div>
-                  </button>
-                </div>
-              </div>
-              <div className="dropdown" style={{ position: "relative" }}>
-                <button
-                  className="dropdown-button"
-                  onClick={() => {
-                    setUtilDropdown(!utilDropdownOpen);
-                    setFileDropdown(false);
-                  }}
-                >
-                  <i className="fa-solid fa-wrench"></i>
-                  <div>Utilities</div>
-                  <i
-                    className={`fa-solid fa-chevron-${
-                      utilDropdownOpen ? "up" : "down"
-                    } noRotate`}
-                  ></i>
-                </button>
-                <div
-                  className="dropdown-content"
-                  style={{
-                    position: "absolute",
-                    top: "calc(100% + 5px)",
-                    zIndex: 1000,
-                    flexDirection: "column",
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyItems: "center",
-                    justifyContent: "center",
-                    gap: "5px",
-                    display: utilDropdownOpen ? "flex" : "none",
-                  }}
-                >
-                  <button
-                    className="secrets"
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                      showSecrets();
-                    }}
-                  >
-                    <i className="fa-solid fa-key"></i>
-                    <div>Secrets</div>
-                  </button>
-                  <button
-                    id="templates"
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                    }}
-                  >
-                    <i className="fa-solid fa-shapes"></i>
-                    <div>Templates</div>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setFileDropdown(false);
-                      setUtilDropdown(false);
-                    }}
-                    id="toggleToolbox"
-                  >
-                    <i className="fa-solid fa-screwdriver-wrench"></i>
-                    <div>Toggle Toolbox</div>
-                  </button>
-                </div>
-              </div>
+      <div
+        className="projectName"
+        onClick={() =>
+          ownerName && navigate(`/@${ownerName}/${project._id}`)
+        }
+      >
+        <p>{project?.name ?? ""}</p>
+      </div>
 
-              <button id="blockbuddy" onClick={openBlockBuddy}>
-                <i className="fa-solid fa-robot"></i>
-                <div>BlockBuddy</div>
-              </button>
-            </ul>
-          </div>
-          <div className="right">
-            <ul>
-              {activeUsers.length >= 2 ? (
-                <div className="activeUsers">
-                  <div
-                    onClick={() =>
-                      document
-                        .querySelector(".activeUsers ul")
-                        .classList.toggle("active")
-                    }
-                  >
-                    {activeUsers.map((user) => (
-                      <img
-                        src={
-                          user?.avatar ??
-                          "https://cdn.discordapp.com/embed/avatars/0.png"
-                        }
-                        alt=""
-                      />
-                    ))}{" "}
-                    {activeUsers.length} Active User
-                    {activeUsers.length === 1 ? "" : "s"}
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </div>
-                  <ul>
-                    {activeUsers.map((user) => (
-                      <li>
-                        <UserTag user={user} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                ""
-              )}
+      {canManage && (
+        <i
+          onClick={() => navigate(`/@${ownerName}/${project._id}/edit`)}
+          className="fa-solid fa-pen-to-square"
+          id="editProject-icon"
+          title="Project settings"
+        />
+      )}
 
-              <i className="indicator" id="blocks-indicator"></i>
-              <i
-                className="indicator"
-                id="autosave-indicator"
-                style={{ display: "none" }}
-              >
-                Autosave
-              </i>
-              <button className="invite">
-                <div>Invite</div>
-                <i className="fa-solid fa-share"></i>
-              </button>
-              {/* <button
-                className="host"
-                style={{
-                  borderRadius: "1.5rem .25rem .25rem 1.5rem",
+      <div
+        onClick={() => openWorkspaceTabs(workspace)}
+        id="workspace-tabs-open-container"
+      >
+        <i className="workspace-tabs-open fa-solid fa-chevron-down" />
+      </div>
+
+      <div className="content-container">
+        <div className="left">
+          <ul>
+            <div className="dropdown" style={{ position: "relative" }}>
+              <button
+                className="dropdown-button"
+                onClick={() => {
+                  setFileDropdown(!fileDropdownOpen);
+                  setUtilDropdown(false);
                 }}
               >
-                {localStorage.getItem("hostingOnboardingComplete") ? (
-                  ""
-                ) : (
-                  <i className="newLabel noRotate">New</i>
-                )}
-                <div>Host</div>
-                <i className="fa-solid fa-server"></i>
-              </button> */}
-              <button
-                className="export"
-                style={
-                  {
-                    // borderRadius: ".25rem 1.5rem 1.5rem .25rem",
-                    // marginLeft: "-.35vw",
-                  }
-                }
-              >
-                <div>Export</div>
-                <i className="fa-solid fa-download"></i>
+                <i className="fa-solid fa-file" />
+                <div>File</div>
+                <i
+                  className={`fa-solid fa-chevron-${
+                    fileDropdownOpen ? "up" : "down"
+                  } noRotate`}
+                />
               </button>
-            </ul>
-          </div>
+              <div
+                className="dropdown-content"
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 5px)",
+                  zIndex: 1000,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "5px",
+                  display: fileDropdownOpen ? "flex" : "none",
+                }}
+              >
+                <button id="save" onClick={run(saveFile)}>
+                  <i className="fa-solid fa-file-arrow-down" />
+                  Download
+                </button>
+                <button id="load" onClick={run(loadFile)}>
+                  <i className="fa-solid fa-upload" />
+                  Load File
+                </button>
+                <button id="showCode" onClick={run(onShowCode)}>
+                  <i className="fa-brands fa-square-js" />
+                  <div>Show Code</div>
+                </button>
+              </div>
+            </div>
+
+            <div className="dropdown" style={{ position: "relative" }}>
+              <button
+                className="dropdown-button"
+                onClick={() => {
+                  setUtilDropdown(!utilDropdownOpen);
+                  setFileDropdown(false);
+                }}
+              >
+                <i className="fa-solid fa-wrench" />
+                <div>Utilities</div>
+                <i
+                  className={`fa-solid fa-chevron-${
+                    utilDropdownOpen ? "up" : "down"
+                  } noRotate`}
+                />
+              </button>
+              <div
+                className="dropdown-content"
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 5px)",
+                  zIndex: 1000,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "5px",
+                  display: utilDropdownOpen ? "flex" : "none",
+                }}
+              >
+                <button
+                  className={`secrets${canManage ? "" : " disabled"}`}
+                  onClick={run(canManage ? onOpenSecrets : undefined)}
+                  disabled={!canManage}
+                  title={
+                    canManage ? "Secrets" : "Only the owner can manage secrets"
+                  }
+                >
+                  <i className="fa-solid fa-key" />
+                  <div>Secrets</div>
+                </button>
+                <button id="templates" onClick={run(onLoadTemplate)}>
+                  <i className="fa-solid fa-shapes" />
+                  <div>Templates</div>
+                </button>
+                <button id="toggleToolbox" onClick={run(onToggleToolbox)}>
+                  <i className="fa-solid fa-screwdriver-wrench" />
+                  <div>Toggle Toolbox</div>
+                </button>
+              </div>
+            </div>
+          </ul>
         </div>
-        <i onClick={openMenu} className="fa-solid fa-bars menu"></i>
+
+        <div className="right">
+          <ul>
+            {activeUsers.length >= 2 && (
+              <div className="activeUsers">
+                <div onClick={() => setUsersOpen(!usersOpen)}>
+                  {activeUsers.map((user) => (
+                    <img
+                      key={user.id}
+                      src={
+                        user?.avatar ??
+                        "https://cdn.discordapp.com/embed/avatars/0.png"
+                      }
+                      alt=""
+                    />
+                  ))}{" "}
+                  {activeUsers.length} Active Users
+                  <i className="fa-solid fa-chevron-down" />
+                </div>
+                <ul className={usersOpen ? "active" : ""}>
+                  {activeUsers.map((user) => (
+                    <li key={user.id}>
+                      <UserTag user={user} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <i className="indicator" id="blocks-indicator">
+              <i className="fa-solid fa-cube" />
+              <div>{blockCount ?? "??"} blocks</div>
+            </i>
+
+            {/* Driven by props rather than by `innerHTML` from inside the
+                autosave function, which is what used to write here. */}
+            <i
+              className="indicator"
+              id="autosave-indicator"
+              style={{
+                display: saveState === "idle" && !savedAt ? "none" : "flex",
+              }}
+              title={
+                saveState === "error"
+                  ? "The last save failed"
+                  : reconnecting
+                    ? "Reconnecting…"
+                    : "Last saved"
+              }
+            >
+              {saveState === "error" ? (
+                <>
+                  <i className="fa-solid fa-triangle-exclamation" />
+                  <div>Error</div>
+                </>
+              ) : reconnecting ? (
+                <>
+                  <i className="fa-solid fa-plug-circle-exclamation" />
+                  <div>Reconnecting</div>
+                </>
+              ) : saveState === "saving" ? (
+                <>
+                  <i className="fa-solid fa-cloud-arrow-up" />
+                  <div>Saving</div>
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-cloud" />
+                  <div>{savedAt}</div>
+                </>
+              )}
+            </i>
+
+            {/* Version Control sits with the other project-wide tools
+                rather than beside Export, because it acts on the whole
+                project and not on the file being edited. The active
+                version's name doubles as the label so it is always
+                visible while working. */}
+            <button
+              id="versionControl"
+              onClick={run(openVersionControl)}
+              title={
+                activeVersion
+                  ? `Editing ${activeVersion.name}`
+                  : "Save versions of this project"
+              }
+            >
+              <i className="fa-solid fa-code-branch" />
+              <div>{activeVersion ? activeVersion.name : "Versions"}</div>
+            </button>
+
+            <button
+              className={`invite${canManage ? "" : " disabled"}`}
+              onClick={canManage ? onOpenInvite : undefined}
+              disabled={!canManage}
+              title={
+                canManage
+                  ? "Invite collaborators"
+                  : "Only the owner can invite collaborators"
+              }
+            >
+              <div>Invite</div>
+              <i className="fa-solid fa-share" />
+            </button>
+
+            <button className="export" onClick={onExport}>
+              <div>Export</div>
+              <i className="fa-solid fa-download" />
+            </button>
+          </ul>
+        </div>
       </div>
-    </>
+
+      <i onClick={openMenu} className="fa-solid fa-bars menu" />
+    </div>
   );
 
   function loadFile() {
@@ -402,7 +443,8 @@ export default function WorkspaceBar({
       } else {
         wsData.blocks = wsData.blocks || { blocks: [] };
         wsData.blocks.blocks = (wsData.blocks.blocks || []).concat(
-          Blockly.serialization.workspaces.save(workspace)?.blocks?.blocks || [],
+          Blockly.serialization.workspaces.save(workspace)?.blocks?.blocks ||
+            [],
         );
 
         Blockly.serialization.workspaces.load(wsData, workspace);
@@ -453,33 +495,71 @@ export default function WorkspaceBar({
       );
     }
 
+    /* The file's workspaces are written wherever this project saves:
+       into the active version, or into the project itself. */
     const projectWorkspaces = project.workspaces || [];
     let created = 0;
     let updated = 0;
 
-    for (const ws of fileWorkspaces) {
-      const existing = projectWorkspaces.find((pw) => pw.name === ws.name);
-      const body = {
-        name: ws.name,
-        data: JSON.stringify(parseDfWorkspaceData(ws.data)),
-      };
+    try {
+      for (const ws of fileWorkspaces) {
+        const existing = projectWorkspaces.find((pw) => pw.name === ws.name);
+        const data = JSON.stringify(parseDfWorkspaceData(ws.data));
 
-      if (existing) {
-        await axios.patch(
-          apiUrl +
-            `/projects/${project._id}/workspaces/${existing._id}/data`,
-          body,
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
-        );
-        updated++;
-      } else {
-        await axios.post(
-          apiUrl + `/projects/${project._id}/workspaces`,
-          body,
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
-        );
-        created++;
+        if (existing) {
+          if (activeVersion)
+            await saveVersionWorkspaceData(
+              project._id,
+              activeVersion._id,
+              existing._id,
+              data,
+            );
+          else
+            await axios.patch(
+              apiUrl +
+                `/projects/${project._id}/workspaces/${existing._id}/data`,
+              { name: ws.name, data },
+              {
+                headers: {
+                  Authorization: localStorage.getItem("disfuse-token"),
+                },
+              },
+            );
+
+          updated++;
+        } else {
+          if (activeVersion)
+            await createVersionWorkspace(project._id, activeVersion._id, {
+              name: ws.name,
+              data,
+            });
+          else
+            await axios.post(
+              apiUrl + `/projects/${project._id}/workspaces`,
+              { name: ws.name, data },
+              {
+                headers: {
+                  Authorization: localStorage.getItem("disfuse-token"),
+                },
+              },
+            );
+
+          created++;
+        }
       }
+    } catch (error) {
+      console.error(error);
+
+      return Swal.fire({
+        title: "Couldn't import that file",
+        text:
+          error.response?.data?.error ||
+          "Something went wrong importing this project file.",
+        icon: "error",
+        ...modalThemeColor(userCache.user),
+      }).then(() => {
+        if (created || updated) window.location.reload();
+      });
     }
 
     Swal.fire({
@@ -496,37 +576,66 @@ export default function WorkspaceBar({
     }).then(() => window.location.reload());
   }
 
+  /**
+   * Downloads a .df of the project's blocks.
+   *
+   * Called "Download" rather than "Save" because nothing about it is
+   * saving: the project is already saved continuously, and on a Version
+   * Control project it is saved into a version. This writes a file.
+   */
   async function saveFile() {
-    const response = await Swal.fire({
-      title: "Save to File",
-      text: "What would you like to save?",
-      icon: "question",
-      input: "select",
-      inputOptions: {
-        project: "Whole project (all workspaces)",
-        workspace: "Current workspace only",
-      },
-      inputValue: "project",
-      confirmButtonText: "Save",
-      showCancelButton: true,
-      ...modalThemeColor(userCache.user),
+    const choice = activeVersion
+      ? await pickVersionAndScope({
+          versions,
+          activeVersionId: activeVersion._id,
+          title: "Download .df File",
+          confirmButtonText: "Download",
+          html: "A .df file holds blocks, so it saves the version you pick exactly as it is now.",
+          modalColors: modalThemeColor(userCache.user),
+        })
+      : await legacyScopeChoice();
+
+    if (!choice) return;
+
+    const whole = choice.scope === "project";
+
+    /* Whatever is on screen wins over the last autosave — but only for
+       the version being edited. Versions share workspace IDs, so handing
+       the live workspace to a download of a DIFFERENT version would
+       write this version's blocks into that version's file. */
+    const editingChosen =
+      !activeVersion || String(choice.versionId) === String(activeVersion._id);
+
+    /* The version being edited is the one already in `project.workspaces`,
+       so it costs no request — but those are the blocks the page was opened
+       with. Everything except the workspace that's open is refetched so a
+       download really holds the latest blocks of every workspace. */
+    const latestProject = editingChosen
+      ? await refreshProjectWorkspaces(project, project._id)
+      : project;
+
+    const workspaces = await workspacesForChoice(project._id, choice, {
+      activeVersionId: activeVersion?._id,
+      projectWorkspaces: latestProject.workspaces || [],
+    }).catch((error) => {
+      console.error(error);
+      return null;
     });
 
-    if (!response.isConfirmed || !response.value) return;
+    if (!workspaces)
+      return Swal.fire({
+        title: "Couldn't read that version",
+        text: "Please reload the page and try again.",
+        icon: "error",
+        ...modalThemeColor(userCache.user),
+      });
 
-    let data;
-
-    if (response.value === "project") {
-      // Saving the whole project needs the latest blocks of every workspace,
-      // not only the ones this page was opened with. The workspace that's open
-      // keeps its unsaved blocks, buildProjectDf takes those from Blockly
-      const latestProject = await refreshProjectWorkspaces(
-        project,
-        project._id,
-      );
-
-      data = buildProjectDf(latestProject, workspace, currentWorkspace._id);
-    } else data = Blockly.serialization.workspaces.save(workspace);
+    const data = buildDf(workspaces, {
+      scope: choice.scope,
+      ...(editingChosen
+        ? { workspace, workspaceId: currentWorkspace?._id }
+        : {}),
+    });
 
     const blob = new Blob([JSON.stringify(data)], {
       type: "text/plain",
@@ -547,385 +656,55 @@ export default function WorkspaceBar({
       timer: 5000,
       timerProgressBar: true,
       icon: "success",
-      title:
-        response.value === "project"
-          ? "Successfully saved whole project"
-          : "Successfully saved current workspace",
+      title: activeVersion
+        ? `Downloaded ${
+            whole
+              ? versionNameFor(choice.versionId)
+              : `one workspace from ${versionNameFor(choice.versionId)}`
+          }`
+        : whole
+          ? "Successfully downloaded whole project"
+          : "Successfully downloaded current workspace",
       showConfirmButton: false,
       ...modalThemeColor(userCache.user),
     });
   }
 
-  // eslint-disable-next-line
-  function openBlockBuddy() {
-    const modalColors = modalThemeColor(userCache.user);
-
-    Swal.fire({
-      ...modalColors,
-      title: "BlockBuddy",
-      showConfirmButton: false,
-      showCancelButton: true,
-      footer: "BlockBuddy is only for simple tasks; it may make mistakes",
-      didOpen: () => {
-        document
-          .querySelector(".blockBuddy-container #suggest")
-          .addEventListener("click", async () => {
-            setBlockbuddyRes("");
-
-            Swal.fire({
-              ...modalColors,
-              title: "BlockBuddy Suggest",
-              confirmButtonText: "Generate",
-              showCancelButton: true,
-              inputPlaceholder: "What should I name my bot?",
-              html: `Ask BlockBuddy a question or leave blank to suggest changes
-
-              <br />
-              <br />
-              
-              <select id="blockBuddy-suggestion-context">
-                <option value="project">Whole project</option>
-                <option value="workspace">Only this workspace</option>
-              </select>`,
-              input: "text",
-            }).then(async (v) => {
-              if (!v.isConfirmed) return;
-
-              document
-                .querySelector("dialog.blockBuddy-suggestions")
-                .showModal();
-
-              const response = await fetch(
-                apiUrl + `/projects/${project._id}/blockbuddy/suggest`,
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    prompt: v.value,
-                    context:
-                      document.querySelector("#blockBuddy-suggestion-context")
-                        .value === "project"
-                        ? "project"
-                        : currentWorkspace._id,
-                  }),
-                  headers: {
-                    authorization: localStorage.getItem("disfuse-token"),
-                    "content-type": "application/json",
-                  },
-                },
-              );
-
-              setBlockbuddyRes((await response.json()).content);
-            });
-          });
-
-        // document
-        //   .querySelector(".blockBuddy-container #create")
-        //   .addEventListener("click", async () => {
-        //     Swal.fire({
-        //       ...modalColors,
-        //       title: "BlockBuddy Create",
-        //       confirmButtonText: "Create",
-        //       showCancelButton: true,
-        //       inputPlaceholder: "A block that logs something in the console",
-        //       html: "Describe one or more blocks to create",
-        //       input: "text",
-        //       showLoaderOnConfirm: true,
-        //       preConfirm: async (prompt) => {
-        //         return (
-        //           await axios.post(
-        //             apiUrl + `/users/${userCache.user.id}/blockbuddy/blocks`,
-        //             {
-        //               prompt,
-        //             },
-        //             {
-        //               headers: {
-        //                 Authorization: localStorage.getItem("disfuse-token"),
-        //               },
-        //             }
-        //           )
-        //         ).data;
-        //       },
-        //     }).then(async (response) => {
-        //       if (!response.isConfirmed) return;
-
-        //       Blockly.defineBlocksWithJsonArray(
-        //         response.value.map((b) => b.definition)
-        //       );
-
-        //       response.value.forEach((customBlock) => {
-        //         const bl = workspace.newBlock(customBlock.definition.type);
-        //         bl.initSvg();
-        //         bl.render();
-        //         bl.setDeletable(true);
-
-        //         // eslint-disable-next-line no-new-func
-        //         const genCode = new Function(
-        //           "javascript",
-        //           customBlock.javascriptGenerator
-        //         );
-
-        //         genCode(javascript);
-        //       });
-
-        //       let installedBlockPacks = [];
-
-        //       const responses = await Promise.all(
-        //         userCache.user.installedBlockPacks?.map((packId) =>
-        //           axios.get(apiUrl + `/workshop/${packId}`, {
-        //             headers: {
-        //               Authorization: localStorage.getItem("disfuse-token"),
-        //             },
-        //           })
-        //         )
-        //       );
-
-        //       installedBlockPacks = responses.map((response) => response.data);
-
-        //       userCache.user.customBlocks = [
-        //         ...(userCache.user.customBlocks || []),
-        //         ...response.value,
-        //       ];
-
-        //       workspace.updateToolbox(
-        //         getToolbox(installedBlockPacks, userCache.user)
-        //       );
-        //     });
-        //   });
-        // document
-        //   .querySelector(".blockBuddy-container #complete")
-        //   .addEventListener("click", async () => {
-        //     Swal.fire({
-        //       ...modalColors,
-        //       title: "BlockBuddy Complete",
-        //       confirmButtonText: "Generate",
-        //       showCancelButton: true,
-        //       inputPlaceholder: "Create a simple help command",
-        //       html: "Describe a command or feature to create",
-        //       input: "text",
-        //       showLoaderOnConfirm: true,
-        //       preConfirm: async (prompt) => {
-        //         const blockTypes = Object.keys(Blockly.Blocks);
-        //         const blockSchemas = blockTypes
-        //           .map(getBlockMetadata)
-        //           .filter(Boolean);
-
-        //         return (
-        //           await axios.post(
-        //             apiUrl + `/projects/${project._id}/blockbuddy/complete`,
-        //             {
-        //               prompt,
-        //               availableBlocks: blockSchemas,
-        //             },
-        //             {
-        //               headers: {
-        //                 Authorization: localStorage.getItem("disfuse-token"),
-        //               },
-        //             }
-        //           )
-        //         ).data;
-        //       },
-        //     }).then((response) => {
-        //       if (!response.isConfirmed) return;
-
-        //       try {
-        //         Blockly.Xml.domToWorkspace(
-        //           Blockly.utils.xml.textToDom(response.value.xml),
-        //           workspace
-        //         );
-
-        //         Swal.fire({
-        //           ...modalColors,
-        //           title: "BlockBuddy Complete",
-        //           text: response.value.completionText,
-        //         });
-        //       } catch (e) {
-        //         console.error(e);
-
-        //         Swal.fire({
-        //           ...modalColors,
-        //           title: "There was a problem",
-        //           icon: "error",
-        //           text: "There was a problem generating the blocks. Please try again.",
-        //         });
-        //       }
-        //     });
-        //   });
-        // document
-        //   .querySelector(".blockBuddy-container #convert")
-        //   .addEventListener("click", async () => {
-        //     Swal.fire({
-        //       ...modalColors,
-        //       title: "BlockBuddy Convert",
-        //       confirmButtonText: "Convert",
-        //       showCancelButton: true,
-        //       html: "Insert the contents of your index.js file below",
-        //       input: "textarea",
-        //       showLoaderOnConfirm: true,
-        //       preConfirm: async (code) => {
-        //         const blockTypes = Object.keys(Blockly.Blocks);
-        //         const blockSchemas = blockTypes
-        //           .map(getBlockMetadata)
-        //           .filter(Boolean);
-
-        //         return (
-        //           await axios.post(
-        //             apiUrl + `/projects/${project._id}/blockbuddy/convert`,
-        //             {
-        //               code,
-        //               availableBlocks: blockSchemas,
-        //             },
-        //             {
-        //               headers: {
-        //                 Authorization: localStorage.getItem("disfuse-token"),
-        //               },
-        //             }
-        //           )
-        //         ).data;
-        //       },
-        //     }).then((response) => {
-        //       if (!response.isConfirmed) return;
-
-        //       try {
-        //         Blockly.Xml.domToWorkspace(
-        //           Blockly.utils.xml.textToDom(response.value.xml),
-        //           workspace
-        //         );
-
-        //         Swal.fire({
-        //           ...modalColors,
-        //           title: "BlockBuddy Convert",
-        //           text: response.value.completionText,
-        //         });
-        //       } catch (e) {
-        //         console.error(e);
-
-        //         Swal.fire({
-        //           ...modalColors,
-        //           title: "There was a problem",
-        //           icon: "error",
-        //           text: "There was a problem generating the blocks. Please try again.",
-        //         });
-        //       }
-        //     });
-        // });
+  /** The menu a project that has never used Version Control gets. */
+  async function legacyScopeChoice() {
+    const response = await Swal.fire({
+      title: "Download .df File",
+      text: "What would you like to download?",
+      icon: "question",
+      input: "select",
+      inputOptions: {
+        project: "Whole project (all workspaces)",
+        workspace: "Current workspace only",
       },
-      html: renderToStaticMarkup(
-        <>
-          <div className="blockBuddy-container">
-            <div id="complete" className="disabled">
-              <div>
-                <i class="fa-solid fa-cubes-stacked"></i>
-                <h3>Complete</h3>
-              </div>
-              <p>Unavailable due to an issue</p>
-            </div>
-            <div id="suggest">
-              <div>
-                <i class="fa-solid fa-list-check"></i>
-                <h3>Suggest</h3>
-              </div>
-              <p>Make a list of changes or improvements for your bot</p>
-            </div>
-            <div id="create" className="disabled">
-              <div>
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <h3>Create</h3>
-              </div>
-              <p>Unavailable due to an issue</p>
-            </div>
-            <div id="convert" className="disabled">
-              <div>
-                <i class="fa-solid fa-repeat"></i>
-                <h3>Convert</h3>
-              </div>
-              <p>Unavailable due to an issue</p>
-            </div>
-          </div>
-        </>,
-      ),
-    }).then(() => localStorage.setItem("blockBuddy-discovered", true));
+      inputValue: "project",
+      confirmButtonText: "Download",
+      showCancelButton: true,
+      ...modalThemeColor(userCache.user),
+    });
+
+    if (!response.isConfirmed || !response.value) return null;
+
+    return {
+      versionId: null,
+      scope:
+        response.value === "project"
+          ? "project"
+          : String(currentWorkspace?._id),
+    };
   }
 
-  // This function is used to export the information of all blocks to a json file.
-  // This file is used in the DisFuse bot in order to provide support in the Discord server using AI.
-
-  // function exportBlockInfo() {
-  //   const blockTypes = Object.keys(Blockly.Blocks);
-  //   const blockSchemas = blockTypes.map(getBlockMetadata).filter(Boolean);
-
-  //   const zip = new JSZip();
-  //   zip.file("f.json", JSON.stringify(blockSchemas));
-
-  //   zip.generateAsync({ type: "blob" }).then((content) => {
-  //     let url = window.URL.createObjectURL(content);
-  //     let anchor = document.createElement("a");
-  //     anchor.href = url;
-  //     anchor.download = `test.zip`;
-
-  //     anchor.click();
-
-  //     window.URL.revokeObjectURL(url);
-  //   });
-  // }
+  function versionNameFor(versionId) {
+    return (
+      versions.find((version) => String(version._id) === String(versionId))
+        ?.name || "this version"
+    );
+  }
 }
-
-//function getBlockMetadata(blockType) {
-//  const blockDef = Blockly.Blocks[blockType];
-//  if (!blockDef) return null;
-//
-//  const workspace = Blockly.inject(document.createElement("div"), {
-//    toolbox: null,
-//  });
-//  const block = workspace.newBlock(blockType);
-//
-//  const metadata = {
-//    type: blockType,
-//    inputs: {},
-//    fields: {},
-//    output: block.outputConnection?.check_ ?? null,
-//    hasPreviousStatement: block.previousConnection !== null,
-//    hasNextStatement: block.nextConnection !== null,
-//    code: null,
-//  };
-//
-//  for (const input of block.inputList) {
-//    metadata.inputs[input.name] = {
-//      inputType:
-//        input.type === Blockly.INPUT_VALUE
-//          ? "value"
-//          : input.type === Blockly.NEXT_STATEMENT
-//          ? "statement"
-//          : "dummy",
-//      check: input.connection?.check_ ?? null,
-//    };
-//  }
-//
-//  for (const input of block.inputList) {
-//    for (const field of input.fieldRow) {
-//      metadata.fields[field.name] = {
-//        type: field.constructor.name,
-//        value: field.getValue(),
-//      };
-//    }
-//  }
-//
-//  javascriptGenerator.init(workspace);
-//
-//  try {
-//    const generatedCode = javascriptGenerator.blockToCode(block);
-//    metadata.code = Array.isArray(generatedCode)
-//      ? generatedCode[0]
-//      : generatedCode;
-//  } catch (e) {
-//    console.error(e);
-//    metadata.code = "// Code generation failed";
-//  }
-//
-//  block.dispose();
-//  workspace.dispose();
-//
-//  return metadata;
-//}
 
 function openWorkspaceTabs(workspace) {
   document.querySelector(".workspace-tabs").style.height = "5vh";

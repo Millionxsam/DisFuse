@@ -11,7 +11,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
   const [newLike, setNewLike] = useState(false);
 
   useEffect(() => {
-    setAuthor(allUsers.find((u) => u.id === reply.authorId));
+    setAuthor(allUsers.find((u) => u.id === reply.authorId) ?? {});
   }, [allUsers, reply.authorId]);
 
   function delReply() {

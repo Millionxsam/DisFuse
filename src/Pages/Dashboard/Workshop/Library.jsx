@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import LoadingAnim from "../../../components/LoadingAnim";
 import WorkshopItem from "../../../components/WorkshopItem";
 
@@ -49,6 +50,9 @@ export default function Library() {
 
   return (
     <div className="df-page">
+      <Helmet>
+        <title>Library | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i className="fa-solid fa-cubes-stacked"></i> Library

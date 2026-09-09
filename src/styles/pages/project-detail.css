@@ -1,0 +1,273 @@
+/* =====================================================================
+   Project Detail
+   ---------------------------------------------------------------------
+   A project's public page.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   Project page (.df-project-detail)
+   --------------------------------------------------------------------- */
+
+.df-project-detail {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2.5rem min(4vw, 2.5rem) 5rem min(4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+}
+
+.df-project-detail-head {
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid rgba(var(--main-color-rgb), 0.7);
+  border-radius: var(--df-r-lg);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.df-project-detail-head .title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+}
+
+.df-project-detail-head .title-row.editable {
+  cursor: pointer;
+}
+
+.df-project-detail-head .title-row img {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--df-r-sm);
+}
+
+.df-project-detail-head .title-row i.fa-lock {
+  font-size: 15px;
+  color: var(--df-amber);
+}
+
+.df-project-detail-head .owner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--df-text-faint);
+  font-size: 13.5px;
+}
+
+.df-project-detail-head .owner i {
+  font-style: normal;
+}
+
+.df-project-detail-head > p {
+  color: var(--df-text-dim);
+  font-size: 14.5px;
+  line-height: 1.6rem;
+}
+
+.df-project-detail-head .visibility-note {
+  color: var(--df-text-faint);
+  font-size: 12.5px;
+}
+
+/* Only the owner ever sees this: their website exists but isn't being
+   linked from this page, and this says why. */
+.df-project-detail-head .visibility-note.website-note i {
+  color: var(--df-amber);
+  font-style: normal;
+  margin-right: 0.25rem;
+}
+
+.df-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.df-detail-actions .darkBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+  border-radius: 999px;
+  padding: 0.65rem 1.1rem;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.df-detail-actions .darkBtn:hover {
+  background: var(--df-surface-3);
+  border-color: var(--df-border-strong);
+}
+
+.df-detail-actions .darkBtn.website i {
+  color: var(--df-mint);
+}
+
+.df-detail-actions .darkBtn.like.active {
+  background: rgba(255, 92, 92, 0.18);
+  border-color: rgba(255, 92, 92, 0.4);
+  color: #ff8a8a;
+}
+
+.df-detail-actions .darkBtn.fav.active {
+  background: rgba(255, 182, 72, 0.16);
+  border-color: rgba(255, 182, 72, 0.4);
+  color: var(--df-amber);
+}
+
+.df-detail-actions .darkBtn.newLike i,
+.df-detail-actions .darkBtn.newFav i {
+  animation: df-pop 0.35s ease;
+}
+
+@keyframes df-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.df-collab-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* comments — restyles the existing Comment.jsx / Reply.jsx markup
+   (.comment / .reply / .top / .middle / .bottom / .addComment /
+   .reply-container) without needing to touch those files */
+
+.df-project-detail .addComment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-lg);
+  padding: 1.25rem;
+}
+
+.df-project-detail textarea.commentInput,
+.df-project-detail textarea.replyInput {
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  color: white;
+  padding: 0.9rem;
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.df-project-detail button.postBtn,
+.df-project-detail button.replyBtn {
+  align-self: flex-end;
+  background: rgba(var(--main-color-rgb), 0.4);
+  border-radius: var(--df-r-sm);
+  padding: 0.6rem 1.3rem;
+  font-size: 13.5px;
+}
+
+.df-project-detail button.postBtn:hover,
+.df-project-detail button.replyBtn:hover {
+  background: var(--main-color);
+}
+
+.df-project-detail .comment,
+.df-project-detail .reply {
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.df-project-detail .bottom > .reply {
+  padding: 0.5rem;
+  border-radius: 7.5px;
+}
+
+.df-project-detail .comment.highlighted,
+.df-project-detail .reply.highlighted {
+  border-color: var(--df-amber);
+  box-shadow: 0 0 0 1px rgba(255, 182, 72, 0.3);
+}
+
+.df-project-detail .comment .replies {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--df-border);
+}
+
+.df-project-detail .top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 12px;
+  color: var(--df-text-dim);
+}
+
+.df-project-detail .top > i {
+  color: var(--df-text-faint);
+}
+
+.df-project-detail .middle {
+  font-size: 14px;
+  line-height: 1.55rem;
+}
+
+.df-project-detail .bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 13px;
+  color: var(--df-text-faint);
+}
+
+.df-project-detail .bottom > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.df-project-detail .bottom .like.active {
+  color: #ff8a8a;
+}
+
+.df-project-detail .bottom > div:hover {
+  color: white;
+}
+
+.df-project-detail .reply-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.df-project-detail .body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}

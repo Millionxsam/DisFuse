@@ -1,0 +1,180 @@
+/* =====================================================================
+   Page Common
+   ---------------------------------------------------------------------
+   The shared page shell every dashboard list page uses.
+   ===================================================================== */
+
+.project-create-modal {
+  display: flex;
+  gap: 1vh;
+  flex-direction: column;
+}
+
+.project-create-modal input {
+  padding: 0.75rem;
+  border-radius: 1.5rem;
+  border: 2px solid var(--border-color);
+  font-size: 20px;
+}
+
+.explore-container,
+.fav-container,
+.inbox-container,
+.adminDashboard-container,
+.workshop-container,
+.library-container,
+.newProject-page-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1.7rem;
+  width: 100%;
+}
+
+/* =====================================================================
+   Project pages — toolbar + responsive card grid, shared by
+   MyProjects (.df-projects-page) and Explore (.df-explore-page)
+   ===================================================================== */
+
+.df-page {
+  padding: 2rem min(3vw, 2.5rem) 4rem min(3vw, 2.5rem);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.df-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid var(--df-border);
+  padding-bottom: 1.25rem;
+}
+
+.df-page-head h1 {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 0.75rem;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.df-page-head h1 i {
+  color: var(--main-color);
+  filter: brightness(1.6);
+}
+
+.df-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.df-toolbar input.search {
+  flex: 1;
+  min-width: 12rem;
+  width: auto;
+}
+
+.df-toolbar .df-btn-group {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.df-primary-btn {
+  background: var(--main-color) !important;
+}
+
+.df-primary-btn:hover {
+  background: #0864bc !important;
+  box-shadow: 0 0 18px rgba(var(--main-color-rgb), 0.5) !important;
+}
+
+.df-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.5rem;
+}
+
+.df-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--df-text-dim);
+  border: 1px dashed var(--df-border-strong);
+  border-radius: var(--df-r-lg);
+}
+
+.df-empty i {
+  font-size: 2rem;
+  color: var(--df-text-faint);
+}
+
+.df-empty h3 {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  gap: 0.5rem;
+}
+
+.df-empty p {
+  max-width: 24rem;
+  font-size: 14px;
+}
+
+/* ---- Pagination ---- */
+
+.df-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.df-pagination button {
+  padding: 0.6rem 1.1rem;
+}
+
+.df-pagination .page-indicator {
+  font-size: 14px;
+  color: var(--df-text-dim);
+  padding: 0.5rem 1rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 999px;
+}
+
+
+/* These two came out of what used to be the Staff Panel's stretch of
+   index.css. They are shared by seven page containers, so they belong
+   with the rest of the page shell. */
+.explore-container .head,
+.fav-container .head,
+.inbox-container .head,
+.adminDashboard-container .head,
+.workshop-container .head,
+.library-container .head,
+.newProject-page-container .head {
+  font-size: 50px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.explore-container .buttons {
+  display: flex;
+  gap: 1rem;
+}

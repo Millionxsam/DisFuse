@@ -1,0 +1,22 @@
+/* The four variables that used to be declared here as well are
+   in base/tokens.css, on :root — declaring them on `*` redeclared
+   them on every element in the document. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu Sans", "Roboto", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 1.5rem;
+}
+
+body {
+  background-color: #00040f;
+}

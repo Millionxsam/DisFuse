@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import javascript, { javascriptGenerator, Order } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
-import { createMutatorBlock } from "../functions/createMutator.ts";
+import { createRestrictions } from "./lib/restrictions";
+import { createMutatorBlock } from "./lib/createMutator";
 
 createMutatorBlock({
   id: "misc_int_reply_mutator",
@@ -226,7 +226,7 @@ Blockly.Blocks["misc_addrow"] = {
     ]);
     this.setColour("#26A4AF");
     this.setTooltip(
-      "An action row inside a Components V2 message — place button or select menu blocks inside.",
+      "An action row inside a Components V2 message. Place button or select menu blocks inside.",
     );
   },
 };

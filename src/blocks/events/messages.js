@@ -1,8 +1,8 @@
-import { createRestrictions } from "../../functions/restrictions";
+import { createRestrictions } from "../lib/restrictions";
 import {
   createEventBlock,
   createEventVariable,
-} from "../../functions/createEvent.ts";
+} from "../lib/createEvent";
 
 createEventBlock({
   id: "events_message_pinned",

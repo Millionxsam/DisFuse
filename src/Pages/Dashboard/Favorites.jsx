@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
@@ -33,12 +34,14 @@ export default function Favorites() {
     }
 
     axios
-      .get(`${apiUrl}/projects?limit=200`, {
+      .get(`${apiUrl}/projects`, {
         headers: { Authorization: localStorage.getItem("disfuse-token") },
       })
       .then(({ data }) => {
-        userCache.explore = data.projects;
-        const favProjects = resolveFavorites(data.projects);
+        /* Shares `userCache.explore` with Explore, so it reads the same
+           whole listing rather than a page of it. */
+        userCache.explore = data;
+        const favProjects = resolveFavorites(data);
         setProjects(favProjects);
         setShown(favProjects);
         setLoading(false);
@@ -62,6 +65,9 @@ export default function Favorites() {
 
   return (
     <div className="df-page">
+      <Helmet>
+        <title>Favorites | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i className="fa-solid fa-star"></i> Favorites

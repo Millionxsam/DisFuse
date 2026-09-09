@@ -1,0 +1,73 @@
+/* =====================================================================
+   Switch
+   ---------------------------------------------------------------------
+   Switch.
+   ===================================================================== */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch input:disabled + .slider {
+  opacity: 0.25;
+  cursor: not-allowed;
+  pointer-events: none !important;
+}
+
+.switch:active .slider:before {
+  width: 35px;
+}
+
+.switch:active input:checked + .slider:before {
+  left: -5px;
+}
+
+.slider:active {
+  background-color: #6697c5 !important;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.2s;
+  border-radius: 1.5rem;
+}
+
+.slider:before {
+  position: absolute;
+  border-radius: 1.5rem;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.2s;
+  box-shadow: 0 0 10px 1px gray;
+}
+
+input:checked + .slider {
+  background-color: var(--main-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--main-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}

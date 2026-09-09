@@ -1,5 +1,5 @@
-import { createRestrictions } from "../../functions/restrictions";
-import { createEventBlock, createEventVariable } from "../../functions/createEvent.ts";
+import { createRestrictions } from "../lib/restrictions";
+import { createEventBlock, createEventVariable } from "../lib/createEvent";
 
 const boostLevelCode = level =>
   `({None: 0, Tier1: 1, Tier2: 2, Tier3: 3}[${level}] ?? ${level})`;

@@ -13,6 +13,18 @@ export default function PubProject({ project }) {
 
   const canAddBot = project?.bot?.id && !project.botPrivate;
 
+  /* The bot's website, if it has one worth linking to. The API applies
+     the rule — a website is only advertised when the bot is public and
+     the site is published.
+
+     `published` is only ever set on the owner's own copy, which is the
+     one case this listing can hand back a website nobody can visit yet:
+     an owner browsing Explore sees their own drafts. */
+  const website =
+    project.website?.url && project.website.published !== false
+      ? project.website
+      : null;
+
   return (
     <div className="df-project-card">
       <div className="card-top">
@@ -83,6 +95,18 @@ export default function PubProject({ project }) {
           >
             <button>
               <i className="fa-solid fa-arrow-up-right-from-square"></i> Add Bot
+            </button>
+          </Link>
+        )}
+        {website && (
+          <Link
+            target="_blank"
+            rel="noopener"
+            to={website.url}
+            title={website.name}
+          >
+            <button className="website">
+              <i className="fa-solid fa-globe"></i> Website
             </button>
           </Link>
         )}

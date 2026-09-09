@@ -1,0 +1,436 @@
+/* =====================================================================
+   Home
+   ---------------------------------------------------------------------
+   The marketing home page.
+   ===================================================================== */
+
+/* =====================================================================
+   Home page (.df-home)
+   ===================================================================== */
+
+.df-home {
+  color: white;
+}
+
+/* Background gradient lives on the html element itself (not a
+   ::before scoped to .df-home) so it paints the full scrollable
+   page, not just the height of the hero section. background-size +
+   repeat-y tiles the four-blob pattern every 1700px so the glow
+   keeps showing up as you scroll instead of only appearing once
+   near the top. */
+
+html:has(.df-home) {
+  position: relative;
+}
+
+html:has(.df-home)::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  background-color: var(--df-bg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-image:
+    radial-gradient(
+      46rem 34rem at 10% 6%,
+      rgba(1, 79, 152, 0.404),
+      transparent 62%
+    ),
+    radial-gradient(
+      40rem 32rem at 92% 24%,
+      rgba(226, 63, 226, 0.152),
+      transparent 60%
+    ),
+    radial-gradient(
+      42rem 34rem at 14% 62%,
+      rgba(53, 208, 159, 0.142),
+      transparent 60%
+    ),
+    radial-gradient(
+      44rem 36rem at 90% 92%,
+      rgba(1, 79, 152, 0.252),
+      transparent 62%
+    );
+}
+
+@media (max-width: 700px) {
+  html:has(.df-home) {
+    background-size: 100% 1200px;
+  }
+}
+
+.df-hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 4rem 1.5rem;
+}
+
+.df-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+}
+
+.df-hero-copy h1 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  line-height: 1.08;
+}
+
+.df-hero-copy h1 span {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  background: linear-gradient(100deg, #4aa8f5 0%, var(--df-amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.df-hero-copy p.lead {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: var(--df-text-dim);
+  max-width: 34rem;
+  line-height: 1.7rem;
+}
+
+.df-hero-copy .buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.df-hero-copy .buttons a button {
+  font-size: 16px;
+  padding: 1rem 1.4rem;
+  border-radius: var(--df-r-md);
+}
+
+.df-hero-copy .buttons a:first-child button {
+  background: var(--main-color);
+}
+
+.df-hero-copy .buttons a:first-child button:hover {
+  background: #0864bc;
+  box-shadow: 0 0 22px rgba(var(--main-color-rgb), 0.55);
+}
+
+.df-stats-row {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.df-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--df-border);
+  padding: 0.65rem 1.05rem;
+  border-radius: 999px;
+  font-size: 14.5px;
+  color: var(--df-text-dim);
+}
+
+.df-stat-pill strong {
+  color: white;
+  font-variant-numeric: tabular-nums;
+}
+
+.df-stat-pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.df-stat-pill .dot.blue {
+  background: #4aa8f5;
+  box-shadow: 0 0 8px #4aa8f5;
+}
+
+.df-stat-pill .dot.amber {
+  background: var(--df-amber);
+  box-shadow: 0 0 8px var(--df-amber);
+}
+
+/* the block-chain hero illustration — the site's real signature element:
+   a tiny visual "program" made of the same snap-together blocks users
+   build bots from */
+
+.df-hero-blocks {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  width: min(24rem, 100%);
+  margin: 0 auto;
+}
+
+.df-hb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border-strong);
+  border-left: 5px solid var(--hb-color, var(--main-color));
+  border-radius: var(--df-r-md);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--df-shadow);
+  font-size: 14.5px;
+  animation: df-float 4.5s var(--df-ease) infinite;
+  animation-delay: var(--hb-delay, 0s);
+}
+
+.df-hb .tab {
+  position: absolute;
+  bottom: -7px;
+  left: 1rem;
+  width: 1.6rem;
+  height: 8px;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border-strong);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.df-hb i {
+  color: var(--hb-color, var(--main-color));
+  font-size: 17px;
+  width: 1.2rem;
+  text-align: center;
+}
+
+.df-hb b {
+  color: white;
+  font-weight: 700;
+}
+
+.df-hb-wire {
+  width: 2px;
+  height: 1.4rem;
+  margin-left: 2.1rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--df-border-strong) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+@keyframes df-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 900px) {
+  .df-hero {
+    grid-template-columns: 1fr;
+    padding: 3rem 1.5rem 2.5rem 1.5rem;
+    text-align: center;
+  }
+
+  .df-hero-copy {
+    align-items: center;
+  }
+
+  .df-hero-copy .buttons {
+    justify-content: center;
+  }
+
+  .df-stats-row {
+    justify-content: center;
+  }
+
+  .df-hero-blocks {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .df-hero-copy .buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .df-hero-copy .buttons a {
+    width: 100%;
+  }
+
+  .df-hero-copy .buttons a button {
+    width: 100%;
+  }
+}
+
+/* ---- feature grid ---- */
+
+.df-section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+}
+
+.df-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2.25rem;
+  text-align: center;
+  align-items: center;
+}
+
+.df-section-head h2 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+}
+
+.df-section-head p {
+  color: var(--df-text-dim);
+  max-width: 34rem;
+}
+
+.df-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
+
+.df-feature-card {
+  position: relative;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-lg);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition:
+    transform 0.25s var(--df-ease),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.df-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--main-color-rgb), 0.6);
+  box-shadow: var(--df-shadow);
+}
+
+.df-feature-card .icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--df-r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--main-color-rgb), 0.18);
+  color: #6cb6f7;
+  font-size: 18px;
+}
+
+.df-feature-card h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+}
+
+.df-feature-card p {
+  color: var(--df-text-dim);
+  font-size: 14px;
+  line-height: 1.5rem;
+}
+
+/* ---- testimonials ---- */
+
+.df-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  grid-auto-flow: dense;
+}
+
+.df-review-card {
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.df-review-card .stars {
+  color: var(--df-amber);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.df-review-card h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 15px;
+}
+
+.df-review-card .avatar {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--main-color), var(--df-pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.df-review-card p {
+  color: var(--df-text-dim);
+  font-size: 14px;
+  line-height: 1.55rem;
+}
+
+.df-cta {
+  margin: 1rem auto 5rem auto;
+  max-width: 1180px;
+  padding: 0 1.5rem;
+}
+
+.df-cta-inner {
+  background: linear-gradient(
+    120deg,
+    rgba(var(--main-color-rgb), 0.35),
+    rgba(226, 63, 226, 0.14)
+  );
+  border: 1px solid var(--df-border-strong);
+  border-radius: var(--df-r-xl);
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.df-cta-inner h2 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.df-cta-inner p {
+  color: var(--df-text-dim);
+  max-width: 30rem;
+}

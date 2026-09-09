@@ -1,0 +1,275 @@
+/* =====================================================================
+   Project Card
+   ---------------------------------------------------------------------
+   The card used by projects, websites, insights and control.
+   ===================================================================== */
+
+/* =====================================================================
+   Project card (.df-project-card) — shared "block" styled card used by
+   PriProject (My Projects) and PubProject (Explore / Favorites)
+   ===================================================================== */
+
+.df-project-card {
+  position: relative;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid rgba(var(--main-color-rgb), 0.7);
+  border-radius: var(--df-r-lg);
+  padding: 1.35rem 1.35rem 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition:
+    transform 0.2s var(--df-ease),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.df-project-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.22);
+  border-left-color: var(--df-amber);
+  box-shadow: var(--df-shadow);
+}
+
+.df-project-card.suspended {
+  border-left-color: var(--df-danger);
+  opacity: 0.85;
+}
+
+.df-project-card .card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.df-project-card .avatar {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--df-r-sm);
+  flex-shrink: 0;
+  object-fit: cover;
+  background: var(--df-surface-2);
+}
+
+.df-project-card .avatar-fallback {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--df-r-sm);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 92, 92, 0.14);
+  color: var(--df-danger);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.df-project-card .title-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.df-project-card h1,
+.df-project-card h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.df-project-card h1:hover,
+.df-project-card h3:hover {
+  color: #9cc9ef;
+}
+
+.df-project-card .badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.df-project-card .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11.5px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: var(--df-surface-2);
+  color: var(--df-text-dim);
+}
+
+.df-project-card .badge.private {
+  color: var(--df-amber);
+}
+
+.df-project-card .badge.suspended {
+  color: var(--df-danger);
+  cursor: pointer;
+}
+
+/* The bot's website, on a card that has one. Clickable — it opens the
+   builder for the owner and the live site for everyone else. */
+.df-project-card .badge.website {
+  color: var(--df-mint);
+  cursor: pointer;
+}
+
+.df-project-card .badge.website:hover {
+  background: var(--df-surface-3);
+  color: white;
+}
+
+.df-project-card .card-edit {
+  margin-left: auto;
+  color: var(--df-text-faint);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.df-project-card .card-edit:hover {
+  color: white;
+  animation: spin 0.5s ease;
+}
+
+.df-project-card .description {
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+  line-height: 1.45rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.df-project-card .owner-row {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--df-text-dim);
+}
+
+.df-project-card .owner-row > span {
+  background-color: var(--border-color);
+  color: var(--df-text-faint);
+  display: flex;
+  padding: 0 0.75rem 0 2rem;
+  border-radius: 1.5rem;
+  align-items: center;
+  height: 100%;
+  font-style: italic;
+  position: relative;
+  right: 1.45rem;
+}
+
+.df-project-card .owner-row .userTag {
+  padding: 3px;
+  gap: 0.4rem;
+  z-index: 1;
+}
+
+.df-project-card .owner-row .userTag:hover {
+  background-color: var(--df-surface-2);
+}
+
+.df-project-card .owner-row .userTag img {
+  height: 1.5rem;
+}
+
+.df-project-card .meta {
+  font-size: 12.5px;
+  color: var(--df-text-faint);
+}
+
+.df-project-card .stat-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.df-project-card .stat-chip,
+.df-pack-card .stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12.5px;
+  color: var(--df-text-dim);
+  background: var(--df-surface-2);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+}
+
+.df-project-card .stat-chip i,
+.df-pack-card .stat-chip i {
+  font-size: 11px;
+  color: var(--df-amber);
+}
+
+/* Some chips are links or buttons — the linked project on a website
+   card, "copy link" — and need to look like it. */
+a.stat-chip,
+button.stat-chip {
+  cursor: pointer;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 0.18s ease;
+}
+
+a.stat-chip:hover,
+button.stat-chip:hover {
+  background: var(--df-surface-3);
+  color: white;
+}
+
+.df-project-card .card-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+}
+
+/* `min-width` is what makes a third button (a project's website) wrap to
+   its own row instead of squeezing all three into unreadable slivers. */
+.df-project-card .card-buttons a,
+.df-project-card .card-buttons button {
+  flex: 1;
+  width: 100%;
+  min-width: 7rem;
+}
+
+.df-project-card .card-buttons button {
+  border-radius: var(--df-r-sm);
+  font-size: 13.5px;
+  padding: 0.7rem;
+}
+
+.df-project-card .card-buttons button.primary {
+  background: rgba(var(--main-color-rgb), 0.35);
+}
+
+.df-project-card .card-buttons button.primary:hover {
+  background: var(--main-color);
+}
+
+.df-project-card .card-buttons button.website i {
+  color: var(--df-mint);
+}
+
+@media (max-width: 400px) {
+  .df-project-card .card-buttons {
+    flex-direction: column;
+  }
+}

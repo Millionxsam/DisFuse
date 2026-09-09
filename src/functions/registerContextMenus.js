@@ -1,12 +1,70 @@
-import axios from "axios";
 import * as Blockly from "blockly";
 import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
-import { apiUrl } from "../config/config";
+import api from "../api/client.js";
+import { saveVersionWorkspaceData } from "../api/versions";
 
-export default function registerContextMenus(project, currentWorkspace) {
+/**
+ * A workspace's saved blocks, whatever state it is in.
+ *
+ * A workspace that has never been saved holds `""`, and `JSON.parse("")`
+ * throws — which is what happened when anyone tried to merge into a tab
+ * they had just created.
+ */
+function parseWorkspaceData(workspace) {
+  if (!workspace?.data?.length) return { blocks: { blocks: [] } };
+
+  try {
+    const parsed = JSON.parse(workspace.data);
+    if (!parsed.blocks?.blocks) parsed.blocks = { blocks: [] };
+    return parsed;
+  } catch (error) {
+    console.error(`Could not read workspace "${workspace.name}":`, error);
+    return { blocks: { blocks: [] } };
+  }
+}
+
+/** Reports a failed context-menu action instead of losing it silently. */
+function reportFailure(error, title) {
+  console.error(error);
+
+  Swal.fire({
+    ...modalThemeColor(userCache.user),
+    title,
+    icon: "error",
+    text:
+      error?.response?.data?.error ||
+      "Please reload the page and try again.",
+  });
+}
+
+/**
+ * The workspace and block context menus.
+ *
+ * "Move to workspace" and "Merge workspace" write into another workspace
+ * of the same project. On a Version Control project that means another
+ * workspace of the *active version*, which is what `versionId` selects —
+ * without it the write would go to the project's own workspaces, which a
+ * versioned project no longer reads.
+ */
+export default function registerContextMenus(
+  project,
+  currentWorkspace,
+  versionId = null,
+) {
+  /** Writes blocks into a sibling workspace, wherever this project saves. */
+  function saveWorkspaceData(workspaceId, data) {
+    if (versionId)
+      return saveVersionWorkspaceData(project._id, versionId, workspaceId, data);
+
+    return api.patch(
+      `/projects/${project._id}/workspaces/${workspaceId}/data`,
+      { data },
+    );
+  }
+
   Blockly.ContextMenuRegistry.registry.register({
     displayText: "Copy JavaScript Code",
     preconditionFn: (scope) =>
@@ -60,30 +118,20 @@ export default function registerContextMenus(project, currentWorkspace) {
         const toWorkspace = project.workspaces.find(
           (ws) => ws._id === response.value,
         );
-        const newData = JSON.parse(
-          toWorkspace.data === "" ? "{}" : toWorkspace.data,
+        const newData = parseWorkspaceData(toWorkspace);
+
+        newData.blocks.blocks.push(
+          Blockly.serialization.blocks.save(scope.block),
         );
 
-        if (newData.blocks) {
-          newData.blocks.blocks.push(
-            Blockly.serialization.blocks.save(scope.block),
-          );
-        } else {
-          newData.blocks = {
-            blocks: [Blockly.serialization.blocks.save(scope.block)],
-          };
-        }
+        saveWorkspaceData(response.value, JSON.stringify(newData))
+          .then(() => {
+            /* The block is removed from *this* workspace only once the
+               other one has it. It used to be disposed of immediately,
+               outside the promise — so a move that the server refused
+               deleted the block and wrote it nowhere. */
+            scope.block.dispose();
 
-        axios
-          .patch(
-            apiUrl +
-              `/projects/${project._id}/workspaces/${response.value}/data`,
-            { data: JSON.stringify(newData) },
-            {
-              headers: { Authorization: localStorage.getItem("disfuse-token") },
-            },
-          )
-          .then(() =>
             Swal.fire({
               toast: true,
               title: `Block moved to ${toWorkspace.name}`,
@@ -93,10 +141,9 @@ export default function registerContextMenus(project, currentWorkspace) {
               showConfirmButton: false,
               position: "top-right",
               ...modalThemeColor(userCache.user),
-            }),
-          );
-
-        scope.block.dispose();
+            });
+          })
+          .catch((error) => reportFailure(error, "Couldn't move that block"));
       });
     },
   });
@@ -125,24 +172,32 @@ export default function registerContextMenus(project, currentWorkspace) {
       }).then((response) => {
         if (!response.isConfirmed) return;
 
-        let newData = JSON.parse(
-          project.workspaces.find((ws) => ws._id === response.value).data,
+        const target = project.workspaces.find(
+          (ws) => ws._id === response.value,
+        );
+        const newData = parseWorkspaceData(target);
+
+        newData.blocks.blocks.push(
+          ...(Blockly.serialization.workspaces.save(scope.workspace).blocks
+            ?.blocks ?? []),
         );
 
-        if (newData.blocks) {
-          newData.blocks.blocks.push(
-            ...Blockly.serialization.workspaces.save(scope.workspace).blocks
-              .blocks,
+        saveWorkspaceData(response.value, JSON.stringify(newData))
+          .then(() =>
+            Swal.fire({
+              toast: true,
+              title: `Merged into ${target.name}`,
+              icon: "success",
+              timer: 5000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+              position: "top-right",
+              ...modalThemeColor(userCache.user),
+            }),
+          )
+          .catch((error) =>
+            reportFailure(error, "Couldn't merge those workspaces"),
           );
-        } else {
-          newData = Blockly.serialization.workspaces.save(scope.workspace);
-        }
-
-        axios.patch(
-          apiUrl + `/projects/${project._id}/workspaces/${response.value}/data`,
-          { data: JSON.stringify(newData) },
-          { headers: { Authorization: localStorage.getItem("disfuse-token") } },
-        );
       });
     },
   });

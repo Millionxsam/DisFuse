@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Switch from "../../../components/Switch";
 import { useEffect } from "react";
 import axios from "axios";
@@ -44,6 +45,9 @@ export default function OptimizationSettings() {
 
   return (
     <>
+      <Helmet>
+        <title>Optimization Settings | DisFuse</title>
+      </Helmet>
       <div className="settings">
         <h1>Optimization</h1>
         <p>Optimize the DisFuse website or workspace</p>

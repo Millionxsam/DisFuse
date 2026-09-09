@@ -1,0 +1,75 @@
+/* =====================================================================
+   Swal
+   ---------------------------------------------------------------------
+   SweetAlert2 theming. Its markup is generated, so these are its class names.
+   ===================================================================== */
+
+.swal2-container a {
+  color: #50a4ff !important;
+}
+
+.swal2-popup {
+  border-radius: 1.5rem;
+}
+
+.swal2-popup button {
+  color: white;
+  padding: 1.75vh;
+  padding-left: max(2vw, 1.5rem);
+  padding-right: max(2vw, 1.5rem);
+  border-radius: var(--button-radius);
+  font-size: 20px;
+  transition: all 0.2s ease;
+}
+
+.swal2-popup button:hover {
+  opacity: 1 !important;
+}
+
+.swal2-deny {
+  background: rgb(255, 59, 59) !important;
+}
+
+.swal2-deny:hover {
+  opacity: 0.7;
+}
+
+.swal2-confirm {
+  background: rgb(59, 121, 255) !important;
+}
+
+.swal2-confirm:hover {
+  opacity: 0.7;
+}
+
+.swal2-cancel {
+  background: rgb(87, 87, 87) !important;
+}
+
+.swal2-cancel:hover {
+  opacity: 0.7;
+}
+
+/* Swal2 dark styling > */
+
+.swal2-container.dark .swal2-validation-message {
+  background-color: var(--border-color);
+  color: white;
+}
+
+.swal2-container.dark * {
+  color: rgb(236, 236, 236);
+}
+
+.swal2-container.dark .swal2-footer {
+  border-top: 1px solid #555555;
+}
+
+.swal2-container.dark .swal2-progress-step.swal2-active-progress-step {
+  background: #1e5f9c;
+}
+
+.swal2-container.dark .swal2-progress-step:not(.swal2-active-progress-step),
+.swal2-container.dark .swal2-progress-step-line {
+  background: #205061 !important;
+}

@@ -1,0 +1,65 @@
+/* =====================================================================
+   Design tokens
+   ---------------------------------------------------------------------
+   The values every other stylesheet builds from. Nothing here draws
+   anything.
+
+   Two sets, for historical reasons worth knowing about:
+
+     --main-color, --border-color, --foreground-color, --button-radius
+       the original four. They used to be declared on the universal
+       selector `*`, which redeclares them on every element in the
+       document and defeats inheritance — moving them to :root is the
+       whole change;
+
+     --df-*
+       the redesign's palette, spacing and easing. New work uses these.
+
+   A third set, --dc-*, is deliberately NOT here: it is Discord's palette
+   for the Control client and is scoped to `.df-control-client` so those
+   greys can never leak into a DisFuse page.
+   ===================================================================== */
+
+:root {
+  /* ---- Original palette ------------------------------------------- */
+  --main-color: #014f98;
+  --main-color-rgb: 1, 79, 152;
+  --border-color: rgba(112, 128, 144, 0.233);
+  --foreground-color: #001222;
+  --button-radius: 1.3rem;
+
+  /* ---- Surfaces ---------------------------------------------------- */
+  --df-bg: #00040f;
+  --df-surface: #0a1526;
+  --df-surface-2: #101f36;
+  --df-surface-3: #16293f;
+  --df-border: rgba(255, 255, 255, 0.09);
+  --df-border-strong: rgba(255, 255, 255, 0.18);
+
+  /* ---- Text -------------------------------------------------------- */
+  --df-text: #f3f7fb;
+  --df-text-dim: rgba(243, 247, 251, 0.68);
+  --df-text-faint: rgba(243, 247, 251, 0.42);
+
+  /* ---- Accents ----------------------------------------------------- */
+  --df-amber: #ffb648;
+  --df-mint: #35d0a0;
+  --df-pink: #e23fe2;
+  --df-danger: #ff5c5c;
+
+  /* ---- Shape ------------------------------------------------------- */
+  --df-r-sm: 10px;
+  --df-r-md: 16px;
+  --df-r-lg: 22px;
+  --df-r-xl: 30px;
+  --df-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --df-shadow-lg: 0 25px 70px rgba(0, 0, 0, 0.55);
+  --df-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Dialogs -----------------------------------------------------
+     One backdrop, one blur. There were four different backdrop colours
+     and five different blur radii across the app, which is why two
+     dialogs opened side by side never quite looked related. */
+  --df-backdrop: rgba(0, 3, 10, 0.62);
+  --df-backdrop-blur: 6px;
+}

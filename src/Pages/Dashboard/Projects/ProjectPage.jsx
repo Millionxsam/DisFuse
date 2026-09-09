@@ -1,11 +1,68 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import UserTag from "../../../components/UserTag";
 import Comment from "../../../components/Comment";
 import LoadingAnim from "../../../components/LoadingAnim";
 
+import api, { authToken, data } from "../../../api/client.js";
 import { apiUrl, discordUrl } from "../../../config/config.js";
+
+/* `GET /users` takes at most 100 ids at a time. */
+const ID_BATCH = 100;
+
+/**
+ * The people who wrote a project's comments and replies.
+ *
+ * `GET /users` is authenticated and no longer returns the whole user
+ * collection, so ask it for exactly the authors shown on this page.
+ */
+async function fetchCommentAuthors(comments) {
+  const ids = [
+    ...new Set(
+      comments.flatMap((comment) => [
+        comment.authorId,
+        ...(comment.replies?.map((reply) => reply.authorId) ?? []),
+      ]),
+    ),
+  ].filter(Boolean);
+
+  const batches = [];
+  for (let i = 0; i < ids.length; i += ID_BATCH)
+    batches.push(ids.slice(i, i + ID_BATCH));
+
+  const found = await Promise.all(
+    batches.map((batch) =>
+      api.get("/users", { params: { ids: batch.join(",") } }).then(data),
+    ),
+  );
+
+  return found.flat();
+}
+
+/**
+ * Why the owner's website isn't linked from their own project page.
+ *
+ * Only the owner is ever sent a website that isn't being advertised, so
+ * this is the one place that has a `hidden` reason to explain. None of
+ * these stop the website itself working: it stays live at its own
+ * address whatever this says.
+ */
+function websiteVisibilityNote(website) {
+  if (!website || website.listed !== false) return null;
+
+  switch (website.hidden) {
+    case "draft":
+      return "Your website isn't published yet, so it isn't shown here to anyone else.";
+    case "botPrivate":
+      return "Your bot's visibility is private, so your website isn't shown here or on your project card. It's still live for anyone with the link.";
+    case "suspended":
+      return "This project is suspended, so its website isn't linked from DisFuse.";
+    default:
+      return null;
+  }
+}
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});
@@ -21,48 +78,52 @@ export default function ProjectPage() {
   const { projectId } = useParams();
 
   useEffect(() => {
-    axios
-      .get(discordUrl + "/users/@me", {
-        headers: {
-          Authorization: localStorage.getItem("disfuse-token"),
-        },
-      })
-      .then(({ data }) => {
-        axios
-          .get(apiUrl + "/users/" + data.id, {
-            headers: {
-              Authorization: localStorage.getItem("disfuse-token"),
-            },
-          })
-          .then(({ data: user }) => {
-            setUser(user);
-
-            axios
-              .get(apiUrl + `/projects/${projectId}`, {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
-              })
-              .then(async ({ data: project }) => {
-                setProject(project);
-
-                axios.get(apiUrl + "/users").then(({ data }) => {
-                  setAllUsers(data);
-
-                  axios
-                    .get(apiUrl + `/comments/${projectId}`)
-                    .then(({ data }) => {
-                      setComments(data);
-                      setLoading(false);
-                    });
-                });
-              })
-              .catch(() => (window.location = "/explore"));
-          });
+    async function fetchData() {
+      const { data: discordUser } = await axios.get(discordUrl + "/users/@me", {
+        headers: { Authorization: authToken() },
       });
+
+      setUser(await api.get("/users/" + discordUser.id).then(data));
+
+      let project;
+      try {
+        project = await api.get(`/projects/${projectId}`).then(data);
+      } catch {
+        window.location = "/explore";
+        return;
+      }
+
+      setProject(project);
+
+      /* The comments come first because they name the authors to fetch. */
+      const comments = await api.get(`/comments/${projectId}`).then(data);
+      const authors = await fetchCommentAuthors(comments);
+
+      setAllUsers(authors);
+      setComments(comments);
+      setLoading(false);
+    }
+
+    fetchData().catch((error) => {
+      console.error("Error loading project:", error);
+      setLoading(false);
+    });
   }, [projectId]);
 
   if (!project) return (window.location = "/explore");
+
+  /* The project's website, as the API decided this viewer may see it.
+     A stranger is only ever sent one that is published *and* belongs to a
+     public bot; the owner is sent theirs either way, along with the
+     reason it isn't linked publicly. */
+  const website = project.website;
+  const isOwner = Boolean(user?.id) && project?.owner?.id === user?.id;
+
+  /* A draft has an address but nothing at it yet. `published` is only
+     part of the owner's view — anyone else is only told about a website
+     that is already live. */
+  const canVisitWebsite = Boolean(website?.url) && website.published !== false;
+  const websiteNote = websiteVisibilityNote(website);
 
   var likeButtonEnabled = true;
   function toggleLike() {
@@ -137,6 +198,9 @@ export default function ProjectPage() {
 
   return (
     <div className="df-project-detail">
+      <Helmet>
+        <title>{`${project.name || "Project"} | DisFuse`}</title>
+      </Helmet>
       <div className="df-project-detail-head">
         <h1
           className={`title-row${project.owner?.id === user?.id ? " editable" : ""}`}
@@ -147,8 +211,7 @@ export default function ProjectPage() {
               : null
           }
         >
-          {!isLoading &&
-          project?.bot?.avatar ? (
+          {!isLoading && project?.bot?.avatar ? (
             <img
               src={
                 "https://cdn.discordapp.com/avatars/" +
@@ -197,6 +260,14 @@ export default function ProjectPage() {
           ""
         )}
 
+        {isOwner && websiteNote ? (
+          <i className="visibility-note website-note">
+            <i className="fa-solid fa-globe"></i> {websiteNote}
+          </i>
+        ) : (
+          ""
+        )}
+
         <div
           className="df-detail-actions"
           style={isLoading ? { pointerEvents: "none", opacity: 0.5 } : {}}
@@ -211,6 +282,42 @@ export default function ProjectPage() {
               <div className="darkBtn">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
                 <div>Add Bot</div>
+              </div>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {/* The bot's website. The API decides whether anyone but the
+              owner is told about it — a private bot's website is left off
+              this page even though it stays live at its own address. */}
+          {canVisitWebsite ? (
+            <Link to={website.url} target="_blank" rel="noopener">
+              <div className="darkBtn website">
+                <i className="fa-solid fa-globe"></i>
+                <div>Website</div>
+              </div>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {isOwner && website && !website.published ? (
+            <Link to={`/websites/${website._id}/editor`}>
+              <div className="darkBtn website">
+                <i className="fa-solid fa-pen-ruler"></i>
+                <div>Finish website</div>
+              </div>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {isOwner && !isLoading && !website ? (
+            <Link to={`/websites/new?project=${project._id}`}>
+              <div className="darkBtn website">
+                <i className="fa-solid fa-globe"></i>
+                <div>Add a website</div>
               </div>
             </Link>
           ) : (

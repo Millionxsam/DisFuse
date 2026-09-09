@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import javascript, { Order } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
-import { isValidEmoji } from "../functions/fixers";
+import { createRestrictions } from "./lib/restrictions";
+import { isValidEmoji } from "./lib/fixers";
 
 Blockly.Blocks["menus_add"] = {
   init: function () {

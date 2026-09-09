@@ -2,6 +2,7 @@ import * as Blockly from "blockly";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import LoadingAnim from "../../../components/LoadingAnim";
 import { DFTheme } from "../../../components/themes/DFTheme";
 import { workshopToolbox } from "./WorkshopToolbox";
@@ -171,6 +172,9 @@ export default function WorkshopWorkspace() {
 
   return (
     <>
+      <Helmet>
+        <title>{`${pack.name || "Workshop"} | DisFuse`}</title>
+      </Helmet>
       <div className="workshopWorkspaceNavbar">
         <div>
           <div className="logo">

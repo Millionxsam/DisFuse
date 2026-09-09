@@ -1,0 +1,56 @@
+/* =====================================================================
+   User Tag
+   ---------------------------------------------------------------------
+   UserTag, and the underline effect the navbar shares.
+   ===================================================================== */
+
+.userTag {
+  background-color: var(--main-color);
+  border-radius: 1.5rem;
+  padding: 5px;
+  width: min-content;
+  display: flex;
+  align-items: center;
+  gap: 0.25vw;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  max-width: 100%;
+}
+
+.userTag:hover {
+  background-color: var(--border-color);
+}
+
+.userTag img {
+  border-radius: 50%;
+  height: 2rem;
+}
+
+.userTag p {
+  padding-right: 0.25rem;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.underline-effect {
+  display: flex;
+  flex-direction: column;
+}
+
+.underline-effect::after {
+  content: "";
+  display: block;
+  opacity: 0;
+  height: 0.3vh;
+  border-radius: 10px;
+  background-color: rgb(152, 174, 196);
+  transition: all 0.2s ease;
+  box-shadow: 0 0 1rem 0.1rem var(--main-color);
+}
+
+.underline-effect:hover::after {
+  transform: translateY(100%);
+  opacity: 1;
+}

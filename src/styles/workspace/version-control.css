@@ -1,0 +1,271 @@
+@import "./modals.css";
+
+/* =====================================================================
+   Version Control panel
+   ---------------------------------------------------------------------
+   The list of versions inside the shared workspace dialog.
+
+   The dialog itself — its size, backdrop, blur, header and footer bar —
+   is the shell's, so what is left here is the rows. It used to be its
+   own `<dialog>` with its own backdrop colour and no animation, which is
+   why it never quite matched the other two.
+
+   `.locked` is the small Premium padlock on the actions a lapsed
+   subscriber can no longer take. Losing Premium never hides or degrades
+   a version somebody already made — it only stops them making more —
+   so the buttons stay visible and say why.
+   ===================================================================== */
+
+.versionControl-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.25rem;
+}
+
+.versionControl-version {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--df-surface-2);
+  border: 1px solid transparent;
+  border-radius: var(--df-r-md);
+  padding: 0.85rem 1rem;
+  transition: all 0.2s var(--df-ease);
+}
+
+.versionControl-version:hover {
+  background: var(--df-surface-3);
+}
+
+.versionControl-version.active {
+  border-color: rgba(var(--main-color-rgb), 0.9);
+  background: var(--df-surface-3);
+}
+
+.versionControl-version .number {
+  flex-shrink: 0;
+  min-width: 3rem;
+  text-align: center;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 15px;
+  padding: 0.5rem 0.4rem;
+  border-radius: var(--df-r-sm);
+  background: rgba(var(--main-color-rgb), 0.25);
+  border: 1px solid var(--df-border);
+}
+
+.versionControl-version.active .number {
+  background: var(--main-color);
+}
+
+.versionControl-version .details {
+  flex: 1;
+  min-width: 0;
+}
+
+.versionControl-version .details h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.versionControl-version .details .tag {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--df-border-strong);
+  color: var(--df-text-dim);
+}
+
+.versionControl-version .details .tag.active {
+  border-color: transparent;
+  background: var(--df-mint);
+  color: #04231a;
+}
+
+.versionControl-version .details p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.35rem;
+  font-size: 12px;
+  color: var(--df-text-faint);
+}
+
+.versionControl-version .details p span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.versionControl-version .buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.versionControl-version .buttons .editing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 12.5px;
+  color: var(--df-mint);
+  padding: 0 0.4rem;
+}
+
+.versionControl-version .buttons button {
+  border-radius: var(--df-r-sm);
+  padding: 0.55rem 0.85rem;
+  font-size: 13px;
+  gap: 0.4rem;
+  background: var(--df-surface-3);
+  border: 1px solid var(--df-border);
+  color: white;
+}
+
+.versionControl-version .buttons button:hover {
+  background: var(--main-color);
+}
+
+.versionControl-version .buttons button.icon {
+  width: 2.35rem;
+  justify-content: center;
+  padding: 0.55rem 0;
+}
+
+.versionControl-version .buttons button.icon.danger:hover {
+  background: var(--df-danger);
+}
+
+.versionControl-version .buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.versionControl .locked {
+  position: relative;
+  overflow: visible;
+  opacity: 0.75;
+}
+
+.versionControl .locked::after {
+  content: "";
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-left: 0.15rem;
+  border-radius: 50%;
+  background: url("/media/disfusePremium.png") center / cover no-repeat;
+}
+
+.versionControl .locked.icon::after {
+  position: absolute;
+  top: -0.3rem;
+  right: -0.3rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0;
+}
+
+.df-version-dialog-label {
+  display: block;
+  text-align: left;
+  margin: 0.9rem 0 0.35rem;
+  font-size: 12.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.df-version-dialog-select {
+  width: 100%;
+  padding: 0.65rem 0.7rem;
+  border-radius: var(--df-r-sm);
+  border: 1px solid var(--df-border-strong);
+  background: var(--df-surface-2);
+  color: white;
+  font-size: 14px;
+}
+
+.swal2-container:not(.dark) .df-version-dialog-select {
+  background: white;
+  color: #1b1b1b;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.df-version-dialog-text {
+  margin-top: 0.4rem;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+  opacity: 0.85;
+}
+
+.workspace-navbar #versionControl div {
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.previewWorkspaceNavbar .previewVersionPicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--df-r-sm);
+  background: var(--border-color);
+  font-size: 13px;
+}
+
+.previewWorkspaceNavbar .previewVersionPicker select {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 13px;
+  max-width: 10rem;
+}
+
+.previewWorkspaceNavbar .previewVersionPicker select option {
+  background: var(--df-surface-2);
+  color: white;
+}
+
+@media screen and (max-width: 900px) {
+  .versionControl-version {
+    flex-wrap: wrap;
+  }
+
+  .versionControl-version .buttons {
+    margin-left: auto;
+  }
+}
+
+/* ---- Inside the shared shell ------------------------------------------ */
+
+.df-modal-premium {
+  height: 1.1rem;
+  width: auto;
+}
+
+.versionControl-count {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: auto;
+  font-size: 0.8rem;
+  color: var(--df-text-faint);
+}
+
+.versionControl-count img {
+  height: 0.9rem;
+  width: auto;
+}

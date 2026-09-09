@@ -1,7 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../../functions/restrictions";
-import { createMutatorBlock } from "../../functions/createMutator.ts";
+import { createRestrictions } from "../lib/restrictions";
+import { createMutatorBlock } from "../lib/createMutator";
 
 Blockly.Blocks["captcha_create"] = {
   init: function () {

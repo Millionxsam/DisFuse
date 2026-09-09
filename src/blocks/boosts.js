@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
+import { createRestrictions } from "./lib/restrictions";
 
 const boostLevelCode = server =>
   `({None: 0, Tier1: 1, Tier2: 2, Tier3: 3}[${server}.premiumTier] ?? ${server}.premiumTier)`;

@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createMutatorBlock } from "../functions/createMutator.ts";
+import { createMutatorBlock } from "./lib/createMutator";
 
 const COLOUR = "#FF6E33";
 

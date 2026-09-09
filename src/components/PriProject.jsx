@@ -21,6 +21,14 @@ export default function PriProject({
   const isOwner = project?.owner?.id === userCache?.user?.id;
   const isSuspended = project?.suspension?.status === true;
 
+  /* The project's website. The owner's copy carries the website's id, so
+     their card opens the builder; a collaborator only ever gets one that
+     is published and public, and theirs opens the live site. */
+  const website = project?.website;
+  const websiteLink = website?._id
+    ? `/websites/${website._id}/editor`
+    : website?.url || null;
+
   return (
     <div className={`df-project-card${isSuspended ? " suspended" : ""}`}>
       <div className="card-top">
@@ -71,13 +79,30 @@ export default function PriProject({
                 <i className="fa-solid fa-lock"></i> Private
               </span>
             )}
+            {websiteLink && (
+              <span
+                className="badge website"
+                title={
+                  website.published === false
+                    ? `${website.name} — not published yet`
+                    : website.name
+                }
+                onClick={() => openWebsite(navigate, websiteLink)}
+              >
+                <i
+                  className={`fa-solid ${
+                    website.published === false ? "fa-pen-ruler" : "fa-globe"
+                  }`}
+                ></i>{" "}
+                {website.published === false ? "Website draft" : "Website"}
+              </span>
+            )}
             {isSuspended && (
               <span
                 className="badge suspended"
                 onClick={() => openSuspendedReason(project)}
               >
-                <i className="fa-solid fa-triangle-exclamation"></i>{" "}
-                Suspended
+                <i className="fa-solid fa-triangle-exclamation"></i> Suspended
               </span>
             )}
           </div>
@@ -120,7 +145,10 @@ export default function PriProject({
           Open
         </button>
         {isOwner && (
-          <button onClick={() => deleteProject(project, onDelete)} className="red">
+          <button
+            onClick={() => deleteProject(project, onDelete, website)}
+            className="red"
+          >
             <i className="fa-solid fa-trash"></i>
             Delete
           </button>
@@ -130,14 +158,28 @@ export default function PriProject({
   );
 }
 
-function deleteProject(project, onDelete) {
+/** Opens a website link, which may be a DisFuse page or the live site. */
+function openWebsite(navigate, link) {
+  if (!link) return;
+  if (link.startsWith("/")) return navigate(link);
+
+  window.open(link, "_blank", "noopener");
+}
+
+function deleteProject(project, onDelete, website) {
   const token = localStorage.getItem("disfuse-token");
 
   Swal.fire({
     title: "Delete Project",
     text: `Are you sure you want to delete "${project.name}"?`,
     icon: "warning",
-    footer: "This action is irreversible!",
+    /* Deleting the project does not delete its website — a published site
+       stays up rather than disappearing on its visitors — but it takes
+       away the bot token behind it, which is what every dashboard control
+       on that site runs on. */
+    footer: website
+      ? `"${website.name}" stays online, but its dashboard settings stop working without this project's bot token. This action is irreversible!`
+      : "This action is irreversible!",
     confirmButtonColor: "red",
     confirmButtonText: "Delete forever",
     showCancelButton: true,

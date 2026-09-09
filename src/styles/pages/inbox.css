@@ -1,0 +1,118 @@
+/* =====================================================================
+   Inbox
+   ---------------------------------------------------------------------
+   Inbox.
+   ===================================================================== */
+
+/* =====================================================================
+   Inbox (.df-inbox-list / .df-inbox-item)
+   ===================================================================== */
+
+.df-inbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.df-inbox-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid transparent;
+  border-radius: var(--df-r-md);
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition:
+    transform 0.18s var(--df-ease),
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.df-inbox-item:hover {
+  transform: translateX(3px);
+  background: var(--df-surface-2);
+}
+
+.df-inbox-item.unread {
+  border-left-color: var(--df-amber);
+}
+
+.df-inbox-item .icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--main-color-rgb), 0.22);
+  color: #6cb6f7;
+  font-size: 15px;
+}
+
+.df-inbox-item.unread .icon {
+  background: rgba(255, 182, 72, 0.16);
+  color: var(--df-amber);
+}
+
+.df-inbox-item .body-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.df-inbox-item .title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding-right: 1.5rem;
+}
+
+.df-inbox-item .row-body {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+}
+
+.df-inbox-item .row-body .userTag {
+  padding: 2px;
+}
+
+.df-inbox-item .row-body .userTag img {
+  height: 1.3rem;
+}
+
+.df-inbox-item .date {
+  font-style: normal;
+  color: var(--df-text-faint);
+  font-size: 12px;
+}
+
+.df-inbox-item .clearBtn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--df-text-faint);
+  transition: all 0.15s ease;
+}
+
+.df-inbox-item .clearBtn:hover {
+  background: var(--df-danger);
+  color: white;
+}

@@ -1,10 +1,31 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { userCache } from "../cache.ts";
 import { apiUrl } from "../config/config.js";
 
 const features = [
+  {
+    icon: "fa-solid fa-globe",
+    title: "Websites & dashboards",
+    text: "Give every bot a public site built by dragging elements onto the page, with optional controls server owners can configure themselves.",
+  },
+  {
+    icon: "fa-solid fa-chart-line",
+    title: "Bot Insights",
+    text: "See which commands people actually use, who uses them, which servers are busiest, and how it all changes over time.",
+  },
+  {
+    icon: "fa-solid fa-satellite-dish",
+    title: "Bot Control",
+    text: "Open a Discord-style client and use Discord as your bot: read servers, send messages, react, and moderate live.",
+  },
+  {
+    icon: "fa-solid fa-code-branch",
+    title: "Version control",
+    text: "Save the whole project as a version, start the next iteration from it, and switch back to an earlier one whenever you need.",
+  },
   {
     icon: "fa-solid fa-eye-slash",
     title: "Private or public projects",
@@ -145,6 +166,9 @@ export default function Home() {
 
   return (
     <div className="df-home">
+      <Helmet>
+        <title>Home | DisFuse</title>
+      </Helmet>
       <section className="df-hero">
         <div className="df-hero-copy">
           <h1>
@@ -227,7 +251,8 @@ export default function Home() {
           <span className="df-tag">Why DisFuse?</span>
           <h2>Everything a bot needs, none of the code</h2>
           <p>
-            Nine reasons builders pick DisFuse over writing a bot from scratch.
+            Thirteen reasons builders pick DisFuse over writing a bot from
+            scratch.
           </p>
         </div>
 

@@ -1,12 +1,12 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
-import { createMutatorBlock } from "../functions/createMutator.ts";
+import { createRestrictions } from "./lib/restrictions";
+import { createMutatorBlock } from "./lib/createMutator";
 import {
   formatEmbeds,
   buildMessageOptions,
   buildThenSuffix
-} from "../functions/generatorUtils";
+} from "./lib/generatorUtils";
 
 Blockly.Blocks["msg_getone"] = {
   init: function () {

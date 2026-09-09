@@ -1,5 +1,5 @@
-import { createRestrictions } from "../../functions/restrictions";
-import { createEventBlock, createEventVariable } from "../../functions/createEvent.ts";
+import { createRestrictions } from "../lib/restrictions";
+import { createEventBlock, createEventVariable } from "../lib/createEvent";
 import * as Blockly from "blockly/core";
 import { javascriptGenerator } from "blockly/javascript";
 

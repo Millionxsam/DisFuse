@@ -1,0 +1,7 @@
+/* =====================================================================
+   Fonts
+   ---------------------------------------------------------------------
+   The web fonts. Must stay the first statement in the bundle.
+   ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap");

@@ -1,0 +1,159 @@
+/* =====================================================================
+   Settings
+   ---------------------------------------------------------------------
+   Settings.
+   ===================================================================== */
+
+/* =====================================================================
+   Settings shell (.df-settings-page)
+   ===================================================================== */
+
+.df-settings-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.5rem min(3vw, 2.5rem) 5rem min(3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+}
+
+.df-settings-page > h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  border-bottom: 1px solid var(--df-border);
+  padding-bottom: 1.25rem;
+}
+
+.df-settings-page > h1 i {
+  color: var(--main-color);
+  filter: brightness(1.6);
+}
+
+.df-settings-body {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.df-settings-tabs {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 12rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  padding: 0.6rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.df-settings-tabs a {
+  display: block;
+}
+
+.df-settings-tabs li {
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--df-r-sm);
+  font-size: 14.5px;
+  color: var(--df-text-dim);
+  transition: all 0.15s ease;
+}
+
+.df-settings-tabs li:hover {
+  background: var(--df-surface-2);
+  color: white;
+}
+
+.df-settings-tabs li.active {
+  background: rgba(var(--main-color-rgb), 0.28);
+  color: white;
+  font-weight: 600;
+}
+
+.df-settings-content {
+  flex: 1;
+  min-width: 0;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-lg);
+  padding: 1.75rem 2rem;
+}
+
+/* restyle the existing settings-content classes (rendered by the
+   untouched WorkspaceSettings / NotificationSettings / OptimizationSettings
+   pages) so they match without needing to touch those files */
+
+.df-settings-content .settings {
+  gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.df-settings-content .settings h1 {
+  font-size: 19px;
+  font-family: "Ubuntu Sans", sans-serif;
+}
+
+.df-settings-content .settings > p {
+  color: var(--df-text-dim);
+  font-size: 14px;
+  margin-top: -0.75rem;
+}
+
+.df-settings-content .settings .option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 15px;
+  border-bottom: 1px solid var(--df-border);
+  padding-bottom: 1rem;
+}
+
+.df-settings-content .settings .option:last-of-type {
+  border-bottom: none;
+}
+
+.df-settings-content .settings .option:first-of-type {
+  margin-top: 0;
+}
+
+.df-settings-content .settings .option:has(h5) {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+}
+
+.df-settings-content .settings .option:has(h5) > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.df-settings-content .settings .option label {
+  cursor: pointer;
+}
+
+@media (max-width: 750px) {
+  .df-settings-body {
+    flex-direction: column;
+  }
+
+  .df-settings-tabs {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    position: static;
+  }
+
+  .df-settings-content {
+    width: 100%;
+    padding: 1.5rem;
+  }
+}

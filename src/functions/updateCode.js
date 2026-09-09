@@ -5,7 +5,9 @@ import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import "../hljs.css";
 import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
-import { utilFunctions } from "./generatorUtils";
+import { utilFunctions } from "../blocks/lib/generatorUtils.js";
+import { dashboardHelpers } from "../blocks/dashboard";
+import insightsCode from "./insightsCode";
 import { format } from "./pretty";
 import { parseDfWorkspaceData } from "./dfFile";
 
@@ -19,25 +21,41 @@ export async function updateCode(workspace, project, workspaceId, onlyWarning = 
 
   const tempWorkspace = getWholeProjectWorkspace(project, workspace, workspaceId);
 
-  var projectBlocks = tempWorkspace.getAllBlocks(true);
-  var workspaceCode, projectCode;
+  try {
+    if (!onlyWarning) {
+      const projectCode = await setUpCode(
+        project,
+        tempWorkspace,
+        tempWorkspace.getAllBlocks(true),
+      );
+      const workspaceCode = await setUpCode(
+        project,
+        workspace,
+        workspace.getAllBlocks(true),
+      );
 
-  if (!onlyWarning) projectCode = await setUpCode(project, tempWorkspace, projectBlocks);
+      /* Guarded because this also runs on the project-loading path,
+         where the code view may not be mounted yet — an unguarded
+         `.innerHTML` there threw and stopped the project opening. */
+      if (workspaceCodeEle)
+        workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
+          language: "javascript",
+        }).value;
 
-  var currentBlocks = workspace.getAllBlocks(true);
-  workspaceCode = await setUpCode(project, workspace, currentBlocks, onlyWarning);
+      if (projectCodeEle)
+        projectCodeEle.innerHTML = hljs.highlight(projectCode, {
+          language: "javascript",
+        }).value;
 
-  if (!onlyWarning) {
-    workspaceCodeEle.innerHTML = hljs.highlight(workspaceCode, {
-      language: "javascript",
-    }).value;
+      return;
+    }
 
-    projectCodeEle.innerHTML = hljs.highlight(projectCode, {
-      language: "javascript",
-    }).value;
+    await setUpCode(project, workspace, workspace.getAllBlocks(true), true);
+  } finally {
+    /* An injected workspace holds on to DOM and listeners until it is
+       disposed of. It used to leak whenever anything above threw. */
+    tempWorkspace.dispose();
   }
-
-  tempWorkspace.dispose();
 }
 
 function fixPackageName(packageName = "") {
@@ -121,6 +139,15 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
 
   tokenAlertCheck();
 
+  /* The dashboard helper is only emitted when the project actually uses
+     Dashboard blocks, so existing projects generate byte-identical code. */
+  const usesDashboard = blocks.some(b => b.type?.startsWith("dashboard_"));
+
+  /* Insights, on the other hand, is emitted for every project whatever
+     its blocks are: it is how a bot reports its own usage back to
+     DisFuse, not something the user builds. See ./insightsCode.js. */
+  const insights = insightsCode(project);
+
   let mobilePresenceBot = false;
   let mainTokenBlock = blocks.find(b => b.type === "main_token");
   if (mainTokenBlock)
@@ -144,6 +171,8 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
     const databases = {};
 
     ${utilFunctions}
+    ${usesDashboard ? "\n" + dashboardHelpers : ""}
+    ${insights.length > 0 ? "\n" + insights : ""}
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""}
     ${topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""}
     
@@ -160,6 +189,59 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
   return await format(js);
 }
 
+/**
+ * A throwaway workspace holding the blocks of a whole set of workspaces.
+ *
+ * `getWholeProjectWorkspace` above does this for the project as it is on
+ * screen — the live workspace plus its siblings' saved data. This one
+ * works from saved data alone, which is what exporting a version the
+ * user isn't currently editing needs.
+ *
+ * Dispose of the result when you're done with it.
+ */
+export function buildWorkspaceFromData(workspaces = []) {
+  const tempWorkspace = Blockly.inject(document.querySelector(".invisibleWs"));
+
+  const combined = { blocks: { blocks: [] }, variables: [] };
+  const seenVariables = new Set();
+
+  workspaces.forEach(ws => {
+    if (!ws?.data?.length) return;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(ws.data);
+    } catch {
+      return;
+    }
+
+    combined.blocks.blocks.push(...(parsed.blocks?.blocks || []));
+
+    /* Variables travel with the blocks that use them; without them a
+       merged workspace can't be loaded back. */
+    (parsed.variables || []).forEach(variable => {
+      if (seenVariables.has(variable.id)) return;
+      seenVariables.add(variable.id);
+      combined.variables.push(variable);
+    });
+  });
+
+  if (!combined.variables.length) delete combined.variables;
+
+  Blockly.serialization.workspaces.load(combined, tempWorkspace);
+
+  return tempWorkspace;
+}
+
+/**
+ * The bot's index.js for one workspace, exactly as the export and the
+ * code view build it. Used when exporting a version other than the one
+ * on screen, where there is no rendered code to read.
+ */
+export async function generateWorkspaceCode(project, workspace) {
+  return await setUpCode(project, workspace, workspace.getAllBlocks(true));
+}
+
 export function getWholeProjectWorkspace(project, currentWorkspace, workspaceId) {
   javascriptGenerator.init(currentWorkspace);
 
@@ -169,9 +251,12 @@ export function getWholeProjectWorkspace(project, currentWorkspace, workspaceId)
   if (!tempData.blocks?.blocks) tempData.blocks = { blocks: [] };
   if (!tempData.variables) tempData.variables = [];
 
-  (project?.workspaces || [])
-    .filter(ws => ws._id !== workspaceId)
+  (project?.workspaces ?? [])
+    .filter(ws => String(ws._id) !== String(workspaceId))
     .forEach(ws => {
+      /* Parsed defensively: a single corrupt sibling workspace used to
+         throw here and take down code generation and export for the
+         whole project. */
       const data = parseDfWorkspaceData(ws.data);
       if (!data?.blocks?.blocks?.length) return;
 

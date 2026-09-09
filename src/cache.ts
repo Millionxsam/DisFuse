@@ -5,6 +5,7 @@ export const userCache: {
   allProjects: Array<object> | null;
   isStaff: boolean;
   projects: Array<object> | null;
+  websites: Array<object> | null;
   explore: Array<object> | null;
   favorites: Array<object> | null;
   stats: { projects: number; users: number } | null;
@@ -15,6 +16,7 @@ export const userCache: {
   allProjects: null,
   isStaff: false,
   projects: null,
+  websites: null,
   explore: null,
   favorites: null,
   stats: null,

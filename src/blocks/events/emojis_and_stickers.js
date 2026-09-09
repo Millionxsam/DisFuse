@@ -1,8 +1,8 @@
 import {
   createEventBlock,
   createEventVariable,
-} from "../../functions/createEvent.ts";
-import { createRestrictions } from "../../functions/restrictions";
+} from "../lib/createEvent";
+import { createRestrictions } from "../lib/restrictions";
 
 createEventBlock({
   id: "events_emojis_created",

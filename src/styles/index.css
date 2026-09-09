@@ -1,0 +1,63 @@
+/* =====================================================================
+   DisFuse stylesheets
+   ---------------------------------------------------------------------
+   `index.css` was one file of 15,623 lines covering the whole site. This
+   is the same CSS, in the same order, split by what it styles.
+
+   **The order is load-bearing.** The redesign was written by appending
+   to the bottom of the old file rather than editing it, so a good deal
+   of it works by out-ordering rules further up — `.navbar` is defined
+   twice, and the second one exists partly to undo the first.
+   Rearranging these imports will change how the site looks.
+
+   Feature stylesheets whose class names are fully prefixed and collide
+   with nothing (`.dc-`, `.df-insights-`, `.df-ws-`, `.df-legal-`) are
+   also imported by their own components, for locality. Everything else
+   is global and lives here.
+
+   `legacy.css` is styles for markup that has been replaced. It is kept
+   rather than deleted because several of the class names in it are
+   generated at runtime — by Blockly, by SweetAlert — rather than written
+   in our source, so "is anything still using this?" is not a question
+   grep can answer. Removing it wants a look at the rendered pages.
+   ===================================================================== */
+
+@import "./base/fonts.css";
+@import "./base/tokens.css";
+@import "./base/reset.css";
+@import "./base/animations.css";
+@import "./components/loading.css";
+@import "./base/elements.css";
+@import "./components/user-tag.css";
+@import "./components/switch.css";
+@import "./workspace/navbar.css";
+@import "./workspace/canvas.css";
+@import "./workspace/tabs.css";
+@import "./workspace/code-view.css";
+@import "./components/dialogs.css";
+@import "./legacy.css";
+@import "./pages/page-common.css";
+@import "./pages/staff-panel.css";
+@import "./components/comments.css";
+@import "./legacy-responsive.css";
+@import "./workspace/blockly.css";
+@import "./components/swal.css";
+@import "./pages/workshop.css";
+@import "./pages/projects.css";
+@import "./base/focus.css";
+@import "./components/navbar.css";
+@import "./components/footer.css";
+@import "./pages/home.css";
+@import "./pages/shell.css";
+@import "./components/project-card.css";
+@import "./pages/inbox.css";
+@import "./pages/staff.css";
+@import "./pages/settings.css";
+@import "./pages/user-page.css";
+@import "./pages/project-detail.css";
+@import "./features/websites.css";
+@import "./features/insights.css";
+@import "./features/control.css";
+@import "./features/premium.css";
+@import "./workspace/version-control.css";
+@import "./pages/legal.css";

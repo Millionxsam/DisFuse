@@ -1,0 +1,214 @@
+/* =====================================================================
+   Navbar
+   ---------------------------------------------------------------------
+   Navbar.
+   ===================================================================== */
+
+/* =====================================================================
+   Navbar
+   ===================================================================== */
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 1rem;
+  z-index: 200;
+  background: rgba(6, 16, 30, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-xl);
+  width: min(1180px, 92vw);
+  margin: 1.25rem auto 0 auto;
+  padding: 0;
+  height: auto;
+  transform: none;
+  box-shadow: var(--df-shadow);
+}
+
+.navbar-inner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+}
+
+.navbar .logo span {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.navbar .logo img {
+  height: 34px;
+  width: 34px;
+}
+
+.navbar .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.navbar .nav-links a {
+  font-size: 15.5px;
+  color: var(--df-text-dim);
+  transition: color 0.2s ease;
+}
+
+.navbar .nav-links a:hover,
+.navbar .nav-links a.active {
+  color: white;
+}
+
+.navbar .nav-links .underline-effect::after {
+  height: 2px;
+  background-color: var(--df-amber);
+  box-shadow: 0 0 0.8rem var(--df-amber);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.navbar .discord-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #5865f2;
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: all 0.2s var(--df-ease);
+}
+
+.navbar .discord-pill:hover {
+  background: #6d76f5;
+  box-shadow: 0 0 18px rgba(88, 101, 242, 0.55);
+}
+
+.navbar .nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 2.6rem;
+  height: 2.6rem;
+  min-width: 2.6rem;
+  background: var(--df-surface-2);
+  border-radius: 50%;
+  padding: 0;
+}
+
+.navbar .nav-toggle:hover {
+  box-shadow: none;
+  background: var(--df-surface-3);
+}
+
+.navbar .nav-toggle span {
+  width: 17px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.25s var(--df-ease);
+}
+
+.navbar .nav-toggle.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar .nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar .nav-toggle.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-drawer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 0.9rem;
+  transition:
+    max-height 0.3s var(--df-ease),
+    padding 0.3s var(--df-ease);
+}
+
+.nav-drawer.open {
+  max-height: 26rem;
+  padding: 0.4rem 0.9rem 0.9rem 0.9rem;
+  border-top: 1px solid var(--df-border);
+}
+
+.nav-drawer a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0.75rem;
+  border-radius: var(--df-r-sm);
+  font-size: 15.5px;
+  color: var(--df-text-dim);
+}
+
+.nav-drawer a:hover,
+.nav-drawer a:active {
+  background: var(--df-surface-2);
+  color: white;
+}
+
+.nav-drawer a i {
+  width: 1.25rem;
+  text-align: center;
+  color: var(--df-amber);
+}
+
+@media (max-width: 860px) {
+  .navbar .nav-links {
+    display: none;
+  }
+
+  .navbar .discord-pill span {
+    display: none;
+  }
+
+  .navbar .discord-pill {
+    padding: 0.7rem;
+    border-radius: 50%;
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .navbar .nav-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar {
+    top: 0.6rem;
+    width: 94vw;
+    border-radius: var(--df-r-lg);
+  }
+
+  .navbar .logo span {
+    display: none;
+  }
+}

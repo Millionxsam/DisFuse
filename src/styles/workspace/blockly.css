@@ -1,0 +1,27 @@
+/* =====================================================================
+   Blockly
+   ---------------------------------------------------------------------
+   Overrides on Blockly's own generated markup.
+   ===================================================================== */
+
+.blocklyTreeIcon {
+  background-image: url("/media/sprite.png");
+}
+
+.blocklyTreeRow {
+  transition: all 0.2s ease;
+  height: 24px;
+  border-radius: 3px;
+}
+
+.blocklyToolboxDiv {
+  padding: 4px 2px 4px 2px;
+}
+
+.blocklyToolboxDiv * {
+  outline: none;
+}
+
+.blocklyDropDownContent {
+  max-height: 350px !important;
+}

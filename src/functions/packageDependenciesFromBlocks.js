@@ -8,6 +8,9 @@ const blockImports = {
     code: `const { Captcha } = require("@ddededodediamante/captcha-generator");`,
   },
   fetch_: "axios",
+  /* Dashboard blocks talk to the DisFuse API over HTTP. The helper they
+     call is emitted by updateCode.js, next to the other util functions. */
+  dashboard_: "axios",
   time_: "ms",
   canvas_: "@napi-rs/canvas",
   events_: {

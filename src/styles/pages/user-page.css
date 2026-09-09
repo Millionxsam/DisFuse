@@ -1,0 +1,121 @@
+/* =====================================================================
+   User Page
+   ---------------------------------------------------------------------
+   A user's profile.
+   ===================================================================== */
+
+/* =====================================================================
+   ROUND 3 — User page, Project page (+ comments), Block Pack page,
+   Library, Workspace bar/tabs, Invite/Secrets/Code dialogs.
+
+   Everything below is new. The workspace bar/tabs sit directly on top
+   of the Blockly canvas and the surrounding Workspace.jsx page (not
+   redesigned this round) relies on a strict height budget:
+     .workspace-navbar = 7.5vh (min 60px)
+     .workspace-tabs   = 5vh open / 0vh closed
+     #workspace canvas = 87.5vh open tabs / 92.5vh closed tabs
+   Those exact numbers are kept as-is on purpose so the Blockly canvas
+   never misaligns — only what's visually inside those bars changes.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   User page (.df-user-page)
+   --------------------------------------------------------------------- */
+
+.df-user-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.5rem min(3vw, 2.5rem) 5rem min(3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+}
+
+.df-user-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-lg);
+  padding: 1.75rem 2rem;
+}
+
+.df-user-identity {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.df-user-identity img {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--df-border-strong);
+}
+
+.df-user-identity h1 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 22px;
+}
+
+.df-user-identity p {
+  color: var(--df-text-faint);
+  font-size: 14px;
+}
+
+.df-user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.df-user-meta .stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 13px;
+  color: var(--df-text-dim);
+  background: var(--df-surface-2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+
+.df-user-head button {
+  border-radius: var(--df-r-sm);
+  background: var(--df-danger);
+  font-size: 13.5px;
+  padding: 0.65rem 1.1rem;
+}
+
+.df-user-head button#rdbt {
+  background: var(--df-surface-2);
+}
+
+.df-user-head button#rdbt:hover {
+  background: var(--df-surface-3);
+}
+
+.df-user-page h2 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 19px;
+}
+
+@media (max-width: 620px) {
+  .df-user-head {
+    flex-direction: column;
+  }
+
+  .df-user-meta {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .df-user-head button {
+    width: 100%;
+  }
+}

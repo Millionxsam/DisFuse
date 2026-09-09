@@ -1,0 +1,101 @@
+/* =====================================================================
+   Premium
+   ---------------------------------------------------------------------
+   Premium branding and dialogs.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   Premium brand mark
+   ---------------------------------------------------------------------
+   The mark is a solid square with no alpha, like disfuse.png, so every
+   placement masks it to a circle the way the main logo already is. The
+   artwork sits well inside the inscribed circle, so nothing is clipped.
+   --------------------------------------------------------------------- */
+
+.df-premium-hero .df-premium-logo {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 182, 72, 0.35);
+  box-shadow: 0 0 45px rgba(255, 182, 72, 0.28);
+}
+
+.df-premium-perks-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.df-premium-perks-head img {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 182, 72, 0.3);
+}
+
+/* Subscribers get the mark in the billing card's icon box, which loses its
+   tinted plate so the logo can fill it. */
+
+.df-billing-head .icon.brand {
+  background: none;
+}
+
+.df-billing-head .icon.brand img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.df-settings-tabs li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.df-settings-tabs li img {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+}
+
+/* Marks Control, Insights and Websites as Premium features. Sits where the
+   inbox unread badge sits — the two never appear on the same item. */
+
+.df-nav-list a .df-nav-premium {
+  margin-left: auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+/* ---- Premium dialogs -------------------------------------------------- */
+
+/* Premium is the only feature in the app that uses Swal's imageUrl. */
+
+.swal2-popup .swal2-image {
+  border-radius: 50%;
+}
+
+/* The full selector is needed to outrank the blanket
+   `.swal2-container.dark *` colour rule further up this file. */
+
+.swal2-container.dark .swal2-footer .df-swal-premium {
+  color: var(--df-amber);
+}
+
+.df-swal-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--df-amber);
+}
+
+.df-swal-premium img {
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+}

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import LoadingAnim from "../../../components/LoadingAnim";
 import { Link, useNavigate } from "react-router-dom";
 import { userCache } from "../../../cache.ts";
+import { Helmet } from "react-helmet-async";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -65,6 +66,9 @@ export default function Workshop() {
 
   return (
     <div className="df-workshop-page">
+      <Helmet>
+        <title>Workshop | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i className="fa-solid fa-screwdriver-wrench"></i> Workshop

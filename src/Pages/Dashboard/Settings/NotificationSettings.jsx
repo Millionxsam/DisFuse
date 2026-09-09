@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import LoadingAnim from "../../../components/LoadingAnim";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
@@ -40,6 +41,9 @@ export default function NotificationSettings() {
 
   return (
     <div className="settings">
+      <Helmet>
+        <title>Notification Settings | DisFuse</title>
+      </Helmet>
       <h1>Notifications</h1>
       <p>
         Enable or disable certain notifications and decide how you want to be

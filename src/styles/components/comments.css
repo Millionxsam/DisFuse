@@ -1,0 +1,261 @@
+/* =====================================================================
+   Comments
+   ---------------------------------------------------------------------
+   Comment and Reply.
+   ===================================================================== */
+
+.comment {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.comment.highlighted,
+.reply.highlighted {
+  background-color: #002c55 !important;
+}
+
+.comment .top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comment .top a {
+  display: flex;
+  align-items: center;
+  gap: 0.25vw;
+}
+
+.comment .top img {
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.comment .bottom {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.comment .bottom div {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.comment .replies {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment .replies {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment .replies .reply {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.addComment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.postBtn,
+.replyBtn {
+  width: min-content;
+  height: 3rem;
+  border-radius: 20px;
+}
+
+textarea.commentInput,
+textarea.replyInput {
+  background-color: var(--foreground-color);
+  width: 25rem;
+  font-size: 20px;
+  resize: both;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 2px solid var(--border-color);
+  outline: none;
+  color: white;
+}
+
+textarea.commentInput::placeholder,
+textarea.replyInput::placeholder {
+  color: rgb(194, 194, 194);
+}
+
+/* ---------------------------------------------------------------------
+   Block pack page (.df-pack-page)
+   --------------------------------------------------------------------- */
+
+.df-pack-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2.5rem min(4vw, 2.5rem) 5rem min(4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+}
+
+.df-pack-page-head {
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid var(--df-mint);
+  border-radius: var(--df-r-lg);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.df-pack-page-head .title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+}
+
+.df-pack-page-head .title-row i {
+  font-size: 15px;
+  color: var(--df-amber);
+}
+
+.df-pack-page-head .stat-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.df-pack-page .flags-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.df-pack-page .flags-container .flag {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--df-r-sm);
+  font-size: 13.5px;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+}
+
+.df-pack-page .flags-container .flag.info {
+  border-color: rgba(74, 168, 245, 0.4);
+  color: #9cc9ef;
+}
+
+.df-pack-page .flags-container .flag.warning {
+  border-color: rgba(255, 182, 72, 0.4);
+  color: var(--df-amber);
+}
+
+.df-pack-page .flags-container .flag.error {
+  border-color: rgba(255, 92, 92, 0.4);
+  color: #ff8a8a;
+}
+
+.df-pack-page > p {
+  color: var(--df-text-dim);
+  font-size: 14.5px;
+  line-height: 1.6rem;
+}
+
+.df-pack-page .body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.df-pack-page .body h1 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 19px;
+}
+
+.df-pack-page .blocksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  padding: 1.1rem 1.25rem;
+}
+
+.df-pack-page .blocksList h2 {
+  font-size: 14px;
+  color: var(--df-amber);
+}
+
+.df-pack-page .blocksList p {
+  font-size: 13.5px;
+  color: var(--df-text-dim);
+}
+
+.df-pack-page #blockPackPreviewWorkspace {
+  height: 40rem;
+  width: 100%;
+  border-radius: var(--df-r-lg);
+  overflow: hidden;
+  border: 1px solid var(--df-border);
+}
+
+.df-pack-page .versionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.df-pack-page .versionItem {
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.df-pack-page .versionItem > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+  color: var(--df-text-dim);
+}
+
+.df-pack-page .versionItem h2 {
+  font-size: 14.5px;
+  color: white;
+}
+
+.df-pack-page .versionItem > div:last-child {
+  font-size: 13.5px;
+  color: var(--df-text-faint);
+}
+
+@media (max-width: 700px) {
+  .df-pack-page #blockPackPreviewWorkspace {
+    height: 26rem;
+  }
+}

@@ -1,0 +1,253 @@
+/* =====================================================================
+   Shell
+   ---------------------------------------------------------------------
+   The dashboard shell and sidebar.
+   ===================================================================== */
+
+/* =====================================================================
+   Dashboard shell — sidebar + mobile top bar (.df-shell / .df-sidebar)
+   ===================================================================== */
+
+.df-shell {
+  display: flex;
+  position: relative;
+  color: white;
+  min-height: 100vh;
+}
+
+.df-shell-main {
+  width: 100%;
+  min-width: 0;
+}
+
+/* desktop sidebar */
+
+.df-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 15.5rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--df-surface);
+  border-right: 1px solid var(--df-border);
+  z-index: 150;
+}
+
+.df-sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+}
+
+.df-sidebar-brand span {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 19px;
+}
+
+.df-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0 0.5rem 1.25rem 0.5rem;
+  border-bottom: 1px solid var(--df-border);
+}
+
+.df-sidebar-brand img {
+  height: 2.3rem;
+  width: 2.3rem;
+  border-radius: 50%;
+}
+
+.df-sidebar-close {
+  display: none;
+}
+
+.df-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.df-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--df-r-sm);
+  font-size: 15px;
+  color: var(--df-text-dim);
+  position: relative;
+  transition: all 0.18s ease;
+}
+
+.df-nav-list a i {
+  width: 1.1rem;
+  text-align: center;
+  font-size: 15.5px;
+}
+
+.df-nav-list a:hover {
+  background: var(--df-surface-2);
+  color: white;
+}
+
+.df-nav-list a.active {
+  background: rgba(var(--main-color-rgb), 0.22);
+  color: white;
+  font-weight: 600;
+}
+
+.df-nav-list a.active::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  border-radius: 4px;
+  background: var(--main-color);
+}
+
+.df-nav-list a .badge {
+  margin-left: auto;
+  background: var(--df-danger);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.df-sidebar-bottom {
+  padding: 1rem;
+  border-top: 1px solid var(--df-border);
+}
+
+.df-nametag {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  border-radius: var(--df-r-sm);
+  background: var(--df-surface-2);
+  transition: background 0.2s ease;
+}
+
+.df-nametag:hover {
+  background: var(--df-surface-3);
+}
+
+.df-nametag img {
+  height: 2.1rem;
+  width: 2.1rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.df-nametag .name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  flex: 1;
+}
+
+.df-nametag i {
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: var(--df-text-dim);
+  transition: all 0.2s ease;
+}
+
+.df-nametag i:hover {
+  background: var(--df-danger);
+  color: white;
+}
+
+/* mobile top bar */
+
+.df-mobile-bar {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 140;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  background: rgba(6, 16, 30, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--df-border);
+}
+
+.df-mobile-bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 17px;
+}
+
+.df-mobile-bar .icon-btn,
+.df-sidebar-close {
+  width: 2.4rem;
+  height: 2.4rem;
+  min-width: 2.4rem;
+  border-radius: 50%;
+  background: var(--df-surface-2);
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 16px;
+}
+
+.df-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 2, 8, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 149;
+}
+
+@media (max-width: 900px) {
+  .df-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: min(19rem, 82vw);
+    transform: translateX(-100%);
+    transition: transform 0.3s var(--df-ease);
+    box-shadow: var(--df-shadow-lg);
+  }
+
+  .df-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .df-sidebar.active ~ .df-overlay,
+  .df-overlay.active {
+    display: block;
+  }
+
+  .df-sidebar-close {
+    display: flex;
+  }
+
+  .df-mobile-bar {
+    display: flex;
+  }
+
+  .df-shell {
+    flex-direction: column;
+  }
+}

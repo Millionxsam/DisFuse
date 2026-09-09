@@ -1,0 +1,162 @@
+@import "./modals.css";
+
+/* =====================================================================
+   Collaborators dialog
+   ---------------------------------------------------------------------
+   A search box, its results, and the people already on the project. The
+   two lists share a row shape, so adding somebody reads as moving them
+   from one list to the other.
+   ===================================================================== */
+
+.df-invite-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--df-border-strong);
+  border-radius: var(--df-r-sm);
+  background: var(--df-bg);
+  transition: border-color 0.15s var(--df-ease);
+}
+
+.df-invite-search:focus-within {
+  border-color: var(--main-color);
+}
+
+.df-invite-search > i {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--df-text-faint);
+}
+
+.df-invite-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  border: none;
+  background: transparent;
+  color: var(--df-text);
+}
+
+.df-invite-search input:focus {
+  outline: none;
+}
+
+.df-invite-search input::placeholder {
+  color: var(--df-text-faint);
+}
+
+/* ---- Rows ------------------------------------------------------------ */
+
+.df-invite-results,
+.df-invite-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.df-invite-results li,
+.df-invite-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-sm);
+  background: var(--df-surface-2);
+}
+
+.df-invite-results img,
+.df-invite-list img {
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--df-surface-3);
+}
+
+.df-invite-results li > div,
+.df-invite-list li > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.df-invite-results strong,
+.df-invite-list strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.df-invite-results span,
+.df-invite-list span {
+  font-size: 0.78rem;
+  color: var(--df-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.df-invite-remove {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--df-surface-3);
+  color: var(--df-text-dim);
+  cursor: pointer;
+  transition:
+    background 0.15s var(--df-ease),
+    color 0.15s var(--df-ease);
+}
+
+.df-invite-remove:hover {
+  background: var(--df-danger);
+  color: #2a0505;
+}
+
+/* ---- Headings and empty results -------------------------------------- */
+
+.df-invite-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--df-text-faint);
+}
+
+.df-invite-heading span {
+  display: grid;
+  place-items: center;
+  min-width: 1.4rem;
+  padding: 0 0.35rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  background: var(--df-surface-3);
+  color: var(--df-text-dim);
+}
+
+.df-invite-none {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--df-text-faint);
+}

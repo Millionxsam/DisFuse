@@ -7,7 +7,8 @@ import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
 
-import { apiUrl } from "../../../config/config.js";
+import { discordUrl, apiUrl } from "../../../config/config.js";
+import { Helmet } from "react-helmet-async";
 
 const modalColors = modalThemeColor(null, true);
 
@@ -233,64 +234,69 @@ export default function MyProjects() {
   }
 
   return (
-    <div className="df-page">
-      <div className="df-page-head">
-        <h1>
-          <i className="fa-solid fa-cubes"></i> My Projects
-        </h1>
-        <div className="df-toolbar">
-          <input
-            onChange={search}
-            type="search"
-            placeholder="Search projects"
-            className="search"
-          />
-          <div className="df-btn-group">
+    <>
+      <Helmet>
+        <title>Projects | DisFuse</title>
+      </Helmet>
+      <div className="df-page">
+        <div className="df-page-head">
+          <h1>
+            <i className="fa-solid fa-cubes"></i> My Projects
+          </h1>
+          <div className="df-toolbar">
+            <input
+              onChange={search}
+              type="search"
+              placeholder="Search projects"
+              className="search"
+            />
+            <div className="df-btn-group">
+              <Link to="/projects/new">
+                <button className="df-primary-btn">
+                  <i className="fa-solid fa-plus"></i> New Project
+                </button>
+              </Link>
+              <button onClick={sort}>
+                <i className="fa-solid fa-arrow-up-wide-short"></i> Sort
+              </button>
+              <button onClick={filter}>
+                <i className="fa-solid fa-filter"></i> Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <LoadingAnim />
+        ) : shown.length > 0 ? (
+          <div className="df-grid">
+            {shown.map((project, index) => (
+              <PriProject
+                project={project}
+                onDelete={() => {
+                  setLoading(true);
+                  fetchProjects(user);
+                }}
+                key={index}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="df-empty">
+            <i className="fa-solid fa-cubes"></i>
+            <h3>No projects yet</h3>
+            <p>
+              Create your first project and start snapping blocks together to
+              build a Discord bot.
+            </p>
             <Link to="/projects/new">
               <button className="df-primary-btn">
                 <i className="fa-solid fa-plus"></i> New Project
               </button>
             </Link>
-            <button onClick={sort}>
-              <i className="fa-solid fa-arrow-up-wide-short"></i> Sort
-            </button>
-            <button onClick={filter}>
-              <i className="fa-solid fa-filter"></i> Filter
-            </button>
           </div>
-        </div>
+        )}
       </div>
-
-      {isLoading ? (
-        <LoadingAnim />
-      ) : shown.length > 0 ? (
-        <div className="df-grid">
-          {shown.map((project, index) => (
-            <PriProject
-              project={project}
-              onDelete={() => {
-                setLoading(true);
-                fetchProjects(user);
-              }}
-              key={index}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="df-empty">
-          <i className="fa-solid fa-cubes"></i>
-          <h3>No projects yet</h3>
-          <p>
-            Create your first project and start snapping blocks together to
-            build a Discord bot.
-          </p>
-          <Link to="/projects/new">
-            <button className="df-primary-btn">
-              <i className="fa-solid fa-plus"></i> New Project
-            </button>
-          </Link>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

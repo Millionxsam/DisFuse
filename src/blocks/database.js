@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 import javascript from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
+import { createRestrictions } from "./lib/restrictions";
 
 Blockly.Blocks["db_create"] = {
   init: function () {

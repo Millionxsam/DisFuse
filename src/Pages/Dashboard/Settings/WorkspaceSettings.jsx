@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Switch from "../../../components/Switch";
 import { useEffect } from "react";
 import axios from "axios";
@@ -51,6 +52,9 @@ export default function WorkspaceSettings() {
 
   return (
     <>
+      <Helmet>
+        <title>Workspace Settings | DisFuse</title>
+      </Helmet>
       <div className="settings">
         <h1>Workspace</h1>
         <p>

@@ -1,0 +1,24 @@
+/* =====================================================================
+   Dialogs
+   ---------------------------------------------------------------------
+   The base <dialog> rules every modal inherits.
+   ===================================================================== */
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.733);
+}
+
+dialog {
+  border-radius: 1.5rem;
+  background-color: rgba(31, 31, 31, 0.897);
+  padding: 2vh;
+  height: 50vh;
+  width: 40%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  color: white;
+  border: none;
+}

@@ -1,8 +1,14 @@
 import * as Blockly from "blockly";
 import { useEffect, useState } from "react";
 import { DFTheme } from "../../../components/themes/DFTheme";
-import registerCustomBlocks from "../../../functions/registerCustomBlocks";
+import registerCustomBlocks from "../../../blocks/lib/registerCustomBlocks";
 import getToolbox from "../../../config/toolbox";
+
+/* Registers every DisFuse block definition and generator. Without it
+   this page injects a toolbox full of block types Blockly has never been
+   told about, and a saved project loaded here renders as nothing. It used
+   to be a glob that only the editor page had. */
+import "../../../blocks/index.js";
 import { javascriptGenerator } from "blockly/javascript";
 import hljs from "highlight.js/lib/core";
 

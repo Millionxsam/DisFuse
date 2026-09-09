@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function EditProject() {
   const [project, setProject] = useState({});
@@ -64,6 +65,9 @@ export default function EditProject() {
 
   return (
     <div className="newProject-page-container">
+      <Helmet>
+        <title>Edit Project | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i class="fa-solid fa-pen-to-square"></i> Edit Project

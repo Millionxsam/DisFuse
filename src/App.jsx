@@ -1,5 +1,4 @@
-import "./index.css";
-
+import { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Workspace from "./Pages/Workspace";
 import Home from "./Pages/Home";
@@ -23,50 +22,70 @@ import StaffPanel from "./Pages/Dashboard/StaffPanel";
 import Workshop from "./Pages/Dashboard/Workshop/Workshop";
 import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
 import WorkshopWorkspace from "./Pages/Dashboard/Workshop/WorkshopWorkspace";
-import "./index.css";
+import "./styles/index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Footer from "./components/Footer";
+import useRevealOnScroll from "./functions/useRevealOnScroll";
 import NewProject from "./Pages/Dashboard/Projects/NewProject";
 import EditProject from "./Pages/Dashboard/Projects/EditProject";
 import CloneProject from "./Pages/Dashboard/Projects/CloneProject";
+import Websites from "./Pages/Dashboard/Websites/Websites";
+import NewWebsite from "./Pages/Dashboard/Websites/NewWebsite";
+import WebsiteEditor from "./Pages/Dashboard/Websites/WebsiteEditor";
+import PremiumGate from "./components/websites/PremiumGate";
+import PublishedSiteRedirect from "./components/websites/PublishedSiteRedirect";
+import PremiumSettings from "./Pages/Dashboard/Settings/PremiumSettings";
+import Insights from "./Pages/Dashboard/Insights/Insights";
+import BotInsights from "./Pages/Dashboard/Insights/BotInsights";
+import InsightsLogs from "./Pages/Dashboard/Insights/InsightsLogs";
+import InsightsUpgrade from "./Pages/Dashboard/Insights/InsightsUpgrade";
+import Control from "./Pages/Dashboard/Control/Control";
+import BotControl from "./Pages/Dashboard/Control/BotControl";
+import ControlUpgrade from "./Pages/Dashboard/Control/ControlUpgrade";
+
+/* A ban is enforced by the API, so it can arrive as the answer to any
+   request. Taking over the page is blunt, but it is what the app has
+   always done and the alternative is the user bouncing off every route
+   in turn. */
+function showBanNotice(bannedUntil) {
+  document.body.replaceChildren();
+
+  const container = document.createElement("div");
+  container.className = "home-container";
+  container.innerHTML = `
+    <div class="head">
+      <h1>You are banned from DisFuse</h1>
+      <h2>You may not access DisFuse until: ${new Date(
+        bannedUntil,
+      ).toDateString()}.</h2>
+    </div>`;
+
+  document.body.appendChild(container);
+}
 
 export default function App() {
-  window.addEventListener("unhandledrejection", function (event) {
-    if (event?.reason?.response && event?.reason?.response?.data?.error) {
-      const data = event.reason.response.data;
+  /* These were in the render body, so every render added another
+     listener, another observer and another interval — none of which
+     were ever removed. The class name in the old markup was `className`
+     too, which does nothing in raw HTML. */
+  useEffect(() => {
+    function onRejection(event) {
+      const data = event?.reason?.response?.data;
+      if (!data?.error) return;
+
       if (data.error !== "You are temporarily banned from DisFuse.")
         return console.error(event.reason);
 
       event.preventDefault();
-      console.log(data, event.reason.response);
-
-      window.document.body.innerHTML = `
-      <div className="home-container">
-        <div className="head">
-          <h1>You are banned from DisFuse</h1>
-          <h2>You may not access DisFuse until: ${new Date(
-            data.bannedUntil,
-          ).toDateString()}.</h2>
-        </div>
-      </div>`;
+      showBanNotice(data.bannedUntil);
     }
-  });
 
-  const intersection = new IntersectionObserver((entries, _) => {
-    entries.forEach((entry) => {
-      entry.target.classList.toggle("shown", entry.isIntersecting);
-    });
-  });
+    window.addEventListener("unhandledrejection", onRejection);
+    return () => window.removeEventListener("unhandledrejection", onRejection);
+  }, []);
 
-  setInterval(() => {
-    document.querySelectorAll(".hidden").forEach((i) => {
-      if (i.dataset.observed !== true) {
-        intersection.observe(i);
-        i.dataset.observed = true;
-      }
-    });
-  }, 500);
+  useRevealOnScroll();
 
   return (
     <>
@@ -116,6 +135,59 @@ export default function App() {
         >
           <Route path="projects" element={<MyProjects key={0} />} />
           <Route path="projects/new" element={<NewProject key={0} />} />
+          <Route
+            path="websites"
+            element={
+              <PremiumGate key={0}>
+                <Websites />
+              </PremiumGate>
+            }
+          />
+          <Route
+            path="websites/new"
+            element={
+              <PremiumGate key={0}>
+                <NewWebsite />
+              </PremiumGate>
+            }
+          />
+          {/* Insights is premium and owner-only. The gate is UX; the API
+              enforces both ownership and the subscription itself. */}
+          <Route
+            path="insights"
+            element={
+              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
+                <Insights />
+              </PremiumGate>
+            }
+          />
+          <Route
+            path="insights/:projectId"
+            element={
+              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
+                <BotInsights />
+              </PremiumGate>
+            }
+          />
+          <Route
+            path="insights/:projectId/logs"
+            element={
+              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
+                <InsightsLogs />
+              </PremiumGate>
+            }
+          />
+          {/* Control is premium and owner-only. Like Insights, the gate
+              is UX: the Socket.IO layer checks the subscription and the
+              bot's ownership itself on every connection and action. */}
+          <Route
+            path="control"
+            element={
+              <PremiumGate key={0} fallback={<ControlUpgrade />}>
+                <Control />
+              </PremiumGate>
+            }
+          />
           <Route path="explore" element={<Explore key={0} />} />
           <Route path="favorites" element={<Favorites key={0} />} />
           <Route path="workshop" element={<Workshop key={0} />} />
@@ -149,6 +221,7 @@ export default function App() {
               path="optimization"
               element={<OptimizationSettings key={0} />}
             />
+            <Route path="premium" element={<PremiumSettings key={0} />} />
           </Route>
           <Route path="staff/panel" element={<StaffPanel key={0} />} />
         </Route>
@@ -158,14 +231,64 @@ export default function App() {
           element={<ViewProject key={0} />}
         />
 
+        {/* Auth WRAPS these, like every other protected route. Rendered
+            as siblings — which is what an array does — Auth received no
+            children, so the editor mounted and began loading a project
+            before anyone had checked whether the user was signed in. */}
         <Route
           path="/:username/:projectId/workspace"
-          element={[<Auth key={0} />, <Workspace key={1} />]}
+          element={
+            <Auth>
+              <Workspace />
+            </Auth>
+          }
         />
 
         <Route
           path="/workshop/:packId/workspace"
-          element={[<Auth key={0} />, <WorkshopWorkspace key={1} />]}
+          element={
+            <Auth>
+              <WorkshopWorkspace />
+            </Auth>
+          }
+        />
+
+        {/* Full-screen website builder — same shape as the Blockly
+            workspace: authenticated, but outside the sidebar shell. */}
+        <Route
+          path="/websites/:websiteId/editor"
+          element={
+            <Auth key={0}>
+              <PremiumGate key={1}>
+                <WebsiteEditor key={2} />
+              </PremiumGate>
+            </Auth>
+          }
+        />
+
+        {/* The Control client is a full-screen app, like the Blockly
+            workspace and the website builder — authenticated, premium,
+            and outside the sidebar shell. */}
+        <Route
+          path="/control/:projectId"
+          element={
+            <Auth key={0}>
+              <PremiumGate key={1} fallback={<ControlUpgrade />}>
+                <BotControl key={2} />
+              </PremiumGate>
+            </Auth>
+          }
+        />
+
+        {/* Published websites moved to their own application at
+            sites.disfuse.xyz. These two routes forward the old links. */}
+        <Route
+          path="/site/:botID"
+          element={<PublishedSiteRedirect key={0} />}
+        />
+        <Route
+          path="/site/:botID/:pagePath"
+          element={<PublishedSiteRedirect key={0} />}
         />
       </Routes>
     </>

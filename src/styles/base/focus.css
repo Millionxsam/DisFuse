@@ -1,0 +1,50 @@
+/* =====================================================================
+   Focus
+   ---------------------------------------------------------------------
+   Focus rings, reduced motion, and the shared tag chip.
+   ===================================================================== */
+
+/* =====================================================================
+   DisFuse Redesign — additions
+   Everything below is new. Nothing above this line was removed, so any
+   page/component not covered by this redesign keeps working exactly
+   as before. New top-level page/section wrappers use a "df-" prefix
+   to avoid colliding with legacy selectors still used elsewhere.
+
+   Design language: DisFuse lets people snap visual "blocks" together
+   to build a Discord bot, so the UI leans into that: cards read like
+   blocks (small puzzle-tab notch, a colored category edge), sections
+   are labelled with small block-style tags, and the homepage hero is
+   an actual little chain of blocks instead of a generic gradient blob.
+   Brand blue (--main-color) is unchanged and stays the primary color.
+   ===================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--df-amber);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.df-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  font-family: monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  color: var(--df-amber);
+  background: rgba(255, 182, 72, 0.1);
+  border: 1px solid rgba(255, 182, 72, 0.35);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}

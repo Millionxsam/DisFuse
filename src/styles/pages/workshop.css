@@ -1,0 +1,626 @@
+/* =====================================================================
+   Workshop
+   ---------------------------------------------------------------------
+   Workshop, the library, and block packs.
+   ===================================================================== */
+
+.workshop-container .workshop {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workshop-container .workshop h1 {
+  margin-top: 1rem;
+}
+
+.workshop-container .workshop .content {
+  display: grid;
+  grid-template-columns: repeat(2, 40rem);
+  gap: 2rem;
+}
+
+.workshop-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--foreground-color);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 2px solid var(--border-color);
+}
+
+.workshop-item .info {
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.workshop-item .info h1 {
+  margin: 0;
+}
+
+.workshop-item .stats {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.workshop-item .stats p {
+  border-right: 2px solid var(--border-color);
+  padding-right: 0.75rem;
+  opacity: 0.5;
+}
+
+.workshop-item .buttons {
+  display: flex;
+  margin-top: auto;
+  gap: 0.25rem;
+}
+
+.workshop-item .buttons button {
+  border-radius: 5px;
+}
+
+.workshop-item .buttons button:first-child {
+  border-radius: var(--button-radius) 5px 5px var(--button-radius);
+}
+
+.workshop-item .buttons button:last-child {
+  border-radius: 5px var(--button-radius) var(--button-radius) 5px;
+  background-color: var(--main-color);
+}
+
+.workshop-container .library a {
+  background-color: var(--foreground-color);
+  padding: 1rem;
+  font-size: 25px;
+  /* width: 50%; */
+  border-radius: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.workshop-container .library a:hover {
+  opacity: 0.5;
+}
+
+.workshop-container .library a i:last-child {
+  transition: all 0.2s ease;
+}
+
+.workshop-container .library a:hover i:last-child {
+  margin-left: 1rem;
+}
+
+.workshop-item .buttons button {
+  width: 100%;
+}
+
+.custom-menu {
+  position: absolute;
+  display: none;
+  background-color: var(--foreground-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  list-style: none;
+  padding: 5px 0;
+}
+
+.custom-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-menu li:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.staff-roles-card {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.staff-roles-card span {
+  background-color: var(--main-color);
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.workshop-workspace-container {
+  display: flex;
+}
+
+.workshopPreview {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 30%;
+  padding: 1rem;
+}
+
+.workshopPreview h1 {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+#workshopWorkspace {
+  width: 70% !important;
+}
+
+.workshopPreview #workshopPreviewWorkspace {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.workshopWorkspaceNavbar {
+  justify-content: space-between;
+}
+
+.workshopWorkspaceNavbar div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.workshopWorkspaceNavbar .logo a {
+  display: flex;
+  background-color: var(--border-color);
+  border-radius: 15px;
+  padding: 0 10px 0 10px;
+  height: 3rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.workshopWorkspaceNavbar .logo a img {
+  width: 2.5rem;
+}
+
+.workshopWorkspaceNavbar .blockCount {
+  background-color: var(--border-color);
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.workshopWorkspaceNavbar .logo a span {
+  font-family: "Poetsen One";
+}
+
+.workshopWorkspaceNavbar .packName {
+  font-family: "Poetsen One";
+}
+
+.blockPackPage #blockPackPreviewWorkspace {
+  height: 50rem;
+  width: 100%;
+}
+
+.blockPackPage .head .stats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.blockPackPage .head .stats p {
+  border-right: 2px solid var(--border-color);
+  padding-right: 0.5rem;
+}
+
+.blockPackPage .head .stats p:last-child {
+  border: none;
+}
+
+.blockPackPage .head .buttons .darkBtn.install.active {
+  background-color: rgba(0, 79, 168, 0.233);
+}
+
+.blockPackPage .head .buttons .darkBtn.install.active.installAnim i {
+  animation:
+    spin 0.5s ease 1,
+    scale 0.5s ease 1;
+}
+
+.configurePackModal {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.configurePackModal div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.configurePackModal .dependency {
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.configurePackModal .addDependency {
+  display: flex;
+  flex-direction: column;
+}
+
+.configurePackModal .addDependency div {
+  flex-direction: row;
+}
+
+.configurePackModal .addDependency div input {
+  font-size: 15px !important;
+  padding: 0.75rem !important;
+}
+
+.separator {
+  background-color: var(--border-color);
+  height: 2px;
+  width: 100%;
+}
+
+.configurePackModal .dependency div {
+  background-color: var(--foreground-color);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.configurePackModal div p {
+  opacity: 0.5;
+  font-size: 15px;
+}
+
+.configurePackModal div input[type="text"],
+.configurePackModal div textarea {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1rem;
+  font-size: 17px;
+}
+
+.configurePackModal div textarea {
+  width: 25rem;
+}
+
+.blockPackPage .flags-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 10px;
+}
+
+.blockPackPage .flags-container .flag {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+}
+
+.blockPackPage .flags-container .flag i {
+  font-size: 40px;
+}
+
+.blockPackPage .flags-container .flag.info {
+  background-color: var(--foreground-color);
+}
+
+.blockPackPage .flags-container .flag.info i {
+  color: #007bff;
+}
+
+.blockPackPage .flags-container .flag.warning {
+  background-color: rgba(255, 217, 0, 0.11);
+}
+
+.blockPackPage .flags-container .flag.warning i {
+  color: #ffd143;
+}
+
+.blockPackPage .flags-container .flag.critical {
+  background-color: rgba(255, 0, 0, 0.24);
+}
+
+.blockPackPage .flags-container .flag.critical i {
+  color: #ff6262;
+}
+
+.publishPackModal {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.publishPackModal div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.publishPackModal .version .versionInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.publishPackModal .version input {
+  width: 3rem;
+}
+
+.publishPackModal .changelog textarea {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 1rem;
+  width: 25rem;
+  padding: 1rem;
+  font-size: 17px;
+}
+
+.publishToolboxList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.publishToolboxList li {
+  display: flex;
+  background-color: var(--border-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 25rem;
+  justify-content: space-between;
+}
+
+.publishToolboxList li .controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 20px;
+}
+
+.publishToolboxList li div {
+  flex-direction: row;
+}
+
+.publishToolboxList li div input {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  width: min-content;
+  font-size: 17px;
+}
+
+.publishPackModal li .controls i {
+  cursor: pointer;
+}
+
+.publishPackModal .buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.publishPackModal .buttons button {
+  padding: 1rem;
+  background-color: var(--foreground-color);
+}
+
+.blockPackPage .versionList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blockPackPage .versionList .versionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--foreground-color);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.blockPackPage .versionList .versionItem div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.blockPackPage .body h1 {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  width: min-content;
+}
+
+.workshop-container > .buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.library-container .content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.library-container > .buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+#workshopPreviewCode {
+  height: 50%;
+}
+
+/* =====================================================================
+   Workshop page (.df-workshop-page) + pack card (.df-pack-card)
+   ===================================================================== */
+
+.df-workshop-page {
+  padding: 2rem min(3vw, 2.5rem) 4rem min(3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+}
+
+.df-library-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(
+    120deg,
+    rgba(var(--main-color-rgb), 0.3),
+    rgba(226, 63, 226, 0.12)
+  );
+  border: 1px solid var(--df-border-strong);
+  border-radius: var(--df-r-md);
+  padding: 1.1rem 1.4rem;
+  font-weight: 600;
+  transition: transform 0.2s var(--df-ease);
+}
+
+.df-library-banner:hover {
+  transform: translateX(3px);
+}
+
+.df-library-banner i:first-child {
+  color: var(--df-amber);
+  font-size: 18px;
+}
+
+.df-library-banner i:last-child {
+  margin-left: auto;
+  color: var(--df-text-faint);
+}
+
+.df-workshop-section h2 {
+  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
+  font-size: 20px;
+  margin-bottom: 1rem;
+}
+
+.df-pack-card {
+  position: relative;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid var(--df-mint);
+  border-radius: var(--df-r-lg);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition:
+    transform 0.2s var(--df-ease),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.df-pack-card:hover {
+  transform: translateY(-3px);
+  border-left-color: var(--df-amber);
+  box-shadow: var(--df-shadow);
+}
+
+.df-pack-card .card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.df-pack-card h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.df-pack-card h3 i {
+  color: var(--df-amber);
+  font-size: 13px;
+}
+
+.df-pack-card .description {
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+  line-height: 1.5rem;
+}
+
+.df-pack-card .stat-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.df-pack-card .card-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.df-pack-card .card-buttons button {
+  flex: 1;
+  min-width: 6rem;
+  border-radius: var(--df-r-sm);
+  font-size: 13px;
+  padding: 0.65rem;
+}
+
+.df-pack-card .card-buttons button.primary {
+  background: rgba(var(--main-color-rgb), 0.35);
+}
+
+.df-pack-card .card-buttons button.primary:hover {
+  background: var(--main-color);
+}
+
+.df-pack-card h3 {
+  gap: 0.5rem;
+}
+
+.df-pack-card .userTag {
+  width: fit-content;
+}
+
+/* ---------------------------------------------------------------------
+   Library page — reuses .df-page / .df-toolbar / .df-grid / .df-empty
+   from previous rounds, no new classes needed beyond a back-link chip.
+   --------------------------------------------------------------------- */
+
+.df-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  font-size: 13.5px;
+  color: var(--df-text-dim);
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  transition: all 0.15s ease;
+}
+
+.df-back-link:hover {
+  color: white;
+  border-color: var(--df-border-strong);
+}

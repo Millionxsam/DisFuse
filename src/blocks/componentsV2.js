@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
-import { createMutatorBlock } from "../functions/createMutator";
+import { createRestrictions } from "./lib/restrictions";
+import { createMutatorBlock } from "./lib/createMutator";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {

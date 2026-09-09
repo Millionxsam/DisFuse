@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 import PubProject from "../../components/PubProject";
 import LoadingAnim from "../../components/LoadingAnim";
 import { userCache } from "../../cache.ts";
@@ -26,15 +27,15 @@ export default function Explore() {
     }
 
     axios
-      .get(`${apiUrl}/projects?limit=200`, {
+      .get(`${apiUrl}/projects`, {
         headers: {
           Authorization: localStorage.getItem("disfuse-token"),
         },
       })
       .then(({ data }) => {
-        const sorted = data.projects.sort(
-          (a, b) => b.likes.length - a.likes.length,
-        );
+        /* The whole listing, not a page of it: the sort below and the
+           search above both run over every project the caller may see. */
+        const sorted = data.sort((a, b) => b.likes.length - a.likes.length);
         userCache.explore = sorted;
         setProjects(sorted);
         setShown(sorted);
@@ -106,6 +107,9 @@ export default function Explore() {
 
   return (
     <div className="df-page">
+      <Helmet>
+        <title>Explore | DisFuse</title>
+      </Helmet>
       <div className="df-page-head">
         <h1>
           <i className="fa-solid fa-earth-americas"></i> Explore

@@ -1,6 +1,6 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
-import { createRestrictions } from "../functions/restrictions";
+import { createRestrictions } from "./lib/restrictions";
 
 Blockly.Blocks["buttons_add"] = {
   init: function () {

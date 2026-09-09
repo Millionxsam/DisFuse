@@ -1,0 +1,356 @@
+@import "../base/tokens.css";
+
+/* =====================================================================
+   The workspace dialog shell
+   ---------------------------------------------------------------------
+   Shared by Secrets, Collaborators and Version Control.
+
+   Built on a native <dialog> opened with showModal(), so the browser
+   provides the top layer, the focus trap, the inert background and
+   Escape. What is styled here is the backdrop, the panel, and the two
+   animations — and the close animation is the only fiddly part, because
+   `close()` hides the element immediately. The component adds `.closing`,
+   waits for the animation, and closes then.
+   ===================================================================== */
+
+.df-modal {
+  /* The base `dialog` rule in the legacy stylesheet sets a fixed height,
+     a width in percent and an absolute-positioned transform. All three
+     have to be undone rather than adjusted. */
+  position: fixed;
+  inset: 0;
+  /* A <dialog> is centred by `margin: auto` against its inset box. The
+     legacy `dialog` rule replaced that with an absolute 50%/50% and a
+     translate, so undoing it means putting the margin back — without it
+     the panel sits in the top-left corner. */
+  margin: auto;
+  width: min(34rem, 94vw);
+  max-width: none;
+  /* `fit-content`, not `auto`: with `inset: 0` setting both top and
+     bottom, an auto height stretches to fill the viewport and the panel
+     ends up mostly empty space below its content. */
+  height: fit-content;
+  max-height: min(42rem, 86dvh);
+  transform: none;
+
+  display: flex;
+  padding: 0;
+  border: none;
+  border-radius: var(--df-r-lg);
+  background: var(--df-surface);
+  color: var(--df-text);
+  box-shadow: var(--df-shadow-lg);
+  overflow: hidden;
+
+  animation: df-modal-in 0.19s var(--df-ease);
+}
+
+/* A closed <dialog> is hidden by `dialog:not([open]) { display: none }` in
+   the *user-agent* stylesheet, and any author `display` outranks it. So
+   the `display: flex` above — needed to lay the panel out when the dialog
+   is open — also un-hid all three dialogs while they were closed, and the
+   editor opened with Secrets, Collaborators and Version Control stacked
+   over the canvas. Putting the rule back explicitly is what makes an
+   author `display` on a <dialog> safe. */
+.df-modal:not([open]) {
+  display: none;
+}
+
+.df-modal.wide {
+  width: min(48rem, 94vw);
+}
+
+.df-modal::backdrop {
+  background: var(--df-backdrop);
+  backdrop-filter: blur(var(--df-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--df-backdrop-blur));
+  animation: df-backdrop-in 0.19s var(--df-ease);
+}
+
+.df-modal.closing {
+  animation: df-modal-out 0.16s var(--df-ease) forwards;
+}
+
+.df-modal.closing::backdrop {
+  animation: df-backdrop-out 0.16s var(--df-ease) forwards;
+}
+
+@keyframes df-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.985);
+  }
+}
+
+@keyframes df-modal-out {
+  to {
+    opacity: 0;
+    transform: translateY(0.4rem) scale(0.99);
+  }
+}
+
+@keyframes df-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes df-backdrop-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---- Layout ------------------------------------------------------- */
+
+.df-modal-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.df-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem 1rem;
+  border-bottom: 1px solid var(--df-border);
+}
+
+.df-modal-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.df-modal-heading > i {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-size: 1.05rem;
+  color: var(--df-text-dim);
+}
+
+.df-modal-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.df-modal-head p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--df-text-dim);
+}
+
+.df-modal-close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--df-text-dim);
+  cursor: pointer;
+  transition: background 0.15s var(--df-ease), color 0.15s var(--df-ease);
+}
+
+.df-modal-close:hover {
+  background: var(--df-surface-3);
+  color: var(--df-text);
+}
+
+.df-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.df-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.9rem 1.35rem;
+  border-top: 1px solid var(--df-border);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* ---- Buttons ------------------------------------------------------- */
+
+.df-modal .df-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--df-r-sm);
+  background: var(--main-color);
+  color: #fff;
+  cursor: pointer;
+  transition: filter 0.15s var(--df-ease), opacity 0.15s var(--df-ease);
+}
+
+.df-modal .df-primary-btn.small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.df-modal .df-primary-btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.df-modal .df-primary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.df-modal-secondary {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid var(--df-border-strong);
+  border-radius: var(--df-r-sm);
+  background: transparent;
+  color: var(--df-text-dim);
+  cursor: pointer;
+  transition: background 0.15s var(--df-ease), color 0.15s var(--df-ease);
+}
+
+.df-modal-secondary:hover {
+  background: var(--df-surface-2);
+  color: var(--df-text);
+}
+
+/* ---- Empty, loading and error states -------------------------------- */
+
+.df-modal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 2.25rem 1rem;
+  text-align: center;
+  border: 1px dashed var(--df-border);
+  border-radius: var(--df-r-md);
+  color: var(--df-text-dim);
+}
+
+.df-modal-empty > i {
+  font-size: 1.65rem;
+  color: var(--df-text-faint);
+}
+
+.df-modal-empty h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--df-text);
+}
+
+.df-modal-empty p {
+  margin: 0;
+  max-width: 26rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.df-modal-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+  color: var(--df-text-dim);
+}
+
+.df-modal-error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  border: 1px solid rgba(255, 92, 92, 0.4);
+  border-radius: var(--df-r-sm);
+  background: rgba(255, 92, 92, 0.1);
+  color: #ffc9c9;
+}
+
+.df-modal-error > i {
+  flex-shrink: 0;
+  color: var(--df-danger);
+}
+
+.df-modal-retry {
+  margin-left: auto;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 92, 92, 0.45);
+  border-radius: var(--df-r-sm);
+  background: transparent;
+  color: #ffc9c9;
+  cursor: pointer;
+}
+
+.df-modal-retry:hover {
+  background: rgba(255, 92, 92, 0.18);
+}
+
+/* ---- Small screens --------------------------------------------------- */
+
+@media (max-width: 560px) {
+  .df-modal,
+  .df-modal.wide {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .df-modal-head,
+  .df-modal-body,
+  .df-modal-foot {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .df-modal-foot {
+    /* Stacked and full width, so the primary action is reachable with a
+       thumb rather than tucked into the far corner. */
+    flex-direction: column-reverse;
+  }
+
+  .df-modal-foot > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .df-modal,
+  .df-modal::backdrop,
+  .df-modal.closing,
+  .df-modal.closing::backdrop {
+    animation: none !important;
+  }
+}
