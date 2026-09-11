@@ -8,6 +8,9 @@ import { userCache } from "../../cache.ts";
 
 import { apiUrl } from "../../config/config.js";
 
+import DocsLink from "../../components/DocsLink.jsx";
+import { DOCS } from "../../config/docs.js";
+
 export default function Explore() {
   const [projects, setProjects] = useState([]);
   const [shown, setShown] = useState([]);
@@ -125,6 +128,7 @@ export default function Explore() {
             <button onClick={sort}>
               <i className="fa-solid fa-arrow-up-wide-short"></i> Sort
             </button>
+            <DocsLink page={DOCS.explore} />
           </div>
         </div>
       </div>

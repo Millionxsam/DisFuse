@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Blockly from "blockly";
 import Swal from "sweetalert2";
@@ -21,6 +21,66 @@ import {
   saveVersionWorkspaceData,
 } from "../api/versions";
 import { openVersionControl } from "./VersionControl";
+
+import { DOCS, docsUrl } from "../config/docs.js";
+
+/* =====================================================================
+   What the Help menu offers
+   ---------------------------------------------------------------------
+   Four groups, in the order somebody works: what the editor is, then the
+   block reference — one entry per category of blocks, matching the
+   categories down the left of the screen — then the project-wide tools,
+   and finally the pages that answer "it is not working".
+
+   Every docs page a person can need while building is reachable from
+   here, so being stuck in the editor never means going hunting for the
+   docs site.
+   ===================================================================== */
+const HELP_LINKS = [
+  { page: DOCS.theEditor, label: "The editor", icon: "fa-desktop" },
+  { page: DOCS.codingYourBot, label: "Coding your bot", icon: "fa-code" },
+  { page: DOCS.usingBlocks, label: "Using blocks", icon: "fa-cubes" },
+  { page: DOCS.workspaces, label: "Workspaces", icon: "fa-folder-tree" },
+  { separator: "blocks" },
+  { page: DOCS.componentBlocks, label: "Components", icon: "fa-layer-group" },
+  { page: DOCS.messageBlocks, label: "Messages", icon: "fa-comment-dots" },
+  { page: DOCS.serverBlocks, label: "Servers", icon: "fa-server" },
+  { page: DOCS.eventBlocks, label: "Events", icon: "fa-bolt" },
+  {
+    page: DOCS.interactions,
+    label: "Commands & interactions",
+    icon: "fa-terminal",
+  },
+  { page: DOCS.appBlocks, label: "Apps & utilities", icon: "fa-puzzle-piece" },
+  {
+    page: DOCS.blockPacks,
+    label: "Custom blocks & BlockBuddy",
+    icon: "fa-shapes",
+  },
+  { separator: "tools" },
+  {
+    page: DOCS.componentsV2,
+    label: "Building a message",
+    icon: "fa-wand-magic-sparkles",
+  },
+  { page: DOCS.templates, label: "Templates", icon: "fa-clone" },
+  { page: DOCS.secrets, label: "Secrets", icon: "fa-key" },
+  {
+    page: DOCS.versionControl,
+    label: "Version control",
+    icon: "fa-code-branch",
+  },
+  { page: DOCS.collaboration, label: "Collaboration", icon: "fa-user-group" },
+  { separator: "stuck" },
+  {
+    page: DOCS.runningYourBot,
+    label: "Exporting & hosting",
+    icon: "fa-rocket",
+  },
+  { page: DOCS.bestPractices, label: "Best practices", icon: "fa-lightbulb" },
+  { page: DOCS.troubleshooting, label: "Troubleshooting", icon: "fa-bug" },
+  { page: DOCS.intro, label: "All documentation", icon: "fa-book" },
+];
 
 /* =====================================================================
    The workspace toolbar
@@ -76,28 +136,40 @@ export default function WorkspaceBar({
   const [active, setActive] = useState(false);
   const [fileDropdownOpen, setFileDropdown] = useState(false);
   const [utilDropdownOpen, setUtilDropdown] = useState(false);
+  const [helpDropdownOpen, setHelpDropdown] = useState(false);
+  /* The menu stays mounted while hidden, so it would otherwise reopen at
+     whatever scroll position it was left at. */
+  const helpMenuRef = useRef(null);
   const [usersOpen, setUsersOpen] = useState(false);
 
   /* Clicking anywhere else closes whichever menu is open. Both used to
      stay open until their own button was pressed again. */
   useEffect(() => {
-    if (!fileDropdownOpen && !utilDropdownOpen && !usersOpen) return undefined;
+    if (
+      !fileDropdownOpen &&
+      !utilDropdownOpen &&
+      !helpDropdownOpen &&
+      !usersOpen
+    )
+      return undefined;
 
     function onDocumentClick(event) {
       if (event.target.closest(".dropdown, .activeUsers")) return;
 
       setFileDropdown(false);
       setUtilDropdown(false);
+      setHelpDropdown(false);
       setUsersOpen(false);
     }
 
     document.addEventListener("click", onDocumentClick);
     return () => document.removeEventListener("click", onDocumentClick);
-  }, [fileDropdownOpen, usersOpen, utilDropdownOpen]);
+  }, [fileDropdownOpen, helpDropdownOpen, usersOpen, utilDropdownOpen]);
 
   function closeMenus() {
     setFileDropdown(false);
     setUtilDropdown(false);
+    setHelpDropdown(false);
   }
 
   /** Runs a menu action and closes the menu it came from. */
@@ -170,6 +242,7 @@ export default function WorkspaceBar({
                 onClick={() => {
                   setFileDropdown(!fileDropdownOpen);
                   setUtilDropdown(false);
+                  setHelpDropdown(false);
                 }}
               >
                 <i className="fa-solid fa-file" />
@@ -214,6 +287,7 @@ export default function WorkspaceBar({
                 onClick={() => {
                   setUtilDropdown(!utilDropdownOpen);
                   setFileDropdown(false);
+                  setHelpDropdown(false);
                 }}
               >
                 <i className="fa-solid fa-wrench" />
@@ -256,6 +330,67 @@ export default function WorkspaceBar({
                   <i className="fa-solid fa-screwdriver-wrench" />
                   <div>Toggle Toolbox</div>
                 </button>
+              </div>
+            </div>
+
+            {/* Help is a menu rather than a single link because the
+                editor is where every part of the docs is reachable from:
+                the person who is stuck is stuck *here*, and what they
+                need is whichever page covers the thing in front of
+                them. Every item opens in a new tab, so nothing is lost
+                by looking something up mid-build. */}
+            <div className="dropdown" style={{ position: "relative" }}>
+              <button
+                className="dropdown-button"
+                onClick={() => {
+                  if (!helpDropdownOpen && helpMenuRef.current)
+                    helpMenuRef.current.scrollTop = 0;
+                  setHelpDropdown(!helpDropdownOpen);
+                  setFileDropdown(false);
+                  setUtilDropdown(false);
+                }}
+              >
+                <i className="fa-solid fa-circle-question" />
+                <div>Help</div>
+                <i
+                  className={`fa-solid fa-chevron-${
+                    helpDropdownOpen ? "up" : "down"
+                  } noRotate`}
+                />
+              </button>
+              <div
+                ref={helpMenuRef}
+                className="dropdown-content help-menu"
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 5px)",
+                  zIndex: 1000,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  /* `center` centres the list inside the scroll box, so a
+                     menu taller than its max-height overflows equally off
+                     both ends and opens scrolled to the middle. */
+                  justifyContent: "flex-start",
+                  gap: "5px",
+                  display: helpDropdownOpen ? "flex" : "none",
+                }}
+              >
+                {HELP_LINKS.map((link) =>
+                  link.separator ? (
+                    <hr key={link.separator} />
+                  ) : (
+                    <a
+                      key={link.page}
+                      href={docsUrl(link.page)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMenus}
+                    >
+                      <i className={`fa-solid ${link.icon}`} />
+                      <div>{link.label}</div>
+                    </a>
+                  ),
+                )}
               </div>
             </div>
           </ul>

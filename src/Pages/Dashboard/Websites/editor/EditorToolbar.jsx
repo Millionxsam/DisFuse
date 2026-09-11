@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 
 import { publishedWebsiteUrl } from "../../../../config/config";
 
+import DocsLink from "../../../../components/DocsLink.jsx";
+import { DOCS } from "../../../../config/docs.js";
+
 const viewports = [
   { id: "desktop", icon: "fa-solid fa-desktop", label: "Desktop" },
   { id: "tablet", icon: "fa-solid fa-tablet-screen-button", label: "Tablet" },
@@ -118,6 +121,15 @@ export default function EditorToolbar({
             <span>Publish</span>
           </button>
         )}
+
+        {/* The builder is the one screen with no room for a labelled
+            help button, so it gets the icon and a tooltip. */}
+        <DocsLink
+          page={`${DOCS.websites}#the-builder`}
+          variant="icon"
+          label="Website builder help"
+          className="df-ws-docs"
+        />
 
         <button
           className="df-ws-panel-toggle"

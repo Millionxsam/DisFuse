@@ -1,0 +1,104 @@
+/* =====================================================================
+   Docs links
+   ---------------------------------------------------------------------
+   The help control rendered by components/DocsLink.jsx. Three shapes,
+   one accent: the question mark is always the amber used elsewhere for
+   "this is information, not an action", so a help link never competes
+   with the primary button next to it.
+   ===================================================================== */
+
+.df-docs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: var(--df-text-dim);
+  transition: 0.2s var(--df-ease);
+  white-space: nowrap;
+}
+
+.df-docs-link i {
+  color: var(--df-amber);
+}
+
+/* ---- Pill, and the icon-only pill ---- */
+
+.df-docs-link-button,
+.df-docs-link-icon {
+  border: 1px solid var(--df-border-strong);
+  background: var(--df-surface-2);
+  border-radius: var(--button-radius);
+  font-size: 0.95rem;
+  padding: 0.55rem 1.05rem;
+}
+
+.df-docs-link-icon {
+  padding: 0.55rem 0.7rem;
+  justify-content: center;
+}
+
+.df-docs-link-button:hover,
+.df-docs-link-icon:hover {
+  color: var(--df-text);
+  border-color: var(--df-amber);
+  background: rgba(255, 182, 72, 0.12);
+  box-shadow: 0 0 18px rgba(255, 182, 72, 0.18);
+}
+
+/* ---- Inside a sentence ---- */
+
+.df-docs-link-inline {
+  gap: 0.35rem;
+  color: var(--df-amber);
+  font-size: inherit;
+  border-bottom: 1px solid transparent;
+}
+
+.df-docs-link-inline:hover {
+  border-bottom-color: var(--df-amber);
+}
+
+/* ---- Sized to its neighbours ----
+   The pill is dropped in beside controls that are not all the same size:
+   a page-head toolbar's buttons are large, a project page's action row
+   is a row of small rounded chips. Matching them is what makes the help
+   link read as one of the row rather than as something bolted on. */
+
+.df-toolbar .df-docs-link-button,
+.df-toolbar .df-docs-link-icon {
+  gap: 0.5vw;
+  padding: 1.75vh;
+  border-radius: var(--df-r-md);
+  font-size: 20px;
+}
+
+.df-detail-actions .df-docs-link-button,
+.df-ws-toolbar .df-docs-link-icon,
+.workshopWorkspaceNavbar .df-docs-link-button {
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  font-size: 13.5px;
+}
+
+/* ---- Beside a heading ----
+   A heading that is already a flex row — the page heads, the settings
+   title — takes the link inline, pushed to the far end so it never sits
+   between the icon and the words. */
+
+.df-page-head h1 .df-docs-link,
+.df-settings-page > h1 .df-docs-link {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  margin-left: auto;
+}
+
+/* A help link inside an `h2` is the icon-only shape, and the surrounding
+   heading is usually not a flex row, so it is aligned by baseline. */
+
+h2 .df-docs-link-icon,
+h3 .df-docs-link-icon {
+  padding: 0.25rem 0.45rem;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}

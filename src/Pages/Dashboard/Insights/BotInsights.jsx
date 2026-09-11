@@ -33,6 +33,9 @@ import {
 } from "../../../functions/insightsFormat";
 import modalThemeColor from "../../../functions/modalThemeColor";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 /**
@@ -249,6 +252,7 @@ export default function BotInsights() {
               ></i>
               {refreshing ? "Refreshing…" : "Refresh"}
             </button>
+            <DocsLink page={`${DOCS.insights}#the-dashboard`} />
           </div>
         </div>
       </div>

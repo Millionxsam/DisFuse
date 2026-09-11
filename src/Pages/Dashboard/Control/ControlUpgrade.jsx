@@ -1,5 +1,7 @@
 import PremiumUpgrade from "../../../components/premium/PremiumUpgrade";
 
+import { DOCS } from "../../../config/docs.js";
+
 /**
  * Shown instead of Control when the account isn't premium.
  *
@@ -13,6 +15,7 @@ export default function ControlUpgrade() {
       title="Control"
       heroTitle="Use Discord as your bot"
       heroBody="Control is part of DisFuse Premium. Open a real Discord-style client for any bot you own, then read its servers and channels, send and edit messages, react, moderate members and manage roles and channels. Everything is performed by your bot, live, without ever leaving DisFuse."
+      docsPage={DOCS.control}
     />
   );
 }

@@ -7,6 +7,9 @@ import LoadingAnim from "../../../components/LoadingAnim";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function WorkspaceSettings() {
   const token = localStorage.getItem("disfuse-token");
   const [user, setUser] = useState({});
@@ -59,7 +62,12 @@ export default function WorkspaceSettings() {
         <h1>Workspace</h1>
         <p>
           Customize your workspace to be exactly how you want it while making
-          your bot
+          your bot.{" "}
+          <DocsLink
+            page={`${DOCS.settings}#workspace`}
+            variant="inline"
+            label="What each setting does"
+          />
         </p>
         <div className="option">
           <label htmlFor="workspace-theme">Workspace theme:</label>

@@ -55,6 +55,8 @@ import {
    import: each module registers itself with Blockly when it loads. */
 import "../../blocks/index.js";
 
+import { DOCS, docsUrl } from "../../config/docs.js";
+
 /* Blockly warns about this on every generated block when a generator
    runs outside a full code pass, which is most of what the editor does. */
 const originalWarn = console.warn;
@@ -655,7 +657,10 @@ export default function Workspace() {
   const handleLoadTemplate = useCallback(async () => {
     const result = await Swal.fire({
       title: "Load Template",
-      text: "Which template would you like to load?",
+      html:
+        "Which template would you like to load?<br /><br />" +
+        `<a style="color: #ffb648" rel="noopener noreferrer" target="_blank" ` +
+        `href="${docsUrl(DOCS.templates)}">What each template contains →</a>`,
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Load",

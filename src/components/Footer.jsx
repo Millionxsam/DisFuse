@@ -1,5 +1,18 @@
 import { Link } from "react-router-dom";
 
+import { DOCS, docsUrl } from "../config/docs.js";
+
+/* The docs pages worth a permanent link from every page of the site:
+   the way in, and the three pages people arrive at the Discord server
+   asking for. */
+const docsLinks = [
+  { page: DOCS.intro, label: "Documentation" },
+  { page: DOCS.creatingABot, label: "Creating a bot" },
+  { page: DOCS.faq, label: "FAQ" },
+  { page: DOCS.troubleshooting, label: "Troubleshooting" },
+  { page: DOCS.glossary, label: "Glossary" },
+];
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -52,6 +65,23 @@ export default function Footer() {
             <li>
               <Link to="/settings">Settings</Link>
             </li>
+          </ul>
+        </div>
+
+        <div className="list">
+          <h2>Help</h2>
+          <ul>
+            {docsLinks.map((link) => (
+              <li key={link.page}>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={docsUrl(link.page)}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 

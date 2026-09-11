@@ -7,6 +7,9 @@ import { userCache } from "../../cache.ts";
 
 import { apiUrl } from "../../config/config.js";
 
+import DocsLink from "../../components/DocsLink.jsx";
+import { DOCS } from "../../config/docs.js";
+
 export default function Favorites() {
   const [projects, setProjects] = useState([]);
   const [shown, setShown] = useState([]);
@@ -79,6 +82,9 @@ export default function Favorites() {
             placeholder="Search favorites"
             className="search"
           />
+          <div className="df-btn-group">
+            <DocsLink page={`${DOCS.explore}#likes-favorites-and-clones`} />
+          </div>
         </div>
       </div>
 

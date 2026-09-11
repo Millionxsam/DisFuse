@@ -20,6 +20,9 @@ import.meta.glob("./workshopBlocks/**/*.js", { eager: true });
 
 import { apiUrl, discordUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function WorkshopWorkspace() {
   const [pack, setPack] = useState({});
   const [user, setUser] = useState({});
@@ -209,6 +212,10 @@ export default function WorkshopWorkspace() {
               </>
             )}
           </i>
+          <DocsLink
+            page={`${DOCS.workshop}#building-a-pack`}
+            label="How to build a pack"
+          />
           <button
             onClick={configurePack}
             className={isLoading ? "disabled" : ""}

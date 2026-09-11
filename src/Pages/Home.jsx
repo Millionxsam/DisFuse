@@ -5,71 +5,88 @@ import { Helmet } from "react-helmet-async";
 import { userCache } from "../cache.ts";
 import { apiUrl } from "../config/config.js";
 
+import { DOCS, docsUrl } from "../config/docs.js";
+
+/* Every card names the page that documents it, so the landing page is a
+   way into the docs rather than only a pitch. */
 const features = [
   {
     icon: "fa-solid fa-globe",
     title: "Websites & dashboards",
     text: "Give every bot a public site built by dragging elements onto the page, with optional controls server owners can configure themselves.",
+    page: DOCS.websites,
   },
   {
     icon: "fa-solid fa-chart-line",
     title: "Bot Insights",
     text: "See which commands people actually use, who uses them, which servers are busiest, and how it all changes over time.",
+    page: DOCS.insights,
   },
   {
     icon: "fa-solid fa-satellite-dish",
     title: "Bot Control",
     text: "Open a Discord-style client and use Discord as your bot: read servers, send messages, react, and moderate live.",
+    page: DOCS.control,
   },
   {
     icon: "fa-solid fa-code-branch",
     title: "Version control",
     text: "Save the whole project as a version, start the next iteration from it, and switch back to an earlier one whenever you need.",
+    page: DOCS.versionControl,
   },
   {
     icon: "fa-solid fa-eye-slash",
     title: "Private or public projects",
     text: "Keep a bot to yourself while you build it, or publish it for the community to see and clone.",
+    page: `${DOCS.projectSettings}#project-visibility`,
   },
   {
     icon: "fa-solid fa-shapes",
     title: "Custom & community blocks",
     text: "Extend the default block set with your own, or drop in blocks other builders have shared.",
+    page: DOCS.workshop,
   },
   {
     icon: "fa-solid fa-user-group",
     title: "Multi-user collaboration",
     text: "Invite collaborators into a project and build the same bot together in real time.",
+    page: DOCS.collaboration,
   },
   {
     icon: "fa-solid fa-comments",
     title: "Comment on other projects",
     text: "Browse public bots, leave feedback, and reply to threads right on the project page.",
+    page: DOCS.explore,
   },
   {
     icon: "fa-solid fa-lock",
     title: "Built-in secrets",
     text: "Store API keys and tokens as encrypted environment variables your blocks can reference safely.",
+    page: DOCS.secrets,
   },
   {
     icon: "fa-solid fa-cubes",
     title: "Templates, built-in or shared",
     text: "Start from a template instead of a blank workspace, or publish your own for others to use.",
+    page: DOCS.templates,
   },
   {
     icon: "fa-brands fa-square-js",
     title: "Advanced Discord features",
     text: "Slash commands, modals, buttons, and Components V2 are all available as blocks.",
+    page: DOCS.interactions,
   },
   {
     icon: "fa-solid fa-desktop",
     title: "Organized workspace",
     text: "Tabs, search, and a clean canvas keep even large projects easy to navigate.",
+    page: DOCS.theEditor,
   },
   {
     icon: "fa-solid fa-gears",
     title: "Workspace settings",
     text: "Tune autosave, optimization, and notifications per project so it fits how you work.",
+    page: DOCS.settings,
   },
 ];
 
@@ -258,13 +275,20 @@ export default function Home() {
 
         <div className="df-feature-grid">
           {features.map((f) => (
-            <div className="df-feature-card" key={f.title}>
+            <a
+              className="df-feature-card"
+              key={f.title}
+              href={docsUrl(f.page)}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Read the docs: ${f.title}`}
+            >
               <div className="icon">
                 <i className={f.icon}></i>
               </div>
               <h3>{f.title}</h3>
               <p>{f.text}</p>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -302,6 +326,15 @@ export default function Home() {
                 <i className="fa-solid fa-plus"></i> New Project
               </button>
             </Link>
+            <a
+              href={docsUrl(DOCS.creatingABot)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button>
+                <i className="fa-solid fa-list-check"></i> Follow the Guide
+              </button>
+            </a>
           </div>
         </div>
       </section>

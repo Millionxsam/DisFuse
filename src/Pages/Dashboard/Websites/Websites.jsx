@@ -9,6 +9,9 @@ import { getWebsites } from "../../../api/websites";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 export default function Websites() {
@@ -82,6 +85,7 @@ export default function Websites() {
                 <i className="fa-solid fa-plus"></i> New Website
               </button>
             </Link>
+            <DocsLink page={DOCS.websites} />
           </div>
         </div>
       </div>

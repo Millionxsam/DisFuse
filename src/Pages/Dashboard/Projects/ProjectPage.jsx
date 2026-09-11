@@ -9,6 +9,9 @@ import LoadingAnim from "../../../components/LoadingAnim";
 import api, { authToken, data } from "../../../api/client.js";
 import { apiUrl, discordUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 /* `GET /users` takes at most 100 ids at a time. */
 const ID_BATCH = 100;
 
@@ -374,7 +377,14 @@ export default function ProjectPage() {
 
       {project?.collaborators?.length ? (
         <div>
-          <h2>Collaborators</h2>
+          <h2>
+            Collaborators{" "}
+            <DocsLink
+              page={DOCS.collaboration}
+              variant="icon"
+              label="About collaborating"
+            />
+          </h2>
           <ul className="df-collab-list">
             {[project.owner?.id, ...project.collaborators].map((id) => (
               <UserTag userId={id} key={id} />
@@ -385,7 +395,14 @@ export default function ProjectPage() {
         ""
       )}
 
-      <h2>Comments</h2>
+      <h2>
+        Comments{" "}
+        <DocsLink
+          page={`${DOCS.explore}#comments`}
+          variant="icon"
+          label="About comments"
+        />
+      </h2>
       <div className="addComment">
         <textarea
           placeholder="Add a comment..."

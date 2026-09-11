@@ -13,6 +13,9 @@ import {
 import { publishedWebsiteUrl } from "../../../../config/config";
 import modalThemeColor from "../../../../functions/modalThemeColor";
 
+import DocsLink from "../../../../components/DocsLink.jsx";
+import { DOCS } from "../../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 const slugify = (value) =>
@@ -78,6 +81,16 @@ function AddElements({ editor }) {
         {destination}.
       </p>
 
+      {/* The palette is the natural place to ask what an element does. */}
+      <p className="df-ws-note">
+        <i className="fa-solid fa-circle-question"></i> Not sure what to pick?{" "}
+        <DocsLink
+          page={`${DOCS.websites}#elements`}
+          variant="inline"
+          label="Read about the elements"
+        />
+      </p>
+
       {elementCategories.map((category) => (
         <section className="df-ws-section" key={category.id}>
           <h4>
@@ -87,7 +100,12 @@ function AddElements({ editor }) {
             <p className="df-ws-note dashboard">
               Optional. Visitors log in with Discord to use these. Controls set
               to <strong>the selected server</strong> also ask them to pick one;
-              controls set to <strong>the visitor themselves</strong> never do.
+              controls set to <strong>the visitor themselves</strong> never do.{" "}
+              <DocsLink
+                page={`${DOCS.websites}#dashboards`}
+                variant="inline"
+                label="How dashboards work"
+              />
             </p>
           )}
 

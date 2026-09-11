@@ -5,6 +5,9 @@ import LoadingAnim from "../../../components/LoadingAnim";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function NotificationSettings() {
   const token = localStorage.getItem("disfuse-token");
   const [user, setUser] = useState({});
@@ -47,7 +50,12 @@ export default function NotificationSettings() {
       <h1>Notifications</h1>
       <p>
         Enable or disable certain notifications and decide how you want to be
-        notified
+        notified.{" "}
+        <DocsLink
+          page={`${DOCS.settings}#notifications`}
+          variant="inline"
+          label="How notifications work"
+        />
       </p>
 
       <div className="option">

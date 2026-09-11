@@ -13,6 +13,9 @@ import {
 
 import "../../styles/workspace/message-preview.css";
 
+import DocsLink from "../DocsLink.jsx";
+import { DOCS } from "../../config/docs.js";
+
 /* =====================================================================
    Message preview
    ---------------------------------------------------------------------
@@ -194,8 +197,8 @@ export default function MessagePreview({ workspaceRef, project }) {
   }, [blockId]);
 
   const startDrag = useCallback((event) => {
-    /* The header carries the three buttons as well. */
-    if (event.target.closest("button")) return;
+    /* The header carries the docs link and the three buttons as well. */
+    if (event.target.closest("button, a")) return;
     if (event.button !== 0) return;
 
     const panel = panelRef.current;
@@ -364,6 +367,14 @@ export default function MessagePreview({ workspaceRef, project }) {
           <strong>{preview?.title || "Message preview"}</strong>
           {preview?.destination && <span>{preview.destination}</span>}
         </div>
+
+        {/* What is being previewed is a Components V2 message, and that
+            is the page that explains how the pieces fit together. */}
+        <DocsLink
+          page={DOCS.componentsV2}
+          variant="icon"
+          label="How messages are built"
+        />
 
         <button type="button" onClick={locate} title="Find this block">
           <i className="fa-solid fa-location-crosshairs"></i>

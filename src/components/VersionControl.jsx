@@ -19,6 +19,8 @@ export { closeVersionControl, openVersionControl };
 
 import "../styles/workspace/version-control.css";
 
+import { DOCS } from "../config/docs.js";
+
 /* =====================================================================
    Version Control panel
    ---------------------------------------------------------------------
@@ -271,6 +273,7 @@ export default function VersionControl({
       icon="fa-solid fa-code-branch"
       title="Version Control"
       subtitle="Snapshots of the whole project, every workspace included"
+      docsPage={DOCS.versionControl}
       badge={
         <img
           className="df-modal-premium"

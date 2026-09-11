@@ -1,5 +1,7 @@
 import PremiumUpgrade from "../../../components/premium/PremiumUpgrade";
 
+import { DOCS } from "../../../config/docs.js";
+
 /**
  * Shown instead of Insights when the account isn't premium.
  *
@@ -14,6 +16,7 @@ export default function InsightsUpgrade() {
       title="Insights"
       heroTitle="See how your bot is really used"
       heroBody="Insights is part of DisFuse Premium. Every command, user, server and error your bot handles, turned into rankings, trends and live logs. Your bots are already recording their activity, so subscribe and it's waiting for you."
+      docsPage={DOCS.insights}
     />
   );
 }

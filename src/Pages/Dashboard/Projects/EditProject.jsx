@@ -8,6 +8,9 @@ import { userCache } from "../../../cache.ts";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function EditProject() {
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(true);
@@ -72,6 +75,11 @@ export default function EditProject() {
         <h1>
           <i class="fa-solid fa-pen-to-square"></i> Edit Project
         </h1>
+        <div className="df-toolbar">
+          <div className="df-btn-group">
+            <DocsLink page={DOCS.projectSettings} />
+          </div>
+        </div>
       </div>
       <div className="body">
         {loading ? (
@@ -129,7 +137,14 @@ export default function EditProject() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <h2>Bot Token</h2>
+          <h2>
+            Bot Token{" "}
+            <DocsLink
+              page={`${DOCS.projectSettings}#bot-token`}
+              variant="icon"
+              label="Where to find your bot token"
+            />
+          </h2>
           <input
             type="password"
             placeholder="Bot Token"
@@ -137,7 +152,14 @@ export default function EditProject() {
             onChange={(e) => setToken(e.target.value)}
           />
           <div style={{ gap: "2px" }}>
-            <h2>Project Visibility</h2>
+            <h2>
+              Project Visibility{" "}
+              <DocsLink
+                page={`${DOCS.projectSettings}#project-visibility`}
+                variant="icon"
+                label="About project visibility"
+              />
+            </h2>
             <p style={{ opacity: ".5" }}>
               Public projects will show up in the explore page and anyone can
               view their blocks; private projects are only visible to you and
@@ -173,7 +195,14 @@ export default function EditProject() {
           </p>
 
           <div style={{ gap: "2px" }}>
-            <h2>Permissions</h2>
+            <h2>
+              Permissions{" "}
+              <DocsLink
+                page={`${DOCS.projectSettings}#permissions`}
+                variant="icon"
+                label="About bot permissions"
+              />
+            </h2>
             <p style={{ opacity: ".5" }}>
               Go to{" "}
               <Link

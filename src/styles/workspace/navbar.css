@@ -56,6 +56,74 @@ div.dropdown div.dropdown-content button {
 
 div.dropdown div.dropdown-content button:hover {
   background-color: #2a71b4;
+  box-shadow: none;
+}
+
+/* ---- The toolbar's own buttons -------------------------------------
+   `elements.css` gives every button a `0 0 10px 3px` halo on hover, and
+   `transition: all` fades it in over 0.2s — so the toolbar's buttons
+   appeared to start light and darken, and two buttons hovered in quick
+   succession showed the halo at two different strengths. Up here the
+   buttons sit shoulder to shoulder against a light surface, where a
+   spread halo reads as a smudge rather than as lift. One faint, even
+   glow instead, with only the background transitioning. */
+
+.workspace-navbar button:hover,
+.workshopWorkspaceNavbar button:hover {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.14);
+}
+
+.workspace-navbar button,
+.workshopWorkspaceNavbar button {
+  transition: background-color 0.2s ease;
+}
+
+/* ---- The Help menu --------------------------------------------------
+   Its items are links rather than buttons — they go to the docs site —
+   so they are dressed as the buttons beside them. */
+
+div.dropdown div.dropdown-content.help-menu {
+  min-width: 15rem;
+  padding: 0.35rem;
+  align-items: stretch !important;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+div.dropdown div.dropdown-content.help-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--button-radius);
+  font-size: 15px;
+  color: white;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+div.dropdown div.dropdown-content.help-menu a i {
+  width: 1.1rem;
+  text-align: center;
+  color: var(--df-amber);
+}
+
+div.dropdown div.dropdown-content.help-menu a:hover {
+  background-color: #2a71b4;
+}
+
+/* The groups are already spaced apart by the menu's `gap`; without a
+   rule in the space it just looks like an inconsistent gap. `flex:
+   0 0 1px` because a 1px-tall item in a column flex container is
+   otherwise free to be shrunk away to nothing. */
+div.dropdown div.dropdown-content.help-menu hr {
+  flex: 0 0 1px;
+  width: 100%;
+  height: 1px;
+  border: none;
+  margin: 0.35rem 0;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 i.workspacesMenuBtn {

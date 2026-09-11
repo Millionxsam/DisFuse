@@ -7,6 +7,8 @@ import api, { authToken, data } from "../../api/client.js";
 import { discordUrl } from "../../config/config.js";
 import { premiumLogo } from "../../config/premiumPlans";
 
+import { DOCS, docsUrl } from "../../config/docs.js";
+
 const navItems = [
   { to: "/projects", label: "Projects", icon: "fa-solid fa-cubes" },
   {
@@ -153,6 +155,20 @@ export default function Sidebar() {
         </div>
 
         <div className="df-sidebar-bottom">
+          {/* Above the nametag, so help is reachable from every page in
+              the dashboard without having to know which page documents
+              what. */}
+          <a
+            className="df-sidebar-docs"
+            href={docsUrl(DOCS.intro)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i className="fa-solid fa-book"></i>
+            <span>Documentation</span>
+            <i className="fa-solid fa-arrow-up-right-from-square small"></i>
+          </a>
+
           <div
             className="df-nametag"
             onClick={() => navigate(`/@${user.username}`)}

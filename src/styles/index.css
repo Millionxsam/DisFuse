@@ -62,3 +62,8 @@
 @import "./workspace/version-control.css";
 @import "./pages/legal.css";
 @import "./workspace/message-preview.css";
+
+/* Last: the docs link is a small control dropped into headings and
+   toolbars all over the site, and it has to keep its own colours
+   wherever it lands. */
+@import "./components/docs-link.css";

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef } from "react";
 
 import "../../styles/workspace/modals.css";
 
+import DocsLink from "../DocsLink.jsx";
+
 /* =====================================================================
    The workspace dialog shell
    ---------------------------------------------------------------------
@@ -24,6 +26,12 @@ import "../../styles/workspace/modals.css";
 /** Matches the close animation in modals.css. */
 const CLOSE_ANIMATION_MS = 160;
 
+/**
+ * @param {object} props
+ * @param {string} [props.docsPage] a value from DOCS — renders a help
+ *   link in the dialog's header, beside the close button, for the page
+ *   that documents whatever the dialog does
+ */
 export default function WorkspaceModal({
   open,
   onClose,
@@ -32,6 +40,7 @@ export default function WorkspaceModal({
   icon,
   badge,
   footer,
+  docsPage,
   wide = false,
   children,
 }) {
@@ -116,15 +125,25 @@ export default function WorkspaceModal({
             </div>
           </div>
 
-          <button
-            type="button"
-            className="df-modal-close"
-            onClick={onClose}
-            aria-label="Close"
-            title="Close"
-          >
-            <i className="fa-solid fa-xmark" aria-hidden="true" />
-          </button>
+          <div className="df-modal-head-actions">
+            {docsPage && (
+              <DocsLink
+                page={docsPage}
+                variant="icon"
+                label={`Help with ${title}`}
+              />
+            )}
+
+            <button
+              type="button"
+              className="df-modal-close"
+              onClick={onClose}
+              aria-label="Close"
+              title="Close"
+            >
+              <i className="fa-solid fa-xmark" aria-hidden="true" />
+            </button>
+          </div>
         </header>
 
         <div className="df-modal-body">{children}</div>

@@ -5,6 +5,8 @@ import WorkspaceModal, { ModalEmpty, ModalError } from "./WorkspaceModal.jsx";
 
 import "../../styles/workspace/secrets-modal.css";
 
+import { DOCS } from "../../config/docs.js";
+
 /* =====================================================================
    Secrets
    ---------------------------------------------------------------------
@@ -134,6 +136,7 @@ export default function SecretsModal({
       icon="fa-solid fa-key"
       title="Secrets"
       subtitle="Values your bot reads at runtime, kept out of your blocks"
+      docsPage={DOCS.secrets}
     >
       {!canManage ? (
         <ModalEmpty icon="fa-solid fa-lock" title="Only the owner can see these">

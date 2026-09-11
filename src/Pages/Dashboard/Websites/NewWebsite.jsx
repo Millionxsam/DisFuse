@@ -14,6 +14,9 @@ import {
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 /**
  * Creating a website starts from one of the user's existing DisFuse
  * projects, because a website always belongs to a bot (botID is required).
@@ -154,6 +157,11 @@ export default function NewWebsite() {
         <h1>
           <i className="fa-solid fa-globe"></i> New Website
         </h1>
+        <div className="df-toolbar">
+          <div className="df-btn-group">
+            <DocsLink page={`${DOCS.websites}#creating-one`} />
+          </div>
+        </div>
       </div>
 
       <div className="body">

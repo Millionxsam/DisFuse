@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import { discordUrl, apiUrl } from "../../../config/config.js";
 import { Helmet } from "react-helmet-async";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 export default function MyProjects() {
@@ -262,6 +265,7 @@ export default function MyProjects() {
               <button onClick={filter}>
                 <i className="fa-solid fa-filter"></i> Filter
               </button>
+              <DocsLink page={DOCS.dashboard} />
             </div>
           </div>
         </div>

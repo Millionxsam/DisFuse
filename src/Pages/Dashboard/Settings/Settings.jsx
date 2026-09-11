@@ -4,6 +4,9 @@ import { Helmet } from "react-helmet-async";
 
 import { premiumLogo } from "../../../config/premiumPlans";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const tabs = [
   { to: "/settings/workspace", key: "workspace", label: "Workspace" },
   { to: "/settings/notifications", key: "notifications", label: "Notifications" },
@@ -30,6 +33,7 @@ export default function Settings() {
       </Helmet>
       <h1>
         <i className="fa-solid fa-gear"></i> Settings
+        <DocsLink page={DOCS.settings} />
       </h1>
 
       <div className="df-settings-body">

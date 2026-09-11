@@ -7,6 +7,9 @@ import InsightEvent, { timeAgo } from "../../../components/insights/InsightEvent
 import { compactNumber } from "../../../components/insights/charts";
 import { getInsightLogs } from "../../../api/insights";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 /* One page at a time, always. The API caps the page size, so this page
    physically cannot pull a bot's whole history into the browser. */
 const PAGE_SIZE = 50;
@@ -179,6 +182,7 @@ export default function InsightsLogs() {
               ></i>
               {refreshing ? "Refreshing…" : "Refresh"}
             </button>
+            <DocsLink page={`${DOCS.insights}#live-logs`} />
           </div>
         </div>
       </div>

@@ -22,7 +22,8 @@
 
 .footer-inner {
   display: grid;
-  grid-template-columns: 1.4fr repeat(3, 1fr);
+  /* Brand, then the four link columns — Pages, Dashboard, Help, Links. */
+  grid-template-columns: 1.4fr repeat(4, 1fr);
   gap: 2.5rem;
   max-width: 1180px;
   margin: 0 auto;
@@ -107,6 +108,17 @@
   justify-content: space-between;
   color: var(--df-text-faint);
   font-size: 13px;
+}
+
+@media (max-width: 1080px) {
+  .footer-inner {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2.5rem;
+  }
+
+  .footer .left {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 900px) {

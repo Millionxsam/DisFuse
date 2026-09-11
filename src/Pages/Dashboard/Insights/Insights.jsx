@@ -9,6 +9,9 @@ import { timeAgo } from "../../../components/insights/InsightEvent";
 import { compactNumber } from "../../../components/insights/charts";
 import modalThemeColor from "../../../functions/modalThemeColor";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 /**
@@ -83,6 +86,7 @@ export default function Insights() {
             <button onClick={load}>
               <i className="fa-solid fa-rotate-right"></i> Refresh
             </button>
+            <DocsLink page={DOCS.insights} />
           </div>
         </div>
       </div>

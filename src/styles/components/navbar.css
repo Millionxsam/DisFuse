@@ -101,6 +101,32 @@
   box-shadow: 0 0 18px rgba(88, 101, 242, 0.55);
 }
 
+/* The docs pill is the Discord pill in the site's own colours: same
+   shape and the same place, because they are the same kind of thing —
+   somewhere you go that is not a route on this site. */
+.navbar .docs-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border-strong);
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: all 0.2s var(--df-ease);
+}
+
+.navbar .docs-pill i {
+  color: var(--df-amber);
+}
+
+.navbar .docs-pill:hover {
+  border-color: var(--df-amber);
+  background: rgba(255, 182, 72, 0.12);
+  box-shadow: 0 0 18px rgba(255, 182, 72, 0.25);
+}
+
 .navbar .nav-toggle {
   display: none;
   flex-direction: column;
@@ -185,15 +211,18 @@
     display: none;
   }
 
-  .navbar .discord-pill span {
+  .navbar .discord-pill span,
+  .navbar .docs-pill span {
     display: none;
   }
 
-  .navbar .discord-pill {
+  .navbar .discord-pill,
+  .navbar .docs-pill {
     padding: 0.7rem;
     border-radius: 50%;
     width: 2.6rem;
     height: 2.6rem;
+    justify-content: center;
   }
 
   .navbar .nav-toggle {

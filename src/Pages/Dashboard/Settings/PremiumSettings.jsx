@@ -19,6 +19,9 @@ import {
 } from "../../../functions/premiumModal";
 import { userCache } from "../../../cache.ts";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 const formatDate = (value) =>
@@ -170,7 +173,12 @@ export default function PremiumSettings() {
       </Helmet>
       <h1>Premium</h1>
       <p>
-        Manage your DisFuse Premium subscription, billing and payment method
+        Manage your DisFuse Premium subscription, billing and payment method.{" "}
+        <DocsLink
+          page={`${DOCS.premium}#managing-your-subscription`}
+          variant="inline"
+          label="About Premium"
+        />
       </p>
 
       <div className="df-billing">

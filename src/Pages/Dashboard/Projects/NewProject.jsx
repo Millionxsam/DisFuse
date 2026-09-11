@@ -12,6 +12,9 @@ import Lottie from "lottie-react";
 import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
 import joinServer from "../../../functions/joinServer.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS, docsUrl } from "../../../config/docs.js";
+
 export default function NewProject() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
@@ -32,6 +35,11 @@ export default function NewProject() {
           <i class="fa-solid fa-circle-plus"></i>
           New Project
         </h1>
+        <div className="df-toolbar">
+          <div className="df-btn-group">
+            <DocsLink page={DOCS.creatingAProject} label="How this works" />
+          </div>
+        </div>
       </div>
       <div className="body">
         {!bot ? (
@@ -53,7 +61,7 @@ export default function NewProject() {
               <i>
                 Not sure what this is? Visit{" "}
                 <a
-                  href="https://docs.disfuse.xyz/docs/Guide/creating-a-bot"
+                  href={docsUrl(DOCS.creatingABot)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -97,7 +105,14 @@ export default function NewProject() {
                 onChange={(e) => setDescription(e.target.value)}
               />
               <div style={{ gap: "2px" }}>
-                <h2>Project Visibility</h2>
+                <h2>
+                  Project Visibility{" "}
+                  <DocsLink
+                    page={`${DOCS.projectSettings}#project-visibility`}
+                    variant="icon"
+                    label="About project visibility"
+                  />
+                </h2>
                 <p style={{ opacity: ".5" }}>
                   Public projects will show up in the explore page and anyone
                   can view their blocks; private projects are only visible to
@@ -133,7 +148,14 @@ export default function NewProject() {
               </p>
 
               <div style={{ gap: "2px" }}>
-                <h2>Permissions</h2>
+                <h2>
+                  Permissions{" "}
+                  <DocsLink
+                    page={`${DOCS.projectSettings}#permissions`}
+                    variant="icon"
+                    label="About bot permissions"
+                  />
+                </h2>
                 <p style={{ opacity: ".5" }}>
                   Go to{" "}
                   <Link

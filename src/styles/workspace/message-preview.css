@@ -104,6 +104,27 @@
   text-overflow: ellipsis;
 }
 
+/* Sized like the header's buttons rather than like a page-head pill. */
+.df-msg-preview-head .df-docs-link {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--df-r-sm);
+  background: transparent;
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+.df-msg-preview-head .df-docs-link:hover {
+  background: var(--df-surface-3);
+  box-shadow: none;
+}
+
 .df-msg-preview-head button {
   flex: 0 0 auto;
   width: 26px;
@@ -291,4 +312,13 @@
     width: auto;
     max-width: none;
   }
+}
+
+.df-msg-preview-head button {
+  align-items: center;
+  display: flex;
+}
+
+.df-msg-preview-head button:hover {
+  box-shadow: none;
 }

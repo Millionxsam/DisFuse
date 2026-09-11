@@ -33,6 +33,8 @@ import {
   isVoice,
 } from "../../../components/control/discordUtils";
 
+import { DOCS, docsUrl } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 const REACTION_SUGGESTIONS = [
@@ -1542,11 +1544,23 @@ function ControlShell({ children, session, status }) {
 
         <a
           className="dc-topbar-hint"
-          href="https://discord.com/developers/applications"
+          href={docsUrl(`${DOCS.control}#finding-your-way-around`)}
           target="_blank"
           rel="noreferrer noopener"
         >
           <i className="fa-solid fa-circle-question"></i>
+          <span>Using Control</span>
+        </a>
+
+        {/* Discord's own portal, kept: the commonest reason Control looks
+            broken is an intent switched off over there. */}
+        <a
+          className="dc-topbar-hint"
+          href="https://discord.com/developers/applications"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          <i className="fa-brands fa-discord"></i>
           <span>Intents &amp; permissions</span>
         </a>
       </header>

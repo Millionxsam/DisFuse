@@ -22,6 +22,9 @@ import { userCache } from "../../../cache.ts";
 
 import { apiUrl, discordUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function BlockPackPage() {
   const [pack, setPack] = useState({});
   const [owner, setOwner] = useState({});
@@ -156,6 +159,10 @@ export default function BlockPackPage() {
         </div>
 
         <div className="df-detail-actions">
+          <DocsLink
+            page={`${DOCS.workshop}#installing`}
+            label="About block packs"
+          />
           <div
             onClick={installPack}
             className={`darkBtn install${

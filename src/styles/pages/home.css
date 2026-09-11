@@ -13,11 +13,16 @@
 }
 
 /* Background gradient lives on the html element itself (not a
-   ::before scoped to .df-home) so it paints the full scrollable
-   page, not just the height of the hero section. background-size +
-   repeat-y tiles the four-blob pattern every 1700px so the glow
-   keeps showing up as you scroll instead of only appearing once
-   near the top. */
+   ::before scoped to .df-home) so it covers the whole page rather
+   than only the height of the hero section.
+
+   The layer is a `position: fixed` box rather than an absolutely
+   positioned one painting a `background-attachment: fixed` image.
+   Both look identical — the glow stays put as the page scrolls —
+   but the fixed-attachment version made the browser re-rasterize
+   four large radial gradients across the viewport on every scroll
+   frame, which is what made this page stutter. A fixed box is
+   composited instead, so scrolling costs nothing. */
 
 html:has(.df-home) {
   position: relative;
@@ -25,13 +30,12 @@ html:has(.df-home) {
 
 html:has(.df-home)::before {
   content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
+  position: fixed;
+  inset: 0;
   z-index: -1;
+  pointer-events: none;
   background-color: var(--df-bg);
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-size: cover;
   background-image:
     radial-gradient(
@@ -56,11 +60,6 @@ html:has(.df-home)::before {
     );
 }
 
-@media (max-width: 700px) {
-  html:has(.df-home) {
-    background-size: 100% 1200px;
-  }
-}
 
 .df-hero {
   display: grid;
@@ -308,8 +307,13 @@ html:has(.df-home)::before {
   gap: 1.25rem;
 }
 
+/* The whole card is the link to that feature's docs page, so the cursor
+   and the colour reset have to be stated here — it is an `a`. */
 .df-feature-card {
   position: relative;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
   background: var(--df-surface);
   border: 1px solid var(--df-border);
   border-radius: var(--df-r-lg);
@@ -433,4 +437,21 @@ html:has(.df-home)::before {
 .df-cta-inner p {
   color: var(--df-text-dim);
   max-width: 30rem;
+}
+
+/* Stacked rather than side by side: the primary action reads first and
+   the guide sits under it, both on the centre line of the panel. */
+.df-cta-inner .buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.df-cta-inner .buttons button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 14rem;
 }

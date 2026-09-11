@@ -82,20 +82,22 @@ input[type="number"]:hover {
   background-color: var(--border-color);
 }
 
+/* Reveal-on-scroll; `functions/useRevealOnScroll.js` adds `.shown`.
+   Only opacity and transform are animated — both are composited, so a
+   reveal costs no repaint. A `filter: blur()` used to be part of it,
+   which forced every revealing section to be re-rasterized for the
+   whole half-second, and the home page runs several of these at once. */
 .hidden {
   opacity: 0;
   transform: translateX(-9rem) scale(0.95);
-  filter: blur(3px);
   transition:
     opacity 0.5s 0.25s ease,
-    transform 0.5s 0.25s ease,
-    filter 0.5s 0.25s ease;
+    transform 0.5s 0.25s ease;
 }
 
 .hidden.shown {
   opacity: 1;
   transform: none;
-  filter: none;
 }
 
 .button {

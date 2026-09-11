@@ -8,6 +8,9 @@ import { getControlBots } from "../../../api/control";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { avatarUrl } from "../../../components/control/discordUtils";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 const modalColors = modalThemeColor(null, true);
 
 /**
@@ -83,6 +86,7 @@ export default function Control() {
             <button onClick={load}>
               <i className="fa-solid fa-rotate-right"></i> Refresh
             </button>
+            <DocsLink page={DOCS.control} />
           </div>
         </div>
       </div>

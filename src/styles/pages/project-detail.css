@@ -145,6 +145,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  /* The heading above sits tight against the tags otherwise. */
+  margin-top: 0.75rem;
 }
 
 /* comments — restyles the existing Comment.jsx / Reply.jsx markup

@@ -23,9 +23,17 @@
    would be safe to still be fetching them.
    ===================================================================== */
 
+import setHelpUrls from "./lib/setHelpUrls.js";
+
 import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
   eager: true,
 });
+
+/* Every block now registered gets a Help item pointing at its page on
+   the docs site. It runs here, after the glob, because it walks the
+   registry rather than being something each definition opts into — see
+   lib/setHelpUrls.js. */
+setHelpUrls();
 
 /**
  * Block types that still load but are no longer in the toolbox.

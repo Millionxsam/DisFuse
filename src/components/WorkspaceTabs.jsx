@@ -8,6 +8,9 @@ import {
   renameVersionWorkspace,
 } from "../api/versions";
 
+import DocsLink from "./DocsLink.jsx";
+import { DOCS } from "../config/docs.js";
+
 /**
  * The tab bar.
  *
@@ -274,6 +277,19 @@ export default function WorkspaceTabs({
         <div onClick={newWorkspace} key={"unknown2"} className="newTab">
           <i className="fa-solid fa-plus"></i>
         </div>
+      ) : (
+        ""
+      )}
+
+      {/* What a workspace is for — the question the plus button raises
+          the first time somebody presses it. */}
+      {editable ? (
+        <DocsLink
+          page={DOCS.workspaces}
+          variant="icon"
+          label="About workspaces"
+          className="tabs-docs"
+        />
       ) : (
         ""
       )}

@@ -20,9 +20,18 @@ import { useEffect } from "react";
 
 export default function useRevealOnScroll() {
   useEffect(() => {
+    /* Revealing is one-way: once a section has been shown it stays
+       shown and stops being watched. Toggling it back off meant every
+       section re-ran its reveal transition each time it crossed the
+       viewport edge, so scrolling up and down a long page animated
+       continuously. */
     const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries)
-        entry.target.classList.toggle("shown", entry.isIntersecting);
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+
+        entry.target.classList.add("shown");
+        observer.unobserve(entry.target);
+      }
     });
 
     /* A Set rather than a data attribute: observing twice is harmless

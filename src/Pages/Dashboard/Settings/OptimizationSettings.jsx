@@ -7,6 +7,9 @@ import LoadingAnim from "../../../components/LoadingAnim";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function OptimizationSettings() {
   const token = localStorage.getItem("disfuse-token");
   const [user, setUser] = useState({});
@@ -50,7 +53,14 @@ export default function OptimizationSettings() {
       </Helmet>
       <div className="settings">
         <h1>Optimization</h1>
-        <p>Optimize the DisFuse website or workspace</p>
+        <p>
+          Optimize the DisFuse website or workspace.{" "}
+          <DocsLink
+            page={`${DOCS.settings}#optimization`}
+            variant="inline"
+            label="What each option trades off"
+          />
+        </p>
         <div className="option">
           <div>
             <label htmlFor="optimization-fastRenderMode">

@@ -13,6 +13,9 @@ import modalThemeColor from "../../functions/modalThemeColor";
 import { premiumModalBrand } from "../../functions/premiumModal";
 import { userCache } from "../../cache.ts";
 
+import DocsLink from "../DocsLink.jsx";
+import { DOCS } from "../../config/docs.js";
+
 /**
  * The upgrade screen, shown in place of any Premium feature when the
  * account isn't subscribed.
@@ -26,9 +29,15 @@ import { userCache } from "../../cache.ts";
  * and returns a URL to redirect to. Nothing Stripe-related happens here.
  *
  * @param {{icon: string, title: string, heroTitle: string,
- *          heroBody: React.ReactNode}} props
+ *          heroBody: React.ReactNode, docsPage?: string}} props
  */
-export default function PremiumUpgrade({ icon, title, heroTitle, heroBody }) {
+export default function PremiumUpgrade({
+  icon,
+  title,
+  heroTitle,
+  heroBody,
+  docsPage,
+}) {
   const [busy, setBusy] = useState(null);
 
   async function upgrade(plan) {
@@ -64,6 +73,16 @@ export default function PremiumUpgrade({ icon, title, heroTitle, heroBody }) {
         <h1>
           <i className={icon}></i> {title}
         </h1>
+        <div className="df-toolbar">
+          <div className="df-btn-group">
+            {/* What the feature is, before deciding whether to pay for
+                it — the docs are readable without a subscription. */}
+            <DocsLink
+              page={docsPage || DOCS.premium}
+              label={`What ${title} does`}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="df-premium-hero">
@@ -125,7 +144,12 @@ export default function PremiumUpgrade({ icon, title, heroTitle, heroBody }) {
 
       <p className="df-premium-note">
         <i className="fa-brands fa-cc-stripe"></i> Payments are handled securely
-        by Stripe. Cancel any time from your DisFuse settings.
+        by Stripe. Cancel any time from your DisFuse settings.{" "}
+        <DocsLink
+          page={DOCS.premium}
+          variant="inline"
+          label="How Premium works"
+        />
       </p>
     </div>
   );

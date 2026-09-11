@@ -17,6 +17,8 @@ import {
 } from "../../../functions/versionPicker.js";
 import { refreshProjectWorkspaces } from "../../../functions/projectData";
 
+import { DOCS, docsUrl } from "../../../config/docs.js";
+
 /* =====================================================================
    Export
    ---------------------------------------------------------------------
@@ -29,8 +31,17 @@ import { refreshProjectWorkspaces } from "../../../functions/projectData";
    to be on screen.
    ===================================================================== */
 
-const HELP_TEXT =
-  'After exporting, make sure to extract the ZIP file and read instructions.txt if you don\'t know what to do next.\nJoin our <a style="color: blue" rel="noopener" target="_blank" href="https://discord.gg/Xwx4zkQcmJ">Discord server</a> for help';
+/** Dialogs are SweetAlert HTML, so a docs link here is a plain anchor. */
+const docsAnchor = (page, text) =>
+  `<a style="color: #ffb648" rel="noopener noreferrer" target="_blank" href="${docsUrl(
+    page,
+  )}">${text}</a>`;
+
+const HELP_TEXT = `After exporting, extract the ZIP and read instructions.txt if you don't know what to do next.<br /><br />
+${docsAnchor(
+  DOCS.runningYourBot,
+  "Read how to run your bot",
+)} — hosting, tokens and what to do with the ZIP — or join our <a style="color: #ffb648" rel="noopener" target="_blank" href="https://discord.gg/Xwx4zkQcmJ">Discord server</a> for help.`;
 
 function titleCase(text) {
   return text.replace(
@@ -290,6 +301,7 @@ export default async function exportProject({
       timerProgressBar: true,
       icon: "success",
       title: "Successfully exported",
+      html: docsAnchor(DOCS.hosting, "Where to host it →"),
       showConfirmButton: false,
       ...modalColors,
     });

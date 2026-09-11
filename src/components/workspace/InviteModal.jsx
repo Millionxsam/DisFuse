@@ -9,6 +9,8 @@ import WorkspaceModal, {
 
 import "../../styles/workspace/invite-modal.css";
 
+import { DOCS } from "../../config/docs.js";
+
 /* =====================================================================
    Collaborators
    ---------------------------------------------------------------------
@@ -168,6 +170,7 @@ export default function InviteModal({ open, project, onClose, onSave }) {
       icon="fa-solid fa-user-group"
       title="Collaborators"
       subtitle="People who can open and edit this project with you"
+      docsPage={DOCS.collaboration}
       footer={
         <>
           <button type="button" className="df-modal-secondary" onClick={onClose}>

@@ -7,6 +7,9 @@ import WorkshopItem from "../../../components/WorkshopItem";
 
 import { apiUrl, discordUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function Library() {
   const [packs, setPacks] = useState([]);
   const [shown, setShown] = useState([]);
@@ -73,6 +76,9 @@ export default function Library() {
               );
             }}
           />
+          <div className="df-btn-group">
+            <DocsLink page={`${DOCS.workshop}#installing`} />
+          </div>
         </div>
       </div>
 

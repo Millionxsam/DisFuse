@@ -8,6 +8,9 @@ import { userCache } from "../../cache.ts";
 
 import { apiUrl } from "../../config/config.js";
 
+import DocsLink from "../../components/DocsLink.jsx";
+import { DOCS } from "../../config/docs.js";
+
 export default function Inbox() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -91,6 +94,7 @@ export default function Inbox() {
             <button onClick={clearAll} className="red" disabled={!shown?.length}>
               <i className="fa-solid fa-trash"></i> Clear All
             </button>
+            <DocsLink page={DOCS.inbox} />
           </div>
         </div>
       </div>

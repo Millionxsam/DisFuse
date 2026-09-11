@@ -12,6 +12,9 @@ const modalColors = modalThemeColor(null, true);
 
 import { apiUrl } from "../../../config/config.js";
 
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+
 export default function Workshop() {
   const [packs, setPacks] = useState([]);
   const [userPacks, setUserPacks] = useState([]);
@@ -95,6 +98,7 @@ export default function Workshop() {
             <button className="df-primary-btn" onClick={createPack}>
               <i className="fa-solid fa-plus"></i> Create
             </button>
+            <DocsLink page={DOCS.workshop} />
           </div>
         </div>
       </div>

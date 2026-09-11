@@ -150,6 +150,14 @@
   color: var(--df-text-dim);
 }
 
+/* The header's right-hand controls: the help link, then close. */
+.df-modal-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
 .df-modal-close {
   flex-shrink: 0;
   display: grid;

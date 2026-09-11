@@ -1,6 +1,8 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { DOCS, docsUrl } from "../config/docs.js";
+
 const links = [
   { to: "/", label: "Home", icon: "fa-house" },
   { to: "/projects", label: "Dashboard", icon: "fa-table-list" },
@@ -38,6 +40,18 @@ export default function Navbar() {
           </nav>
 
           <div className="navbar-actions">
+            {/* Docs sit beside Discord rather than in the nav list: both
+                are places you leave the site for, and the nav list is
+                routes. */}
+            <a
+              className="docs-pill"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={docsUrl(DOCS.intro)}
+            >
+              <i className="fa-solid fa-book"></i>
+              <span>Docs</span>
+            </a>
             <Link
               className="discord-pill"
               target="_blank"
@@ -66,6 +80,13 @@ export default function Navbar() {
               <i className={`fa-solid ${l.icon}`}></i> {l.label}
             </Link>
           ))}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={docsUrl(DOCS.intro)}
+          >
+            <i className="fa-solid fa-book"></i> Documentation
+          </a>
           <Link
             target="_blank"
             rel="noopener"
