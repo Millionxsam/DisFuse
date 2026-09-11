@@ -258,7 +258,12 @@ function Component({ component, message, guild, channels, onOpenUser, depth = 0 
           <i className="fa-solid fa-file-arrow-down"></i>
           <div>
             <span className="name">{attachment.filename}</span>
-            <span className="size">{formatBytes(attachment.size)}</span>
+            {/* A file whose size isn't known — the workspace's message
+                preview, where the upload hasn't happened yet — should
+                say nothing rather than claim it is zero bytes. */}
+            {attachment.size ? (
+              <span className="size">{formatBytes(attachment.size)}</span>
+            ) : null}
           </div>
         </a>
       );

@@ -42,7 +42,12 @@
    The Control client
    ===================================================================== */
 
-.df-control-client {
+/* The palette is shared with the workspace's message preview, which
+   pretends to be Discord for exactly the same reason the client does.
+   Only the variables are shared: everything below the blank line is the
+   full-screen client and belongs to it alone. */
+.df-control-client,
+.df-discord-surface {
   --dc-rail: #1e1f22;
   --dc-sidebar: #2b2d31;
   --dc-bg: #313338;
@@ -65,7 +70,9 @@
   --dc-red-bright: #f23f43;
   --dc-yellow: #f0b232;
   --dc-radius: 8px;
+}
 
+.df-control-client {
   position: fixed;
   inset: 0;
   display: flex;

@@ -36,9 +36,18 @@ const INLINE = new RegExp(
     "(<t:-?\\d+(?::[tTdDfFR])?>)", // timestamp
     "(@everyone|@here)", // broadcast mention
     "(https?://[^\\s<>()]+)", // link
+    "(\\uE000[^\\uE001]*\\uE001)", // runtime placeholder (see below)
   ].join("|"),
   "g",
 );
+
+/* The last token is not Discord's. The workspace's message preview has
+   to render text that isn't finished yet — half of a bot's message is a
+   variable, a member's name, a database read — and it marks those spans
+   with two Private Use Area characters before handing the string here.
+   Nothing a person can type or a bot can send contains them, so a real
+   message from Discord never matches; a preview draws them as a chip so
+   nobody reads `{username}` as text the bot will send literally. */
 
 /**
  * @param {{content: string, guild?: object, channels?: Array,
@@ -297,6 +306,13 @@ function renderToken(token, ctx, depth, key) {
     return (
       <span className="dc-mention dc-mention-broadcast" key={key}>
         {token}
+      </span>
+    );
+
+  if (token.startsWith("\uE000"))
+    return (
+      <span className="dc-placeholder" key={key}>
+        {token.slice(1, -1)}
       </span>
     );
 

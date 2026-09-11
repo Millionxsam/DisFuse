@@ -5,6 +5,8 @@ import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
 import api from "../api/client.js";
 import { saveVersionWorkspaceData } from "../api/versions";
+import { openMessagePreview } from "../components/workspace/messagePreviewStore";
+import { findSendBlock, isSendBlock } from "./messagePreview/sendBlocks";
 
 /**
  * A workspace's saved blocks, whatever state it is in.
@@ -64,6 +66,37 @@ export default function registerContextMenus(
       { data },
     );
   }
+
+  /* ---- Preview this message ---------------------------------------
+     Offered on the six blocks that send a message, and on anything
+     inside one — right-clicking the text display halfway down a long
+     message is a perfectly reasonable way to ask what it looks like, so
+     the item previews whichever message the block belongs to rather
+     than only appearing on the send block itself.
+
+     No `weight`: the registry sorts on it, and the other DisFuse items
+     don't set one — a number here would be compared against `undefined`
+     and produce a NaN the sort treats as "equal", which is a good way to
+     shuffle the whole menu. Registration order does the job. */
+  Blockly.ContextMenuRegistry.registry.register({
+    id: "previewMessage",
+    displayText: (scope) =>
+      isSendBlock(scope.block) ? "Preview Message" : "Preview This Message",
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    /* "hidden" rather than "disabled": a greyed-out Preview on every
+       block would be noise on the 600-odd that can never be part of a
+       message. A block in the toolbox flyout or the backpack isn't in
+       the workspace the panel reads from either, so previewing one
+       could only ever report that it couldn't find it. */
+    preconditionFn: (scope) =>
+      !scope.block?.workspace?.isFlyout && findSendBlock(scope.block)
+        ? "enabled"
+        : "hidden",
+    callback: (scope) => {
+      const sending = findSendBlock(scope.block);
+      if (sending) openMessagePreview(sending.id);
+    },
+  });
 
   Blockly.ContextMenuRegistry.registry.register({
     displayText: "Copy JavaScript Code",

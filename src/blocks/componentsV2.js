@@ -2,6 +2,7 @@ import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
 import { createMutatorBlock } from "./lib/createMutator";
+import { isValidEmoji } from "./lib/fixers";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
@@ -133,14 +134,22 @@ javascriptGenerator.forBlock["cv2_section_button"] = function (
     generator.valueToCode(block, "buttonLabel", Order.ATOMIC) || "''";
   const customId =
     generator.valueToCode(block, "buttonId", Order.ATOMIC) || "''";
+  const emoji = generator.valueToCode(block, "buttonEmoji", Order.ATOMIC);
   const style = block.getFieldValue("style");
+
+  /* The block has had a "button emoji" input all along, and this never
+     read it — so anything typed there was silently dropped and the bot
+     sent a button with no emoji. `isValidEmoji` is what keeps an empty
+     input from becoming `.setEmoji('')`, which Discord rejects. */
   return `new Discord.SectionBuilder()
   .addTextDisplayComponents(new Discord.TextDisplayBuilder().setContent(${text}))
   .setButtonAccessory(
     new Discord.ButtonBuilder()
       .setLabel(${label})
       .setStyle(Discord.ButtonStyle.${style})
-      ${style === "Link" ? `.setURL(${url})` : `.setCustomId(${customId})`}
+      ${isValidEmoji(emoji) ? `.setEmoji(${emoji})\n      ` : ""}${
+        style === "Link" ? `.setURL(${url})` : `.setCustomId(${customId})`
+      }
   ),\n`;
 };
 

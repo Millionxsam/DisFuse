@@ -15,6 +15,8 @@ import WorkspaceBar from "../../components/WorkspaceBar";
 import WorkspaceTabs from "../../components/WorkspaceTabs";
 import SecretsModal from "../../components/workspace/SecretsModal.jsx";
 import InviteModal from "../../components/workspace/InviteModal.jsx";
+import MessagePreview from "../../components/workspace/MessagePreview.jsx";
+import { closeMessagePreview } from "../../components/workspace/messagePreviewStore.js";
 import VersionControl from "../../components/VersionControl.jsx";
 
 import api, { data, errorMessage } from "../../api/client.js";
@@ -230,6 +232,7 @@ export default function Workspace() {
        before this runs. Unguarded, that throw escaped a render and took
        the whole editor down to a blank page. */
     for (const id of [
+      "previewMessage",
       "copyCode",
       "moveBlock",
       "mergeWorkspace",
@@ -305,7 +308,12 @@ export default function Workspace() {
 
       reloadContextMenus();
 
-      if (!staying) editor.loadBlocks(target.data);
+      if (!staying) {
+        /* Block ids are per-workspace, so a preview left open would be
+           pointing at a block that is no longer on the canvas. */
+        closeMessagePreview();
+        editor.loadBlocks(target.data);
+      }
     },
     [editor, reloadContextMenus, session.project, setSearchParams],
   );
@@ -715,6 +723,11 @@ export default function Workspace() {
       />
 
       <CodeView />
+
+      <MessagePreview
+        workspaceRef={editor.workspaceRef}
+        project={project ?? {}}
+      />
 
       <SecretsModal
         open={secretsOpen}
