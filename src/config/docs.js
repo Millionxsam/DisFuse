@@ -1,18 +1,3 @@
-/* =====================================================================
-   The documentation site
-   ---------------------------------------------------------------------
-   Every link from this app into docs.disfuse.xyz goes through here, so
-   the base URL is written once and the page paths are spelled once.
-
-   `DOCS` is the list of pages worth linking to, keyed by what the page
-   is about rather than by where it lives — `DOCS.creatingABot`, not
-   `"Guide/creating-a-bot"` — so a page that moves on the docs site is
-   one line to fix rather than a grep across the app.
-
-   A value may carry a `#section` anchor. `docsUrl()` builds the address;
-   the <DocsLink> component is what renders it.
-   ===================================================================== */
-
 export const DOCS_URL = "https://docs.disfuse.xyz";
 
 /** Every docs page this app links to. */

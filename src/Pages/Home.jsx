@@ -90,6 +90,53 @@ const features = [
   },
 ];
 
+/* Common questions get answered here before the user has to go hunt in
+   the docs; headlines that have a docs page link out to it. */
+const faq = [
+  {
+    q: "Do I need to know how to code?",
+    a: "No. That is the point of DisFuse. You will pick up some ideas along the way, because programming concepts like conditions and loops still apply, but you never write JavaScript unless you want to.",
+  },
+  {
+    q: "Is DisFuse free?",
+    a: (
+      <>
+        The editor is free, with unlimited projects, unlimited blocks and
+        unlimited exports.{" "}
+        <a
+          href={docsUrl(DOCS.premium)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          DisFuse Premium
+        </a>{" "}
+        adds Insights, Control, Websites and Version Control.
+      </>
+    ),
+  },
+  {
+    q: "Does DisFuse host my bot?",
+    a: (
+      <>
+        No. DisFuse builds your bot's code; you download it and run it
+        somewhere. See{" "}
+        <a
+          href={docsUrl(DOCS.runningYourBot)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Running your bot
+        </a>{" "}
+        for a list of hosts.
+      </>
+    ),
+  },
+  {
+    q: "Can I use DisFuse on a phone or tablet?",
+    a: "The dashboard works. The block editor is difficult on a small screen, because dragging blocks needs room. A laptop or desktop is much better.",
+  },
+];
+
 const reviews = [
   {
     name: "izorc",
@@ -336,6 +383,30 @@ export default function Home() {
               </button>
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="df-section">
+        <div className="df-section-head hidden">
+          <span className="df-tag">FAQ</span>
+          <h2>Frequently asked questions</h2>
+          <p>
+            Short answers to the questions people usually ask before they start.
+          </p>
+        </div>
+
+        <div className="df-faq-list">
+          {faq.map((f) => (
+            <div className="df-faq-item" key={f.q}>
+              <h3>
+                <span className="icon">
+                  <i className="fa-solid fa-circle-question"></i>
+                </span>
+                {f.q}
+              </h3>
+              <p>{f.a}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
