@@ -516,7 +516,7 @@ export default function Workspace() {
 
   /* ---- Once Blockly exists ------------------------------------------- */
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!editor.ready || phase !== "editing") return undefined;
 
     const workspace = editor.workspaceRef.current;
@@ -539,9 +539,7 @@ export default function Workspace() {
       (error) => console.error("Could not generate code:", error),
     );
 
-    showComponentsV2Onboarding(modalColors).then(() =>
-      showWelcome(modalColors),
-    );
+    await showWelcome(modalColors);
 
     return () => {
       presence.current?.dispose();

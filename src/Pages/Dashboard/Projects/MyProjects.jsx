@@ -22,68 +22,6 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      if (localStorage.getItem("projectSystemMigration") === "true") return;
-
-      const queue = Swal.mixin({
-        progressSteps: ["1", "2", "3", "4"],
-        confirmButtonText: "Next",
-        cancelButtonText: "Skip",
-        showCancelButton: true,
-        animation: false,
-      });
-
-      const { isConfirmed } = await queue.fire({
-        animation: true,
-        currentProgressStep: 0,
-        title: "New Project Creation Process",
-        icon: "info",
-        text: "We've made changes to the project creation process in order to make it easier to manage and share your Discord bots.",
-        footer: "You may ignore this if you are a new user",
-        ...modalThemeColor(userCache.user),
-      });
-
-      if (!isConfirmed)
-        return localStorage.setItem("projectSystemMigration", "true");
-
-      const { isConfirmed: two } = await queue.fire({
-        currentProgressStep: 1,
-        title: "How It Works",
-        icon: "info",
-        text: "When creating a new project, you will now enter your bot token before the project is created. This will link your Discord bot to your DisFuse project and will allow you to see your bot information directly from DisFuse, and will also let other users add your bot from the explore page.",
-        footer: "You may ignore this if you are a new user",
-        ...modalThemeColor(userCache.user),
-      });
-
-      if (!two) return localStorage.setItem("projectSystemMigration", "true");
-
-      const { isConfirmed: three } = await queue.fire({
-        currentProgressStep: 2,
-        title: "New Bot Visibility Setting",
-        icon: "info",
-        text: "You can now set your bot visibility to public or private (different from project visibility). Public bots will show up on the explore page and other users can add your bot to their servers directly from DisFuse.",
-        footer: "You may ignore this if you are a new user",
-        ...modalThemeColor(userCache.user),
-      });
-
-      if (!three) return localStorage.setItem("projectSystemMigration", "true");
-
-      await queue.fire({
-        currentProgressStep: 3,
-        title: "Old Projects",
-        icon: "info",
-        text: "All old projects will be unusable until a bot token is set in the project settings. You will need to enter your token the next time you open your project.",
-        footer: "You may ignore this if you are a new user",
-        showCancelButton: false,
-        confirmButtonText: "Finish",
-        ...modalThemeColor(userCache.user),
-      });
-
-      localStorage.setItem("projectSystemMigration", "true");
-    })();
-  }, []);
-
   const fetchProjects = useCallback((userData) => {
     if (!userData?.id) return;
     axios
@@ -126,13 +64,15 @@ export default function MyProjects() {
       return data;
     }
 
-    loadUser().then((userData) => {
-      setUser(userData);
-      fetchProjects(userData);
-    }).catch((err) => {
-      console.error(err);
-      setLoading(false);
-    });
+    loadUser()
+      .then((userData) => {
+        setUser(userData);
+        fetchProjects(userData);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [token, fetchProjects]);
 
   function sort() {
