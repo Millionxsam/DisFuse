@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
-import { premiumLogo } from "../config/premiumPlans";
-import { premiumModalBrand, premiumModalHero } from "../functions/premiumModal";
+import { planLimits, premiumLogo } from "../config/premiumPlans";
+import { premiumModalHero } from "../functions/premiumModal";
 import WorkspaceModal, { ModalEmpty } from "./workspace/WorkspaceModal.jsx";
 import {
   closeVersionControl,
@@ -36,10 +36,11 @@ import { DOCS } from "../config/docs.js";
 
      collaborators   switch between versions and edit them
      the owner       also creates, renames and deletes them
-     Premium         needed to create and rename — never to open, edit,
-                     switch or delete. Someone whose subscription ended
-                     keeps every version they made and can keep working
-                     in them; they just can't make more.
+     the limit       how many versions a project can keep follows its
+                     owner's plan: 3 free, 25 with Premium. It only stops
+                     new versions. A project already past it (Premium
+                     lapsed) keeps every version, and they can all still
+                     be opened, edited, renamed, switched and deleted.
    ===================================================================== */
 
 function formatMoment(value) {
@@ -59,7 +60,9 @@ function formatMoment(value) {
  * @param {Array} props.versions     summaries, oldest first
  * @param {string} props.activeVersionId
  * @param {boolean} props.canManage  the caller owns this project
- * @param {boolean} props.premium
+ * @param {boolean} props.premium    the project's OWNER has Premium
+ * @param {number} props.maxVersions the owner's limit for this project
+ * @param {number} props.premiumMaxVersions what Premium raises it to
  * @param {boolean} props.busy       an operation is in flight
  * @param {(versionId: string) => void} props.onSwitch
  * @param {(options: {name: string, source: string}) => void} props.onCreate
@@ -71,7 +74,8 @@ export default function VersionControl({
   activeVersionId,
   canManage = false,
   premium = false,
-  maxVersions = 25,
+  maxVersions = planLimits.free.versionsPerProject,
+  premiumMaxVersions = planLimits.premium.versionsPerProject,
   busy = false,
   modalColors = {},
   onSwitch,
@@ -83,6 +87,9 @@ export default function VersionControl({
 
   const versioned = versions.length > 0;
   const full = versions.length >= maxVersions;
+  /* Only the owner can upgrade, and only a free plan has anything to
+     upgrade to. */
+  const canUpgrade = canManage && !premium && premiumMaxVersions > maxVersions;
 
   const ordered = [...versions].sort(
     (a, b) => (a.number ?? 0) - (b.number ?? 0),
@@ -127,11 +134,27 @@ export default function VersionControl({
     };
   }
 
-  /** The upsell, for the two actions Premium actually gates. */
-  function premiumRequired(action) {
+  /**
+   * The project has as many versions as its owner's plan keeps. Deleting
+   * one always makes room, and a free owner can also upgrade.
+   */
+  function limitReached() {
+    const over = versions.length > maxVersions;
+    const count = over
+      ? `This project has ${versions.length} versions, more than the ${maxVersions} your plan keeps.`
+      : `This project already has ${maxVersions} versions, the most your plan keeps.`;
+
+    if (!canUpgrade)
+      return Swal.fire({
+        title: "No room for another version",
+        text: `${count} Delete one you no longer need first.`,
+        icon: "warning",
+        ...modalColors,
+      });
+
     return Swal.fire({
-      title: "DisFuse Premium",
-      html: `Version Control is a Premium feature, so ${action} needs an active subscription.<br /><br />Everything you have already saved stays exactly where it is: you can keep opening, editing, switching between and deleting your versions without it.`,
+      title: "No room for another version",
+      html: `${count} Delete a version you no longer need to make room, or upgrade to DisFuse Premium to keep up to ${premiumMaxVersions} versions per project.<br /><br />Every version you already have stays exactly where it is, and you can keep opening, editing, switching between and deleting them.`,
       confirmButtonText: "See Premium",
       showCancelButton: true,
       cancelButtonText: "Not now",
@@ -144,15 +167,7 @@ export default function VersionControl({
 
   async function newVersion() {
     if (!canManage) return;
-    if (!premium) return premiumRequired("creating a version");
-
-    if (full)
-      return Swal.fire({
-        title: "No room for another version",
-        text: `A project can keep ${maxVersions} versions at once. Delete one you no longer need first.`,
-        icon: "warning",
-        ...modalColors,
-      });
+    if (full) return limitReached();
 
     const nextNumber =
       ordered.reduce((highest, v) => Math.max(highest, v.number ?? 0), 0) + 1;
@@ -202,7 +217,6 @@ export default function VersionControl({
         source:
           document.querySelector("#df-version-source")?.value || "current",
       }),
-      ...premiumModalBrand,
       ...modalColors,
     });
 
@@ -216,7 +230,6 @@ export default function VersionControl({
 
   async function rename(version) {
     if (!canManage) return;
-    if (!premium) return premiumRequired("renaming a version");
 
     const result = await Swal.fire({
       title: "Rename Version",
@@ -228,7 +241,6 @@ export default function VersionControl({
         String(value ?? "").trim().length ? undefined : "Give it a name",
       showCancelButton: true,
       confirmButtonText: "Rename",
-      ...premiumModalBrand,
       ...modalColors,
     });
 
@@ -265,6 +277,17 @@ export default function VersionControl({
     onDelete?.(version._id);
   }
 
+  /** "Free accounts keep 3 versions per project. Upgrade for up to 25." */
+  const upgradeHint = canUpgrade ? (
+    <span className="df-plan-hint">
+      Free accounts keep {maxVersions} versions per project.
+      <a href="/settings/premium" target="_blank" rel="noopener noreferrer">
+        <img src={premiumLogo} alt="" /> Upgrade to Premium for up to{" "}
+        {premiumMaxVersions}
+      </a>
+    </span>
+  ) : null;
+
   return (
     <WorkspaceModal
       open={open}
@@ -274,33 +297,25 @@ export default function VersionControl({
       title="Version Control"
       subtitle="Snapshots of the whole project, every workspace included"
       docsPage={DOCS.versionControl}
-      badge={
-        <img
-          className="df-modal-premium"
-          src={premiumLogo}
-          alt="DisFuse Premium"
-        />
-      }
       footer={
         versioned ? (
           <>
             <span className="versionControl-count">
-              {ordered.length} of {maxVersions} versions
-              {canManage && !premium ? (
-                <>
-                  {" · "}
-                  <img src={premiumLogo} alt="" /> Premium needed for new
-                  versions
-                </>
-              ) : (
-                ""
-              )}
+              <span>
+                {ordered.length} of {maxVersions} versions
+              </span>
+              {upgradeHint}
             </span>
 
             {canManage ? (
               <button
                 type="button"
-                className={`df-primary-btn${premium ? "" : " locked"}`}
+                className={`df-primary-btn${full ? " locked" : ""}`}
+                title={
+                  full
+                    ? "This project has as many versions as its plan keeps"
+                    : undefined
+                }
                 disabled={busy}
                 onClick={withDialog(newVersion)}
               >
@@ -321,6 +336,8 @@ export default function VersionControl({
           Save the whole project, every workspace included, as a version you can
           come back to. Start a new version whenever you begin the next
           iteration of your bot, and switch between them whenever you like.
+          Version Control is optional: turn it on only for the projects you want
+          it in.
           {canManage ? (
             <>
               <br />
@@ -333,6 +350,13 @@ export default function VersionControl({
               >
                 <i className="fa-solid fa-plus"></i> Create first version
               </button>
+              {upgradeHint && (
+                <>
+                  <br />
+                  <br />
+                  {upgradeHint}
+                </>
+              )}
             </>
           ) : (
             <>
@@ -414,12 +438,8 @@ export default function VersionControl({
                     {canManage ? (
                       <>
                         <button
-                          className={`icon${premium ? "" : " locked"}`}
-                          title={
-                            premium
-                              ? "Rename this version"
-                              : "Renaming versions needs Premium"
-                          }
+                          className="icon"
+                          title="Rename this version"
                           disabled={busy}
                           onClick={withDialog(() => rename(version))}
                         >

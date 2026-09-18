@@ -12,6 +12,9 @@ import {
   websiteTemplates,
 } from "../../../config/websiteDefaults";
 import modalThemeColor from "../../../functions/modalThemeColor";
+import showLimitReached from "../../../functions/limitReached.js";
+import usePlanLimits, { hasRoom } from "../../../functions/usePlanLimits.js";
+import { PlanLimitReached } from "../../../components/premium/PlanUsage.jsx";
 import { userCache } from "../../../cache.ts";
 
 import DocsLink from "../../../components/DocsLink.jsx";
@@ -38,6 +41,8 @@ export default function NewWebsite() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [templateId, setTemplateId] = useState("botinfo");
+
+  const limits = usePlanLimits();
 
   useEffect(() => {
     const userId = userCache.user?.id;
@@ -127,6 +132,14 @@ export default function NewWebsite() {
         console.error(err);
         setCreating(false);
 
+        if (
+          showLimitReached(err, modalThemeColor(userCache.user), {
+            title: "Website limit reached",
+            navigate,
+          })
+        )
+          return;
+
         /* One website per bot. When that's what went wrong the API names
            the website already using this bot, so offer to open it rather
            than leaving the owner at a dead end. */
@@ -165,8 +178,12 @@ export default function NewWebsite() {
       </div>
 
       <div className="body">
-        {loading ? (
+        {loading || limits.loading ? (
           <LoadingAnim />
+        ) : !hasRoom(limits.data, "websites") ? (
+          /* No room for another website: say so before anything is
+             filled in. The API refuses it either way. */
+          <PlanLimitReached resource="websites" data={limits.data} />
         ) : !projects.length ? (
           <div className="df-empty">
             <i className="fa-solid fa-robot"></i>

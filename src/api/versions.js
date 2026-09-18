@@ -17,10 +17,13 @@
    Routes:
      GET    /projects/:id/versions                    every version
      GET    /projects/:id/versions/:versionId         one, with blocks
-     POST   /projects/:id/versions                    create   (Premium)
-     PATCH  /projects/:id/versions/:versionId         rename   (Premium)
+     POST   /projects/:id/versions                    create (plan limit)
+     PATCH  /projects/:id/versions/:versionId         rename
      DELETE /projects/:id/versions/:versionId         delete
      …/versions/:versionId/workspaces…                the tabs inside one
+
+   Creating is the one call with a limit: 3 versions per project on a
+   free account, 25 when the project's owner has Premium.
    ===================================================================== */
 
 import api, { data as body } from "./client.js";
@@ -31,7 +34,8 @@ function versionsUrl(projectId) {
 
 /**
  * Every version of a project, plus what this user is allowed to do with
- * them: `{ versioned, versions, canManage, canEdit, premium, maxVersions }`.
+ * them: `{ versioned, versions, canManage, canEdit, premium, maxVersions,
+ * premiumMaxVersions }`, where `premium` and the limits are the owner's.
  *
  * `versioned` is false for a project still on the old system.
  */

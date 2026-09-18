@@ -47,7 +47,6 @@ import checkProject, { warnAboutBotToken } from "./editor/projectGuards.js";
 import {
   askForFirstWorkspaceName,
   askToMigrateToSubWorkspaces,
-  showComponentsV2Onboarding,
   showWelcome,
 } from "./editor/onboarding.js";
 
@@ -516,7 +515,7 @@ export default function Workspace() {
 
   /* ---- Once Blockly exists ------------------------------------------- */
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!editor.ready || phase !== "editing") return undefined;
 
     const workspace = editor.workspaceRef.current;
@@ -539,7 +538,7 @@ export default function Workspace() {
       (error) => console.error("Could not generate code:", error),
     );
 
-    await showWelcome(modalColors);
+    showWelcome(modalColors);
 
     return () => {
       presence.current?.dispose();
@@ -765,6 +764,7 @@ export default function Workspace() {
         canManage={versions.state.canManage}
         premium={versions.state.premium}
         maxVersions={versions.state.maxVersions}
+        premiumMaxVersions={versions.state.premiumMaxVersions}
         busy={versions.busy}
         modalColors={modalColors}
         onSwitch={versions.actions.switchTo}

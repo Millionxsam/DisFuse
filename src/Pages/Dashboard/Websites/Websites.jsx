@@ -4,9 +4,11 @@ import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 
 import LoadingAnim from "../../../components/LoadingAnim";
+import PlanUsage from "../../../components/premium/PlanUsage";
 import WebsiteCard from "../../../components/websites/WebsiteCard";
 import { getWebsites } from "../../../api/websites";
 import modalThemeColor from "../../../functions/modalThemeColor";
+import usePlanLimits from "../../../functions/usePlanLimits";
 import { userCache } from "../../../cache.ts";
 
 import DocsLink from "../../../components/DocsLink.jsx";
@@ -19,6 +21,7 @@ export default function Websites() {
   const [shown, setShown] = useState(userCache.websites || []);
   const [query, setQuery] = useState("");
   const [isLoading, setLoading] = useState(!userCache.websites);
+  const limits = usePlanLimits();
 
   const fetchWebsites = useCallback(() => {
     getWebsites()
@@ -90,6 +93,8 @@ export default function Websites() {
         </div>
       </div>
 
+      <PlanUsage resource="websites" data={limits.data} />
+
       {isLoading ? (
         <LoadingAnim />
       ) : shown.length > 0 ? (
@@ -101,6 +106,8 @@ export default function Websites() {
               onDelete={() => {
                 setLoading(true);
                 fetchWebsites();
+                /* A deleted website frees a slot. */
+                limits.refresh();
               }}
             />
           ))}

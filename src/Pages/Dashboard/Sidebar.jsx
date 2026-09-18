@@ -5,30 +5,14 @@ import { userCache } from "../../cache.ts";
 
 import api, { authToken, data } from "../../api/client.js";
 import { discordUrl } from "../../config/config.js";
-import { premiumLogo } from "../../config/premiumPlans";
 
 import { DOCS, docsUrl } from "../../config/docs.js";
 
 const navItems = [
   { to: "/projects", label: "Projects", icon: "fa-solid fa-cubes" },
-  {
-    to: "/control",
-    label: "Control",
-    icon: "fa-solid fa-satellite-dish",
-    premium: true,
-  },
-  {
-    to: "/insights",
-    label: "Insights",
-    icon: "fa-solid fa-chart-line",
-    premium: true,
-  },
-  {
-    to: "/websites",
-    label: "Websites",
-    icon: "fa-solid fa-globe",
-    premium: true,
-  },
+  { to: "/control", label: "Control", icon: "fa-solid fa-satellite-dish" },
+  { to: "/insights", label: "Insights", icon: "fa-solid fa-chart-line" },
+  { to: "/websites", label: "Websites", icon: "fa-solid fa-globe" },
   { to: "/explore", label: "Explore", icon: "fa-solid fa-earth-americas" },
   { to: "/favorites", label: "Favorites", icon: "fa-solid fa-star" },
   { to: "/workshop", label: "Workshop", icon: "fa-solid fa-tools" },

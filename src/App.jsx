@@ -33,16 +33,13 @@ import CloneProject from "./Pages/Dashboard/Projects/CloneProject";
 import Websites from "./Pages/Dashboard/Websites/Websites";
 import NewWebsite from "./Pages/Dashboard/Websites/NewWebsite";
 import WebsiteEditor from "./Pages/Dashboard/Websites/WebsiteEditor";
-import PremiumGate from "./components/websites/PremiumGate";
 import PublishedSiteRedirect from "./components/websites/PublishedSiteRedirect";
 import PremiumSettings from "./Pages/Dashboard/Settings/PremiumSettings";
 import Insights from "./Pages/Dashboard/Insights/Insights";
 import BotInsights from "./Pages/Dashboard/Insights/BotInsights";
 import InsightsLogs from "./Pages/Dashboard/Insights/InsightsLogs";
-import InsightsUpgrade from "./Pages/Dashboard/Insights/InsightsUpgrade";
 import Control from "./Pages/Dashboard/Control/Control";
 import BotControl from "./Pages/Dashboard/Control/BotControl";
-import ControlUpgrade from "./Pages/Dashboard/Control/ControlUpgrade";
 
 /* A ban is enforced by the API, so it can arrive as the answer to any
    request. Taking over the page is blunt, but it is what the app has
@@ -135,59 +132,19 @@ export default function App() {
         >
           <Route path="projects" element={<MyProjects key={0} />} />
           <Route path="projects/new" element={<NewProject key={0} />} />
-          <Route
-            path="websites"
-            element={
-              <PremiumGate key={0}>
-                <Websites />
-              </PremiumGate>
-            }
-          />
-          <Route
-            path="websites/new"
-            element={
-              <PremiumGate key={0}>
-                <NewWebsite />
-              </PremiumGate>
-            }
-          />
-          {/* Insights is premium and owner-only. The gate is UX; the API
-              enforces both ownership and the subscription itself. */}
-          <Route
-            path="insights"
-            element={
-              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
-                <Insights />
-              </PremiumGate>
-            }
-          />
-          <Route
-            path="insights/:projectId"
-            element={
-              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
-                <BotInsights />
-              </PremiumGate>
-            }
-          />
+          <Route path="websites" element={<Websites key={0} />} />
+          <Route path="websites/new" element={<NewWebsite key={0} />} />
+          {/* Insights is owner-only, and the API enforces that itself. How
+              much history it keeps follows the owner's plan. */}
+          <Route path="insights" element={<Insights key={0} />} />
+          <Route path="insights/:projectId" element={<BotInsights key={0} />} />
           <Route
             path="insights/:projectId/logs"
-            element={
-              <PremiumGate key={0} fallback={<InsightsUpgrade />}>
-                <InsightsLogs />
-              </PremiumGate>
-            }
+            element={<InsightsLogs key={0} />}
           />
-          {/* Control is premium and owner-only. Like Insights, the gate
-              is UX: the Socket.IO layer checks the subscription and the
-              bot's ownership itself on every connection and action. */}
-          <Route
-            path="control"
-            element={
-              <PremiumGate key={0} fallback={<ControlUpgrade />}>
-                <Control />
-              </PremiumGate>
-            }
-          />
+          {/* Control is owner-only: the Socket.IO layer checks the bot's
+              ownership itself on every connection and action. */}
+          <Route path="control" element={<Control key={0} />} />
           <Route path="explore" element={<Explore key={0} />} />
           <Route path="favorites" element={<Favorites key={0} />} />
           <Route path="workshop" element={<Workshop key={0} />} />
@@ -259,23 +216,19 @@ export default function App() {
           path="/websites/:websiteId/editor"
           element={
             <Auth key={0}>
-              <PremiumGate key={1}>
-                <WebsiteEditor key={2} />
-              </PremiumGate>
+              <WebsiteEditor key={1} />
             </Auth>
           }
         />
 
         {/* The Control client is a full-screen app, like the Blockly
-            workspace and the website builder — authenticated, premium,
-            and outside the sidebar shell. */}
+            workspace and the website builder: authenticated, and outside
+            the sidebar shell. */}
         <Route
           path="/control/:projectId"
           element={
             <Auth key={0}>
-              <PremiumGate key={1} fallback={<ControlUpgrade />}>
-                <BotControl key={2} />
-              </PremiumGate>
+              <BotControl key={1} />
             </Auth>
           }
         />

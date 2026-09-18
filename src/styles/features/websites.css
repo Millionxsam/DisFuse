@@ -8,9 +8,9 @@
    WEBSITES
    ---------------------------------------------------------------------
    Everything below is new and belongs to the Websites feature. It is
-   scoped to .df-website-*, .df-premium-*, .df-ws-* (builder chrome) and
-   .ws-* (the rendered website itself), so nothing above this line is
-   affected.
+   scoped to .df-website-*, .df-billing-* (Settings, Premium), .df-ws-*
+   (builder chrome) and .ws-* (the rendered website itself), so nothing
+   above this line is affected.
 
    Two separate visual worlds live here:
 
@@ -226,209 +226,6 @@
 .df-new-website .projectInfo > button {
   width: fit-content;
   font-size: 16px;
-}
-
-/* ---------------------------------------------------------------------
-   Premium / upgrade screen
-   --------------------------------------------------------------------- */
-
-.df-premium-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1rem;
-  padding: 2.5rem 1.5rem;
-  background:
-    radial-gradient(
-      40rem 20rem at 50% 0%,
-      rgba(var(--main-color-rgb), 0.35),
-      transparent 70%
-    ),
-    var(--df-surface);
-  border: 1px solid var(--df-border);
-  border-radius: var(--df-r-xl);
-}
-
-.df-premium-hero h2 {
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
-  font-size: clamp(1.7rem, 4vw, 2.6rem);
-  color: white;
-}
-
-.df-premium-hero p {
-  max-width: 46rem;
-  color: var(--df-text-dim);
-  line-height: 1.7rem;
-}
-
-.df-premium-highlights {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-}
-
-.df-premium-highlight {
-  background: var(--df-surface);
-  border: 1px solid var(--df-border);
-  border-radius: var(--df-r-lg);
-  padding: 1.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.df-premium-highlight .icon {
-  width: 2.6rem;
-  height: 2.6rem;
-  border-radius: var(--df-r-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--main-color-rgb), 0.25);
-  color: #9cc9ef;
-}
-
-.df-premium-highlight h3 {
-  font-size: 16.5px;
-  color: white;
-}
-
-.df-premium-highlight p {
-  font-size: 13.5px;
-  color: var(--df-text-dim);
-  line-height: 1.5rem;
-}
-
-.df-premium-plans {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.25rem;
-  align-items: stretch;
-}
-
-.df-premium-plan {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  background: var(--df-surface);
-  border: 1px solid var(--df-border);
-  border-radius: var(--df-r-lg);
-  padding: 1.6rem 1.4rem;
-}
-
-.df-premium-plan.highlight {
-  border-color: rgba(var(--main-color-rgb), 0.85);
-  box-shadow: 0 0 30px rgba(var(--main-color-rgb), 0.22);
-}
-
-.df-premium-plan .plan-badge {
-  position: absolute;
-  top: -0.7rem;
-  right: 1.2rem;
-  background: var(--df-amber);
-  color: #241500;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-}
-
-.df-premium-plan h3 {
-  font-size: 17px;
-  color: white;
-}
-
-.df-premium-plan .plan-price {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.df-premium-plan .plan-price strong {
-  font-size: 2rem;
-  font-family: "Poetsen One", "Ubuntu Sans", sans-serif;
-  color: white;
-}
-
-.df-premium-plan .plan-price span,
-.df-premium-plan .plan-description {
-  font-size: 13.5px;
-  color: var(--df-text-faint);
-}
-
-.df-premium-plan ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  margin: 0.3rem 0 0.4rem 0;
-}
-
-.df-premium-plan li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.55rem;
-  font-size: 13.5px;
-  color: var(--df-text-dim);
-  line-height: 1.4rem;
-}
-
-.df-premium-plan li i {
-  color: var(--df-mint);
-  font-size: 12px;
-  margin-top: 0.25rem;
-}
-
-.df-premium-plan button {
-  margin-top: auto;
-  width: 100%;
-  font-size: 15px;
-  padding: 0.85rem;
-  border-radius: var(--df-r-sm);
-}
-
-.df-premium-note {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 13px;
-  color: var(--df-text-faint);
-}
-
-.df-premium-devnote {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1.2rem 1.4rem;
-  border: 1px dashed var(--df-border-strong);
-  border-radius: var(--df-r-lg);
-  background: rgba(255, 182, 72, 0.05);
-}
-
-.df-premium-devnote h4 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 14.5px;
-  color: var(--df-amber);
-  margin-bottom: 0.3rem;
-}
-
-.df-premium-devnote p {
-  font-size: 13px;
-  color: var(--df-text-dim);
-  max-width: 44rem;
-  line-height: 1.4rem;
-}
-
-.df-premium-devnote button {
-  font-size: 14px;
-  padding: 0.7rem 1.1rem;
-  border-radius: var(--df-r-sm);
 }
 
 /* ---------------------------------------------------------------------
@@ -2535,7 +2332,14 @@
   gap: 0.9rem;
 }
 
+.df-billing-usage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 0.9rem;
+}
+
 .df-billing-plan {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -2543,6 +2347,23 @@
   border: 1px solid var(--df-border);
   border-radius: var(--df-r-md);
   padding: 1.1rem;
+}
+
+.df-billing-plan .badge {
+  position: absolute;
+  top: -0.6rem;
+  right: 1rem;
+  background: var(--df-amber);
+  color: #241500;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.df-billing-plan .note {
+  font-size: 12px;
+  color: var(--df-text-faint);
 }
 
 .df-billing-plan.highlight {

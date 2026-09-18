@@ -32,7 +32,7 @@ const RANGE_OPTIONS = [
   { id: "all", label: "All time" },
   { id: "24h", label: "Last 24 hours" },
   { id: "7d", label: "Last 7 days" },
-  { id: "30d", label: "Last 30 days" },
+  { id: "30d", label: "Last 30 days", days: 30 },
 ];
 
 /**
@@ -209,11 +209,18 @@ export default function InsightsLogs() {
             value={range}
             onChange={(e) => update({ range: e.target.value })}
           >
-            {RANGE_OPTIONS.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label}
-              </option>
-            ))}
+            {RANGE_OPTIONS.map((option) => {
+              /* Longer than the owner's plan keeps history for. */
+              const locked =
+                option.days && option.days > (project?.maxRetentionDays ?? Infinity);
+
+              return (
+                <option key={option.id} value={option.id} disabled={locked}>
+                  {option.label}
+                  {locked ? " (Premium)" : ""}
+                </option>
+              );
+            })}
           </select>
         </div>
 

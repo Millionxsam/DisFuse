@@ -10,10 +10,10 @@
    own `<dialog>` with its own backdrop colour and no animation, which is
    why it never quite matched the other two.
 
-   `.locked` is the small Premium padlock on the actions a lapsed
-   subscriber can no longer take. Losing Premium never hides or degrades
-   a version somebody already made — it only stops them making more —
-   so the buttons stay visible and say why.
+   `.locked` dims "New Version" on a project that already has as many
+   versions as its owner's plan keeps. Hitting the limit never hides or
+   degrades a version somebody already made, it only stops them making
+   more, so the button stays visible and explains itself.
    ===================================================================== */
 
 .versionControl-list {
@@ -151,30 +151,6 @@
   cursor: not-allowed;
 }
 
-.versionControl .locked {
-  position: relative;
-  overflow: visible;
-  opacity: 0.75;
-}
-
-.versionControl .locked::after {
-  content: "";
-  width: 0.85rem;
-  height: 0.85rem;
-  margin-left: 0.15rem;
-  border-radius: 50%;
-  background: url("/media/disfusePremium.png") center / cover no-repeat;
-}
-
-.versionControl .locked.icon::after {
-  position: absolute;
-  top: -0.3rem;
-  right: -0.3rem;
-  width: 0.8rem;
-  height: 0.8rem;
-  margin: 0;
-}
-
 .df-version-dialog-label {
   display: block;
   text-align: left;
@@ -251,21 +227,18 @@
 
 /* ---- Inside the shared shell ------------------------------------------ */
 
-.df-modal-premium {
-  height: 1.1rem;
-  width: auto;
-}
-
 .versionControl-count {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.9rem;
   margin-right: auto;
   font-size: 0.8rem;
   color: var(--df-text-faint);
 }
 
-.versionControl-count img {
-  height: 0.9rem;
-  width: auto;
+/* "New Version" on a project with no room left. It still opens, to say
+   why and what makes room. */
+.df-modal-foot .df-primary-btn.locked {
+  opacity: 0.7;
 }

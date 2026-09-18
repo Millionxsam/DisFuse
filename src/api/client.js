@@ -63,6 +63,43 @@ export function tabSessionId() {
   return id;
 }
 
+/* =====================================================================
+   Retrying a connection that never happened
+   ---------------------------------------------------------------------
+   A request that comes back with no response at all never reached the
+   API: the TLS handshake failed, the socket was dropped, the network
+   blinked. Chromium browsers make this far more common than it sounds —
+   our origin advertises HTTP/3 (`alt-svc: h3=":443"`), and when QUIC is
+   blocked or mangled on the way out (a VPN, a corporate proxy, Opera's
+   built-in VPN) the browser fails the request outright with
+   ERR_SSL_PROTOCOL_ERROR, then falls back to TCP on the next attempt.
+
+   Without a retry, one such blink is the whole session: <Auth> has
+   nothing to render but "We couldn't sign you in", and a reload runs
+   straight back into the cached alternative service.
+
+   Only failures with no response are retried — a 4xx or 5xx is an answer
+   and belongs to the caller. And only requests that are safe to send
+   twice: GET/HEAD/OPTIONS always, anything else solely when it asks
+   with `retry: true`, because "no response" cannot tell a request the
+   server never saw from one whose answer was lost on the way back.
+   ===================================================================== */
+
+const RETRY_DELAYS_MS = [400, 1200];
+const SAFE_METHODS = ["get", "head", "options"];
+
+function retryable(error) {
+  if (error.response || axios.isCancel(error)) return false;
+  /* A caller that gave up (unmounted component, replaced request) is not
+     a failure to paper over. */
+  if (error.config?.signal?.aborted) return false;
+
+  const method = (error.config?.method || "get").toLowerCase();
+  return error.config?.retry === true || SAFE_METHODS.includes(method);
+}
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const api = axios.create({ baseURL: apiUrl });
 
 api.interceptors.request.use((config) => {
@@ -93,6 +130,27 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
+  },
+);
+
+/* Separate from the 401 handler above, and disjoint from it: a request
+   that never reached the API has no status for that one to react to. */
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (!retryable(error)) return Promise.reject(error);
+
+    const config = error.config;
+    const attempt = config.retryCount ?? 0;
+
+    if (attempt >= RETRY_DELAYS_MS.length) return Promise.reject(error);
+
+    config.retryCount = attempt + 1;
+    /* A little jitter, so a page that fired six requests at once doesn't
+       fire all six again on the same millisecond. */
+    await wait(RETRY_DELAYS_MS[attempt] + Math.random() * 200);
+
+    return api(config);
   },
 );
 

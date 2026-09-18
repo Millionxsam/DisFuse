@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 
@@ -9,8 +9,14 @@ import {
   setCancellation,
   startCheckout,
 } from "../../../api/premium";
-import { premiumLogo, premiumPlans } from "../../../config/premiumPlans";
-import { PremiumPerks } from "../../../components/premium/PremiumUpgrade";
+import {
+  planLimits,
+  premiumLogo,
+  premiumPlans,
+} from "../../../config/premiumPlans";
+import PlanUsage from "../../../components/premium/PlanUsage";
+import PremiumPerks from "../../../components/premium/PremiumPerks";
+import usePlanLimits from "../../../functions/usePlanLimits";
 import usePremium from "../../../functions/usePremium";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import {
@@ -58,8 +64,11 @@ const STATUS_LABELS = {
   paused: { label: "Paused", tone: "warning", icon: "fa-circle-pause" },
 };
 
+const { free: FREE, premium: PREMIUM } = planLimits;
+
 export default function PremiumSettings() {
   const { loading, premium, status, refresh, refreshFromStripe } = usePremium();
+  const limits = usePlanLimits();
   const [params, setParams] = useSearchParams();
   const [busy, setBusy] = useState(null);
 
@@ -69,9 +78,12 @@ export default function PremiumSettings() {
     if (params.get("checkout") !== "success") return;
 
     refreshFromStripe().then(() => {
+      /* The usage lines count against the new, higher limits. */
+      limits.refresh();
+
       Swal.fire({
         title: "Welcome to Premium!",
-        text: "Your subscription is active. Control, Insights, Websites, Version Control and every other Premium feature are unlocked.",
+        text: `Your subscription is active. You can now own up to ${PREMIUM.projects} projects and ${PREMIUM.websites} websites, keep up to ${PREMIUM.versionsPerProject} versions per project and ${PREMIUM.insightsRetentionDays} days of Insights history, and you get priority support.`,
         ...premiumModalHero,
         ...modalColors,
       });
@@ -122,7 +134,7 @@ export default function PremiumSettings() {
       title: "Cancel Premium?",
       html: `You'll keep Premium until <strong>${formatDate(
         status?.currentPeriodEnd,
-      )}</strong>. After that your published websites go offline, the builder locks and Insights stops being readable. Your bots keep recording, so it's all there if you come back. Project versions you already saved stay editable; you just won't be able to create or rename any.`,
+      )}</strong>. After that your account goes back to the free limits: ${FREE.projects} projects, ${FREE.websites} websites, ${FREE.versionsPerProject} versions per project and ${FREE.insightsRetentionDays} days of Insights history.<br /><br />Nothing you made is deleted and everything keeps working. If you have more projects, websites or versions than that, you keep them all, but you can't create more until you're under the limit. Insights history older than ${FREE.insightsRetentionDays} days is removed.`,
       icon: "warning",
       showCancelButton: true,
       focusCancel: true,
@@ -197,8 +209,8 @@ export default function PremiumSettings() {
               </h2>
               <p>
                 {premium
-                  ? "Control, Insights, Websites, Version Control, bot dashboards and every other Premium feature are unlocked."
-                  : "Upgrade to unlock Insights, Websites, Version Control and bot dashboards."}
+                  ? `Your limits are raised to ${PREMIUM.projects} projects, ${PREMIUM.websites} websites, ${PREMIUM.versionsPerProject} versions per project and ${PREMIUM.insightsRetentionDays} days of Insights history, with priority support.`
+                  : `Every feature is free, with up to ${FREE.projects} projects, ${FREE.websites} websites, ${FREE.versionsPerProject} versions per project and ${FREE.insightsRetentionDays} days of Insights history. Upgrade for higher limits.`}
               </p>
             </div>
             <span className={`df-billing-status ${statusInfo.tone}`}>
@@ -244,8 +256,10 @@ export default function PremiumSettings() {
               <i className="fa-solid fa-triangle-exclamation"></i>
               <span>
                 Your subscription is scheduled to end on{" "}
-                <strong>{formatDate(status?.currentPeriodEnd)}</strong>.
-                Published websites will go offline after that date.
+                <strong>{formatDate(status?.currentPeriodEnd)}</strong>. After
+                that date your account goes back to the free limits, and
+                Insights history older than {FREE.insightsRetentionDays} days
+                is removed.
               </span>
             </div>
           )}
@@ -255,7 +269,7 @@ export default function PremiumSettings() {
               <i className="fa-solid fa-credit-card"></i>
               <span>
                 We couldn't take your last payment. Update your payment method
-                to keep your websites online.
+                to keep your Premium limits.
               </span>
             </div>
           )}
@@ -289,26 +303,20 @@ export default function PremiumSettings() {
                 {busy === "resume" ? "Resuming…" : "Resume subscription"}
               </button>
             )}
-
-            {premium && (
-              <>
-                <Link to="/insights">
-                  <button>
-                    <i className="fa-solid fa-chart-line"></i> Go to Insights
-                  </button>
-                </Link>
-                <Link to="/websites">
-                  <button>
-                    <i className="fa-solid fa-globe"></i> Go to Websites
-                  </button>
-                </Link>
-              </>
-            )}
           </div>
         </div>
 
-        {/* One product, one list of perks — shown above the plans,
-            because the plans are only ways of paying for it. */}
+        {/* How much of the current plan is in use, for the two limits
+            that count across the whole account. */}
+        {limits.data && (
+          <div className="df-billing-usage">
+            <PlanUsage resource="projects" data={limits.data} />
+            <PlanUsage resource="websites" data={limits.data} />
+          </div>
+        )}
+
+        {/* One product, one list of perks, shown above the plans because
+            the plans are only ways of paying for it. */}
         <PremiumPerks
           heading={
             premium ? "What your subscription includes" : "Everything in DisFuse Premium"
@@ -326,11 +334,13 @@ export default function PremiumSettings() {
                   className={`df-billing-plan${plan.highlight ? " highlight" : ""}`}
                   key={plan.id}
                 >
+                  {plan.badge && <span className="badge">{plan.badge}</span>}
                   <h3>{plan.name}</h3>
                   <div className="price">
                     <strong>{plan.price}</strong>
                     <span>{plan.interval}</span>
                   </div>
+                  {plan.note && <p className="note">{plan.note}</p>}
                   <button
                     className={plan.highlight ? "df-primary-btn" : ""}
                     onClick={() => upgrade(plan.id)}

@@ -11,6 +11,9 @@ import { Helmet } from "react-helmet-async";
 import Lottie from "lottie-react";
 import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
 import joinServer from "../../../functions/joinServer.js";
+import showLimitReached from "../../../functions/limitReached.js";
+import usePlanLimits, { hasRoom } from "../../../functions/usePlanLimits.js";
+import { PlanLimitReached } from "../../../components/premium/PlanUsage.jsx";
 
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS, docsUrl } from "../../../config/docs.js";
@@ -24,6 +27,30 @@ export default function NewProject() {
   const [projectVisibility, setProjectVisibility] = useState("public");
   const [botVisibility, setBotVisibility] = useState("public");
   const [permissions, setPermissions] = useState(0);
+
+  const limits = usePlanLimits();
+
+  /* No room for another project: say so before a bot token is asked for.
+     The API refuses it either way. */
+  if (limits.loading || !hasRoom(limits.data, "projects"))
+    return (
+      <div className="newProject-page-container">
+        <Helmet>
+          <title>New Project | DisFuse</title>
+        </Helmet>
+        <div className="df-page-head">
+          <h1>
+            <i className="fa-solid fa-circle-plus"></i>
+            New Project
+          </h1>
+        </div>
+        {limits.loading ? (
+          <LoadingAnim />
+        ) : (
+          <PlanLimitReached resource="projects" data={limits.data} />
+        )}
+      </div>
+    );
 
   return (
     <div className="newProject-page-container">
@@ -256,6 +283,13 @@ export default function NewProject() {
           "You must be in the DisFuse server to create a project"
         )
           return joinServer(createProject);
+
+        if (
+          showLimitReached(err, modalThemeColor(userCache.user), {
+            title: "Project limit reached",
+          })
+        )
+          return;
 
         console.error(err);
         Swal.fire({

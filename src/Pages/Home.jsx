@@ -101,8 +101,10 @@ const faq = [
     q: "Is DisFuse free?",
     a: (
       <>
-        The editor is free, with unlimited projects, unlimited blocks and
-        unlimited exports.{" "}
+        Yes. Every feature is free: the editor with unlimited blocks and
+        exports, Insights, Bot Control, Websites and Version Control. A free
+        account can own up to 5 projects and 5 websites, keeps 7 days of
+        Insights history and 3 versions per project.{" "}
         <a
           href={docsUrl(DOCS.premium)}
           target="_blank"
@@ -110,7 +112,8 @@ const faq = [
         >
           DisFuse Premium
         </a>{" "}
-        adds Insights, Control, Websites and Version Control.
+        raises those limits to 30 projects, 30 websites, 90 days of history
+        and 25 versions, and adds priority support.
       </>
     ),
   },

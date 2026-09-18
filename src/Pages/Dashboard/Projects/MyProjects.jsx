@@ -3,9 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import PriProject from "../../../components/PriProject";
 import LoadingAnim from "../../../components/LoadingAnim";
+import PlanUsage from "../../../components/premium/PlanUsage";
 import modalThemeColor from "../../../functions/modalThemeColor";
+import usePlanLimits from "../../../functions/usePlanLimits";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
+import showFreeFeaturesTour from "./freeFeaturesTour.js";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
 import { Helmet } from "react-helmet-async";
@@ -21,6 +24,11 @@ export default function MyProjects() {
   const [shown, setShown] = useState([]);
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const limits = usePlanLimits();
+
+  useEffect(() => {
+    showFreeFeaturesTour(modalColors);
+  }, []);
 
   const fetchProjects = useCallback((userData) => {
     if (!userData?.id) return;
@@ -210,6 +218,8 @@ export default function MyProjects() {
           </div>
         </div>
 
+        <PlanUsage resource="projects" data={limits.data} />
+
         {isLoading ? (
           <LoadingAnim />
         ) : shown.length > 0 ? (
@@ -220,6 +230,8 @@ export default function MyProjects() {
                 onDelete={() => {
                   setLoading(true);
                   fetchProjects(user);
+                  /* A deleted project frees a slot. */
+                  limits.refresh();
                 }}
                 key={index}
               />

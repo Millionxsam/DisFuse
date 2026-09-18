@@ -73,3 +73,8 @@
 .swal2-container.dark .swal2-progress-step-line {
   background: #205061 !important;
 }
+
+/* The "now free" tour shows a plain glyph, without the info icon's ring. */
+.swal2-icon.free-tour-icon {
+  border: none;
+}

@@ -10,6 +10,24 @@ import {
   renameVersion,
   resolveActiveVersion,
 } from "../../api/versions.js";
+import { planLimits } from "../../config/premiumPlans.js";
+
+const UNKNOWN_PERMISSIONS = {
+  canManage: false,
+  premium: false,
+  maxVersions: planLimits.free.versionsPerProject,
+  premiumMaxVersions: planLimits.premium.versionsPerProject,
+};
+
+/** The parts of a version response that say what the panel may offer. */
+function permissionsFrom(answer, fallback) {
+  return {
+    canManage: Boolean(answer.canManage ?? fallback.canManage),
+    premium: Boolean(answer.premium ?? fallback.premium),
+    maxVersions: answer.maxVersions ?? fallback.maxVersions,
+    premiumMaxVersions: answer.premiumMaxVersions ?? fallback.premiumMaxVersions,
+  };
+}
 
 /* =====================================================================
    Version Control, from the editor's side
@@ -39,11 +57,9 @@ export default function useVersionControl({
   const [versions, setVersions] = useState([]);
   const [activeVersionId, setActiveVersionId] = useState(null);
   const [busy, setBusy] = useState(false);
-  const [state, setState] = useState({
-    canManage: false,
-    premium: false,
-    maxVersions: 25,
-  });
+  /* `premium` and the limits are the project OWNER's plan, from the API.
+     Until it answers, the panel assumes the free limit. */
+  const [state, setState] = useState(UNKNOWN_PERMISSIONS);
 
   /* The same list, for the parts of the editor that run outside React
      and can't read state. */
@@ -107,21 +123,17 @@ export default function useVersionControl({
       const summaries = project.versions || [];
 
       applyVersions(summaries);
-      setState({ canManage, premium: false, maxVersions: 25 });
+      setState({ ...UNKNOWN_PERMISSIONS, canManage });
 
-      /* Who may create and rename versions, from the API that enforces
-         it. Asked for after the editor is up, so a slow or failed answer
-         never delays opening a project — the panel simply offers less
-         until it arrives, and the API refuses anything it shouldn't
-         allow regardless of what the panel offers. */
+      /* Who may create and rename versions, and how many the project can
+         keep, from the API that enforces both. Asked for after the editor
+         is up, so a slow or failed answer never delays opening a project.
+         The panel simply offers less until it arrives, and the API
+         refuses anything it shouldn't allow regardless. */
       getVersions(projectId)
         .then((answer) => {
           applyVersions(answer.versions || []);
-          setState({
-            canManage: Boolean(answer.canManage),
-            premium: Boolean(answer.premium),
-            maxVersions: answer.maxVersions ?? 25,
-          });
+          setState((current) => permissionsFrom(answer, current));
         })
         .catch((error) =>
           console.warn("Could not read this project's version state:", error),
@@ -181,12 +193,7 @@ export default function useVersionControl({
         const result = await createVersion(projectId, { name, source });
 
         applyVersions(result.versions || []);
-        setState((current) => ({
-          ...current,
-          canManage: result.canManage,
-          premium: result.premium,
-          maxVersions: result.maxVersions ?? current.maxVersions,
-        }));
+        setState((current) => permissionsFrom(result, current));
 
         const workspaces = adopt(result.version);
         await openWorkspace(workspaces);

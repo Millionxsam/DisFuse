@@ -12,14 +12,6 @@
    artwork sits well inside the inscribed circle, so nothing is clipped.
    --------------------------------------------------------------------- */
 
-.df-premium-hero .df-premium-logo {
-  width: 7rem;
-  height: 7rem;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 182, 72, 0.35);
-  box-shadow: 0 0 45px rgba(255, 182, 72, 0.28);
-}
-
 .df-premium-perks-head {
   display: flex;
   align-items: center;
@@ -59,15 +51,136 @@
   border-radius: 50%;
 }
 
-/* Marks Control, Insights and Websites as Premium features. Sits where the
-   inbox unread badge sits — the two never appear on the same item. */
+/* ---- Plan usage ---------------------------------------------------------
+   "3 of 5 projects" on the pages where something counts toward a plan
+   limit: components/premium/PlanUsage.jsx. */
 
-.df-nav-list a .df-nav-premium {
-  margin-left: auto;
+.df-plan-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+}
+
+.df-plan-usage.full {
+  border-color: rgba(255, 182, 72, 0.35);
+}
+
+.df-plan-usage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.df-plan-usage-count {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 14px;
+  color: var(--df-text-dim);
+}
+
+.df-plan-usage-count strong {
+  color: white;
+}
+
+.df-plan-usage-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.4rem;
+  font-size: 12px;
+  color: var(--df-amber);
+}
+
+.df-plan-usage-tag img,
+.df-plan-usage-upgrade img {
   width: 1.05rem;
   height: 1.05rem;
   border-radius: 50%;
-  opacity: 0.85;
+}
+
+.df-plan-usage-upgrade {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 13px;
+  color: var(--df-amber);
+}
+
+.df-plan-usage-upgrade:hover {
+  text-decoration: underline;
+}
+
+.df-plan-usage-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--df-surface-3);
+  overflow: hidden;
+}
+
+.df-plan-usage-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--main-color);
+  filter: brightness(1.4);
+  transition: width 0.3s var(--df-ease);
+}
+
+.df-plan-usage.full .df-plan-usage-bar span {
+  background: var(--df-amber);
+  filter: none;
+}
+
+.df-plan-usage-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--df-text-dim);
+}
+
+/* The "See Premium" button on a page that has run out of room. `.df-empty i`
+   sizes every icon inside the block, so the logo is an image instead. */
+
+.df-plan-button-logo {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  vertical-align: -0.2rem;
+}
+
+/* A limit mentioned in passing, under a feature's own controls: the
+   Version Control panel and the Insights retention setting. */
+
+.df-plan-hint {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 12.5px;
+  color: var(--df-text-faint);
+}
+
+.df-plan-hint a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--df-amber);
+}
+
+.df-plan-hint a:hover {
+  text-decoration: underline;
+}
+
+.df-plan-hint img {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 50%;
 }
 
 /* ---- Premium dialogs -------------------------------------------------- */

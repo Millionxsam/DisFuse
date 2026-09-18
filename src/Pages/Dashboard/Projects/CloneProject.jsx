@@ -8,6 +8,10 @@ import { userCache } from "../../../cache.ts";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import showLimitReached from "../../../functions/limitReached.js";
+import usePlanLimits, { hasRoom } from "../../../functions/usePlanLimits.js";
+import { PlanLimitReached } from "../../../components/premium/PlanUsage.jsx";
+
 export default function CloneProject() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
@@ -40,6 +44,28 @@ export default function CloneProject() {
         window.location = "/projects";
       });
   }, [projectId]);
+
+  const limits = usePlanLimits();
+
+  /* A clone is a new project of your own, so it needs room like any other. */
+  if (limits.loading || !hasRoom(limits.data, "projects"))
+    return (
+      <div className="newProject-page-container">
+        <Helmet>
+          <title>Clone Project | DisFuse</title>
+        </Helmet>
+        <div className="df-page-head">
+          <h1>
+            <i className="fa-solid fa-clone"></i> Clone "{project.name}"
+          </h1>
+        </div>
+        {limits.loading ? (
+          <LoadingAnim />
+        ) : (
+          <PlanLimitReached resource="projects" data={limits.data} />
+        )}
+      </div>
+    );
 
   return (
     <div className="newProject-page-container">
@@ -247,6 +273,13 @@ export default function CloneProject() {
           (window.location = `/@${userCache.user.username}/${data._id}/workspace`),
       )
       .catch((err) => {
+        if (
+          showLimitReached(err, modalThemeColor(userCache.user), {
+            title: "Project limit reached",
+          })
+        )
+          return;
+
         console.error(err);
         Swal.fire({
           icon: "error",

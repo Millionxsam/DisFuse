@@ -15,7 +15,7 @@ import LegalDoc, { Callout, DefTable, Ref } from "../components/legal/LegalDoc";
    the API's config.js).
    ===================================================================== */
 
-const LAST_UPDATED = "August 21, 2026";
+const LAST_UPDATED = "September 16, 2026";
 
 const DISCORD_INVITE = "https://discord.gg/Xwx4zkQcmJ";
 const SUPPORT_EMAIL = "support@disfuse.xyz";
@@ -360,15 +360,16 @@ const parts = [
             <ul>
               <li>
                 <strong>This happens for every project</strong>, free or
-                Premium. Premium is what unlocks <em>viewing</em> the data.
+                Premium, and every project owner can view it.
               </li>
               <li>
                 <strong>Only the project owner can read it.</strong>{" "}
                 Collaborators cannot.
               </li>
               <li>
-                <strong>Retention is capped at 90 days</strong> and can be set
-                lower (7, 14, 30, 60 or 90 days) by the owner. Older events are
+                <strong>Retention is capped by the owner's plan</strong>: 7 days
+                on a free account and 90 days with Premium. Within that cap the
+                owner can choose 7, 14, 30, 60 or 90 days. Older events are
                 deleted automatically, including for bots that have been
                 switched off. A project also keeps at most 20,000 raw events.
               </li>
@@ -424,8 +425,8 @@ const parts = [
                 record belongs to Discord, not to us.
               </li>
               <li>
-                <strong>Subscription is re-checked while you work</strong>, so a
-                session ends if Premium lapses.
+                <strong>Your account is re-checked while you work</strong>, so a
+                session ends if your account is banned.
               </li>
             </ul>
           </>
@@ -772,7 +773,7 @@ const parts = [
                 ],
                 [
                   <strong>Insight events</strong>,
-                  "The retention window the project owner chose — at most 90 days — and no more than 20,000 events per project. Pruned automatically even for bots that have stopped running.",
+                  "The retention window the project owner chose, capped at 7 days on a free account and 90 days with Premium, and no more than 20,000 events per project. Pruned automatically even for bots that have stopped running.",
                 ],
                 [
                   <strong>Control session data</strong>,

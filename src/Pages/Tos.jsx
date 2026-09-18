@@ -13,7 +13,7 @@ import LegalDoc, { Callout, DefTable, Ref } from "../components/legal/LegalDoc";
    in tickets, so rename a heading freely but never an `id`.
    ===================================================================== */
 
-const LAST_UPDATED = "August 21, 2026";
+const LAST_UPDATED = "September 16, 2026";
 
 const DISCORD_INVITE = "https://discord.gg/Xwx4zkQcmJ";
 const SUPPORT_EMAIL = "support@disfuse.xyz";
@@ -32,7 +32,7 @@ const summary = [
   {
     icon: "fa-solid fa-crown",
     title: "Premium is optional",
-    text: "Everything core to building a bot is free. Premium adds Control, Insights, Websites and Version Control for a fee.",
+    text: "Every feature is free, within plan limits. Premium raises those limits and adds priority support for a fee.",
   },
   {
     icon: "fa-solid fa-shield-halved",
@@ -270,26 +270,25 @@ const parts = [
                 ],
                 [
                   <>
-                    <strong>Bot Insights</strong> <em>(Premium to view)</em>
+                    <strong>Bot Insights</strong>
                   </>,
                   "Usage analytics reported by your running bot: commands, components, servers, errors and trends.",
                 ],
                 [
                   <>
-                    <strong>Control</strong> <em>(Premium)</em>
+                    <strong>Control</strong>
                   </>,
                   "A Discord-style client that connects as your own bot so you can read, send, react and moderate as it.",
                 ],
                 [
                   <>
-                    <strong>Websites &amp; dashboards</strong>{" "}
-                    <em>(Premium)</em>
+                    <strong>Websites &amp; dashboards</strong>
                   </>,
                   "A visual builder for a public site per bot, optionally with settings your bot's server admins can configure.",
                 ],
                 [
                   <>
-                    <strong>Version Control</strong> <em>(Premium)</em>
+                    <strong>Version Control</strong>
                   </>,
                   "Save a whole project as a named version and switch between versions.",
                 ],
@@ -389,8 +388,9 @@ const parts = [
               </li>
               <li>
                 <strong>Some things stay with the owner.</strong> Insights,
-                Control, Version Control management and a project's Premium
-                features belong to the project owner, not to collaborators.
+                Control and Version Control management belong to the project
+                owner, not to collaborators. A project's limits, such as how
+                many versions it can keep, follow the owner's plan.
               </li>
               <li>
                 <strong>Comments, replies, likes and favorites</strong> are
@@ -642,7 +642,7 @@ const parts = [
                 secrets, tokens, subscription or data;
               </li>
               <li>
-                bypass Premium checks, payment flows or account restrictions, or
+                bypass plan limits, payment flows or account restrictions, or
                 resell Premium access; or
               </li>
               <li>
@@ -739,38 +739,52 @@ const parts = [
           <>
             <p>
               <strong>DisFuse Premium</strong> is a paid upgrade to your DisFuse
-              account. Everything needed to build, export and share a bot is
-              free; Premium unlocks a set of additional features and applies to{" "}
-              <strong>your account</strong> — not to a single project, bot or
-              server.
+              account. Every feature of the Platform, including Bot Insights,
+              Control, Websites and Version Control, is available on a free
+              account within the limits below. Premium raises those limits and
+              applies to <strong>your account</strong>, not to a single
+              project, bot or server.
             </p>
-            <p>Premium currently unlocks:</p>
+            <DefTable
+              headings={["Limit", "Free", "Premium"]}
+              rows={[
+                [<strong>Projects you own</strong>, "Up to 5", "Up to 30"],
+                [<strong>Websites you own</strong>, "Up to 5", "Up to 30"],
+                [
+                  <strong>Bot Insights history</strong>,
+                  "Up to 7 days",
+                  "Up to 90 days",
+                ],
+                [
+                  <strong>Saved versions per project</strong>,
+                  "Up to 3",
+                  "Up to 25",
+                ],
+              ]}
+            />
+            <p>Premium also includes:</p>
             <ul>
               <li>
-                <strong>Control</strong> — a Discord-style client that connects
-                as any bot you own, so you can read servers, send and edit
-                messages, react, manage members, roles and channels, and
-                moderate, live;
-              </li>
-              <li>
-                <strong>Bot Insights</strong> — the analytics dashboard and log
-                viewer for bots you own, with a retention window you choose, up
-                to 90 days;
-              </li>
-              <li>
-                <strong>Websites &amp; dashboards</strong> — the visual website
-                builder, unlimited published sites (one per bot you own),
-                optional custom site paths, and dashboards your bot's server
-                admins can configure;
-              </li>
-              <li>
-                <strong>Version Control</strong> — creating and renaming saved
-                versions of a project;
+                <strong>Priority support</strong>;
               </li>
               <li>
                 <strong>Early access</strong> to new builder elements and
-                Premium features, <strong>priority support</strong>, and a
-                Premium role in the DisFuse Discord server.
+                features; and
+              </li>
+              <li>
+                a <strong>Premium role</strong> in the DisFuse Discord server.
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <strong>Limits count what you own.</strong> Projects you
+                collaborate on count toward their owner's limits, not yours. A
+                project's version and Insights limits follow its owner's plan.
+              </li>
+              <li>
+                <strong>Limits stop new things, not existing ones.</strong> If
+                you own as much as your plan allows, you cannot create, clone or
+                save more until you delete something or upgrade.
               </li>
             </ul>
             <p>
@@ -802,17 +816,17 @@ const parts = [
               rows={[
                 [
                   <strong>Premium (Monthly)</strong>,
-                  "$4.99",
+                  "$1.99",
                   "Recurring, charged every month until canceled.",
                 ],
                 [
                   <strong>Premium Yearly</strong>,
-                  "$44.99",
+                  "$19.99",
                   "Recurring, charged once every year until canceled.",
                 ],
                 [
                   <strong>Lifetime</strong>,
-                  "$99",
+                  "$49.99",
                   <>
                     One-time payment, no renewal. See{" "}
                     <Ref to="premium-lifetime" />.
@@ -962,27 +976,31 @@ const parts = [
               <strong>
                 Nothing you made is deleted because Premium ended.
               </strong>{" "}
-              Premium controls access to features, not ownership of data. When
-              Premium ends:
+              Premium controls your limits, not ownership of data. When Premium
+              ends, your account goes back to the free limits:
             </p>
             <DefTable
               headings={["Feature", "What happens"]}
               rows={[
                 [
+                  <strong>Projects</strong>,
+                  "Every project you own is kept and keeps working. If you own 5 or more, you cannot create or clone another until you are under the free limit.",
+                ],
+                [
                   <strong>Websites</strong>,
-                  "Your websites are kept, but published sites stop being served and the builder is unavailable until Premium is active again. The dashboard data API stops answering your bot.",
+                  "Every website you own is kept, stays published and can still be edited. If you own 5 or more, you cannot create another until you are under the free limit.",
                 ],
                 [
                   <strong>Version Control</strong>,
-                  "Every version you saved stays exactly where it is. You can still open, edit, switch between and delete versions; only creating and renaming them needs Premium.",
+                  "Every version you saved stays exactly where it is, and you can still open, edit, rename, switch between and delete them. A project with 3 or more versions cannot save a new one until it is under the free limit.",
                 ],
                 [
                   <strong>Bot Insights</strong>,
-                  "Your bot keeps reporting events and they keep being stored under your retention setting, but the Insights and Logs pages are unavailable until Premium is active again.",
+                  "Insights stay available with up to 7 days of history. Events older than that are no longer shown and are deleted over time.",
                 ],
                 [
                   <strong>Control</strong>,
-                  "Live sessions end, including sessions already open, and new ones cannot be started.",
+                  "Unaffected. Control is available on every account.",
                 ],
                 [
                   <strong>Discord role</strong>,
@@ -995,9 +1013,9 @@ const parts = [
               ]}
             />
             <p>
-              Resubscribing restores access to these features. We do not
-              guarantee that data whose retention window expired while you were
-              unsubscribed can be recovered.
+              Resubscribing restores the Premium limits. We do not guarantee
+              that Insights history older than the free limit, deleted while
+              you were unsubscribed, can be recovered.
             </p>
           </>
         ),
@@ -1140,8 +1158,10 @@ const parts = [
             <ul>
               <li>
                 <strong>Collection happens for every project</strong>, free or
-                Premium, so the history already exists if you subscribe later.
-                Premium is what lets you <em>view</em> it.
+                Premium, and every project owner can view it. How far back you
+                can see depends on the owner's plan: up to{" "}
+                <strong>7 days</strong> on a free account and up to{" "}
+                <strong>90 days</strong> with Premium.
               </li>
               <li>
                 <strong>It is your bot doing the reporting.</strong> The code is
@@ -1156,7 +1176,8 @@ const parts = [
               </li>
               <li>
                 <strong>Retention and limits.</strong> You choose a retention
-                window up to <strong>90 days</strong>; older events are deleted.
+                window up to your plan's limit (7 days free, 90 days with
+                Premium); older events are deleted.
                 A project also keeps at most 20,000 raw events, and submissions
                 are rate limited.
               </li>
@@ -1214,8 +1235,7 @@ const parts = [
               </li>
               <li>
                 <strong>Limits.</strong> Sessions are rate limited, capped per
-                account, and closed automatically when idle or when Premium
-                lapses. Attachment counts and sizes follow Discord's own limits.
+                account, and closed automatically when idle. Attachment counts and sizes follow Discord's own limits.
               </li>
               <li>
                 <strong>Nothing is stored.</strong> Control's view of your bot's
@@ -1232,8 +1252,7 @@ const parts = [
         body: (
           <>
             <p>
-              Premium lets you build a public website for each bot you own,
-              published at <code>sites.disfuse.xyz</code> under your chosen path
+              You can build a public website for each bot you own, published at <code>sites.disfuse.xyz</code> under your chosen path
               or your bot's ID. A website can be informational, a landing page,
               documentation, a settings dashboard, or any mix.
             </p>
@@ -1275,9 +1294,9 @@ const parts = [
                 data.
               </li>
               <li>
-                <strong>Availability follows your subscription.</strong> If
-                Premium lapses, sites stop being served and the dashboard API
-                stops answering; the site itself is kept.
+                <strong>Website limits.</strong> A free account can own up to{" "}
+                <strong>5</strong> websites and a Premium account up to{" "}
+                <strong>30</strong>, with at most one website per bot.
               </li>
             </ul>
           </>
@@ -1295,14 +1314,17 @@ const parts = [
             </p>
             <ul>
               <li>
-                Creating and renaming versions requires Premium and project
-                ownership. Reading, switching, editing and deleting them do not.
+                Version Control is optional and turned on per project. Creating
+                and renaming versions requires project ownership. Reading,
+                switching, editing and deleting them do not.
               </li>
               <li>
-                A project may keep up to <strong>25</strong> versions, and
-                version names are limited in length. These limits exist because
-                every version lives inside the project document and that
-                document has a hard size ceiling.
+                A project may keep up to <strong>3</strong> versions when its
+                owner is on a free account, or up to <strong>25</strong> with
+                Premium. Deleting a version frees a slot. Version names are
+                limited in length, and the Premium ceiling exists because every
+                version lives inside the project document and that document has
+                a hard size ceiling.
               </li>
               <li>
                 Deleting a version is permanent. Download a <code>.df</code>{" "}

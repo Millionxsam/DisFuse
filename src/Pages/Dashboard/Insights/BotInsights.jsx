@@ -19,6 +19,7 @@ import {
   TrendChart,
   compactNumber,
 } from "../../../components/insights/charts";
+import showLimitReached from "../../../functions/limitReached";
 import {
   clearInsightLogs,
   getInsights,
@@ -108,6 +109,22 @@ export default function BotInsights() {
   const project = data?.project;
   const period = data?.period;
 
+  /* Asking for a range the owner's plan doesn't keep enough history for
+     reads the default one instead, so the URL follows what was shown. */
+  useEffect(() => {
+    if (!data?.range || data.range === range) return;
+
+    const requested = data.ranges?.find((option) => option.id === range);
+    if (!requested?.locked) return;
+
+    params.set("range", data.range);
+    setParams(params, { replace: true });
+  }, [data, range, params, setParams]);
+
+  const maxRetentionDays = project?.maxRetentionDays ?? 90;
+  const premiumRetentionDays = project?.premiumRetentionDays ?? 90;
+  const canUpgradeHistory = project && !project.premium;
+
   const timeline = useMemo(
     () =>
       (data?.timeline || []).map((row) => ({
@@ -139,6 +156,9 @@ export default function BotInsights() {
       await load({ quiet: true });
     } catch (err) {
       console.error(err);
+
+      if (showLimitReached(err, modalColors, { title: "More history is a Premium feature" }))
+        return;
 
       Swal.fire({
         icon: "error",
@@ -264,9 +284,16 @@ export default function BotInsights() {
           {(data?.ranges || []).map((option) => (
             <button
               key={option.id}
-              className={option.id === range ? "active" : ""}
+              className={option.id === data?.range ? "active" : ""}
+              disabled={option.locked}
+              title={
+                option.locked
+                  ? `Free accounts keep ${maxRetentionDays} days of history. Premium keeps up to ${premiumRetentionDays}.`
+                  : undefined
+              }
               onClick={() => setRange(option.id)}
             >
+              {option.locked && <i className="fa-solid fa-lock"></i>}
               {option.label}
             </button>
           ))}
@@ -955,19 +982,33 @@ export default function BotInsights() {
           <div>
             <h3>Keep Insight logs for</h3>
             <p>
-              Events older than this are deleted from DisFuse permanently. The
-              longest we keep raw logs is 90 days.
+              Events older than this are deleted from DisFuse permanently.{" "}
+              {canUpgradeHistory
+                ? `Free accounts keep up to ${maxRetentionDays} days of history, and Premium keeps up to ${premiumRetentionDays}.`
+                : `The longest we keep raw logs is ${maxRetentionDays} days.`}
             </p>
+            {canUpgradeHistory && (
+              <span className="df-plan-hint">
+                Want a longer history?
+                <Link to="/settings/premium">
+                  <i className="fa-solid fa-crown"></i> Upgrade to Premium
+                </Link>
+              </span>
+            )}
           </div>
 
           <select
-            value={project?.retentionDays || 90}
+            value={project?.retentionDays || maxRetentionDays}
             disabled={savingRetention}
             onChange={(event) => saveRetention(event.target.value)}
           >
             {(project?.retentionOptions || [7, 14, 30, 60, 90]).map((days) => (
-              <option value={days} key={days}>
-                {days} days
+              <option
+                value={days}
+                key={days}
+                disabled={days > maxRetentionDays}
+              >
+                {days} days{days > maxRetentionDays ? " (Premium)" : ""}
               </option>
             ))}
           </select>

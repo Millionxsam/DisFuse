@@ -53,8 +53,13 @@ function loadUser() {
 
   loadedAt = Date.now();
 
+  /* `retry: true` because this POST is an upsert — the API creates the
+     record the first time it sees a Discord token and returns it every
+     time after — so sending it twice costs nothing, and a dropped
+     connection here is the difference between the app and a full-page
+     "We couldn't sign you in". See the retry notes in api/client.js. */
   inflight = Promise.all([
-    api.post("/users").then(data),
+    api.post("/users", undefined, { retry: true }).then(data),
     api.get("/users/staff").then(data),
   ])
     .then(([user, staff]) => {

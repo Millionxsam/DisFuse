@@ -79,6 +79,21 @@
   color: white;
 }
 
+/* A range longer than the owner's plan keeps. It stays in the row so the
+   longer history is visible, with a tooltip saying which plan has it. */
+.df-range-picker button:disabled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.df-range-picker button:disabled:hover {
+  background: transparent;
+  color: var(--df-text-dim);
+}
+
 .df-range-picker button.active {
   background: var(--main-color);
   color: white;
@@ -1209,7 +1224,7 @@
   max-width: 34rem;
 }
 
-/* ---- Premium perks (shared with the upgrade screen) ------------------- */
+/* ---- Premium perks (Settings, Premium) -------------------------------- */
 
 .df-premium-perks {
   display: flex;
@@ -1275,14 +1290,6 @@
   font-size: 12.5px;
   color: var(--df-text-dim);
   line-height: 1.5;
-}
-
-.df-premium-plan .plan-note {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 12px;
-  color: var(--df-mint);
 }
 
 /* ---- Responsive ------------------------------------------------------- */
@@ -1387,4 +1394,8 @@
   color: #7db4ee;
   font-size: 17px;
   line-height: 1;
+}
+
+.df-insights-settings .df-plan-hint {
+  margin-top: 0.45rem;
 }

@@ -18,7 +18,7 @@ import { apiUrl } from "../config/config";
 
    Authorisation is entirely the backend's. This hook sends the DisFuse
    session token and a project ID; the API decides whether the caller
-   owns that bot and has Premium, and it re-checks on a timer. Anything
+   owns that bot, and it re-checks on a timer. Anything
    this hook believes about permissions is for greying out buttons.
    ===================================================================== */
 
@@ -30,7 +30,7 @@ export default function useControlSession(projectId, { onEvent } = {}) {
   const [status, setStatus] = useState("connecting");
   const [session, setSession] = useState(null);
   const [error, setError] = useState(null);
-  /** Set when the failure is one retrying can't fix (not premium, not owner). */
+  /** Set when the failure is one retrying can't fix (not the owner, banned). */
   const [fatal, setFatal] = useState(false);
 
   const socketRef = useRef(null);
@@ -66,10 +66,10 @@ export default function useControlSession(projectId, { onEvent } = {}) {
 
         if (!response?.ok) {
           setError(response?.error || "Couldn't open Control for this bot.");
-          /* Ownership and premium failures are settled — retrying the
+          /* Ownership failures are settled, so retrying the
              socket forever would just spin. A Discord-side problem
              (bot offline, token rejected) is worth a retry button. */
-          setFatal(Boolean(response?.premiumRequired) || !response?.reason);
+          setFatal(!response?.reason);
           setStatus("error");
           return;
         }
@@ -100,12 +100,12 @@ export default function useControlSession(projectId, { onEvent } = {}) {
 
       setError(err?.message || "Couldn't connect to DisFuse.");
       /* `socket.active` is false when the server refused us outright —
-         a middleware rejection, i.e. sign-in, ban or Premium. */
+         a middleware rejection, i.e. sign-in or ban. */
       setFatal(!socket.active);
       setStatus(socket.active ? "reconnecting" : "error");
     });
 
-    /* Premium lapsed or the account was banned mid-session. */
+    /* The account was banned mid-session. */
     socket.on("control:revoked", (payload) => {
       if (cancelled) return;
 
