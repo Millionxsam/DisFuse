@@ -1699,7 +1699,7 @@ function VoiceChannelView({ channel, guild, onOpenMember }) {
 function ReactionPicker({ guild, onPick, onClose }) {
   const pickerRef = useRef(null);
 
-  /const customEmoji = useMemo(
+  const customEmoji = useMemo(
     () =>
       (guild?.emojis || [])
         .filter((emoji) => emoji.available)
