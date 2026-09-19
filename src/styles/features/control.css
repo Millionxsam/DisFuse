@@ -1806,11 +1806,28 @@ h3.dc-heading {
   width: 320px;
   max-height: 320px;
   overflow-y: auto;
-  padding: 0.75rem;
+  padding: 0.5rem;
   background: var(--dc-floating);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.dc-emoji-picker > emoji-picker {
+  --background: var(--dc-floating);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-radius: 8px;
+  --border-size: 0;
+  --button-active-background: rgba(255, 255, 255, 0.1);
+  --button-hover-background: rgba(255, 255, 255, 0.08);
+  --category-font-color: var(--dc-text-strong);
+  --input-border-color: var(--dc-border);
+  --input-font-color: var(--dc-text);
+  --input-placeholder-color: var(--dc-text-faint);
+  --indicator-color: var(--dc-blurple);
+  --outline-color: var(--dc-blurple);
+  width: 100%;
+  height: 300px;
 }
 
 .dc-emoji-picker h5,
@@ -1856,6 +1873,23 @@ h3.dc-heading {
   background: var(--dc-floating);
   border-radius: 10px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.dc-reaction-picker > emoji-picker {
+  --background: var(--dc-floating);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-radius: 8px;
+  --border-size: 0;
+  --button-active-background: rgba(255, 255, 255, 0.1);
+  --button-hover-background: rgba(255, 255, 255, 0.08);
+  --category-font-color: var(--dc-text-strong);
+  --input-border-color: var(--dc-border);
+  --input-font-color: var(--dc-text);
+  --input-placeholder-color: var(--dc-text-faint);
+  --indicator-color: var(--dc-blurple);
+  --outline-color: var(--dc-blurple);
+  width: 100%;
+  height: min(55vh, 380px);
 }
 
 /* ---- Member list --------------------------------------------------------- */

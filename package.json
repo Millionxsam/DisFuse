@@ -9,6 +9,7 @@
     "@blockly/zoom-to-fit": "^5.0.16",
     "axios": "^1.6.8",
     "blockly": "^10.4.3",
+    "emoji-picker-element": "^1.29.1",
     "highlight.js": "^11.11.1",
     "jszip": "^3.10.1",
     "lottie-react": "^2.4.1",

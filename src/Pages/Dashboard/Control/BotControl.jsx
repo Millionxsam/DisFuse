@@ -7,6 +7,8 @@ import useControlSession from "../../../functions/useControlSession";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import LoadingAnim from "../../../components/LoadingAnim";
 
+import "emoji-picker-element/picker";
+
 import GuildRail from "../../../components/control/GuildRail";
 import ChannelSidebar from "../../../components/control/ChannelSidebar";
 import MemberList from "../../../components/control/MemberList";
@@ -36,10 +38,6 @@ import {
 import { DOCS, docsUrl } from "../../../config/docs.js";
 
 const modalColors = modalThemeColor(null, true);
-
-const REACTION_SUGGESTIONS = [
-  "👍", "👎", "❤️", "🔥", "🎉", "😂", "😮", "😢", "👀", "✅", "❌", "🙏",
-];
 
 /* =====================================================================
    Control — the Discord client
@@ -1699,7 +1697,51 @@ function VoiceChannelView({ channel, guild, onOpenMember }) {
 }
 
 function ReactionPicker({ guild, onPick, onClose }) {
-  const emojis = (guild?.emojis || []).filter((emoji) => emoji.available);
+  const pickerRef = useRef(null);
+
+  /const customEmoji = useMemo(
+    () =>
+      (guild?.emojis || [])
+        .filter((emoji) => emoji.available)
+        .map((emoji) => ({
+          name: emoji.name,
+          shortcodes: [emoji.name],
+          url: emojiUrl(emoji.id, emoji.animated, 96),
+          category: guild?.name,
+        })),
+    [guild],
+  );
+
+  useEffect(() => {
+    const picker = pickerRef.current;
+    if (picker) picker.customEmoji = customEmoji;
+  }, [customEmoji]);
+
+  useEffect(() => {
+    const picker = pickerRef.current;
+    if (!picker) return undefined;
+
+    const onClick = (event) => {
+      const { emoji, unicode } = event.detail;
+
+      if (emoji.url) {
+        const serverEmoji = (guild?.emojis || []).find(
+          (entry) => entry.name === emoji.name,
+        );
+
+        onPick(
+          serverEmoji
+            ? { id: serverEmoji.id, name: serverEmoji.name }
+            : { name: emoji.name },
+        );
+      } else {
+        onPick({ name: unicode });
+      }
+    };
+
+    picker.addEventListener("emoji-click", onClick);
+    return () => picker.removeEventListener("emoji-click", onClick);
+  }, [guild, onPick]);
 
   return (
     <div className="dc-modal-backdrop" onClick={onClose}>
@@ -1708,35 +1750,7 @@ function ReactionPicker({ guild, onPick, onClose }) {
         onClick={(event) => event.stopPropagation()}
       >
         <h5>React as the bot</h5>
-
-        <div className="dc-emoji-grid">
-          {REACTION_SUGGESTIONS.map((emoji) => (
-            <button key={emoji} onClick={() => onPick({ name: emoji })}>
-              {emoji}
-            </button>
-          ))}
-        </div>
-
-        {emojis.length > 0 && (
-          <>
-            <h5>{guild.name}</h5>
-            <div className="dc-emoji-grid">
-              {emojis.slice(0, 100).map((emoji) => (
-                <button
-                  key={emoji.id}
-                  title={`:${emoji.name}:`}
-                  onClick={() => onPick({ id: emoji.id, name: emoji.name })}
-                >
-                  <img
-                    src={emojiUrl(emoji.id, emoji.animated, 32)}
-                    alt={emoji.name}
-                    loading="lazy"
-                  />
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+        <emoji-picker ref={pickerRef} className="dark" />
       </div>
     </div>
   );

@@ -29,11 +29,6 @@ import { botCan, canSendIn, emojiUrl, formatBytes } from "./discordUtils";
    rather than the eleventh embed vanishing on its way out. */
 const MAX_EMBEDS = 10;
 
-const COMMON_EMOJI = [
-  "👍", "👎", "❤️", "🔥", "🎉", "😄", "😂", "🥲", "😮", "😢",
-  "😡", "🙏", "👀", "✅", "❌", "⭐", "💯", "🚀", "🤔", "👋",
-];
-
 export default function MessageComposer({
   channel,
   guild,
@@ -429,39 +424,11 @@ export default function MessageComposer({
                   onClick={() => setPickerOpen(false)}
                 />
                 <div className="dc-emoji-picker">
-                  <h5>Frequently used</h5>
-                  <div className="dc-emoji-grid">
-                    {COMMON_EMOJI.map((emoji) => (
-                      <button key={emoji} onClick={() => insertEmoji(emoji)}>
-                        {emoji}
-                      </button>
-                    ))}
-                  </div>
-
-                  {guildEmojis.length > 0 && (
-                    <>
-                      <h5>{guild?.name}</h5>
-                      <div className="dc-emoji-grid">
-                        {guildEmojis.slice(0, 120).map((emoji) => (
-                          <button
-                            key={emoji.id}
-                            title={`:${emoji.name}:`}
-                            onClick={() =>
-                              insertEmoji(
-                                `<${emoji.animated ? "a" : ""}:${emoji.name}:${emoji.id}>`,
-                              )
-                            }
-                          >
-                            <img
-                              src={emojiUrl(emoji.id, emoji.animated, 32)}
-                              alt={emoji.name}
-                              loading="lazy"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </>
-                  )}
+                  <EmojiSurface
+                    emojis={guildEmojis}
+                    guildName={guild?.name}
+                    onInsert={insertEmoji}
+                  />
                 </div>
               </>
             )}
@@ -492,4 +459,55 @@ export default function MessageComposer({
       )}
     </div>
   );
+}
+
+function EmojiSurface({ emojis, guildName, onInsert }) {
+  const pickerRef = useRef(null);
+
+  const onInsertRef = useRef(onInsert);
+  onInsertRef.current = onInsert;
+
+  const customEmoji = useMemo(
+    () =>
+      emojis.map((emoji) => ({
+        name: emoji.name,
+        shortcodes: [emoji.name],
+        url: emojiUrl(emoji.id, emoji.animated, 96),
+        category: guildName,
+      })),
+    [emojis, guildName],
+  );
+
+  useEffect(() => {
+    const picker = pickerRef.current;
+    if (picker) picker.customEmoji = customEmoji;
+  }, [customEmoji]);
+
+  useEffect(() => {
+    const picker = pickerRef.current;
+    if (!picker) return undefined;
+
+    const onClick = (event) => {
+      const { emoji, unicode } = event.detail;
+
+      if (emoji.url) {
+        const serverEmoji = emojis.find(
+          (entry) => entry.name === emoji.name,
+        );
+
+        onInsertRef.current(
+          serverEmoji
+            ? `<${serverEmoji.animated ? "a" : ""}:${serverEmoji.name}:${serverEmoji.id}>`
+            : emoji.name,
+        );
+      } else {
+        onInsertRef.current(unicode);
+      }
+    };
+
+    picker.addEventListener("emoji-click", onClick);
+    return () => picker.removeEventListener("emoji-click", onClick);
+  }, [emojis]);
+
+  return <emoji-picker ref={pickerRef} className="dark" />;
 }
