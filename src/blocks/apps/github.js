@@ -34,7 +34,7 @@ const request = () =>
   if (options.status) return res.status;
 
   if (!res.ok) {
-    if (res.status !== 404) console.error("GitHub API error (" + res.status + "):", await res.text().catch(() => ""));
+    if (res.status !== 404) console.error("GitHub API error (" + res.status + "):", await res.text().catch(async () => ""));
     return null;
   }
 
@@ -47,7 +47,7 @@ const request = () =>
 const repoPath = () =>
   javascriptGenerator.provideFunction_(
     "githubRepoPath",
-    `function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(repo) {
+    `async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(repo) {
   return String(repo)
     .trim()
     .replace(/^(https?:\\/\\/)?(www\\.)?github\\.com\\//i, "")
@@ -63,7 +63,7 @@ const repoPath = () =>
 const toList = () =>
   javascriptGenerator.provideFunction_(
     "githubToList",
-    `function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(value) {
+    `async function ${javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(value) {
   if (Array.isArray(value)) return value.map(String);
   return String(value ?? "").split(",").map(item => item.trim()).filter(Boolean);
 }`,
@@ -73,7 +73,7 @@ const value = (block, generator, name, fallback = "''") =>
   generator.valueToCode(block, name, Order.ATOMIC) || fallback;
 
 const userPath = (username) => `"/users/" + encodeURIComponent(${username})`;
-const repoUrl = (repo) => `"/repos/" + ${repoPath()}(${repo})`;
+const repoUrl = (repo) => `"/repos/" + (await ${repoPath()}(${repo}))`;
 
 /** Adds a "GitHub token:" input to a block. */
 function appendToken(block) {
@@ -93,7 +93,7 @@ function getterGenerator(variable, noun, pathOf) {
     if (!${variable}) return;
 
     ${code}})
-  .catch(error => console.error("Error fetching GitHub ${noun}:", error));\n`;
+  .catch(async (error) => console.error("Error fetching GitHub ${noun}:", error));\n`;
   };
 }
 
@@ -102,7 +102,7 @@ function loopGenerator(variable, noun, pathOf, pick = "") {
   return function (block, generator) {
     const code = generator.statementToCode(block, "code");
 
-    return `for (const ${variable} of (await ${request()}(${pathOf(block, generator)}, null).catch(error => console.error("Error fetching GitHub ${noun}:", error)))${pick} ?? []) {
+    return `for (const ${variable} of (await ${request()}(${pathOf(block, generator)}, null).catch(async (error) => console.error("Error fetching GitHub ${noun}:", error)))${pick} ?? []) {
   ${code}}\n`;
   };
 }
@@ -215,7 +215,7 @@ javascriptGenerator.forBlock["github_userExists"] = function (block, generator) 
   const username = value(block, generator, "username");
 
   return [
-    `await ${request()}(${userPath(username)}, null, { status: true }).then(status => status === 200).catch(() => false)`,
+    `await ${request()}(${userPath(username)}, null, { status: true }).then(async (status) => status === 200).catch(async () => false)`,
     Order.AWAIT,
   ];
 };
@@ -237,7 +237,7 @@ javascriptGenerator.forBlock["github_userAvatar"] = function (block, generator) 
   const username = value(block, generator, "username");
 
   return [
-    `await ${request()}(${userPath(username)}, null).then(user => user?.avatar_url ?? null).catch(() => null)`,
+    `await ${request()}(${userPath(username)}, null).then(async (user) => user?.avatar_url ?? null).catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -259,7 +259,7 @@ javascriptGenerator.forBlock["github_userFollows"] = function (block, generator)
   const target = value(block, generator, "target");
 
   return [
-    `await ${request()}(${userPath(username)} + "/following/" + encodeURIComponent(${target}), null, { status: true }).then(status => status === 204).catch(() => false)`,
+    `await ${request()}(${userPath(username)} + "/following/" + encodeURIComponent(${target}), null, { status: true }).then(async (status) => status === 204).catch(async () => false)`,
     Order.AWAIT,
   ];
 };
@@ -305,7 +305,7 @@ javascriptGenerator.forBlock["github_userList"] = function (block, generator) {
   const sort = list === "repos" ? "&sort=updated" : "";
 
   return [
-    `await ${request()}(${userPath(username)} + "/${list}?per_page=100${sort}", null).then(items => (items ?? []).map(item => ${pick})).catch(() => [])`,
+    `await ${request()}(${userPath(username)} + "/${list}?per_page=100${sort}", null).then(async (items) => (items ?? []).map(item => ${pick})).catch(async () => [])`,
     Order.AWAIT,
   ];
 };
@@ -367,7 +367,7 @@ javascriptGenerator.forBlock["github_orgMembers"] = function (block, generator) 
   const org = value(block, generator, "org");
 
   return [
-    `await ${request()}("/orgs/" + encodeURIComponent(${org}) + "/public_members?per_page=100", null).then(items => (items ?? []).map(item => item.login)).catch(() => [])`,
+    `await ${request()}("/orgs/" + encodeURIComponent(${org}) + "/public_members?per_page=100", null).then(async (items) => (items ?? []).map(item => item.login)).catch(async () => [])`,
     Order.AWAIT,
   ];
 };
@@ -497,7 +497,7 @@ javascriptGenerator.forBlock["github_repoExists"] = function (block, generator) 
   const repo = value(block, generator, "repo");
 
   return [
-    `await ${request()}(${repoUrl(repo)}, null, { status: true }).then(status => status === 200).catch(() => false)`,
+    `await ${request()}(${repoUrl(repo)}, null, { status: true }).then(async (status) => status === 200).catch(async () => false)`,
     Order.AWAIT,
   ];
 };
@@ -515,7 +515,7 @@ javascriptGenerator.forBlock["github_repoStars"] = function (block, generator) {
   const repo = value(block, generator, "repo");
 
   return [
-    `await ${request()}(${repoUrl(repo)}, null).then(repo => repo?.stargazers_count ?? 0).catch(() => 0)`,
+    `await ${request()}(${repoUrl(repo)}, null).then(async (repo) => repo?.stargazers_count ?? 0).catch(async () => 0)`,
     Order.AWAIT,
   ];
 };
@@ -549,7 +549,7 @@ javascriptGenerator.forBlock["github_repoList"] = function (block, generator) {
 
   if (list === "languages")
     return [
-      `await ${request()}(${repoUrl(repo)} + "/languages", null).then(languages => Object.keys(languages ?? {})).catch(() => [])`,
+      `await ${request()}(${repoUrl(repo)} + "/languages", null).then(async (languages) => Object.keys(languages ?? {})).catch(async () => [])`,
       Order.AWAIT,
     ];
 
@@ -564,7 +564,7 @@ javascriptGenerator.forBlock["github_repoList"] = function (block, generator) {
   }[list];
 
   return [
-    `await ${request()}(${repoUrl(repo)} + "/${list}?per_page=100", null).then(items => (items ?? []).map(item => ${pick})).catch(() => [])`,
+    `await ${request()}(${repoUrl(repo)} + "/${list}?per_page=100", null).then(async (items) => (items ?? []).map(item => ${pick})).catch(async () => [])`,
     Order.AWAIT,
   ];
 };
@@ -582,7 +582,7 @@ javascriptGenerator.forBlock["github_repoReadme"] = function (block, generator) 
   const repo = value(block, generator, "repo");
 
   return [
-    `await ${request()}(${repoUrl(repo)} + "/readme", null, { raw: true }).catch(() => null)`,
+    `await ${request()}(${repoUrl(repo)} + "/readme", null, { raw: true }).catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -608,7 +608,7 @@ javascriptGenerator.forBlock["github_fileContent"] = function (block, generator)
   const path = value(block, generator, "path");
 
   return [
-    `await ${request()}(${repoUrl(repo)} + "/contents/" + String(${path}).replace(/^\\/+/, "").split("/").map(encodeURIComponent).join("/"), null, { raw: true }).catch(() => null)`,
+    `await ${request()}(${repoUrl(repo)} + "/contents/" + String(${path}).replace(/^\\/+/, "").split("/").map(encodeURIComponent).join("/"), null, { raw: true }).catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -633,7 +633,7 @@ javascriptGenerator.forBlock["github_workflowStatus"] = function (
   const repo = value(block, generator, "repo");
 
   return [
-    `await ${request()}(${repoUrl(repo)} + "/actions/runs?per_page=1", null).then(json => json?.workflow_runs?.[0] ? (json.workflow_runs[0].conclusion ?? json.workflow_runs[0].status) : null).catch(() => null)`,
+    `await ${request()}(${repoUrl(repo)} + "/actions/runs?per_page=1", null).then(async (json) => json?.workflow_runs?.[0] ? (json.workflow_runs[0].conclusion ?? json.workflow_runs[0].status) : null).catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -825,7 +825,7 @@ javascriptGenerator.forBlock["github_searchCount"] = function (block, generator)
   const type = block.getFieldValue("type");
 
   return [
-    `await ${request()}("/search/${type}?per_page=1&q=" + encodeURIComponent(${query}), null).then(json => json?.total_count ?? 0).catch(() => 0)`,
+    `await ${request()}("/search/${type}?per_page=1&q=" + encodeURIComponent(${query}), null).then(async (json) => json?.total_count ?? 0).catch(async () => 0)`,
     Order.AWAIT,
   ];
 };
@@ -843,7 +843,7 @@ javascriptGenerator.forBlock["github_searchUsers"] = function (block, generator)
   const query = value(block, generator, "query");
 
   return [
-    `await ${request()}("/search/users?q=" + encodeURIComponent(${query}), null).then(json => (json?.items ?? []).map(item => item.login)).catch(() => [])`,
+    `await ${request()}("/search/users?q=" + encodeURIComponent(${query}), null).then(async (json) => (json?.items ?? []).map(item => item.login)).catch(async () => [])`,
     Order.AWAIT,
   ];
 };
@@ -1025,7 +1025,7 @@ Blockly.Blocks["github_rateLimit"] = {
 
 javascriptGenerator.forBlock["github_rateLimit"] = function () {
   return [
-    `await ${request()}("/rate_limit", null).then(json => json?.resources?.core?.remaining ?? 0).catch(() => 0)`,
+    `await ${request()}("/rate_limit", null).then(async (json) => json?.resources?.core?.remaining ?? 0).catch(async () => 0)`,
     Order.AWAIT,
   ];
 };
@@ -1039,7 +1039,7 @@ Blockly.Blocks["github_zen"] = {
 
 javascriptGenerator.forBlock["github_zen"] = function () {
   return [
-    `await ${request()}("/zen", null, { raw: true }).catch(() => null)`,
+    `await ${request()}("/zen", null, { raw: true }).catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -1069,7 +1069,7 @@ javascriptGenerator.forBlock["github_getTokenUser"] = function (block, generator
     if (!githubUserInformation) return;
 
     ${code}})
-  .catch(error => console.error("Error fetching GitHub account:", error));\n`;
+  .catch(async (error) => console.error("Error fetching GitHub account:", error));\n`;
 };
 
 Blockly.Blocks["github_createIssue"] = {
@@ -1097,12 +1097,12 @@ javascriptGenerator.forBlock["github_createIssue"] = function (block, generator)
   const labels = value(block, generator, "labels", "[]");
   const code = generator.statementToCode(block, "code");
 
-  return `await ${request()}(${repoUrl(repo)} + "/issues", ${token(block, generator)}, { method: "POST", body: { title: String(${title}), body: String(${body}), labels: ${toList()}(${labels}) } })
+  return `await ${request()}(${repoUrl(repo)} + "/issues", ${token(block, generator)}, { method: "POST", body: { title: String(${title}), body: String(${body}), labels: (await ${toList()}(${labels})) } })
   .then(async (githubIssueInformation) => {
     if (!githubIssueInformation) return;
 
     ${code}})
-  .catch(error => console.error("Error creating GitHub issue:", error));\n`;
+  .catch(async (error) => console.error("Error creating GitHub issue:", error));\n`;
 };
 
 Blockly.Blocks["github_comment"] = {
@@ -1127,7 +1127,7 @@ javascriptGenerator.forBlock["github_comment"] = function (block, generator) {
   const comment = value(block, generator, "comment");
 
   return `await ${request()}(${repoUrl(repo)} + "/issues/" + ${number} + "/comments", ${token(block, generator)}, { method: "POST", body: { body: String(${comment}) } })
-  .catch(error => console.error("Error commenting on GitHub:", error));\n`;
+  .catch(async (error) => console.error("Error commenting on GitHub:", error));\n`;
 };
 
 Blockly.Blocks["github_setIssueState"] = {
@@ -1159,7 +1159,7 @@ javascriptGenerator.forBlock["github_setIssueState"] = function (
   const state = block.getFieldValue("state");
 
   return `await ${request()}(${repoUrl(repo)} + "/issues/" + ${number}, ${token(block, generator)}, { method: "PATCH", body: { state: "${state}" } })
-  .catch(error => console.error("Error updating GitHub issue:", error));\n`;
+  .catch(async (error) => console.error("Error updating GitHub issue:", error));\n`;
 };
 
 Blockly.Blocks["github_editIssue"] = {
@@ -1196,11 +1196,11 @@ javascriptGenerator.forBlock["github_editIssue"] = function (block, generator) {
   const issue = `${repoUrl(repo)} + "/issues/" + ${number}`;
 
   if (action === "removeLabel")
-    return `await Promise.all(${toList()}(${items}).map(label => ${request()}(${issue} + "/labels/" + encodeURIComponent(label), ${token(block, generator)}, { method: "DELETE" })))
-  .catch(error => console.error("Error updating GitHub issue:", error));\n`;
+    return `await Promise.all((await ${toList()}(${items})).map(async (label) => ${request()}(${issue} + "/labels/" + encodeURIComponent(label), ${token(block, generator)}, { method: "DELETE" })))
+  .catch(async (error) => console.error("Error updating GitHub issue:", error));\n`;
 
-  return `await ${request()}(${issue} + "/${action}", ${token(block, generator)}, { method: "POST", body: { ${action}: ${toList()}(${items}) } })
-  .catch(error => console.error("Error updating GitHub issue:", error));\n`;
+  return `await ${request()}(${issue} + "/${action}", ${token(block, generator)}, { method: "POST", body: { ${action}: (await ${toList()}(${items})) } })
+  .catch(async (error) => console.error("Error updating GitHub issue:", error));\n`;
 };
 
 Blockly.Blocks["github_mergePullRequest"] = {
@@ -1236,7 +1236,7 @@ javascriptGenerator.forBlock["github_mergePullRequest"] = function (
   const method = block.getFieldValue("method");
 
   return `await ${request()}(${repoUrl(repo)} + "/pulls/" + ${number} + "/merge", ${token(block, generator)}, { method: "PUT", body: { merge_method: "${method}" } })
-  .catch(error => console.error("Error merging GitHub pull request:", error));\n`;
+  .catch(async (error) => console.error("Error merging GitHub pull request:", error));\n`;
 };
 
 Blockly.Blocks["github_starRepo"] = {
@@ -1260,8 +1260,8 @@ javascriptGenerator.forBlock["github_starRepo"] = function (block, generator) {
   const repo = value(block, generator, "repo");
   const method = block.getFieldValue("method");
 
-  return `await ${request()}("/user/starred/" + ${repoPath()}(${repo}), ${token(block, generator)}, { method: "${method}" })
-  .catch(error => console.error("Error starring GitHub repository:", error));\n`;
+  return `await ${request()}("/user/starred/" + (await ${repoPath()}(${repo})), ${token(block, generator)}, { method: "${method}" })
+  .catch(async (error) => console.error("Error starring GitHub repository:", error));\n`;
 };
 
 Blockly.Blocks["github_followUser"] = {
@@ -1286,7 +1286,7 @@ javascriptGenerator.forBlock["github_followUser"] = function (block, generator) 
   const method = block.getFieldValue("method");
 
   return `await ${request()}("/user/following/" + encodeURIComponent(${username}), ${token(block, generator)}, { method: "${method}" })
-  .catch(error => console.error("Error following GitHub user:", error));\n`;
+  .catch(async (error) => console.error("Error following GitHub user:", error));\n`;
 };
 
 Blockly.Blocks["github_createRepo"] = {
@@ -1324,7 +1324,7 @@ javascriptGenerator.forBlock["github_createRepo"] = function (block, generator) 
     if (!githubRepoInformation) return;
 
     ${code}})
-  .catch(error => console.error("Error creating GitHub repository:", error));\n`;
+  .catch(async (error) => console.error("Error creating GitHub repository:", error));\n`;
 };
 
 Blockly.Blocks["github_writeFile"] = {
@@ -1365,7 +1365,7 @@ javascriptGenerator.forBlock["github_writeFile"] = function (block, generator) {
     content: Buffer.from(String(${content})).toString("base64"),
     ...(githubExistingFile?.sha ? { sha: githubExistingFile.sha } : {})
   } });
-})().catch(error => console.error("Error writing GitHub file:", error));\n`;
+})().catch(async (error) => console.error("Error writing GitHub file:", error));\n`;
 };
 
 Blockly.Blocks["github_createRelease"] = {
@@ -1403,7 +1403,7 @@ javascriptGenerator.forBlock["github_createRelease"] = function (
     if (!githubReleaseInformation) return;
 
     ${code}})
-  .catch(error => console.error("Error creating GitHub release:", error));\n`;
+  .catch(async (error) => console.error("Error creating GitHub release:", error));\n`;
 };
 
 Blockly.Blocks["github_runWorkflow"] = {
@@ -1431,7 +1431,7 @@ javascriptGenerator.forBlock["github_runWorkflow"] = function (block, generator)
   const branch = value(block, generator, "branch", "'main'");
 
   return `await ${request()}(${repoUrl(repo)} + "/actions/workflows/" + encodeURIComponent(String(${workflow}).split("/").pop()) + "/dispatches", ${token(block, generator)}, { method: "POST", body: { ref: String(${branch}) } })
-  .catch(error => console.error("Error running GitHub workflow:", error));\n`;
+  .catch(async (error) => console.error("Error running GitHub workflow:", error));\n`;
 };
 
 Blockly.Blocks["github_createGist"] = {
@@ -1465,7 +1465,7 @@ javascriptGenerator.forBlock["github_createGist"] = function (block, generator) 
   const isPublic = block.getFieldValue("public");
 
   return [
-    `await ${request()}("/gists", ${token(block, generator)}, { method: "POST", body: { public: ${isPublic}, files: { [String(${filename}) || "file.txt"]: { content: String(${content}) } } } }).then(gist => gist?.html_url ?? null).catch(() => null)`,
+    `await ${request()}("/gists", ${token(block, generator)}, { method: "POST", body: { public: ${isPublic}, files: { [String(${filename}) || "file.txt"]: { content: String(${content}) } } } }).then(async (gist) => gist?.html_url ?? null).catch(async () => null)`,
     Order.AWAIT,
   ];
 };

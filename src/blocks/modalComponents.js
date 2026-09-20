@@ -70,7 +70,7 @@ javascriptGenerator.forBlock["modalc_label"] = function (block, generator) {
   const description = generator.valueToCode(block, "description", Order.ATOMIC);
   const component = generator.valueToCode(block, "component", Order.ATOMIC);
 
-  return `(() => {
+  return `await (async () => {
   const _label = new Discord.LabelBuilder().setLabel(${label || "''"});${
     notEmptyText(description)
       ? `\n  _label.setDescription(${description});`
@@ -602,14 +602,14 @@ const getters = [
     type: "modalc_getSelectedMentionables",
     text: "selected users and roles of the mentionable menu with custom ID:",
     output: "Array",
-    code: (id) => `(() => {
+    code: (id) => `(await (async () => {
   const _selected = (interaction).fields.getSelectedMentionables(${id});
   if (!_selected) return [];
   return [
     ...(_selected.users?.values() ?? []),
     ...(_selected.roles?.values() ?? [])
   ];
-})()`,
+})())`,
     tooltip:
       "Gets everything the user picked in a mentionable select menu, as one list of users and roles.",
   },

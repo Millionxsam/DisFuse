@@ -1,7 +1,7 @@
 export const utilFunctions = `
 /* DisFuse utility functions */
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+async function wait(ms) {
+  return new Promise(async (resolve) => setTimeout(resolve, ms))
 };
 
 /* Command cooldowns */
@@ -25,6 +25,26 @@ async function forEachCollection(guild, type, callback) {
   for (const item of collection.values()) {
     await callback(item);
   }
+}
+
+/* List helpers.
+   Every callback a block generates is an async function, so a condition
+   built out of blocks may await. Array.prototype.filter/find/map can't
+   wait for a promise — they'd see one and treat it as truthy — so the
+   list blocks go through these instead. */
+async function asyncFilter(list, callback) {
+  const items = [...(list ?? [])];
+  const keep = await Promise.all(items.map((item, i) => callback(item, i)));
+  return items.filter((_, i) => keep[i]);
+}
+async function asyncFind(list, callback) {
+  for (const [i, item] of [...(list ?? [])].entries()) {
+    if (await callback(item, i)) return item;
+  }
+  return undefined;
+}
+async function asyncMap(list, callback) {
+  return await Promise.all([...(list ?? [])].map((item, i) => callback(item, i)));
 }
 /* ------------------------- */`.trim();
 
@@ -57,7 +77,7 @@ export function buildMessageOptions({
 
 export function buildThenSuffix(thenCode) {
   if (!thenCode) return ";\n";
-  return `.then((messageSent) => {\n${thenCode}});\n`;
+  return `.then(async (messageSent) => {\n${thenCode}});\n`;
 }
 
 export function buildDmSend(target, { content, embeds, rows }) {

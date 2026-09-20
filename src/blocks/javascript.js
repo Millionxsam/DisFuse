@@ -30,7 +30,7 @@ javascriptGenerator.forBlock["string_binary"] = function (block, generator) {
 
   if (mode === "ENCODE") {
     code = `
-(() => {
+(await (async () => {
   const bytes = new TextEncoder().encode(${text});
 
   return [...bytes]
@@ -38,11 +38,11 @@ javascriptGenerator.forBlock["string_binary"] = function (block, generator) {
       byte.toString(2).padStart(8, "0")
     )
     .join(" ");
-})()
+})())
 `;
   } else {
     code = `
-(() => {
+(await (async () => {
   const bytes = ${text}
     .split(" ")
     .map(bin =>
@@ -51,7 +51,7 @@ javascriptGenerator.forBlock["string_binary"] = function (block, generator) {
 
   return new TextDecoder()
     .decode(new Uint8Array(bytes));
-})()
+})())
 `;
   }
 
@@ -221,12 +221,12 @@ javascriptGenerator.forBlock["javascript_consoleinput"] = function (
     generator.valueToCode(block, "prompt", Order.ATOMIC) || "'Enter input:'";
 
   return [
-    `(await (new Promise((resolve) => {
+    `(await (new Promise(async (resolve) => {
       const readline = require('readline').createInterface({
         input: process.stdin,
         output: process.stdout,
       });
-      readline.question(${promptMessage}, (input) => {
+      readline.question(${promptMessage}, async (input) => {
         readline.close();
         resolve(input);
       });

@@ -354,9 +354,9 @@ javascriptGenerator.forBlock["invite_channel_foreach"] = function (
   var codeVal = generator.statementToCode(block, "code");
 
   var code = `${value_channel}.fetchInvites(true).then(async (allTheInvites) => {
-    allTheInvites.forEach(async (inviteForEachInLoop) => {
+  for (const inviteForEachInLoop of allTheInvites.values()) {
     ${codeVal}
-    }
+  }
 });\n`;
 
   return code;

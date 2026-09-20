@@ -18,7 +18,7 @@ Blockly.Blocks["fs_readFile"] = {
 javascriptGenerator.forBlock["fs_readFile"] = function (block, generator) {
   var path = generator.valueToCode(block, "path", Order.ATOMIC);
   var then = generator.statementToCode(block, "then");
-  var code = `fs.readFile(${path}, 'utf8', (err, readData) => {\n  if (err) throw err;\n  ${then}});\n`;
+  var code = `fs.readFile(${path}, 'utf8', async (err, readData) => {\n  if (err) throw err;\n  ${then}});\n`;
   return code;
 };
 
@@ -57,7 +57,7 @@ javascriptGenerator.forBlock["fs_writeFile"] = function (block, generator) {
   var data = generator.valueToCode(block, "data", Order.ATOMIC);
   var then = generator.statementToCode(block, "then");
 
-  var code = `fs.writeFile(${path}, ${data}, (err) => {
+  var code = `fs.writeFile(${path}, ${data}, async (err) => {
   if (err) throw err;
   ${then}});\n`;
 
@@ -81,13 +81,13 @@ javascriptGenerator.forBlock["fs_readdir"] = function (block, generator) {
   var path = generator.valueToCode(block, "path", Order.ATOMIC);
   var doo = generator.statementToCode(block, "doo");
 
-  var code = `fs.readdir(${path}, (err, files) => {
+  var code = `fs.readdir(${path}, async (err, files) => {
   if (err) throw err;
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     const filePath = path.join(${path}, file);
 
-    ${doo}});
+    ${doo}}
 });\n`;
 
   return code;
@@ -131,7 +131,7 @@ Blockly.Blocks["fs_deleteFile"] = {
 javascriptGenerator.forBlock["fs_deleteFile"] = function (block, generator) {
   var path = generator.valueToCode(block, "path", Order.ATOMIC);
 
-  return `fs.unlink(${path}, (err) => {
+  return `fs.unlink(${path}, async (err) => {
   if (err) throw err;
 });\n`;
 };
@@ -155,7 +155,7 @@ javascriptGenerator.forBlock["fs_renameFile"] = function (block, generator) {
   var path = generator.valueToCode(block, "path", Order.ATOMIC);
   var newpath = generator.valueToCode(block, "newpath", Order.ATOMIC);
 
-  return `fs.rename(${path}, ${newpath}, (err) => {
+  return `fs.rename(${path}, ${newpath}, async (err) => {
   if (err) throw err;
 });\n`;
 };

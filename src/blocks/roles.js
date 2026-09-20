@@ -46,9 +46,9 @@ javascriptGenerator.forBlock["roles_foreachMember"] = function (
   var role = generator.valueToCode(block, "role", Order.ATOMIC);
   var codeVal = generator.statementToCode(block, "code");
 
-  var code = `${role}.members.each(async (member) => {
+  var code = `for (const member of ${role}.members.values()) {
     ${codeVal}
-  });`;
+  }`;
   return code;
 };
 

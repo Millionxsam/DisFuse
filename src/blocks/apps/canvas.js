@@ -22,7 +22,7 @@ javascriptGenerator.forBlock["canvas_createCanvas"] = function (block) {
   const height =
     javascriptGenerator.valueToCode(block, "HEIGHT", Order.ATOMIC) || 500;
   const body = javascriptGenerator.statementToCode(block, "DO");
-  return `(async () => {
+  return `await (async () => {
   const canvas = _napi_rs_canvas.createCanvas(${width}, ${height});
   const ctx = canvas.getContext('2d');
   ${body}})();\n`;

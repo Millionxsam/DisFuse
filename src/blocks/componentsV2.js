@@ -243,7 +243,7 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
         .join(",\n    ")}\n  ]`
     : "[]";
 
-  return `(() => {
+  return `await (async () => {
   const _container = new Discord.ContainerBuilder();
   ${
     color && color !== "''" && color !== '""'
@@ -251,14 +251,14 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
       : ""
   }
   const _items = ${inner};
-  _items.forEach(comp => {
+  for (const comp of _items) {
     if (comp instanceof Discord.TextDisplayBuilder) _container.addTextDisplayComponents(comp);
     else if (comp instanceof Discord.SeparatorBuilder) _container.addSeparatorComponents(comp);
     else if (comp instanceof Discord.SectionBuilder) _container.addSectionComponents(comp);
     else if (comp instanceof Discord.MediaGalleryBuilder) _container.addMediaGalleryComponents(comp);
     else if (comp instanceof Discord.ActionRowBuilder) _container.addActionRowComponents(comp);
     else if (comp instanceof Discord.FileBuilder) _container.addFileComponents(comp);
-  });
+  }
   return _container;
 })(),\n`;
 };

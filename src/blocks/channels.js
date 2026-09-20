@@ -912,7 +912,7 @@ javascriptGenerator.forBlock["channel_starttyping"] = function (
   var channel = generator.valueToCode(block, "channel", Order.ATOMIC);
   var wait = generator.valueToCode(block, "wait", Order.ATOMIC);
 
-  return `await ${channel}.sendTyping();\nwait(${wait} * 1000);`;
+  return `await ${channel}.sendTyping();\nawait wait(${wait} * 1000);`;
 };
 
 javascriptGenerator.forBlock["channel_settopic"] = function (block, generator) {
@@ -963,7 +963,7 @@ javascriptGenerator.forBlock["channel_fetchLastMessages"] = function (
 
   return `${channel}.messages.fetch({
     limit: ${amount}
-  }).then(fetchedMessages => {
+  }).then(async (fetchedMessages) => {
     ${statement}
   });`;
 };

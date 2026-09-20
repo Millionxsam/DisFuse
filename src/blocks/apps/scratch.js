@@ -21,10 +21,10 @@ javascriptGenerator.forBlock["scratch_getprofile"] = function (
   var code = generator.statementToCode(block, "code");
 
   return `await fetch('https://api.scratch.mit.edu/users/' + ${user})
-  .then(response => response.json())
+  .then(async (response) => response.json())
   .then(async (scratchUserProfileInformation) => {
     ${code}})
-  .catch(error => console.error('Error fetching Scratch user profile:', error));`;
+  .catch(async (error) => console.error('Error fetching Scratch user profile:', error));`;
 };
 
 Blockly.Blocks["scratch_getprofileinfo"] = {
@@ -71,9 +71,9 @@ javascriptGenerator.forBlock["scratch_getmessages"] = function (
 
   return [
     `await fetch('https://api.scratch.mit.edu/users/' + ${user} + '/messages/count')
-  .then(response => response.json())
-  .then(json => json['count'])
-  .catch(error => console.error('Error fetching Scratch user profile:', error))`,
+  .then(async (response) => response.json())
+  .then(async (json) => json['count'])
+  .catch(async (error) => console.error('Error fetching Scratch user profile:', error))`,
     Order.AWAIT,
   ];
 };

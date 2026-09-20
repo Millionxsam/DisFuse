@@ -18,8 +18,8 @@ Blockly.Blocks["list_filter"] = {
 javascriptGenerator.forBlock["list_filter"] = function (block, generator) {
   var val_list = generator.valueToCode(block, "list", Order.ATOMIC);
   var val_method = generator.valueToCode(block, "method", Order.ATOMIC);
-  var code = `${val_list}.filter(filterItem => ${val_method})`;
-  return [code, Order.NONE];
+  var code = `await asyncFilter(${val_list}, async (filterItem) => ${val_method})`;
+  return [code, Order.AWAIT];
 };
 
 Blockly.Blocks["list_find"] = {
@@ -42,8 +42,8 @@ Blockly.Blocks["list_find"] = {
 javascriptGenerator.forBlock["list_find"] = function (block, generator) {
   var val_list = generator.valueToCode(block, "list", Order.ATOMIC);
   var val_method = generator.valueToCode(block, "method", Order.ATOMIC);
-  var code = `${val_list}.find(filterItem => ${val_method})`;
-  return [code, Order.NONE];
+  var code = `await asyncFind(${val_list}, async (filterItem) => ${val_method})`;
+  return [code, Order.AWAIT];
 };
 
 Blockly.Blocks["list_filter_item"] = {

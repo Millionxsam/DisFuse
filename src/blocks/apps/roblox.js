@@ -7,8 +7,8 @@ const colour = "#e2231a";
    have to provide an API key, cookie or any other credential. */
 const userIdOf = (username) =>
   `fetch("https://users.roblox.com/v1/usernames/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ usernames: [${username}] }) })
-    .then(res => res.json())
-    .then(json => json.data[0]?.id ?? null)`;
+    .then(async (res) => res.json())
+    .then(async (json) => json.data[0]?.id ?? null)`;
 
 Blockly.Blocks["roblox_getUser"] = {
   init: function () {
@@ -34,11 +34,11 @@ javascriptGenerator.forBlock["roblox_getUser"] = function (block, generator) {
     if (!robloxId) return;
 
     const [robloxProfile, robloxFriends, robloxFollowers, robloxFollowing, robloxAvatar] = await Promise.all([
-      fetch("https://users.roblox.com/v1/users/" + robloxId).then(res => res.json()).catch(() => ({})),
-      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/friends/count").then(res => res.json()).then(json => json.count).catch(() => 0),
-      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/followers/count").then(res => res.json()).then(json => json.count).catch(() => 0),
-      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/followings/count").then(res => res.json()).then(json => json.count).catch(() => 0),
-      fetch("https://thumbnails.roblox.com/v1/users/avatar?userIds=" + robloxId + "&size=420x420&format=Png").then(res => res.json()).then(json => json.data[0]?.imageUrl).catch(() => null)
+      fetch("https://users.roblox.com/v1/users/" + robloxId).then(async (res) => res.json()).catch(async () => ({})),
+      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/friends/count").then(async (res) => res.json()).then(async (json) => json.count).catch(async () => 0),
+      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/followers/count").then(async (res) => res.json()).then(async (json) => json.count).catch(async () => 0),
+      fetch("https://friends.roblox.com/v1/users/" + robloxId + "/followings/count").then(async (res) => res.json()).then(async (json) => json.count).catch(async () => 0),
+      fetch("https://thumbnails.roblox.com/v1/users/avatar?userIds=" + robloxId + "&size=420x420&format=Png").then(async (res) => res.json()).then(async (json) => json.data[0]?.imageUrl).catch(async () => null)
     ]);
 
     const robloxUserInformation = Object.assign({}, robloxProfile, {
@@ -50,7 +50,7 @@ javascriptGenerator.forBlock["roblox_getUser"] = function (block, generator) {
     });
 
     ${code}})
-  .catch(error => console.error("Error fetching Roblox user:", error));`;
+  .catch(async (error) => console.error("Error fetching Roblox user:", error));`;
 };
 
 Blockly.Blocks["roblox_userInfo"] = {
@@ -101,7 +101,7 @@ javascriptGenerator.forBlock["roblox_userId"] = function (block, generator) {
   const username = generator.valueToCode(block, "username", Order.NONE);
 
   return [
-    `await ${userIdOf(username)}.catch(() => null)`,
+    `await ${userIdOf(username)}.catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -122,8 +122,8 @@ javascriptGenerator.forBlock["roblox_userAvatar"] = function (block, generator) 
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? fetch("https://thumbnails.roblox.com/v1/users/avatar?userIds=" + robloxId + "&size=420x420&format=Png").then(res => res.json()).then(json => json.data[0]?.imageUrl) : null)
-    .catch(() => null)`,
+    .then(async (robloxId) => robloxId ? fetch("https://thumbnails.roblox.com/v1/users/avatar?userIds=" + robloxId + "&size=420x420&format=Png").then(async (res) => res.json()).then(async (json) => json.data[0]?.imageUrl) : null)
+    .catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -147,8 +147,8 @@ javascriptGenerator.forBlock["roblox_profileLink"] = function (
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? "https://www.roblox.com/users/" + robloxId + "/profile" : null)
-    .catch(() => null)`,
+    .then(async (robloxId) => robloxId ? "https://www.roblox.com/users/" + robloxId + "/profile" : null)
+    .catch(async () => null)`,
     Order.AWAIT,
   ];
 };
@@ -173,14 +173,14 @@ javascriptGenerator.forBlock["roblox_getGroup"] = function (block, generator) {
   const code = generator.statementToCode(block, "code");
 
   return `await fetch("https://groups.roblox.com/v1/groups/" + ${id})
-  .then(res => res.json())
+  .then(async (res) => res.json())
   .then(async (robloxGroup) => {
     if (!robloxGroup || !robloxGroup.id) return;
 
     const robloxGroupIcon = await fetch("https://thumbnails.roblox.com/v1/groups/icons?groupIds=" + robloxGroup.id + "&size=420x420&format=Png")
-      .then(res => res.json())
-      .then(json => json.data[0]?.imageUrl)
-      .catch(() => null);
+      .then(async (res) => res.json())
+      .then(async (json) => json.data[0]?.imageUrl)
+      .catch(async () => null);
 
     const robloxGroupInformation = Object.assign({}, robloxGroup, {
       iconUrl: robloxGroupIcon,
@@ -188,7 +188,7 @@ javascriptGenerator.forBlock["roblox_getGroup"] = function (block, generator) {
     });
 
     ${code}})
-  .catch(error => console.error("Error fetching Roblox group:", error));`;
+  .catch(async (error) => console.error("Error fetching Roblox group:", error));`;
 };
 
 Blockly.Blocks["roblox_groupInfo"] = {
@@ -247,8 +247,8 @@ javascriptGenerator.forBlock["roblox_userInGroup"] = function (
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? fetch("https://groups.roblox.com/v1/users/" + robloxId + "/groups/roles").then(res => res.json()).then(json => json.data.some(entry => entry.group.id == ${id})) : false)
-    .catch(() => false)`,
+    .then(async (robloxId) => robloxId ? fetch("https://groups.roblox.com/v1/users/" + robloxId + "/groups/roles").then(async (res) => res.json()).then(async (json) => json.data.some(entry => entry.group.id == ${id})) : false)
+    .catch(async () => false)`,
     Order.AWAIT,
   ];
 };
@@ -279,8 +279,8 @@ javascriptGenerator.forBlock["roblox_userGroupRank"] = function (
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? fetch("https://groups.roblox.com/v1/users/" + robloxId + "/groups/roles").then(res => res.json()).then(json => json.data.find(entry => entry.group.id == ${id})?.role?.name || "Guest") : "Guest")
-    .catch(() => "Guest")`,
+    .then(async (robloxId) => robloxId ? fetch("https://groups.roblox.com/v1/users/" + robloxId + "/groups/roles").then(async (res) => res.json()).then(async (json) => json.data.find(entry => entry.group.id == ${id})?.role?.name || "Guest") : "Guest")
+    .catch(async () => "Guest")`,
     Order.AWAIT,
   ];
 };
@@ -305,14 +305,14 @@ javascriptGenerator.forBlock["roblox_getGame"] = function (block, generator) {
   const code = generator.statementToCode(block, "code");
 
   return `await fetch("https://apis.roblox.com/universes/v1/places/" + ${id} + "/universe")
-  .then(res => res.json())
-  .then(json => json.universeId)
+  .then(async (res) => res.json())
+  .then(async (json) => json.universeId)
   .then(async (robloxUniverseId) => {
     if (!robloxUniverseId) return;
 
     const [robloxGame, robloxGameIcon] = await Promise.all([
-      fetch("https://games.roblox.com/v1/games?universeIds=" + robloxUniverseId).then(res => res.json()).then(json => json.data[0]).catch(() => null),
-      fetch("https://thumbnails.roblox.com/v1/games/icons?universeIds=" + robloxUniverseId + "&size=512x512&format=Png").then(res => res.json()).then(json => json.data[0]?.imageUrl).catch(() => null)
+      fetch("https://games.roblox.com/v1/games?universeIds=" + robloxUniverseId).then(async (res) => res.json()).then(async (json) => json.data[0]).catch(async () => null),
+      fetch("https://thumbnails.roblox.com/v1/games/icons?universeIds=" + robloxUniverseId + "&size=512x512&format=Png").then(async (res) => res.json()).then(async (json) => json.data[0]?.imageUrl).catch(async () => null)
     ]);
 
     if (!robloxGame) return;
@@ -323,7 +323,7 @@ javascriptGenerator.forBlock["roblox_getGame"] = function (block, generator) {
     });
 
     ${code}})
-  .catch(error => console.error("Error fetching Roblox game:", error));`;
+  .catch(async (error) => console.error("Error fetching Roblox game:", error));`;
 };
 
 Blockly.Blocks["roblox_gameInfo"] = {
@@ -385,8 +385,8 @@ javascriptGenerator.forBlock["roblox_ownsGamepass"] = function (
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? fetch("https://inventory.roblox.com/v1/users/" + robloxId + "/items/GamePass/" + ${id} + "/is-owned").then(res => res.text()).then(text => text.trim() === "true") : false)
-    .catch(() => false)`,
+    .then(async (robloxId) => robloxId ? fetch("https://inventory.roblox.com/v1/users/" + robloxId + "/items/GamePass/" + ${id} + "/is-owned").then(async (res) => res.text()).then(async (text) => text.trim() === "true") : false)
+    .catch(async () => false)`,
     Order.AWAIT,
   ];
 };
@@ -412,8 +412,8 @@ javascriptGenerator.forBlock["roblox_ownsBadge"] = function (block, generator) {
 
   return [
     `await ${userIdOf(username)}
-    .then(robloxId => robloxId ? fetch("https://inventory.roblox.com/v1/users/" + robloxId + "/items/Badge/" + ${id} + "/is-owned").then(res => res.text()).then(text => text.trim() === "true") : false)
-    .catch(() => false)`,
+    .then(async (robloxId) => robloxId ? fetch("https://inventory.roblox.com/v1/users/" + robloxId + "/items/Badge/" + ${id} + "/is-owned").then(async (res) => res.text()).then(async (text) => text.trim() === "true") : false)
+    .catch(async () => false)`,
     Order.AWAIT,
   ];
 };
