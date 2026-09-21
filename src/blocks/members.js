@@ -338,6 +338,167 @@ javascriptGenerator.forBlock["member_userFlags"] = function (block, generator) {
   ];
 };
 
+const USER_BADGES = [
+  ["Discord Staff", "Staff"],
+  ["Partnered Server Owner", "Partner"],
+  ["HypeSquad Events", "Hypesquad"],
+  ["Bug Hunter Level 1", "BugHunterLevel1"],
+  ["Bug Hunter Level 2", "BugHunterLevel2"],
+  ["HypeSquad Bravery", "HypeSquadOnlineHouse1"],
+  ["HypeSquad Brilliance", "HypeSquadOnlineHouse2"],
+  ["HypeSquad Balance", "HypeSquadOnlineHouse3"],
+  ["Early Supporter", "PremiumEarlySupporter"],
+  ["Verified Bot Developer", "VerifiedDeveloper"],
+  ["Moderator Programs Alumni", "CertifiedModerator"],
+  ["Active Developer", "ActiveDeveloper"],
+];
+
+Blockly.Blocks["member_hasBadge"] = {
+  init: function () {
+    this.appendValueInput("member").setCheck("user").appendField("does user");
+    this.appendDummyInput()
+      .appendField("have the")
+      .appendField(new Blockly.FieldDropdown(USER_BADGES), "badge")
+      .appendField("badge?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#3c9e56");
+    this.setTooltip("Checks if a user has one of Discord's profile badges.");
+    this.setHelpUrl(
+      "https://discord-api-types.dev/api/discord-api-types-v10/enum/UserFlags",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["member_hasBadge"] = function (block, generator) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+  var badge = block.getFieldValue("badge");
+
+  return [`(${member}?.flags?.has("${badge}") ?? false)`, Order.NONE];
+};
+
+Blockly.Blocks["member_badgeCount"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("user")
+      .appendField("number of badges of user");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setColour("#3c9e56");
+    this.setTooltip("Returns how many profile badges/flags a user has.");
+  },
+};
+
+javascriptGenerator.forBlock["member_badgeCount"] = function (
+  block,
+  generator,
+) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+
+  return [`(${member}?.flags?.toArray().length ?? 0)`, Order.NONE];
+};
+
+Blockly.Blocks["member_activityName"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("name of the activity member");
+    this.appendDummyInput().appendField("is doing");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#3c9e56");
+    this.setTooltip(
+      "Returns the name of the member's current activity (game, stream, etc), or an empty text if they have none.",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["member_activityName"] = function (
+  block,
+  generator,
+) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+
+  return [`(${member}?.presence?.activities?.[0]?.name || '')`, Order.NONE];
+};
+
+Blockly.Blocks["member_activityType"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("type of the member's current activity:");
+    this.setInputsInline(true);
+    this.setOutput(true, "String");
+    this.setColour("#3c9e56");
+    this.setTooltip(
+      'Returns "Playing", "Streaming", "Listening", "Watching", "Custom", or "Competing", or an empty text if the member has no activity.',
+    );
+  },
+};
+
+javascriptGenerator.forBlock["member_activityType"] = function (
+  block,
+  generator,
+) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+
+  return [
+    `(["Playing", "Streaming", "Listening", "Watching", "Custom", "Competing"][${member}?.presence?.activities?.[0]?.type] || '')`,
+    Order.NONE,
+  ];
+};
+
+Blockly.Blocks["member_isStreaming"] = {
+  init: function () {
+    this.appendValueInput("member").setCheck("member").appendField("is member");
+    this.appendDummyInput().appendField("currently streaming?");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour("#3c9e56");
+    this.setTooltip(
+      "Checks if the member is currently live streaming (e.g. through Discord's Go Live, Twitch, or YouTube).",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["member_isStreaming"] = function (
+  block,
+  generator,
+) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+
+  return [
+    `(${member}?.presence?.activities?.some((a) => a.type === 1) ?? false)`,
+    Order.NONE,
+  ];
+};
+
+Blockly.Blocks["member_activityElapsed"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("seconds member has spent on their current activity:");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setColour("#3c9e56");
+    this.setTooltip(
+      "Returns how many seconds the member has been playing/streaming/etc their current activity for, or 0 if they have none.",
+    );
+  },
+};
+
+javascriptGenerator.forBlock["member_activityElapsed"] = function (
+  block,
+  generator,
+) {
+  var member = generator.valueToCode(block, "member", Order.ATOMIC);
+
+  return [
+    `Math.floor((Date.now() - (${member}?.presence?.activities?.[0]?.timestamps?.start ?? Date.now())) / 1000)`,
+    Order.NONE,
+  ];
+};
+
 Blockly.Blocks["member_id"] = {
   init: function () {
     this.appendValueInput("member")
@@ -728,6 +889,12 @@ createRestrictions(
     "member_timedout",
     "member_userFlags",
     "member_removetimeout",
+    "member_hasBadge",
+    "member_badgeCount",
+    "member_activityName",
+    "member_activityType",
+    "member_isStreaming",
+    "member_activityElapsed",
   ],
   [
     {
