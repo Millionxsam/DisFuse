@@ -23,8 +23,8 @@ export default {
         block("events_guild_created"),
         block("events_guild_created_guild"),
         block("events_guild_deleted"),
-        block("events_guild_deleted_guild")
-      ]
+        block("events_guild_deleted_guild"),
+      ],
     },
     {
       kind: "category",
@@ -47,8 +47,8 @@ export default {
         block("events_boosts_levelDown"),
         block("events_boosts_levelDown_server"),
         block("events_boosts_levelDown_oldLevel"),
-        block("events_boosts_levelDown_newLevel")
-      ]
+        block("events_boosts_levelDown_newLevel"),
+      ],
     },
     {
       kind: "category",
@@ -73,8 +73,8 @@ export default {
         block("events_message_pinned_message"),
         label("------------------------------------------------"),
         block("events_message_reply"),
-        block("msg_msg")
-      ]
+        block("msg_msg"),
+      ],
     },
     {
       kind: "category",
@@ -92,8 +92,22 @@ export default {
         block("events_members_nickname"),
         block("events_members_nickname_member"),
         block("events_members_nickname_oldNickname"),
-        block("events_members_nickname_newNickname")
-      ]
+        block("events_members_nickname_newNickname"),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Voice Actions",
+      colour: "#1f9ea8",
+      contents: [
+        block("events_voice_join"),
+        block("events_voice_join_member"),
+        block("events_voice_join_channel"),
+        label("------------------------------------------------"),
+        block("events_voice_leave"),
+        block("events_voice_leave_member"),
+        block("events_voice_leave_channel"),
+      ],
     },
     {
       kind: "category",
@@ -105,8 +119,8 @@ export default {
         block("events_thread_created_parent"),
         label("------------------------------------------------"),
         block("events_thread_deleted"),
-        block("events_thread_deleted_thread")
-      ]
+        block("events_thread_deleted_thread"),
+      ],
     },
     {
       kind: "category",
@@ -127,8 +141,8 @@ export default {
         label("------------------------------------------------"),
         block("events_stickers_changed"),
         block("events_stickers_changedOldSticker"),
-        block("events_stickers_changedNewSticker")
-      ]
+        block("events_stickers_changedNewSticker"),
+      ],
     },
     {
       kind: "category",
@@ -137,8 +151,8 @@ export default {
       contents: [
         label("Use custom discord.js v14 events ↓"),
         block("events_custom"),
-        block("events_customParameter")
-      ]
-    }
-  ]
+        block("events_customParameter"),
+      ],
+    },
+  ],
 };
