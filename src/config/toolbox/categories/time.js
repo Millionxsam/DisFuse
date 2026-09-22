@@ -10,6 +10,9 @@ export default {
     block("time_date_now"),
     block("time_date"),
     block("time_createdate"),
+    label("Time of day ↓"),
+    block("time_whenTime"),
+    block("time_isTime"),
     label("Timestamp creation ↓"),
     block("time_timestampFromDate", {
       inputs: {

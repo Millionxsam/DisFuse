@@ -7,6 +7,7 @@ import "../hljs.css";
 import packageDependenciesFromBlocks from "./packageDependenciesFromBlocks";
 import { utilFunctions } from "../blocks/lib/generatorUtils.js";
 import { dashboardHelpers } from "../blocks/dashboard";
+import { timeOfDayBlocks, timeOfDayHelpers } from "../blocks/time";
 import insightsCode from "./insightsCode";
 import { format } from "./pretty";
 import { parseDfWorkspaceData } from "./dfFile";
@@ -142,6 +143,7 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
   /* The dashboard helper is only emitted when the project actually uses
      Dashboard blocks, so existing projects generate byte-identical code. */
   const usesDashboard = blocks.some(b => b.type?.startsWith("dashboard_"));
+  const usesTimeOfDay = blocks.some(b => timeOfDayBlocks.includes(b.type));
 
   /* Insights, on the other hand, is emitted for every project whatever
      its blocks are: it is how a bot reports its own usage back to
@@ -172,6 +174,7 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
 
     ${utilFunctions}
     ${usesDashboard ? "\n" + dashboardHelpers : ""}
+    ${usesTimeOfDay ? "\n" + timeOfDayHelpers : ""}
     ${insights.length > 0 ? "\n" + insights : ""}
     ${blockImportCode.length > 0 ? "\n" + blockImportCode : ""}
     ${topBlocksCode?.length > 0 ? "\n" + topBlocksCode : ""}
