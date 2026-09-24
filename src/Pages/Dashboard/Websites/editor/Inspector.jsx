@@ -14,7 +14,12 @@ import {
   websiteUsesScope,
 } from "../../../../functions/websiteTree";
 import { ColorInput, Field, PropField } from "./PropertyControls";
-import { DashboardAccess, LinkedProject, PublicAddress } from "./SiteSettings";
+import {
+  DashboardAccess,
+  DiscordEmbed,
+  LinkedProject,
+  PublicAddress,
+} from "./SiteSettings";
 
 /** Right-hand panel: the selected element's settings, or site-wide settings. */
 export default function Inspector({ editor }) {
@@ -223,6 +228,8 @@ function SiteInspector({ editor, website }) {
           />
         </Field>
       </section>
+
+      <DiscordEmbed editor={editor} />
 
       <section className="df-ws-section">
         <h4>Theme</h4>

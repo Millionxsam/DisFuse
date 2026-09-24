@@ -1163,6 +1163,69 @@
     var(--df-surface-3);
 }
 
+.df-ws-discord-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.df-ws-discord-button-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-sm);
+  overflow: hidden;
+}
+
+.df-ws-discord-button-row input[type="text"] {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.6rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.df-ws-discord-button-row input[type="text"]:first-child {
+  flex: 0 0 34%;
+  border-right: 1px solid var(--df-border);
+}
+
+.df-ws-discord-button-row button {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--df-border);
+  border-radius: 0;
+  color: var(--df-text-dim);
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+}
+
+.df-ws-discord-button-row button:hover {
+  color: white;
+  background: var(--df-surface-3);
+  box-shadow: none;
+}
+
+.df-ws-discord-add {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px dashed var(--df-border-strong);
+  border-radius: var(--df-r-sm);
+  color: var(--df-text-faint);
+  font-size: 12px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
+
+.df-ws-discord-add:hover {
+  color: white;
+  border-color: var(--df-text-faint);
+  box-shadow: none;
+}
+
 .df-ws-link {
   display: flex;
   flex-direction: column;

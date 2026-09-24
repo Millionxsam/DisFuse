@@ -5,10 +5,11 @@
    published page renders:
 
      config = {
-       theme:    { colors, fonts, radius, contentWidth },
-       pages:    [ { id, name, path, elements: [ node… ] } ],
-       favicon:  "",
-       seo:      { title, description },
+       theme:        { colors, fonts, radius, contentWidth },
+       pages:        [ { id, name, path, elements: [ node… ] } ],
+       favicon:      "",
+       seo:          { title, description },
+       discordEmbed: { enabled, content, imageUrl, accentColor, buttons }
      }
 
    Templates below are just pre-built configs — a website created from
@@ -471,6 +472,13 @@ export function buildWebsiteConfig({
     theme: structuredClone(defaultTheme),
     seo: { title: name, description },
     favicon: "",
+    discordEmbed: {
+      enabled: false,
+      content: "",
+      imageUrl: "",
+      accentColor: "",
+      buttons: [],
+    },
     pages: built.pages,
   };
 }

@@ -277,6 +277,158 @@ export function LinkedProject({ editor }) {
   );
 }
 
+/* Discord link preview */
+
+const MAX_DISCORD_BUTTONS = 3;
+
+export function DiscordEmbed({ editor }) {
+  const { website } = editor;
+  const embed = website.config?.discordEmbed || {};
+  const theme = website.config?.theme || {};
+  const seo = website.config?.seo || {};
+  const buttons = embed.buttons || [];
+
+  const set = (changes, tag) => editor.updateDiscordEmbed(changes, tag);
+
+  const setButton = (index, changes) =>
+    set({
+      buttons: buttons.map((button, i) =>
+        i === index ? { ...button, ...changes } : button,
+      ),
+    });
+
+  const addButton = () =>
+    buttons.length < MAX_DISCORD_BUTTONS &&
+    set({ buttons: [...buttons, { label: "", url: "" }] });
+
+  const removeButton = (index) =>
+    set({ buttons: buttons.filter((_, i) => i !== index) });
+
+  return (
+    <section className="df-ws-section">
+      <h4>Discord link preview</h4>
+
+      <Field
+        label="Custom preview"
+        inline
+        help="Replaces Discord's plain link card with your own layout when this site's link is shared. This card is visual only, meaning no bot or interaction handle it."
+      >
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={Boolean(embed.enabled)}
+            onChange={(e) => set({ enabled: e.target.checked })}
+          />
+          <span className="slider"></span>
+        </label>
+      </Field>
+
+      {embed.enabled && (
+        <>
+          <Field
+            label="Content"
+            help="Markdown, shown as the preview's text. Leave empty to use the title and description from the search engine preview above."
+          >
+            <textarea
+              rows={3}
+              value={embed.content || ""}
+              placeholder={`# ${seo.title || website.name || "Untitled"}\n${seo.description || ""}`}
+              onChange={(e) =>
+                set({ content: e.target.value }, "discord:content")
+              }
+            />
+          </Field>
+
+          <Field
+            label="Image URL"
+            help="Shown beside the text. Leave empty to use the favicon."
+          >
+            <input
+              type="text"
+              value={embed.imageUrl || ""}
+              placeholder="https://"
+              onChange={(e) =>
+                set({ imageUrl: e.target.value }, "discord:image")
+              }
+            />
+          </Field>
+
+          <Field
+            label="Accent color"
+            help="The bar down the left edge of the preview. Defaults to your theme's primary color."
+          >
+            <div className="df-ws-color-row">
+              <input
+                type="color"
+                value={
+                  /^#[0-9a-f]{6}$/i.test(embed.accentColor)
+                    ? embed.accentColor
+                    : /^#[0-9a-f]{6}$/i.test(theme.colors?.primary)
+                      ? theme.colors.primary
+                      : "#014f98"
+                }
+                onChange={(e) =>
+                  set({ accentColor: e.target.value }, "discord:accent")
+                }
+                aria-label="Pick an accent colour"
+              />
+              <input
+                type="text"
+                value={embed.accentColor || ""}
+                placeholder={theme.colors?.primary || "#014f98"}
+                onChange={(e) =>
+                  set({ accentColor: e.target.value }, "discord:accent")
+                }
+              />
+            </div>
+          </Field>
+
+          <Field
+            label="Buttons"
+            help={`Up to ${MAX_DISCORD_BUTTONS} link buttons shown under the preview.`}
+          >
+            <div className="df-ws-discord-buttons">
+              {buttons.map((button, i) => (
+                <div className="df-ws-discord-button-row" key={i}>
+                  <input
+                    type="text"
+                    placeholder="Label"
+                    value={button.label || ""}
+                    onChange={(e) => setButton(i, { label: e.target.value })}
+                  />
+                  <input
+                    type="text"
+                    placeholder="https://"
+                    value={button.url || ""}
+                    onChange={(e) => setButton(i, { url: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    title="Remove button"
+                    onClick={() => removeButton(i)}
+                  >
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              ))}
+
+              {buttons.length < MAX_DISCORD_BUTTONS && (
+                <button
+                  type="button"
+                  className="df-ws-discord-add"
+                  onClick={addButton}
+                >
+                  <i className="fa-solid fa-plus"></i> Add button
+                </button>
+              )}
+            </div>
+          </Field>
+        </>
+      )}
+    </section>
+  );
+}
+
 /* ---- Dashboard access ------------------------------------------------- */
 
 /**

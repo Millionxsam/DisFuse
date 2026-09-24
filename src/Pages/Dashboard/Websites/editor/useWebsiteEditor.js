@@ -343,6 +343,18 @@ export default function useWebsiteEditor(websiteId) {
     [commit],
   );
 
+  const updateDiscordEmbed = useCallback(
+    (changes, tag) =>
+      commit(
+        (config) => ({
+          ...config,
+          discordEmbed: { ...config.discordEmbed, ...changes },
+        }),
+        tag,
+      ),
+    [commit],
+  );
+
   /** Name and published state live on the website document, not in `config`. */
   const updateMeta = useCallback(
     (changes) => {
@@ -443,6 +455,7 @@ export default function useWebsiteEditor(websiteId) {
     movePage,
     updateTheme,
     updateSeo,
+    updateDiscordEmbed,
     updateMeta,
     undo,
     redo,
