@@ -410,6 +410,16 @@ Blockly.Blocks["channel_getParent"] = {
   },
 };
 
+Blockly.Blocks["channel_getServer"] = {
+  init: function () {
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("server of channel:");
+    this.setOutput(true, "server");
+    this.setColour("#AD509B");
+  },
+};
+
 Blockly.Blocks["channel_gettopic"] = {
   init: function () {
     this.appendValueInput("channel")
@@ -870,6 +880,16 @@ javascriptGenerator.forBlock["channel_getParent"] = function (
 ) {
   return [
     `${generator.valueToCode(block, "channel", Order.ATOMIC)}.parent`,
+    Order.NONE,
+  ];
+};
+
+javascriptGenerator.forBlock["channel_getServer"] = function (
+  block,
+  generator,
+) {
+  return [
+    `${generator.valueToCode(block, "channel", Order.ATOMIC)}.guild`,
     Order.NONE,
   ];
 };

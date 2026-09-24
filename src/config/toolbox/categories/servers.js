@@ -74,6 +74,7 @@ export default {
         block("channel_getslowmode"),
         block("channel_getnsfw"),
         block("channel_getParent"),
+        block("channel_getServer"),
         block("channel_gettopic"),
         block("channel_gettype"),
         block("channel_deletable"),
