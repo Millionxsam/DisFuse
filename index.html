@@ -36,6 +36,41 @@
     <meta name="robots" content="index, follow" />
     <meta name="revisit-after" content="1 day" />
 
+    <!-- Custom Discord link preview
+         see: https://github.com/discord/discord-api-docs/pull/8606 -->
+    <script id="discord:component-embed" type="application/json">
+      {
+        "component": {
+          "type": 17,
+          "accent_color": 85912,
+          "components": [
+            {
+              "type": 9,
+              "components": [
+                {
+                  "type": 10,
+                  "content": "# DisFuse\n**Build your Discord bot with simple blocks.**\nDisFuse lets you snap together advanced Discord bot logic with easy-to-use blocks, no coding experience required. Build slash commands, moderation tools, and more without writing a single line of code."
+                }
+              ],
+              "accessory": {
+                "type": 11,
+                "media": { "url": "https://disfuse.xyz/media/disfuse-clear.png" }
+              }
+            },
+            { "type": 14, "spacing": 1 },
+            {
+              "type": 1,
+              "components": [
+                { "type": 2, "style": 5, "url": "https://disfuse.xyz/projects/new", "label": "Get Started" },
+                { "type": 2, "style": 5, "url": "https://docs.disfuse.xyz/docs/intro", "label": "Docs" },
+                { "type": 2, "style": 5, "url": "https://discord.gg/Xwx4zkQcmJ", "label": "Join the Discord" }
+              ]
+            }
+          ]
+        }
+      }
+    </script>
+
     <title>DisFuse</title>
   </head>
 
