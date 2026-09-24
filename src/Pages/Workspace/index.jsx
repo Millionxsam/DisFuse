@@ -17,6 +17,8 @@ import SecretsModal from "../../components/workspace/SecretsModal.jsx";
 import InviteModal from "../../components/workspace/InviteModal.jsx";
 import MessagePreview from "../../components/workspace/MessagePreview.jsx";
 import { closeMessagePreview } from "../../components/workspace/messagePreviewStore.js";
+import ModalPreview from "../../components/workspace/ModalPreview.jsx";
+import { closeModalPreview } from "../../components/workspace/modalPreviewStore.js";
 import VersionControl from "../../components/VersionControl.jsx";
 
 import api, { data, errorMessage } from "../../api/client.js";
@@ -234,6 +236,7 @@ export default function Workspace() {
        the whole editor down to a blank page. */
     for (const id of [
       "previewMessage",
+      "previewModal",
       "copyCode",
       "moveBlock",
       "mergeWorkspace",
@@ -313,6 +316,7 @@ export default function Workspace() {
         /* Block ids are per-workspace, so a preview left open would be
            pointing at a block that is no longer on the canvas. */
         closeMessagePreview();
+        closeModalPreview();
         editor.loadBlocks(target.data);
       }
     },
@@ -730,6 +734,8 @@ export default function Workspace() {
         workspaceRef={editor.workspaceRef}
         project={project ?? {}}
       />
+
+      <ModalPreview workspaceRef={editor.workspaceRef} project={project ?? {}} />
 
       <SecretsModal
         open={secretsOpen}

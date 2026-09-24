@@ -5,8 +5,16 @@ import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
 import api from "../api/client.js";
 import { saveVersionWorkspaceData } from "../api/versions";
-import { openMessagePreview } from "../components/workspace/messagePreviewStore";
+import {
+  closeMessagePreview,
+  openMessagePreview,
+} from "../components/workspace/messagePreviewStore";
+import {
+  closeModalPreview,
+  openModalPreview,
+} from "../components/workspace/modalPreviewStore";
 import { findSendBlock, isSendBlock } from "./messagePreview/sendBlocks";
+import { findModalBlock, isModalBlock } from "./modalPreview/modalBlocks";
 
 /**
  * A workspace's saved blocks, whatever state it is in.
@@ -94,7 +102,34 @@ export default function registerContextMenus(
         : "hidden",
     callback: (scope) => {
       const sending = findSendBlock(scope.block);
-      if (sending) openMessagePreview(sending.id);
+      if (!sending) return;
+
+      /* The two previews open in the same spot. */
+      closeModalPreview();
+      openMessagePreview(sending.id);
+    },
+  });
+
+  /* ---- Preview this modal -----------------------------------------
+     The same idea for "show modal" and "create modal", and anything
+     inside either — a label, a text input, the text block in its
+     placeholder. Right-clicking "show modal" when the modal lives in a
+     variable previews whatever that variable was set to. */
+  Blockly.ContextMenuRegistry.registry.register({
+    id: "previewModal",
+    displayText: (scope) =>
+      isModalBlock(scope.block) ? "Preview Modal" : "Preview This Modal",
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    preconditionFn: (scope) =>
+      !scope.block?.workspace?.isFlyout && findModalBlock(scope.block)
+        ? "enabled"
+        : "hidden",
+    callback: (scope) => {
+      const modal = findModalBlock(scope.block);
+      if (!modal) return;
+
+      closeMessagePreview();
+      openModalPreview(modal.id);
     },
   });
 

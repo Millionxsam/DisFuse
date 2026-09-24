@@ -46,6 +46,7 @@ export const DOCS = {
   serverBlocks: "Blocks/Servers",
   eventBlocks: "Blocks/Events",
   appBlocks: "Blocks/Apps",
+  modals: "Interactions/modals",
 
   /* ---- Help --------------------------------------------------------- */
   faq: "Help/faq",

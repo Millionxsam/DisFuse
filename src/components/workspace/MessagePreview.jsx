@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Blockly from "blockly";
 
 import MessageComponents from "../control/MessageComponents";
@@ -10,6 +10,7 @@ import {
   openMessagePreview,
   useMessagePreviewTarget,
 } from "./messagePreviewStore";
+import useFloatingPanel, { readStored, writeStored } from "./useFloatingPanel";
 
 import "../../styles/workspace/message-preview.css";
 
@@ -30,9 +31,8 @@ import { DOCS } from "../../config/docs.js";
    `messagePreviewStore`), so the multi-command case — open one command's
    message, close it, open another's — is just asking again.
 
-   The panel floats rather than docking. Docking it would reflow the
-   Blockly canvas on every open and close, and Blockly's canvas reflow is
-   the expensive thing this editor already works hardest to avoid.
+   Where the panel sits, and how it is dragged and resized, is shared
+   with the modal preview (see `useFloatingPanel`).
    ===================================================================== */
 
 /** Quiet time before a workspace edit redraws the preview. */
@@ -41,53 +41,8 @@ const REFRESH_DELAY_MS = 140;
 const STORAGE_KEY = "dfMessagePreviewPanel";
 const FOLLOW_KEY = "dfMessagePreviewFollow";
 
+/* Must match `.df-msg-preview` in message-preview.css. */
 const DEFAULT_SIZE = { width: 430, height: 520 };
-const MARGIN = 12;
-
-function readStored(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw === null ? fallback : JSON.parse(raw);
-  } catch {
-    /* Private browsing, or something else wrote nonsense there. */
-    return fallback;
-  }
-}
-
-function writeStored(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    /* The panel still works; it just won't be where you left it. */
-  }
-}
-
-/** Keeps the panel on screen, whatever size the window is now. */
-function clampPosition(position, size) {
-  const width = size?.width ?? DEFAULT_SIZE.width;
-  const height = size?.height ?? DEFAULT_SIZE.height;
-
-  return {
-    x: Math.min(
-      Math.max(MARGIN, position.x),
-      Math.max(MARGIN, window.innerWidth - width - MARGIN),
-    ),
-    y: Math.min(
-      Math.max(MARGIN, position.y),
-      Math.max(MARGIN, window.innerHeight - height - MARGIN),
-    ),
-  };
-}
-
-function defaultPosition() {
-  return clampPosition(
-    {
-      x: window.innerWidth - DEFAULT_SIZE.width - 24,
-      y: 110,
-    },
-    DEFAULT_SIZE,
-  );
-}
 
 /**
  * @param {object} props
@@ -99,151 +54,20 @@ export default function MessagePreview({ workspaceRef, project }) {
 
   const [preview, setPreview] = useState(null);
   const [missing, setMissing] = useState(false);
-  const [position, setPosition] = useState(defaultPosition);
   const [follow, setFollow] = useState(() => readStored(FOLLOW_KEY, false));
 
-  const panelRef = useRef(null);
-  const dragRef = useRef(null);
+  const { panelRef, position, dragHandlers } = useFloatingPanel({
+    active: blockId,
+    storageKey: STORAGE_KEY,
+    defaultSize: DEFAULT_SIZE,
+    onClose: closeMessagePreview,
+  });
 
   /* The store outlives this page — it is a module, and the editor is one
      route of a single-page app. Without this, leaving the workspace with
      a preview open and coming back reopens it pointing at a block id
      that no longer exists. */
   useEffect(() => closeMessagePreview, []);
-
-  /* ---- Where the panel sits ---------------------------------------- */
-
-  /* Keyed on `blockId` rather than run once: this component is mounted
-     for the whole life of the editor and renders nothing until a preview
-     is asked for, so at mount there is no panel to measure or size. */
-  useEffect(() => {
-    if (!blockId) return undefined;
-
-    const stored = readStored(STORAGE_KEY, null);
-
-    /* Width and height are written straight onto the element rather
-       than held in state and rendered. The panel has a native resize
-       grip, which sets `style.width` itself — and a `style` prop
-       carrying a width would undo every resize on the next redraw,
-       which happens every time the user types into a block. */
-    if (stored?.width && panelRef.current) {
-      panelRef.current.style.width = `${stored.width}px`;
-      panelRef.current.style.height = `${stored.height}px`;
-    }
-
-    if (stored?.x !== undefined) setPosition(clampPosition(stored, stored));
-    else setPosition(defaultPosition());
-
-    function onResize() {
-      setPosition((current) =>
-        clampPosition(current, panelRef.current?.getBoundingClientRect()),
-      );
-    }
-
-    function onKeyDown(event) {
-      if (event.key !== "Escape") return;
-
-      /* Not while a Blockly field editor or a dialog is taking the key —
-         Escape means "cancel that" there, not "close the preview". */
-      if (
-        document.querySelector(
-          ".blocklyHtmlInput, dialog[open], .swal2-container",
-        )
-      )
-        return;
-
-      closeMessagePreview();
-    }
-
-    window.addEventListener("resize", onResize);
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [blockId]);
-
-  /* The panel has a native resize grip. Remembering the size it was
-     dragged to is the whole reason this observer exists — nothing here
-     reads back into layout, so it can't loop. */
-  useEffect(() => {
-    const panel = panelRef.current;
-    if (!panel || typeof ResizeObserver === "undefined") return undefined;
-
-    let timer = null;
-
-    const observer = new ResizeObserver(() => {
-      if (timer) clearTimeout(timer);
-
-      timer = setTimeout(() => {
-        const box = panel.getBoundingClientRect();
-
-        writeStored(STORAGE_KEY, {
-          x: box.left,
-          y: box.top,
-          width: box.width,
-          height: box.height,
-        });
-      }, 400);
-    });
-
-    observer.observe(panel);
-
-    return () => {
-      if (timer) clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [blockId]);
-
-  const startDrag = useCallback((event) => {
-    /* The header carries the docs link and the three buttons as well. */
-    if (event.target.closest("button, a")) return;
-    if (event.button !== 0) return;
-
-    const panel = panelRef.current;
-    if (!panel) return;
-
-    const box = panel.getBoundingClientRect();
-
-    dragRef.current = {
-      offsetX: event.clientX - box.left,
-      offsetY: event.clientY - box.top,
-      width: box.width,
-      height: box.height,
-    };
-
-    event.currentTarget.setPointerCapture(event.pointerId);
-    event.preventDefault();
-  }, []);
-
-  const onDrag = useCallback((event) => {
-    const drag = dragRef.current;
-    if (!drag) return;
-
-    setPosition(
-      clampPosition(
-        { x: event.clientX - drag.offsetX, y: event.clientY - drag.offsetY },
-        drag,
-      ),
-    );
-  }, []);
-
-  const endDrag = useCallback((event) => {
-    if (!dragRef.current) return;
-
-    dragRef.current = null;
-    event.currentTarget.releasePointerCapture?.(event.pointerId);
-
-    const box = panelRef.current?.getBoundingClientRect();
-    if (box)
-      writeStored(STORAGE_KEY, {
-        x: box.left,
-        y: box.top,
-        width: box.width,
-        height: box.height,
-      });
-  }, []);
 
   /* ---- Keeping up with the blocks ----------------------------------- */
 
@@ -354,13 +178,7 @@ export default function MessagePreview({ workspaceRef, project }) {
       }}
       aria-label="Message preview"
     >
-      <header
-        className="df-msg-preview-head"
-        onPointerDown={startDrag}
-        onPointerMove={onDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-      >
+      <header className="df-msg-preview-head" {...dragHandlers}>
         <i className={`fa-solid ${preview?.icon || "fa-comment"}`}></i>
 
         <div className="df-msg-preview-title">

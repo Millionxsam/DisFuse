@@ -1,0 +1,366 @@
+/* =====================================================================
+   Modal preview
+   ---------------------------------------------------------------------
+   The panel frame — header, context line, notes — is the message
+   preview's (`message-preview.css`), so the two previews look like one
+   feature. Everything here is the stage and the modal on it.
+
+   The modal is Discord's app modal as the desktop client draws it: the
+   app's icon beside a bold title, a stack of labelled inputs on the
+   modal background, the "This form will be submitted to…" line, and a
+   darker footer with a text Cancel and a blurple Submit. Colours come
+   from the shared `--dc-*` palette only, so if Control's Discord look is
+   ever retuned this follows it.
+   ===================================================================== */
+
+/* Doubled up so the size wins over `.df-msg-preview` whichever stylesheet
+   the bundler happens to put first. */
+.df-msg-preview.df-modal-preview {
+  width: 480px;
+  height: 600px;
+}
+
+/* Discord dims the whole client behind a modal; the stage is that. */
+.df-msg-preview-stage.df-modal-preview-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
+    var(--dc-bg);
+}
+
+/* The "nothing to show" state keeps the message preview's colours. */
+.df-modal-preview-stage .df-msg-preview-empty {
+  height: auto;
+  flex: 1;
+}
+
+/* ---- The modal card ---------------------------------------------------- */
+
+.dc-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 440px;
+  flex: 0 0 auto;
+  margin: auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--dc-bg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.45);
+  color: var(--dc-text);
+  font-size: 16px;
+  line-height: 1.375;
+  cursor: default;
+}
+
+.dc-modal-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.dc-modal-avatar {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dc-modal-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--dc-text-strong);
+  overflow-wrap: anywhere;
+}
+
+.dc-modal-untitled {
+  color: var(--dc-text-faint);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.dc-modal-close {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--dc-text-muted);
+  font-size: 18px;
+}
+
+/* ---- Fields ------------------------------------------------------------ */
+
+.dc-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.dc-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.dc-modal-label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--dc-text-strong);
+  overflow-wrap: anywhere;
+}
+
+.dc-modal-required {
+  margin-left: 0.25rem;
+  color: var(--dc-red-bright);
+}
+
+.dc-modal-description {
+  margin-top: -0.25rem;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--dc-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.dc-modal-text {
+  font-size: 16px;
+  color: var(--dc-text);
+  overflow-wrap: anywhere;
+}
+
+.dc-modal-missing {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px dashed var(--dc-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--dc-text-faint);
+}
+
+/* ---- Text input and selects -------------------------------------------- */
+
+.dc-modal-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: var(--dc-input-2);
+  border: 1px solid var(--dc-border);
+  color: var(--dc-text);
+  font-size: 16px;
+  line-height: 1.375;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.dc-modal-input.empty {
+  color: var(--dc-text-faint);
+}
+
+.dc-modal-input.paragraph {
+  align-items: flex-start;
+  min-height: 94px;
+}
+
+.dc-modal-select {
+  justify-content: space-between;
+  white-space: normal;
+}
+
+.dc-modal-select > i {
+  flex: 0 0 auto;
+  font-size: 13px;
+  color: var(--dc-text);
+}
+
+.dc-modal-select-placeholder {
+  color: var(--dc-text-faint);
+}
+
+.dc-modal-select-chosen {
+  min-width: 0;
+}
+
+.dc-modal-emoji {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.35em;
+  vertical-align: -0.2em;
+  object-fit: contain;
+}
+
+/* ---- File upload ------------------------------------------------------- */
+
+.dc-modal-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1.1rem 0.75rem;
+  border-radius: 8px;
+  border: 1px dashed var(--dc-border);
+  background: var(--dc-input-2);
+  font-size: 14px;
+  text-align: center;
+  color: var(--dc-text-muted);
+}
+
+.dc-modal-upload > i {
+  font-size: 22px;
+  color: var(--dc-text-muted);
+}
+
+.dc-modal-upload strong {
+  color: var(--dc-link);
+  font-weight: 500;
+}
+
+.dc-modal-upload small {
+  font-size: 12px;
+  color: var(--dc-text-faint);
+}
+
+/* ---- Radio buttons and checkboxes -------------------------------------- */
+
+.dc-modal-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dc-modal-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.dc-modal-radio,
+.dc-modal-checkbox {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 2px solid var(--dc-text-muted);
+  color: white;
+  font-size: 11px;
+}
+
+.dc-modal-radio {
+  border-radius: 50%;
+}
+
+.dc-modal-checkbox {
+  border-radius: 5px;
+}
+
+.dc-modal-choice.checked > .dc-modal-checkbox {
+  background: var(--dc-blurple);
+  border-color: var(--dc-blurple);
+}
+
+.dc-modal-choice.checked > .dc-modal-radio {
+  border: 6px solid var(--dc-blurple);
+  background: white;
+}
+
+.dc-modal-choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.dc-modal-choice-label {
+  font-size: 16px;
+  color: var(--dc-text-strong);
+  overflow-wrap: anywhere;
+}
+
+.dc-modal-choice-description {
+  font-size: 14px;
+  color: var(--dc-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* A single checkbox carries its own label; the description under it
+   loses the negative margin it has under a label heading. */
+.dc-modal-choice-text .dc-modal-description {
+  margin-top: 0;
+}
+
+/* ---- Disclaimer and footer --------------------------------------------- */
+
+.dc-modal-disclaimer {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--dc-text-muted);
+}
+
+.dc-modal-disclaimer strong {
+  color: var(--dc-text);
+  font-weight: 600;
+}
+
+.dc-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--dc-elevated);
+}
+
+.dc-modal-cancel,
+.dc-modal-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  min-width: 96px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.dc-modal-cancel {
+  min-width: 0;
+  color: var(--dc-text-strong);
+}
+
+.dc-modal-submit {
+  background: var(--dc-blurple);
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .df-msg-preview.df-modal-preview {
+    width: auto;
+  }
+}
