@@ -734,6 +734,7 @@ const PREFIX_PAGES = {
   math: "Blocks/math",
   member: "Blocks/Servers/members",
   menus: "Blocks/Components/select-menus",
+  minecraft: "Blocks/Apps/minecraft",
   modal: "Interactions/modals",
   msg: "Blocks/Messages/message",
   music: "Blocks/music",

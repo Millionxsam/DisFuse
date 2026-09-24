@@ -114,6 +114,67 @@ export default {
     },
     {
       kind: "category",
+      name: "Minecraft",
+      colour: "#5A8F3C",
+      contents: [
+        label("No API key needed, all of this is public info ↓"),
+        label("----------------------------------------------"),
+        label("Get a user first, then use the info block ↓"),
+        block("minecraft_getUser", {
+          inputs: {
+            username: { shadow: shadow("text", { fields: { TEXT: "Notch" } }) },
+          },
+        }),
+        block("minecraft_userInfo"),
+        label("----------------------------------------------"),
+        label("Quick user info (no need to get the user first) ↓"),
+        block("minecraft_userExists", {
+          inputs: {
+            username: { shadow: shadow("text") },
+          },
+        }),
+        block("minecraft_userUUID", {
+          inputs: {
+            username: { shadow: shadow("text") },
+          },
+        }),
+        block("minecraft_userAvatar", {
+          inputs: {
+            username: { shadow: shadow("text") },
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Servers ↓"),
+        label("Get a server first, then use the info block ↓"),
+        block("minecraft_getServer", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+          },
+        }),
+        block("minecraft_serverInfo"),
+        label("----------------------------------------------"),
+        label("Quick server info (no need to get the server first) ↓"),
+        block("minecraft_serverOnline", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+          },
+        }),
+        block("minecraft_isPlayerOnServer", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+            username: { shadow: shadow("text") },
+          },
+        }),
+      ],
+    },
+    {
+      kind: "category",
       name: "GitHub",
       colour: "#6e5494",
       contents: [
