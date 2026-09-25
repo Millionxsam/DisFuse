@@ -31,6 +31,8 @@ const CLOSE_ANIMATION_MS = 160;
  * @param {string} [props.docsPage] a value from DOCS — renders a help
  *   link in the dialog's header, beside the close button, for the page
  *   that documents whatever the dialog does
+ * @param {string} [props.className] extra classes on the dialog, for one
+ *   that needs its own size (Templates is a whole gallery)
  */
 export default function WorkspaceModal({
   open,
@@ -42,6 +44,7 @@ export default function WorkspaceModal({
   footer,
   docsPage,
   wide = false,
+  className = "",
   children,
 }) {
   const ref = useRef(null);
@@ -108,7 +111,7 @@ export default function WorkspaceModal({
   return (
     <dialog
       ref={ref}
-      className={`df-modal${wide ? " wide" : ""}`}
+      className={`df-modal${wide ? " wide" : ""}${className ? ` ${className}` : ""}`}
       onClick={onBackdropClick}
       aria-labelledby={title ? "df-modal-title" : undefined}
     >

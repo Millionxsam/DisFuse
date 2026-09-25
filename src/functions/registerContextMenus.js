@@ -50,31 +50,16 @@ function reportFailure(error, title) {
   });
 }
 
+/** Every menu item registerBlockToolMenus adds, for unregistering. */
+export const BLOCK_TOOL_MENU_IDS = ["previewMessage", "previewModal", "copyCode"];
+
 /**
- * The workspace and block context menus.
- *
- * "Move to workspace" and "Merge workspace" write into another workspace
- * of the same project. On a Version Control project that means another
- * workspace of the *active version*, which is what `versionId` selects —
- * without it the write would go to the project's own workspaces, which a
- * versioned project no longer reads.
+ * The block menu items that only need a canvas, not a project: the two
+ * previews and "Copy JavaScript Code". The template builder has these
+ * too; the items that move blocks between a project's workspaces are
+ * registerContextMenus' alone.
  */
-export default function registerContextMenus(
-  project,
-  currentWorkspace,
-  versionId = null,
-) {
-  /** Writes blocks into a sibling workspace, wherever this project saves. */
-  function saveWorkspaceData(workspaceId, data) {
-    if (versionId)
-      return saveVersionWorkspaceData(project._id, versionId, workspaceId, data);
-
-    return api.patch(
-      `/projects/${project._id}/workspaces/${workspaceId}/data`,
-      { data },
-    );
-  }
-
+export function registerBlockToolMenus() {
   /* ---- Preview this message ---------------------------------------
      Offered on the six blocks that send a message, and on anything
      inside one — right-clicking the text display halfway down a long
@@ -156,6 +141,34 @@ export default function registerContextMenus(
       });
     },
   });
+}
+
+/**
+ * The workspace and block context menus.
+ *
+ * "Move to workspace" and "Merge workspace" write into another workspace
+ * of the same project. On a Version Control project that means another
+ * workspace of the *active version*, which is what `versionId` selects —
+ * without it the write would go to the project's own workspaces, which a
+ * versioned project no longer reads.
+ */
+export default function registerContextMenus(
+  project,
+  currentWorkspace,
+  versionId = null,
+) {
+  /** Writes blocks into a sibling workspace, wherever this project saves. */
+  function saveWorkspaceData(workspaceId, data) {
+    if (versionId)
+      return saveVersionWorkspaceData(project._id, versionId, workspaceId, data);
+
+    return api.patch(
+      `/projects/${project._id}/workspaces/${workspaceId}/data`,
+      { data },
+    );
+  }
+
+  registerBlockToolMenus();
 
   const wsOptions = {};
   project.workspaces

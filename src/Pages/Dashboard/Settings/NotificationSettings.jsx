@@ -60,7 +60,7 @@ export default function NotificationSettings() {
 
       <div className="option">
         <label htmlFor="commentsOnProjects">
-          Someone comments on your project:
+          Someone comments on your project or template:
         </label>
 
         <select
@@ -93,7 +93,9 @@ export default function NotificationSettings() {
         </select>
       </div>
       <div className="option">
-        <label htmlFor="likesOnProjects">Someone likes your project:</label>
+        <label htmlFor="likesOnProjects">
+          Someone likes your project or template:
+        </label>
 
         <select
           defaultValue={user.settings.notifications.likesOnProjects ?? "1"}

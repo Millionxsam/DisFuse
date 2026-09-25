@@ -6,13 +6,22 @@ import UserTag from "./UserTag";
 
 import { apiUrl } from "../config/config";
 
+/**
+ * One comment and its replies.
+ *
+ * Projects and templates both have comments, with the same routes under
+ * a different prefix: `basePath` is that prefix, and defaults to a
+ * project's.
+ */
 export default function Comment({
   project,
   comment: c,
   user,
   allUsers,
   index,
+  basePath,
 }) {
+  const base = basePath ?? `/comments/${project._id}`;
   const [author, setAuthor] = useState({});
   const [newLike, setNewLike] = useState(false);
   const [comment, setComment] = useState(c);
@@ -39,7 +48,7 @@ export default function Comment({
     setTimeout(() => (likeButtonEnabled = true), 700);
 
     axios
-      .patch(apiUrl + `/comments/${project._id}/${comment._id}/likes`, null, {
+      .patch(apiUrl + `${base}/${comment._id}/likes`, null, {
         headers: {
           Authorization: localStorage.getItem("disfuse-token"),
         },
@@ -64,7 +73,7 @@ export default function Comment({
 
     axios
       .post(
-        apiUrl + `/comments/${project._id}/${comment._id}/replies`,
+        apiUrl + `${base}/${comment._id}/replies`,
         {
           content,
         },
@@ -89,7 +98,7 @@ export default function Comment({
 
       axios
         .patch(
-          apiUrl + `/comments/${project._id}/${comment._id}`,
+          apiUrl + `${base}/${comment._id}`,
           { content: r.value },
           { headers: { Authorization: localStorage.getItem("disfuse-token") } },
         )
@@ -108,7 +117,7 @@ export default function Comment({
       if (!r.isConfirmed) return;
 
       axios
-        .delete(apiUrl + `/comments/${project._id}/${comment._id}`, {
+        .delete(apiUrl + `${base}/${comment._id}`, {
           headers: { Authorization: localStorage.getItem("disfuse-token") },
         })
         .then(() => window.location.reload());
@@ -169,6 +178,7 @@ export default function Comment({
             user={user}
             allUsers={allUsers}
             project={project}
+            basePath={base}
             comment={comment}
             key={index}
           />

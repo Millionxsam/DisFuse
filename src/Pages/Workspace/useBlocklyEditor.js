@@ -195,8 +195,13 @@ export default function useBlocklyEditor({
    *
    * Events are suppressed around the load so it doesn't register as a
    * hundred edits and trigger an immediate save of what was just read.
+   *
+   * `keepBackpack` is for blocks saved without a backpack in them — a
+   * template's. `workspaces.load` clears every plugin's state before it
+   * loads, the backpack's included, and the housekeeping that follows
+   * would then save that empty backpack over the user's real one.
    */
-  const loadBlocks = useCallback((data) => {
+  const loadBlocks = useCallback((data, { keepBackpack = false } = {}) => {
     const workspace = workspaceRef.current;
     if (!workspace) return false;
 
@@ -207,6 +212,11 @@ export default function useBlocklyEditor({
          is the string "{}". Both that and a never-saved empty string end
          up here as "clear the canvas". */
       const parsed = data?.length ? JSON.parse(data) : null;
+
+      if (parsed && keepBackpack && backpackRef.current)
+        parsed.backpack = backpackRef.current
+          .getContents()
+          .map((item) => JSON.parse(item));
 
       if (parsed) Blockly.serialization.workspaces.load(parsed, workspace);
       else workspace.clear();

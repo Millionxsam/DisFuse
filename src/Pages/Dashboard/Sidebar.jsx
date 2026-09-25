@@ -14,6 +14,7 @@ const navItems = [
   { to: "/insights", label: "Insights", icon: "fa-solid fa-chart-line" },
   { to: "/websites", label: "Websites", icon: "fa-solid fa-globe" },
   { to: "/explore", label: "Explore", icon: "fa-solid fa-earth-americas" },
+  { to: "/templates", label: "Templates", icon: "fa-solid fa-shapes" },
   { to: "/favorites", label: "Favorites", icon: "fa-solid fa-star" },
   { to: "/workshop", label: "Workshop", icon: "fa-solid fa-tools" },
   { to: "/inbox", label: "Inbox", icon: "fa-solid fa-inbox" },

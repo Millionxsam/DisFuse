@@ -9,7 +9,9 @@ import { apiUrl } from "../config/config";
 
 const icons = {
   likesOnProjects: "fa-solid fa-heart",
+  likesOnTemplates: "fa-solid fa-heart",
   commentsOnProjects: "fa-solid fa-comment",
+  commentsOnTemplates: "fa-solid fa-comment",
   clonesOnProjects: "fa-solid fa-code-fork",
   repliesOnComments: "fa-solid fa-reply",
   tosChange: "fa-solid fa-file-contract",
@@ -25,6 +27,7 @@ export default function InboxItem({ item, user, index }) {
 
   const [alertUser, setUser] = useState(null);
   const [alertProject, setProject] = useState(null);
+  const [alertTemplate, setTemplate] = useState(null);
   const [alertComment, setComment] = useState(null);
   const [alertReply, setReply] = useState(null);
 
@@ -60,13 +63,34 @@ export default function InboxItem({ item, user, index }) {
     }
   }, [item.notification.projectId, allProjects, token]);
 
-  // comment & reply
+  // template
   useEffect(() => {
-    const { projectId: pid, commentId: cid, replyId: rid } = item.notification;
+    const tid = item.notification.templateId;
+    if (!tid) return;
+
+    axios
+      .get(`${apiUrl}/templates/${tid}`, { headers: { Authorization: token } })
+      .then(({ data }) => setTemplate(data || null))
+      .catch(() => setTemplate(null));
+  }, [item.notification.templateId, token]);
+
+  // comment & reply — on a project, or on a template
+  useEffect(() => {
+    const {
+      projectId: pid,
+      templateId: tid,
+      commentId: cid,
+      replyId: rid,
+    } = item.notification;
     if (!cid) return;
 
     axios
-      .get(`${apiUrl}/comments/${pid}/${cid}`)
+      .get(
+        tid
+          ? `${apiUrl}/templates/${tid}/comments/${cid}`
+          : `${apiUrl}/comments/${pid}/${cid}`,
+        tid ? { headers: { Authorization: token } } : undefined,
+      )
       .then(({ data: comment }) => {
         setComment(comment);
         if (rid) {
@@ -82,8 +106,10 @@ export default function InboxItem({ item, user, index }) {
   }, [
     item.notification,
     item.notification.projectId,
+    item.notification.templateId,
     item.notification.commentId,
     item.notification.replyId,
+    token,
   ]);
 
   // eslint-disable-next-line default-case
@@ -139,8 +165,45 @@ export default function InboxItem({ item, user, index }) {
       );
       break;
 
+    case "likesOnTemplates":
+      link = `/templates/${item.notification.templateId}`;
+      title = alertUser?.username
+        ? `${alertUser?.username || "Someone"} liked your template!`
+        : "Loading...";
+      body = alertTemplate?.name ? (
+        <>
+          <UserTag user={alertUser} userId={alertUser?.id} />
+          <p> liked your template: "{alertTemplate.name}"</p>
+        </>
+      ) : (
+        <>
+          <p>Loading...</p>
+        </>
+      );
+      break;
+
+    case "commentsOnTemplates":
+      link = `/templates/${item.notification.templateId}#${item.notification.commentId}`;
+      title = alertTemplate?.name
+        ? `New comment on template: "${alertTemplate.name}"`
+        : "Loading...";
+      body = alertComment?.content ? (
+        <>
+          <UserTag user={alertUser} userId={alertUser?.id} />
+          <p>: {alertComment?.content}</p>
+        </>
+      ) : (
+        <>
+          <p>Loading...</p>
+        </>
+      );
+      break;
+
     case "repliesOnComments":
-      link = `/@${alertProject?.owner?.username}/${item?.notification?.projectId}#${item?.notification?.replyId}`;
+      /* A reply on a template's comment carries the template instead. */
+      link = item.notification.templateId
+        ? `/templates/${item.notification.templateId}#${item.notification.replyId}`
+        : `/@${alertProject?.owner?.username}/${item?.notification?.projectId}#${item?.notification?.replyId}`;
       title = alertUser?.username
         ? `${alertUser?.username || "Someone"} replied to your comment`
         : "Loading...";

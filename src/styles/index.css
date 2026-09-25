@@ -59,6 +59,7 @@
 @import "./features/insights.css";
 @import "./features/control.css";
 @import "./features/premium.css";
+@import "./features/templates.css";
 @import "./workspace/version-control.css";
 @import "./pages/legal.css";
 @import "./workspace/message-preview.css";

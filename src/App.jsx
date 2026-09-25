@@ -24,6 +24,9 @@ import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
 import WorkshopWorkspace from "./Pages/Dashboard/Workshop/WorkshopWorkspace";
 import "./styles/index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
+import Templates from "./Pages/Dashboard/Templates/Templates";
+import TemplatePage from "./Pages/Dashboard/Templates/TemplatePage";
+import TemplateBuilder from "./Pages/Templates/TemplateBuilder";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Footer from "./components/Footer";
 import useRevealOnScroll from "./functions/useRevealOnScroll";
@@ -146,6 +149,11 @@ export default function App() {
               ownership itself on every connection and action. */}
           <Route path="control" element={<Control key={0} />} />
           <Route path="explore" element={<Explore key={0} />} />
+          <Route path="templates" element={<Templates key={0} />} />
+          <Route
+            path="templates/:templateId"
+            element={<TemplatePage key={0} />}
+          />
           <Route path="favorites" element={<Favorites key={0} />} />
           <Route path="workshop" element={<Workshop key={0} />} />
           <Route path="workshop/library" element={<Library key={0} />} />
@@ -206,6 +214,17 @@ export default function App() {
           element={
             <Auth>
               <WorkshopWorkspace />
+            </Auth>
+          }
+        />
+
+        {/* The template builder is a workspace of its own, belonging to
+            no project — full screen like the editor it mirrors. */}
+        <Route
+          path="/templates/:templateId/builder"
+          element={
+            <Auth>
+              <TemplateBuilder />
             </Auth>
           }
         />

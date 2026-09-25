@@ -1,0 +1,756 @@
+/* =====================================================================
+   Templates
+   ---------------------------------------------------------------------
+   The gallery (a dashboard page and a dialog in the editor), a
+   template's page, its block preview, the builder, and the form the
+   create/edit dialogs share.
+
+   The cards and the page deliberately build on `.df-project-card` and
+   `.df-project-detail` rather than restyling from scratch: templates are
+   meant to read as the same family as Explore.
+   ===================================================================== */
+
+/* ---- Badges ---------------------------------------------------------- */
+
+.df-template-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--df-surface-2);
+  color: var(--df-text-dim);
+  white-space: nowrap;
+}
+
+.df-template-badge.official {
+  background: rgba(53, 208, 160, 0.14);
+  color: var(--df-mint);
+  box-shadow: inset 0 0 0 1px rgba(53, 208, 160, 0.35);
+}
+
+.df-template-badge.private {
+  color: var(--df-amber);
+}
+
+.df-template-badge.draft {
+  color: #9cc9ef;
+  box-shadow: inset 0 0 0 1px rgba(156, 201, 239, 0.3);
+}
+
+.df-template-badge.changes {
+  color: var(--df-amber);
+  box-shadow: inset 0 0 0 1px rgba(255, 182, 72, 0.3);
+}
+
+.df-template-muted {
+  color: var(--df-text-faint);
+  font-style: italic;
+}
+
+.df-template-error {
+  color: #ff8a8a;
+  font-size: 13px;
+}
+
+/* ---- The icon a template wears --------------------------------------- */
+
+.df-template-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--df-r-sm);
+  background: rgba(var(--main-color-rgb), 0.28);
+  color: #9cc9ef;
+  font-size: 18px;
+}
+
+/* ---- Cards ------------------------------------------------------------ */
+
+.df-template-card.official {
+  border-left-color: rgba(53, 208, 160, 0.75);
+}
+
+.df-template-card.official .df-template-icon {
+  background: rgba(53, 208, 160, 0.16);
+  color: var(--df-mint);
+}
+
+.df-template-card.draft {
+  border-left-style: dashed;
+}
+
+.df-template-card .badges {
+  flex-wrap: wrap;
+}
+
+.df-template-card .badges:empty {
+  display: none;
+}
+
+/* The heart is a button that looks like the chips beside it. */
+.df-template-card .stat-row {
+  flex-wrap: wrap;
+}
+
+button.stat-chip.df-template-like {
+  font-size: 12.5px;
+  border-radius: 999px;
+  box-shadow: none;
+  scale: 1;
+}
+
+button.stat-chip.df-template-like:hover {
+  box-shadow: none;
+}
+
+button.stat-chip.df-template-like:hover i {
+  animation: none;
+}
+
+button.stat-chip.df-template-like.active,
+button.stat-chip.df-template-like.active i {
+  color: #ff8a8a;
+}
+
+button.stat-chip.df-template-like.active {
+  background: rgba(255, 92, 92, 0.16);
+}
+
+button.stat-chip.df-template-like.popped i {
+  animation: df-pop 0.35s ease;
+}
+
+/* ---- The gallery ------------------------------------------------------ */
+
+.df-template-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.df-template-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.df-template-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+}
+
+.df-template-tabs button {
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  font-size: 14px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--df-text-dim);
+}
+
+.df-template-tabs button:hover {
+  background: var(--df-surface-2);
+  color: white;
+  box-shadow: none;
+}
+
+.df-template-tabs button:hover i {
+  animation: none;
+}
+
+.df-template-tabs button.active {
+  background: rgba(var(--main-color-rgb), 0.55);
+  color: white;
+}
+
+.df-template-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.df-template-controls input.search {
+  flex: 1;
+  min-width: 12rem;
+  max-width: 22rem;
+  width: auto;
+  padding: 0.7rem 1rem;
+  font-size: 14px;
+  border-width: 1px;
+  border-color: var(--df-border-strong);
+}
+
+.df-template-controls select {
+  font-size: 14px;
+  padding: 0.65rem 0.75rem;
+  border-width: 1px;
+  border-color: var(--df-border-strong);
+  border-radius: var(--df-r-sm);
+}
+
+.df-template-controls .df-primary-btn {
+  font-size: 14px;
+  padding: 0.7rem 1.1rem;
+  gap: 0.5rem;
+}
+
+.df-template-grid.refreshing {
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+.df-template-gallery .df-empty button {
+  font-size: 14px;
+  padding: 0.7rem 1.1rem;
+  gap: 0.5rem;
+}
+
+.df-templates-lede {
+  color: var(--df-text-dim);
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 46rem;
+  margin-top: -0.75rem;
+}
+
+/* ---- A template's page ------------------------------------------------ */
+
+.df-template-page {
+  gap: 1.75rem;
+}
+
+.df-template-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  color: var(--df-text-dim);
+  font-size: 14px;
+}
+
+.df-template-back:hover {
+  color: white;
+}
+
+.df-template-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.df-template-detail-head .title-row {
+  min-width: 0;
+}
+
+.df-template-detail-head .title-row .df-template-icon {
+  font-size: 20px;
+}
+
+.df-template-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.df-template-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.df-template-detail-badges:empty {
+  display: none;
+}
+
+.df-template-description {
+  color: var(--df-text-dim);
+  font-size: 14.5px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.df-template-description > * + * {
+  margin-top: 0.6rem;
+}
+
+.df-template-description a {
+  color: #9cc9ef;
+  text-decoration: underline;
+}
+
+.df-template-description code {
+  background: var(--df-surface-2);
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.df-template-description ul,
+.df-template-description ol {
+  padding-left: 1.4rem;
+}
+
+.df-template-detail .visibility-note {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  color: var(--df-text-faint);
+  font-size: 12.5px;
+  font-style: italic;
+}
+
+/* Buttons in the action row look like the pills beside them. */
+.df-detail-actions button.darkBtn,
+.df-detail-actions a.darkBtn,
+.df-detail-actions span.darkBtn {
+  color: white;
+  box-shadow: none;
+  font-family: inherit;
+  scale: 1;
+}
+
+.df-detail-actions button.darkBtn:hover i {
+  animation: none;
+}
+
+.df-detail-actions .darkBtn.static {
+  cursor: default;
+}
+
+.df-detail-actions .darkBtn.static:hover {
+  background: var(--df-surface-2);
+  border-color: var(--df-border);
+}
+
+.df-detail-actions .darkBtn.primary {
+  background: rgba(var(--main-color-rgb), 0.6);
+  border-color: rgba(var(--main-color-rgb), 0.9);
+}
+
+.df-detail-actions .darkBtn.primary:hover {
+  background: var(--main-color);
+  box-shadow: 0 0 18px rgba(var(--main-color-rgb), 0.45);
+}
+
+.df-detail-actions .darkBtn.danger {
+  color: #ff8a8a;
+}
+
+.df-detail-actions .darkBtn.danger:hover {
+  background: rgba(255, 92, 92, 0.16);
+  border-color: rgba(255, 92, 92, 0.4);
+}
+
+.df-template-packs,
+.df-template-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.df-template-packs h2,
+.df-template-blocks h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+}
+
+.df-template-packs h2 i,
+.df-template-blocks h2 i {
+  color: var(--df-text-faint);
+}
+
+.df-template-packs p {
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+}
+
+.df-template-packs ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.df-template-packs li {
+  display: inline-flex;
+  font-size: 13px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+  border-left: 4px solid var(--pack-color, var(--main-color));
+}
+
+.df-template-packs li span {
+  color: var(--df-text-faint);
+}
+
+.df-template-packs li.unavailable {
+  color: #ff8a8a;
+  border-left-color: var(--df-danger);
+}
+
+/* ---- The block preview ----------------------------------------------- */
+
+.df-template-preview {
+  position: relative;
+  height: 28rem;
+  border-radius: var(--df-r-lg);
+  border: 1px solid var(--df-border);
+  overflow: hidden;
+  background: var(--df-surface);
+}
+
+.df-template-preview-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.df-template-preview-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--df-text-dim);
+  font-size: 14px;
+}
+
+.df-template-editor .df-template-preview,
+.df-template-detail.editor .df-template-preview {
+  height: 22rem;
+}
+
+/* ---- The editor's Templates dialog ----------------------------------- */
+
+.df-modal.df-templates-modal {
+  width: min(76rem, 96vw);
+  height: min(52rem, 90dvh);
+  max-height: 90dvh;
+}
+
+.df-templates-modal .df-modal-body {
+  overflow-y: auto;
+}
+
+.df-template-gallery.editor .df-grid {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.df-template-gallery.editor .loadingAnim {
+  align-self: center;
+  margin: 3rem 0;
+}
+
+.df-templates-modal-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.df-templates-modal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.df-templates-modal-nav button {
+  font-size: 14px;
+  padding: 0.6rem 1rem;
+  gap: 0.5rem;
+}
+
+.df-templates-modal-nav a {
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+}
+
+.df-templates-modal-nav a:hover {
+  color: white;
+}
+
+.df-template-detail.editor .df-project-detail-head {
+  padding: 1.35rem 1.5rem;
+}
+
+/* ---- The builder ------------------------------------------------------ */
+
+.df-template-builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.df-template-builder-bar {
+  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.df-template-builder-bar > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.df-template-builder-bar > div:first-child {
+  flex: 1;
+}
+
+.df-template-builder-bar button {
+  font-size: 14px;
+  padding: 0.65rem 1rem;
+  gap: 0.5rem;
+}
+
+button.df-template-builder-name {
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+}
+
+button.df-template-builder-name h1 {
+  font-size: 1.35rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 22rem;
+}
+
+button.df-template-builder-name i {
+  font-size: 13px;
+  opacity: 0;
+  color: var(--df-text-dim);
+  transition: opacity 0.15s ease;
+}
+
+button.df-template-builder-name:hover {
+  background: var(--df-surface-3);
+  box-shadow: none;
+}
+
+button.df-template-builder-name:hover i {
+  opacity: 1;
+  animation: none;
+}
+
+.df-template-builder-chip,
+.df-template-builder-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 12.5px;
+  font-style: normal;
+  white-space: nowrap;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--border-color);
+  color: var(--df-text-dim);
+}
+
+.df-template-builder-chip.draft {
+  color: #9cc9ef;
+}
+
+.df-template-builder-chip.changes {
+  color: var(--df-amber);
+}
+
+.df-template-builder-chip.published {
+  color: var(--df-mint);
+}
+
+.df-template-builder-save {
+  background: transparent;
+  color: var(--df-text-faint);
+}
+
+.df-template-builder-save.error {
+  color: #ff8a8a;
+}
+
+.df-template-builder-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 14px;
+  color: var(--df-text-dim);
+  white-space: nowrap;
+}
+
+.df-template-builder-link:hover {
+  color: white;
+}
+
+.df-template-builder-bar .df-template-publish {
+  background: var(--main-color);
+}
+
+.df-template-builder-bar .df-template-publish:hover {
+  background: #0864bc;
+  box-shadow: 0 0 18px rgba(var(--main-color-rgb), 0.5);
+}
+
+.df-template-builder-canvas {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+/* `#workspace` is sized for the project editor, which has a tab bar under
+   its toolbar. The builder has only the toolbar. */
+.df-template-builder #workspace {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 1100px) {
+  .df-template-builder-bar
+    .df-template-builder-chip:not(.draft):not(.changes):not(.published),
+  .df-template-builder-bar .blockCount,
+  .df-template-builder-save {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  /* The name gets a row of its own, and the buttons wrap under it —
+     squeezed onto one line, the name was the thing that disappeared. */
+  .df-template-builder-bar {
+    height: auto;
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
+  }
+
+  .df-template-builder-bar > div:first-child {
+    flex: 1 1 100%;
+  }
+
+  .df-template-builder-bar > div:last-child {
+    flex-wrap: wrap;
+  }
+
+  .df-template-builder-bar .logo span,
+  .df-template-builder-link {
+    display: none;
+  }
+}
+
+/* ---- The create / edit form (inside SweetAlert) ---------------------- */
+
+.swal2-popup.df-template-dialog {
+  width: min(34rem, 94vw);
+}
+
+.df-template-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: left;
+  font-size: 14px;
+}
+
+.df-template-form-intro {
+  margin-bottom: 0.6rem;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.df-template-form > label {
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+.df-template-form input[type="text"],
+.df-template-form textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  color: inherit;
+  background: rgba(127, 127, 127, 0.1);
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+}
+
+.df-template-form textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.df-template-visibility {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  border: none;
+  padding: 0;
+}
+
+.df-template-visibility legend {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.df-template-visibility label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.df-template-visibility label:has(input:checked) {
+  border-color: #3d8bd9;
+  background: rgba(61, 139, 217, 0.12);
+}
+
+.df-template-visibility input {
+  margin-top: 0.25rem;
+}
+
+.df-template-visibility strong {
+  display: block;
+}
+
+.df-template-import-note {
+  margin-top: 0.9rem;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* A second choice that isn't a dangerous one (swal.css makes every deny
+   button red). */
+.swal2-deny.df-swal-neutral {
+  background: #3f5873 !important;
+}

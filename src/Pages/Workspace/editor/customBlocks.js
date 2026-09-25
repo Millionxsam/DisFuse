@@ -3,6 +3,10 @@ import javascript from "blockly/javascript";
 
 import api, { data } from "../../../api/client.js";
 import registerCustomBlocks from "../../../blocks/lib/registerCustomBlocks";
+import {
+  markBlockBuddyBlocks,
+  markPackBlocks,
+} from "../../../functions/templateBlocks.js";
 
 /* =====================================================================
    Blocks that aren't ours
@@ -37,11 +41,17 @@ export async function loadBlockPacks(user, { signal } = {}) {
     .map((result) => result.value);
 }
 
-/** Registers the blocks inside each installed pack. */
+/**
+ * Registers the blocks inside each installed pack.
+ *
+ * Each definition is marked with the pack it came from, which is how a
+ * template knows which packs it needs (see functions/templateBlocks.js).
+ */
 export function registerBlockPacks(packs = []) {
   for (const pack of packs) {
     const latest = pack.versions?.[pack.versions.length - 1];
     registerCustomBlocks(latest?.blocks || []);
+    markPackBlocks(pack._id, latest?.blocks || []);
   }
 }
 
@@ -87,6 +97,9 @@ export function registerProjectCustomBlocks(customBlocks = []) {
   if (definitions.length) {
     try {
       Blockly.defineBlocksWithJsonArray(definitions);
+      /* So "Save as template" can tell these apart from blocks anybody
+         could load. */
+      markBlockBuddyBlocks(definitions.map((definition) => definition.type));
     } catch (error) {
       console.error("Could not define custom blocks:", error);
     }

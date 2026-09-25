@@ -5,7 +5,16 @@ import UserTag from "./UserTag";
 
 import { apiUrl } from "../config/config";
 
-export default function Reply({ reply: r, user, allUsers, project, comment }) {
+/** `basePath` is the thread's comment routes — see Comment.jsx. */
+export default function Reply({
+  reply: r,
+  user,
+  allUsers,
+  project,
+  comment,
+  basePath,
+}) {
+  const base = basePath ?? `/comments/${project._id}`;
   const [author, setAuthor] = useState({});
   const [reply, setReply] = useState(r);
   const [newLike, setNewLike] = useState(false);
@@ -25,13 +34,9 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
       if (!r.isConfirmed) return;
 
       axios
-        .delete(
-          apiUrl +
-            `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
-          {
-            headers: { Authorization: localStorage.getItem("disfuse-token") },
-          },
-        )
+        .delete(apiUrl + `${base}/${comment._id}/replies/${reply._id}`, {
+          headers: { Authorization: localStorage.getItem("disfuse-token") },
+        })
         .then(() => window.location.reload());
     });
   }
@@ -45,8 +50,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
 
       axios
         .patch(
-          apiUrl +
-            `/comments/${project._id}/${comment._id}/replies/${reply._id}`,
+          apiUrl + `${base}/${comment._id}/replies/${reply._id}`,
           { content: r.value },
           { headers: { Authorization: localStorage.getItem("disfuse-token") } },
         )
@@ -57,8 +61,7 @@ export default function Reply({ reply: r, user, allUsers, project, comment }) {
   function toggleLike() {
     axios
       .patch(
-        apiUrl +
-          `/comments/${project._id}/${comment._id}/replies/${reply._id}/likes`,
+        apiUrl + `${base}/${comment._id}/replies/${reply._id}/likes`,
         null,
         {
           headers: {

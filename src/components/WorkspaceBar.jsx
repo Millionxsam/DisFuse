@@ -129,7 +129,7 @@ export default function WorkspaceBar({
   onToggleToolbox,
   onShowCode,
   onExport,
-  onLoadTemplate,
+  onOpenTemplates,
 }) {
   const navigate = useNavigate();
 
@@ -322,7 +322,7 @@ export default function WorkspaceBar({
                   <i className="fa-solid fa-key" />
                   <div>Secrets</div>
                 </button>
-                <button id="templates" onClick={run(onLoadTemplate)}>
+                <button id="templates" onClick={run(onOpenTemplates)}>
                   <i className="fa-solid fa-shapes" />
                   <div>Templates</div>
                 </button>

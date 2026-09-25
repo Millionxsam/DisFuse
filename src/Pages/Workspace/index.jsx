@@ -19,6 +19,8 @@ import MessagePreview from "../../components/workspace/MessagePreview.jsx";
 import { closeMessagePreview } from "../../components/workspace/messagePreviewStore.js";
 import ModalPreview from "../../components/workspace/ModalPreview.jsx";
 import { closeModalPreview } from "../../components/workspace/modalPreviewStore.js";
+import TemplatesModal from "../../components/workspace/TemplatesModal.jsx";
+import { createTemplateFlow } from "../../components/templates/templateDialogs.js";
 import VersionControl from "../../components/VersionControl.jsx";
 
 import api, { data, errorMessage } from "../../api/client.js";
@@ -28,6 +30,12 @@ import joinServer from "../../functions/joinServer.js";
 import modalThemeColor from "../../functions/modalThemeColor";
 import registerContextMenus from "../../functions/registerContextMenus";
 import { updateCode } from "../../functions/updateCode";
+import {
+  blockTypesIn,
+  checkTemplateTypes,
+  describeBlockedTypes,
+  serializeBlocksAsTemplate,
+} from "../../functions/templateBlocks.js";
 import {
   createVersionWorkspace,
   recallActiveVersion,
@@ -39,6 +47,7 @@ import useProjectSession from "./useProjectSession.js";
 import useVersionControl from "./useVersionControl.js";
 import createPresenceLabels from "./editor/presenceLabels.js";
 import exportProject from "./editor/exportProject.js";
+import importTemplate from "./editor/importTemplate.js";
 import {
   loadBlockPacks,
   loadProjectCustomBlocks,
@@ -56,8 +65,6 @@ import {
    import: each module registers itself with Blockly when it loads. */
 import "../../blocks/index.js";
 
-import { DOCS, docsUrl } from "../../config/docs.js";
-
 /* Blockly warns about this on every generated block when a generator
    runs outside a full code pass, which is most of what the editor does. */
 const originalWarn = console.warn;
@@ -70,6 +77,27 @@ console.warn = function (...args) {
 
   originalWarn(...args);
 };
+
+/* Every context menu item the editor registers. They live in Blockly's
+   global registry, so they outlast the editor unless removed — and items
+   like "Move to workspace" would then turn up on other canvases, such as
+   the template builder, still writing into this project. */
+const CONTEXT_MENU_IDS = [
+  "previewMessage",
+  "previewModal",
+  "copyCode",
+  "moveBlock",
+  "mergeWorkspace",
+  "toggleToolbox",
+  "saveBlocksAsTemplate",
+  "saveWorkspaceAsTemplate",
+];
+
+function unregisterContextMenus() {
+  for (const id of CONTEXT_MENU_IDS)
+    if (Blockly.ContextMenuRegistry.registry.getItem(id))
+      Blockly.ContextMenuRegistry.registry.unregister(id);
+}
 
 const RESERVED_WORDS =
   "getCollection,getFromCollection,forEachCollection,Discord,moment,gamecord,discord_gamecord,easyjsondatabase,Database,client,databases,disfuseCooldowns,wait,process,emoji,channel,channels,member,members,user,users,guild,guilds,server,servers,modalSubmitInteraction,ForEachemojiInServer,interaction,int,scratchUserProfileInformation,errorButWithLengthyName,error,PollCreator,leavingMember,AddMember,AddServer,messageDeleted,messageReaction,messageSent,role,roles,createdThread,boostedMember,unboostedMember,boostedGuild,oldBoostLevel,newBoostLevel,lyrics,lyricsFinder,filePath,fs,readData,err,files,filterItem,localVar,newWebhook,captcha,Captcha,permsChannel,variable,list,disfuse,canvas,ctx,config,dotenv,lyrics_finder,@ddededodediamante/captcha-generator,axios,_napi_rs_canvas,response,_ddededodediamante_captcha_generator";
@@ -100,8 +128,12 @@ export default function Workspace() {
   const [phase, setPhase] = useState("loading");
   const [toolbox, setToolbox] = useState(null);
   const [blockPacks, setBlockPacks] = useState([]);
+  /* The same list, for the context menus, which are registered once and
+     would otherwise only ever see the packs there were at the time. */
+  const blockPacksRef = useRef([]);
   const [secretsOpen, setSecretsOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [templatesOpen, setTemplatesOpen] = useState(false);
   /* What the toolbar shows. These used to be written into the DOM with
      `innerHTML` from two other files. */
   const [blockCount, setBlockCount] = useState(0);
@@ -234,16 +266,7 @@ export default function Workspace() {
        first call always is the first — nothing registers these menus
        before this runs. Unguarded, that throw escaped a render and took
        the whole editor down to a blank page. */
-    for (const id of [
-      "previewMessage",
-      "previewModal",
-      "copyCode",
-      "moveBlock",
-      "mergeWorkspace",
-      "toggleToolbox",
-    ])
-      if (Blockly.ContextMenuRegistry.registry.getItem(id))
-        Blockly.ContextMenuRegistry.registry.unregister(id);
+    unregisterContextMenus();
 
     registerContextMenus(
       session.project,
@@ -261,6 +284,33 @@ export default function Workspace() {
       id: "toggleToolbox",
       callback: (scope) => toggleToolbox(scope.workspace),
     });
+
+    /* A copy of some blocks, as the start of a new template. The template
+       isn't linked to this project in either direction: it opens in its
+       own builder, and editing one never changes the other. */
+    Blockly.ContextMenuRegistry.registry.register({
+      id: "saveBlocksAsTemplate",
+      displayText: "Save as Template",
+      scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+      preconditionFn: (scope) =>
+        scope.block && !scope.block.workspace?.isFlyout ? "enabled" : "hidden",
+      callback: (scope) => saveAsTemplate([scope.block], scope.block.workspace),
+    });
+
+    Blockly.ContextMenuRegistry.registry.register({
+      id: "saveWorkspaceAsTemplate",
+      displayText: "Save Workspace as Template",
+      scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+      preconditionFn: (scope) =>
+        scope.workspace?.getTopBlocks(false).length ? "enabled" : "disabled",
+      callback: (scope) =>
+        saveAsTemplate(
+          scope.workspace.getTopBlocks(true),
+          scope.workspace,
+          currentWorkspace.current?.name,
+        ),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.project]);
 
   const toggleToolbox = useCallback((workspace) => {
@@ -417,6 +467,7 @@ export default function Workspace() {
 
       registerBlockPacks(packs);
       registerProjectCustomBlocks(custom);
+      blockPacksRef.current = packs;
       setBlockPacks(packs);
 
       javascriptGenerator.addReservedWords(RESERVED_WORDS);
@@ -547,6 +598,7 @@ export default function Workspace() {
     return () => {
       presence.current?.dispose();
       presence.current = null;
+      unregisterContextMenus();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor.ready, phase]);
@@ -655,46 +707,153 @@ export default function Workspace() {
     if (view) view.style.display = "flex";
   }, [editor, session.project]);
 
-  const handleLoadTemplate = useCallback(async () => {
-    const result = await Swal.fire({
-      title: "Load Template",
-      html:
-        "Which template would you like to load?<br /><br />" +
-        `<a style="color: #ffb648" rel="noopener noreferrer" target="_blank" ` +
-        `href="${docsUrl(DOCS.templates)}">What each template contains →</a>`,
-      showCancelButton: true,
-      cancelButtonText: "Cancel",
-      confirmButtonText: "Load",
-      input: "select",
-      inputOptions: {
-        slashCommand: "Slash Commands",
-        pingCommand: "Ping Command",
-        economyCommand: "Economy Commands",
-        ticketCommands: "Ticket Commands",
-        contextMenu: "Context Menu",
-      },
-      ...modalColors,
-    });
+  /* ---- Templates ------------------------------------------------------ */
 
-    if (!result.isConfirmed) return;
+  /**
+   * Teaches the editor the blocks of packs installed while it was open —
+   * by importing a template that needs them — and puts them in the
+   * toolbox without re-injecting the workspace.
+   */
+  const addBlockPacks = useCallback(
+    (packs) => {
+      if (!packs?.length) return;
 
-    const workspace = editor.workspaceRef.current;
+      registerBlockPacks(packs);
 
-    /* `import()` returns a promise. This used to read `.blocks` straight
-       off it, so the Templates button threw every time it was used. */
-    const template = await import(`../../templates/${result.value}.js`);
-    const state = structuredClone(
-      template.default ?? template.blocks ?? template,
+      const added = new Set(packs.map((pack) => String(pack._id)));
+      const all = [
+        ...blockPacksRef.current.filter((pack) => !added.has(String(pack._id))),
+        ...packs,
+      ];
+
+      blockPacksRef.current = all;
+      setBlockPacks(all);
+
+      editor.workspaceRef.current?.updateToolbox(getToolbox(all, user));
+    },
+    [editor, user],
+  );
+
+  /** An empty workspace for a template to go in, opened. Owner only. */
+  const openNewWorkspace = useCallback(
+    async (name) => {
+      await autosave.flush();
+
+      if (activeVersion.current) {
+        const result = await createVersionWorkspace(
+          projectId,
+          activeVersion.current._id,
+          { name },
+        );
+
+        versions.actions.applyVersionResult(result);
+
+        const list = result.version?.workspaces ?? [];
+        await openWorkspace(list, { index: list.length - 1 });
+        return;
+      }
+
+      const updated = await api
+        .post(`/projects/${projectId}/workspaces`, { name })
+        .then(data);
+
+      session.setProject((current) => ({
+        ...current,
+        workspaces: updated.workspaces,
+      }));
+
+      await openWorkspace(updated.workspaces, {
+        index: updated.workspaces.length - 1,
+      });
+    },
+    [autosave, openWorkspace, projectId, session, versions.actions],
+  );
+
+  const runTemplateImport = useCallback(
+    (templateId) =>
+      importTemplate({
+        templateId,
+        getWorkspace: () => editor.workspaceRef.current,
+        project: session.project,
+        user,
+        canCreateWorkspaces: isOwner,
+        loadedPacks: blockPacksRef.current,
+        onPacksLoaded: addBlockPacks,
+        openNewWorkspace,
+        modalColors,
+      }),
+    [
+      addBlockPacks,
+      editor,
+      isOwner,
+      modalColors,
+      openNewWorkspace,
+      session.project,
+      user,
+    ],
+  );
+
+  /**
+   * "Save as Template" and "Save Workspace as Template".
+   *
+   * Only blocks anybody could load can go in a template, so BlockBuddy
+   * blocks and blocks from private packs are turned away here, with the
+   * reason, rather than at Publish.
+   */
+  function saveAsTemplate(blocks, workspace, suggestedName = "") {
+    const data = serializeBlocksAsTemplate(blocks, workspace);
+
+    const privatePacks = new Set(
+      blockPacksRef.current
+        .filter((pack) => pack.private)
+        .map((pack) => String(pack._id)),
     );
 
-    const existing =
-      Blockly.serialization.workspaces.save(workspace)?.blocks?.blocks ?? [];
+    const problem = describeBlockedTypes(
+      checkTemplateTypes(blockTypesIn(JSON.parse(data).blocks.blocks), {
+        privatePacks,
+      }),
+    );
 
-    state.blocks = state.blocks ?? { blocks: [] };
-    state.blocks.blocks = [...(state.blocks.blocks ?? []), ...existing];
+    if (problem)
+      return Swal.fire({
+        ...modalColors,
+        title: "These blocks can't go in a template",
+        text: problem,
+        icon: "warning",
+      });
 
-    Blockly.serialization.workspaces.load(state, workspace);
-  }, [editor, modalColors]);
+    createTemplateFlow({
+      openIn: "new-tab",
+      draft: data,
+      initialName: suggestedName,
+      intro:
+        "A copy of these blocks goes into a new template, in a builder of its own. It isn't linked to this project — changing one never changes the other.",
+      modalColors,
+    });
+  }
+
+  /* A template chosen somewhere else — "Use in a project" on its page —
+     arrives as `?template=` and is imported once the blocks are on
+     screen. The parameter is dropped first, so a reload doesn't import
+     it twice. */
+  useEffect(() => {
+    if (!editor.ready || phase !== "editing") return;
+
+    const pending = searchParams.get("template");
+    if (!pending) return;
+
+    setSearchParams(
+      (params) => {
+        params.delete("template");
+        return params;
+      },
+      { replace: true },
+    );
+
+    runTemplateImport(pending);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor.ready, phase]);
 
   /* ---- Render ---------------------------------------------------------- */
 
@@ -725,7 +884,7 @@ export default function Workspace() {
         onToggleToolbox={() => toggleToolbox(editor.workspaceRef.current)}
         onShowCode={handleShowCode}
         onExport={handleExport}
-        onLoadTemplate={handleLoadTemplate}
+        onOpenTemplates={() => setTemplatesOpen(true)}
       />
 
       <CodeView />
@@ -762,6 +921,22 @@ export default function Workspace() {
             collaborators: updated.collaborators,
           }))
         }
+      />
+
+      <TemplatesModal
+        open={templatesOpen}
+        viewer={user}
+        onClose={() => setTemplatesOpen(false)}
+        onImport={(templateId) => {
+          /* SweetAlert asks where the blocks go, and it can't show above
+             a <dialog> — so this one steps aside first. */
+          setTemplatesOpen(false);
+          runTemplateImport(templateId);
+        }}
+        onCreate={() => {
+          setTemplatesOpen(false);
+          createTemplateFlow({ openIn: "new-tab", modalColors });
+        }}
       />
 
       <VersionControl

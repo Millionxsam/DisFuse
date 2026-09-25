@@ -48,8 +48,17 @@ import variables from "./categories/variables.js";
 /**
  * @param {Array}  [blockPacks] the Workshop packs this user has installed
  * @param {object} [user]       for their BlockBuddy blocks
+ * @param {object} [options]
+ * @param {boolean} [options.blockBuddy] include the BlockBuddy category.
+ *   The template builder leaves it out: a BlockBuddy block belongs to one
+ *   person's account, so a template containing one couldn't be loaded by
+ *   anybody else.
  */
-export default function getToolbox(blockPacks = [], user) {
+export default function getToolbox(
+  blockPacks = [],
+  user,
+  { blockBuddy = true } = {},
+) {
   return {
     kind: "categoryToolbox",
     contents: [
@@ -85,7 +94,7 @@ export default function getToolbox(blockPacks = [], user) {
       files,
       sep(),
       workshopCategory(blockPacks),
-      blockBuddyCategory(user),
+      ...(blockBuddy ? [blockBuddyCategory(user)] : []),
     ],
   };
 }
