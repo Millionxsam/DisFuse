@@ -116,7 +116,7 @@ export default function TemplatePage() {
         if (controller.signal.aborted) return;
         setLoadError(
           error?.response?.status === 404
-            ? "This template doesn't exist, or isn't shared with you."
+            ? "This template doesn't exist, or you don't have access to it."
             : errorMessage(error, "Couldn't load this template."),
         );
         setStatus("error");
@@ -284,7 +284,7 @@ export default function TemplatePage() {
         viewer={viewer}
         onChange={merge}
         onUse={use}
-        useLabel="Use in a project"
+        useLabel="Add to a project"
         ownerActions={ownerActions}
         staffActions={staffActions}
       />

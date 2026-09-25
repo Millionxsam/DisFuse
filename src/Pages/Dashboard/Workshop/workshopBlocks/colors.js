@@ -21,12 +21,9 @@ Blockly.Blocks["color_picker"] = {
   },
 };
 
-javascript.javascriptGenerator.forBlock["color_picker"] = function (
-  block,
-  generator,
-) {
+javascript.javascriptGenerator.forBlock["color_picker"] = function (block, _) {
   var colour = block.getFieldValue("color");
-  return [generator.quote_(colour), javascript.Order.ATOMIC];
+  return [colour, javascript.Order.ATOMIC];
 };
 
 Blockly.Blocks["color_custom"] = {
@@ -51,10 +48,7 @@ Blockly.Blocks["color_custom"] = {
   },
 };
 
-javascript.javascriptGenerator.forBlock["color_custom"] = function (
-  block,
-  generator,
-) {
+javascript.javascriptGenerator.forBlock["color_custom"] = function (block, _) {
   var colour = block.getFieldValue("color");
-  return [generator.quote_(colour), javascript.Order.ATOMIC];
+  return [colour, javascript.Order.ATOMIC];
 };

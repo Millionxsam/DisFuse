@@ -1,4 +1,4 @@
-import * as Blockly from "blockly";
+import { saveWorkspaceState, withoutBackpack } from "./workspaceState.js";
 
 /* =====================================================================
    .df save files
@@ -61,7 +61,7 @@ export function buildDf(workspaces = [], { scope = "project", ...live } = {}) {
 /** One workspace's blocks: from the editor if it is the one on screen. */
 function workspaceData(ws, { workspace, workspaceId } = {}) {
   if (workspace && ws._id && String(ws._id) === String(workspaceId))
-    return Blockly.serialization.workspaces.save(workspace);
+    return saveWorkspaceState(workspace);
 
   return parseDfWorkspaceData(ws.data);
 }
@@ -70,10 +70,15 @@ export function isProjectDfFile(json) {
   return Boolean(json?.disfuseProject && Array.isArray(json.workspaces));
 }
 
+/**
+ * A workspace's saved blocks as an object. Without the backpack: older
+ * saves (and .df files made from them) carry the backpack of whoever
+ * saved them, which shouldn't be exported, imported or loaded.
+ */
 export function parseDfWorkspaceData(data) {
-  if (typeof data !== "string") return data || {};
+  if (typeof data !== "string") return withoutBackpack(data || {});
   try {
-    return JSON.parse(data || "{}");
+    return withoutBackpack(JSON.parse(data || "{}"));
   } catch {
     return {};
   }

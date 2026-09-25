@@ -73,20 +73,20 @@ export async function askForTemplateDetails({
           placeholder="e.g. Welcome messages" value="${escapeHtml(initial.name ?? "")}" />
         <label for="df-template-description">Description</label>
         <textarea id="df-template-description" rows="5" maxlength="${TEMPLATE_LIMITS.maxDescriptionLength}"
-          placeholder="What does it do, and how should people use it? Markdown works here.">${escapeHtml(
+          placeholder="What does it do, and how do people use it? You can use Markdown to format this text.">${escapeHtml(
             initial.description ?? "",
           )}</textarea>
         <fieldset class="df-template-visibility">
-          <legend>Visibility</legend>
+          <legend>Who can see it</legend>
           <label>
             <input type="radio" name="df-template-visibility" value="public"${isPrivate ? "" : " checked"} />
             <span><strong><i class="fa-solid fa-earth-americas"></i> Public</strong>
-            Anyone can find, like and import it once you publish it.</span>
+            Anyone can find it, like it and add it to their projects once you publish it.</span>
           </label>
           <label>
             <input type="radio" name="df-template-visibility" value="private"${isPrivate ? " checked" : ""} />
             <span><strong><i class="fa-solid fa-lock"></i> Private</strong>
-            Only you can see it and import it into your projects.</span>
+            Only you can see it and add it to your projects.</span>
           </label>
         </fieldset>
       </div>`,
@@ -113,7 +113,7 @@ export async function askForTemplateDetails({
 
       if (name.length < TEMPLATE_LIMITS.minNameLength) {
         Swal.showValidationMessage(
-          `The name needs at least ${TEMPLATE_LIMITS.minNameLength} characters`,
+          `The name must be at least ${TEMPLATE_LIMITS.minNameLength} characters long`,
         );
         return false;
       }
@@ -180,11 +180,11 @@ export async function createTemplateFlow({
 }) {
   const details = await askForTemplateDetails({
     title: draft ? "Save as Template" : "Create a Template",
-    confirmButtonText: "Create and open the builder",
+    confirmButtonText: "Create and start building",
     initial: { name: initialName },
     intro:
       intro ??
-      "You'll build it in a workspace of its own. Nothing is shared until you publish it.",
+      "You'll build it in its own workspace. Nobody else can see it until you publish it.",
     modalColors,
     onConfirm: openIn === "new-tab" ? reserveBuilderTab : undefined,
   });
@@ -224,7 +224,7 @@ export async function createTemplateFlow({
 export async function confirmDeleteTemplate(template, modalColors = {}) {
   const result = await Swal.fire({
     title: "Delete this template?",
-    html: `<b>${escapeHtml(template.name)}</b> will be deleted, along with its likes and comments.<br /><br />Projects that already imported it keep their blocks — those are theirs now.`,
+    html: `<b>${escapeHtml(template.name)}</b> will be deleted, along with its likes and comments.<br /><br />Projects that already added it will keep their copy of the blocks.`,
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Delete",
@@ -238,7 +238,7 @@ export async function confirmDeleteTemplate(template, modalColors = {}) {
 export async function confirmUnpublishTemplate(template, modalColors = {}) {
   const result = await Swal.fire({
     title: "Unpublish this template?",
-    html: `<b>${escapeHtml(template.name)}</b> will leave the gallery and nobody will be able to import it. Your blocks stay in the builder, so you can publish it again whenever you like.<br /><br />Projects that already imported it keep their blocks.`,
+    html: `<b>${escapeHtml(template.name)}</b> will be removed from the Templates page, and nobody will be able to add it to a project. Your blocks stay saved, so you can publish it again anytime.<br /><br />Projects that already added it will keep their copy of the blocks.`,
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "Unpublish",
@@ -293,10 +293,10 @@ export async function pickProjectForTemplate(template, modalColors = {}) {
   }
 
   const result = await Swal.fire({
-    title: "Use in which project?",
-    html: `The project opens with <b>${escapeHtml(
+    title: "Which project do you want to add it to?",
+    html: `We'll open the project with <b>${escapeHtml(
       template.name,
-    )}</b> ready to add. You'll choose where its blocks go.`,
+    )}</b> ready to add. You'll pick where its blocks go.`,
     input: "select",
     /* SweetAlert parses option labels as HTML, and project names are
        whatever their owners typed. */

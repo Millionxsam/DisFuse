@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import * as Blockly from "blockly";
 
+import { saveWorkspaceState } from "../../functions/workspaceState.js";
+
 /* =====================================================================
    Autosave
    ---------------------------------------------------------------------
@@ -164,10 +166,12 @@ export default function useAutosave({
       /* Serialised here, at the moment of sending, and addressed to the
          version that is open *now* — never to whichever one a closure
          happened to capture. An empty workspace serialises to `{}`,
-         which is a perfectly valid project state and is saved as one. */
+         which is a perfectly valid project state and is saved as one.
+         Without the backpack: that belongs to whoever is saving, not to
+         the project every collaborator opens. */
       const payload = {
         projectId,
-        data: JSON.stringify(Blockly.serialization.workspaces.save(workspace)),
+        data: JSON.stringify(saveWorkspaceState(workspace)),
         event,
         workspaceId: target._id,
         ...(versionRef.current?._id

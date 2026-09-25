@@ -187,16 +187,16 @@ export function describeBlockedTypes({ blockBuddy, privatePack, missing }) {
 
   if (blockBuddy.length)
     reasons.push(
-      `BlockBuddy blocks belong to your account, so nobody else could load them: ${blockBuddy.join(", ")}.`,
+      `BlockBuddy blocks are tied to your account, so other people can't use them: ${blockBuddy.join(", ")}.`,
     );
 
   if (privatePack.length)
     reasons.push(
-      `These come from a private Workshop pack, which nobody else can install: ${privatePack.join(", ")}.`,
+      `These blocks come from a private Workshop pack, so other people can't use them: ${privatePack.join(", ")}.`,
     );
 
   if (missing.length)
-    reasons.push(`These blocks aren't available here: ${missing.join(", ")}.`);
+    reasons.push(`These blocks aren't available: ${missing.join(", ")}.`);
 
   return reasons.length ? reasons.join(" ") : null;
 }

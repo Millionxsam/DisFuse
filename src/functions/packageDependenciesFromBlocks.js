@@ -1,3 +1,9 @@
+import {
+  sioClientRuntime,
+  sioServerRuntime,
+  wsRuntime,
+} from "../blocks/apps/websockets/runtime.js";
+
 const blockImports = {
   fs_: ["fs", "path"],
   music_: "lyrics-finder",
@@ -13,6 +19,12 @@ const blockImports = {
   dashboard_: "axios",
   time_: "ms",
   canvas_: "@napi-rs/canvas",
+  /* WebSocket blocks bring their helpers with them; see
+     blocks/apps/websockets/runtime.js. `ws_` covers both the client and
+     server blocks, which share one `ws` import. */
+  ws_: { package: "ws", code: wsRuntime },
+  sio_client_: { package: "socket.io-client", code: sioClientRuntime },
+  sio_server_: { package: "socket.io", code: sioServerRuntime },
   events_: {
     package: "discord-logs",
     code: `

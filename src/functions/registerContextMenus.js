@@ -5,6 +5,7 @@ import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
 import api from "../api/client.js";
 import { saveVersionWorkspaceData } from "../api/versions";
+import { withoutBackpack } from "./workspaceState.js";
 import {
   closeMessagePreview,
   openMessagePreview,
@@ -27,7 +28,9 @@ function parseWorkspaceData(workspace) {
   if (!workspace?.data?.length) return { blocks: { blocks: [] } };
 
   try {
-    const parsed = JSON.parse(workspace.data);
+    /* Older saves carry a backpack; it is dropped here so that writing
+       this workspace back doesn't keep a collaborator's in the project. */
+    const parsed = withoutBackpack(JSON.parse(workspace.data));
     if (!parsed.blocks?.blocks) parsed.blocks = { blocks: [] };
     return parsed;
   } catch (error) {

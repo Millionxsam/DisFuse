@@ -4,6 +4,7 @@ import * as Blockly from "blockly";
 import Swal from "sweetalert2";
 
 import UserTag from "./UserTag";
+import api from "../api/client.js";
 import { userCache } from "../cache.ts";
 import modalThemeColor from "../functions/modalThemeColor.js";
 import {
@@ -12,6 +13,7 @@ import {
   parseDfWorkspaceData,
 } from "../functions/dfFile";
 import { refreshProjectWorkspaces } from "../functions/projectData";
+import { loadWorkspaceState } from "../functions/workspaceState.js";
 import {
   pickVersionAndScope,
   workspacesForChoice,
@@ -573,8 +575,10 @@ export default function WorkspaceBar({
     }).then((result) => {
       if (result.isDismissed) return;
 
+      /* Loaded without touching the backpack: a file can carry the
+         backpack of whoever saved it, and that shouldn't replace yours. */
       if (result.isDenied) {
-        Blockly.serialization.workspaces.load(wsData, workspace);
+        loadWorkspaceState(wsData, workspace);
       } else {
         wsData.blocks = wsData.blocks || { blocks: [] };
         wsData.blocks.blocks = (wsData.blocks.blocks || []).concat(
@@ -582,7 +586,7 @@ export default function WorkspaceBar({
             [],
         );
 
-        Blockly.serialization.workspaces.load(wsData, workspace);
+        loadWorkspaceState(wsData, workspace);
       }
     });
   }
@@ -650,15 +654,9 @@ export default function WorkspaceBar({
               data,
             );
           else
-            await axios.patch(
-              apiUrl +
-                `/projects/${project._id}/workspaces/${existing._id}/data`,
+            await api.patch(
+              `/projects/${project._id}/workspaces/${existing._id}/data`,
               { name: ws.name, data },
-              {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
-              },
             );
 
           updated++;
@@ -669,15 +667,10 @@ export default function WorkspaceBar({
               data,
             });
           else
-            await axios.post(
-              apiUrl + `/projects/${project._id}/workspaces`,
-              { name: ws.name, data },
-              {
-                headers: {
-                  Authorization: localStorage.getItem("disfuse-token"),
-                },
-              },
-            );
+            await api.post(`/projects/${project._id}/workspaces`, {
+              name: ws.name,
+              data,
+            });
 
           created++;
         }

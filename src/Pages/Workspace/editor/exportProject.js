@@ -1,4 +1,3 @@
-import * as Blockly from "blockly";
 import JSZip from "jszip";
 import Swal from "sweetalert2";
 
@@ -16,6 +15,7 @@ import {
   workspacesForChoice,
 } from "../../../functions/versionPicker.js";
 import { refreshProjectWorkspaces } from "../../../functions/projectData";
+import { saveWorkspaceState } from "../../../functions/workspaceState.js";
 
 import { DOCS, docsUrl } from "../../../config/docs.js";
 
@@ -114,7 +114,7 @@ async function resolveExport({
   if (editingThis && String(scope) === String(currentWorkspaceId))
     return {
       exportingWs: workspace,
-      df: Blockly.serialization.workspaces.save(workspace),
+      df: saveWorkspaceState(workspace),
       code: await generateWorkspaceCode(project, workspace),
       temporary: false,
     };

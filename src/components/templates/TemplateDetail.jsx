@@ -48,7 +48,7 @@ export default function TemplateDetail({
   onChange,
   context = "page",
   onUse,
-  useLabel = "Use in a project",
+  useLabel = "Add to a project",
   ownerActions = [],
   staffActions = [],
 }) {
@@ -153,22 +153,22 @@ export default function TemplateDetail({
         {own && !template.published ? (
           <p className="visibility-note">
             <i className="fa-solid fa-pen-ruler" /> Only you can see this
-            template until you publish it from the builder.
+            template until you publish it.
           </p>
         ) : null}
 
         {own && template.published && template.unpublishedChanges ? (
           <p className="visibility-note">
-            <i className="fa-solid fa-circle-half-stroke" /> You've changed this
-            template in the builder since you published it. People importing it
-            still get the published version.
+            <i className="fa-solid fa-circle-half-stroke" /> You've made changes
+            since you last published. People who add this template still get
+            the last published version.
           </p>
         ) : null}
 
         {template.private && own ? (
           <p className="visibility-note">
             <i className="fa-solid fa-lock" /> Private: only you can see it and
-            import it.
+            use it.
           </p>
         ) : null}
 
@@ -205,7 +205,7 @@ export default function TemplateDetail({
             }`}
             title={
               likeError ??
-              (template.published ? undefined : "Publish it to collect likes")
+              (template.published ? undefined : "Publish it so people can like it")
             }
             aria-pressed={Boolean(template.liked)}
           >
@@ -215,15 +215,15 @@ export default function TemplateDetail({
             </div>
           </button>
 
-          <span className="darkBtn static" title="People who imported it">
+          <span className="darkBtn static" title="Times added to a project">
             <i className="fa-solid fa-file-import" />
             <div>
-              {template.imports} Import{template.imports === 1 ? "" : "s"}
+              {template.imports} Use{template.imports === 1 ? "" : "s"}
             </div>
           </span>
 
           {template.published ? (
-            <span className="darkBtn static" title="Blocks in it">
+            <span className="darkBtn static" title="Number of blocks">
               <i className="fa-solid fa-cube" />
               <div>
                 {template.blockCount} Block
@@ -247,10 +247,11 @@ export default function TemplateDetail({
           <p>
             This template uses blocks from{" "}
             {template.packs.length === 1
-              ? "a Workshop pack"
+              ? "this Workshop pack"
               : "these Workshop packs"}
-            . Importing it adds {template.packs.length === 1 ? "it" : "them"} to
-            your library.
+            . When you add this template,{" "}
+            {template.packs.length === 1 ? "the pack is" : "the packs are"} also
+            added to your library.
           </p>
           <ul>
             {template.packs.map((pack) => (
@@ -270,7 +271,7 @@ export default function TemplateDetail({
                   </a>
                 ) : (
                   <span>
-                    {pack.name ?? "A deleted pack"} — no longer available
+                    {pack.name ?? "A deleted pack"} (no longer available)
                   </span>
                 )}
               </li>
@@ -279,8 +280,8 @@ export default function TemplateDetail({
           {unavailablePacks.length ? (
             <p className="df-template-error">
               <i className="fa-solid fa-triangle-exclamation" /> A pack this
-              template needs can no longer be installed, so it can't be
-              imported.
+              template needs can no longer be installed, so the template can't
+              be added to a project.
             </p>
           ) : null}
         </section>

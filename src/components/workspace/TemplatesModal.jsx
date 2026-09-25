@@ -91,7 +91,7 @@ export default function TemplatesModal({
       open={open}
       onClose={onClose}
       title="Templates"
-      subtitle="Ready-made blocks from the community and the DisFuse team. Importing copies them into this project."
+      subtitle="Ready-made blocks shared by the community and the DisFuse team. Adding one puts a copy of its blocks in this project."
       icon="fa-solid fa-shapes"
       docsPage={DOCS.templates}
       className="df-templates-modal"
@@ -104,7 +104,7 @@ export default function TemplatesModal({
             reloadKey={reloadKey}
             onOpen={(found) => setOpenId(found._id)}
             onUse={(found) => onImport(found._id)}
-            useLabel="Import"
+            useLabel="Add"
             useIcon="fa-solid fa-file-import"
             onEdit={(found) => {
               /* A new tab, so the project stays open — or this one, where
@@ -148,7 +148,7 @@ export default function TemplatesModal({
                 setTemplate((current) => ({ ...current, ...changes }))
               }
               onUse={() => onImport(template._id)}
-              useLabel="Import into this project"
+              useLabel="Add to this project"
               ownerActions={[
                 {
                   label: "Edit blocks",

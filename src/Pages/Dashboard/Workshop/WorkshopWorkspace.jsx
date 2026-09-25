@@ -146,9 +146,19 @@ export default function WorkshopWorkspace() {
                       let blockList = workspace
                         .getAllBlocks(false)
                         .filter((b) => b.type === "main_blockcreator")
-                        .map((b) =>
-                          JSON.parse(javascriptGenerator.blockToCode(b)),
-                        );
+                        .flatMap((b) => {
+                          /* A quote typed into a description, say, makes
+                             the JSON invalid. Skip that block rather than
+                             throwing, which would also stop the autosave
+                             below. */
+                          try {
+                            return [
+                              JSON.parse(javascriptGenerator.blockToCode(b)),
+                            ];
+                          } catch {
+                            return [];
+                          }
+                        });
 
                       setBlocks(blockList);
 
@@ -244,7 +254,7 @@ export default function WorkshopWorkspace() {
       </div>
       <div className="workshop-workspace-container">
         <div id="workshopWorkspace"></div>
-        {workspace && <PreviewBox key={1} blocks={blocks} />}
+        {workspace && <PreviewBox key={1} blocks={blocks} pack={pack} />}
       </div>
     </>
   );

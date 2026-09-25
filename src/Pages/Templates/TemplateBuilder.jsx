@@ -210,7 +210,7 @@ async function showBuilderWelcome(modalColors) {
   await Swal.fire({
     icon: "info",
     title: "Welcome to the template builder",
-    html: `Everything on this canvas becomes your template. It saves as you go, but nobody else sees it until you press <b>Publish</b> — and after that, only when you publish again.<br /><br />The toolbox is the same as a project's, except for BlockBuddy blocks and private Workshop packs, which nobody else could load.`,
+    html: `Everything you put in this workspace becomes your template. Your work saves automatically, but nobody else can see it until you press <b>Publish</b>. After that, people only get your new changes when you publish again.<br /><br />You can use the same blocks as in a project, except BlockBuddy blocks and private Workshop packs, because other people can't use those.`,
     confirmButtonText: "Start building",
     ...modalColors,
   });
@@ -302,7 +302,7 @@ export default function TemplateBuilder() {
           title: "Couldn't open this template",
           text:
             error?.response?.status === 404
-              ? "It doesn't exist, or it isn't yours."
+              ? "It doesn't exist, or it belongs to someone else."
               : errorMessage(error, "Please try again."),
           icon: "error",
           ...modalColors,
@@ -346,7 +346,7 @@ export default function TemplateBuilder() {
           title: "Some blocks can't be loaded",
           html: `This template uses blocks that aren't available: <b>${escapeHtml(
             missing.join(", "),
-          )}</b>.<br /><br />They usually come from a Workshop pack you've uninstalled, or one that has been made private. Install it again from the Workshop, then come back.`,
+          )}</b>.<br /><br />This usually happens when you uninstall a Workshop pack, or when its creator makes it private. Install the pack again from the Workshop, then come back.`,
           icon: "warning",
           confirmButtonText: "Back to my templates",
           ...modalColors,
@@ -386,7 +386,7 @@ export default function TemplateBuilder() {
 
     const workspace = editor.workspaceRef.current;
 
-    editor.loadBlocks(template.draft, { keepBackpack: true });
+    editor.loadBlocks(template.draft);
 
     const loaded = serializeTemplate(workspace);
     latestData.current = loaded;
@@ -441,7 +441,7 @@ export default function TemplateBuilder() {
     if (!topBlocks.length)
       return Swal.fire({
         title: "Nothing to publish yet",
-        text: "Add some blocks to the canvas first.",
+        text: "Add some blocks to the workspace first.",
         icon: "info",
         ...modalColors,
       });
@@ -470,16 +470,20 @@ export default function TemplateBuilder() {
       html: `${
         firstTime
           ? template.private
-            ? "It's private, so only you will be able to see it and import it into your projects."
-            : "Anyone will be able to find it under Templates and import it into their projects."
-          : "People who import it from now on get these blocks. Projects that already imported it keep the blocks they have."
+            ? "It's private, so only you will be able to see it and add it to your projects."
+            : "Anyone will be able to find it on the Templates page and add it to their projects."
+          : "People who add it from now on will get these blocks. Projects that already added it keep the blocks they have."
       }${
         packNames.length
           ? `<br /><br />It uses blocks from ${
-              packNames.length === 1 ? "a Workshop pack" : "Workshop packs"
-            } — ${packNames
+              packNames.length === 1
+                ? "this Workshop pack"
+                : "these Workshop packs"
+            }: ${packNames
               .map((name) => `<b>${escapeHtml(name)}</b>`)
-              .join(", ")} — which importing adds to people's libraries.`
+              .join(", ")}. Anyone who adds the template will get ${
+              packNames.length === 1 ? "it" : "them"
+            } too.`
           : ""
       }`,
       icon: "question",
@@ -597,13 +601,13 @@ export default function TemplateBuilder() {
     ? {
         id: "draft",
         icon: "fa-solid fa-pen-ruler",
-        label: "Draft — not published",
+        label: "Draft (not published)",
       }
     : changedSincePublish
       ? {
           id: "changes",
           icon: "fa-solid fa-circle-half-stroke",
-          label: "Unpublished changes",
+          label: "Changes not published",
         }
       : {
           id: "published",
@@ -640,7 +644,7 @@ export default function TemplateBuilder() {
             className="df-template-builder-name"
             onClick={editDetails}
             disabled={!template}
-            title="Name, description and visibility"
+            title="Edit the name, description and who can see it"
           >
             <h1 className="packName">{template?.name ?? ""}</h1>
             <i className="fa-solid fa-pen" aria-hidden="true" />
@@ -655,7 +659,7 @@ export default function TemplateBuilder() {
                 className="df-template-builder-chip"
                 title={
                   template.private
-                    ? "Only you can see and import it"
+                    ? "Only you can see it and use it"
                     : "Anyone can find it once it's published"
                 }
               >
@@ -678,8 +682,8 @@ export default function TemplateBuilder() {
               className={`df-template-builder-save ${saveState}`}
               title={
                 saveState === "error"
-                  ? "The last save failed. Your next change will try again."
-                  : "Your draft saves as you go"
+                  ? "Couldn't save your work. We'll try again the next time you make a change."
+                  : "Your work saves automatically"
               }
             >
               <i className={saveLabel.icon} /> {saveLabel.text}

@@ -92,7 +92,7 @@ export default async function importTemplate({
 
   if (!template.canImport) {
     await fail(
-      "This template can't be imported",
+      "You can't add this template",
       template.published ? "It's private." : "It hasn't been published yet.",
       modalColors,
     );
@@ -104,7 +104,7 @@ export default async function importTemplate({
   if (!state) {
     await fail(
       "This template is empty",
-      "There are no blocks in it to import.",
+      "There are no blocks in it to add.",
       modalColors,
     );
     return false;
@@ -114,7 +114,7 @@ export default async function importTemplate({
 
   if (unavailable.length) {
     await fail(
-      "This template can't be imported",
+      "You can't add this template",
       `It needs blocks from ${
         unavailable[0].name
           ? `the "${unavailable[0].name}" Workshop pack`
@@ -133,23 +133,25 @@ export default async function importTemplate({
   /* ---- 2. Where to, and what else comes with it --------------------- */
   const packNote = newPacks.length
     ? `<p class="df-template-import-note"><i class="fa-solid fa-cubes-stacked"></i> It uses blocks from ${
-        newPacks.length === 1 ? "a Workshop pack" : "Workshop packs"
-      } you haven't installed — ${newPacks
+        newPacks.length === 1
+          ? "a Workshop pack you haven't installed"
+          : "Workshop packs you haven't installed"
+      }: ${newPacks
         .map((pack) => `<b>${escapeHtml(pack.name)}</b>`)
-        .join(", ")}. Importing adds ${
+        .join(", ")}. Adding the template will install ${
         newPacks.length === 1 ? "it" : "them"
-      } to your library.</p>`
+      } for you.</p>`
     : "";
 
   const choice = await Swal.fire({
-    title: `Import “${escapeHtml(template.name)}”`,
+    title: `Add “${escapeHtml(template.name)}”`,
     html: `<p>${template.blockCount} block${
       template.blockCount === 1 ? "" : "s"
     }${
       template.owner?.username
         ? ` by <b>${escapeHtml(template.owner.username)}</b>`
         : ""
-    }. They're copied into this project — later changes to the template won't affect it.</p>${packNote}`,
+    }. A copy of the blocks goes into this project, so later changes to the template won't affect it.</p>${packNote}`,
     icon: "question",
     showCancelButton: true,
     showDenyButton: canCreateWorkspaces,
@@ -158,7 +160,7 @@ export default async function importTemplate({
 
     footer: canCreateWorkspaces
       ? undefined
-      : "Only the project's owner can add workspaces, so it will go in this one.",
+      : "Only the project's owner can add new workspaces, so the blocks will go in this one.",
     ...modalColors,
     /* Two equally good answers. Every deny button in the app is red, which
        would make the second one look like the dangerous choice. */
@@ -193,7 +195,7 @@ export default async function importTemplate({
       onPacksLoaded(await loadBlockPacks({ installedBlockPacks: toLoad }));
   } catch (error) {
     await fail(
-      "Couldn't install the packs this template needs",
+      "Couldn't install the Workshop packs this template needs",
       errorMessage(error, "Please try again."),
       modalColors,
     );
@@ -207,7 +209,7 @@ export default async function importTemplate({
   if (unknown.length) {
     await fail(
       "Some of these blocks aren't available",
-      `This template uses blocks this editor can't load: ${unknown.join(", ")}.`,
+      `This template uses blocks that couldn't be loaded: ${unknown.join(", ")}.`,
       modalColors,
     );
     return false;
@@ -223,7 +225,7 @@ export default async function importTemplate({
     console.error("Template import failed:", error);
 
     await fail(
-      "Couldn't import that template",
+      "Couldn't add that template",
       errorMessage(error, "Please reload the page and try again."),
       modalColors,
     );
@@ -243,10 +245,10 @@ export default async function importTemplate({
     showConfirmButton: false,
     icon: "success",
     /* SweetAlert renders a title as HTML, and this one is user text. */
-    title: `Imported “${escapeHtml(template.name)}”`,
+    title: `Added “${escapeHtml(template.name)}”`,
     text: intoNewWorkspace
-      ? "It's in a workspace of its own."
-      : "Press Ctrl+Z to take it back out.",
+      ? "It's in a new workspace."
+      : "Press Ctrl+Z to undo.",
     ...modalColors,
   });
 

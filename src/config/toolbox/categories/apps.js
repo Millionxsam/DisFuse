@@ -1,4 +1,5 @@
 import { block, label, shadow } from "../helpers.js";
+import websockets from "./websockets.js";
 
 const githubText = (text) => shadow("text", { fields: { TEXT: text } });
 
@@ -9,7 +10,7 @@ const githubToken = () => ({
   }),
 });
 
-/** Integrations with things that aren't Discord: Scratch, Roblox, GitHub, captchas, HTTP, canvas. */
+/** Integrations with things that aren't Discord: Scratch, Roblox, GitHub, captchas, HTTP, WebSockets, canvas. */
 export default {
   kind: "category",
   name: "Apps / Utils",
@@ -505,6 +506,7 @@ export default {
         }),
       ],
     },
+    websockets,
     {
       kind: "category",
       name: "Canvas",

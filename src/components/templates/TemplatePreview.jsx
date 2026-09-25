@@ -212,8 +212,8 @@ export default function TemplatePreview({ data, packs = [], className = "" }) {
             <>
               <i className="fa-solid fa-triangle-exclamation" />
               <span>
-                Some blocks in this template no longer exist, so it can't be
-                shown: {missing.join(", ")}
+                Some blocks in this template no longer exist, so we can't show
+                it. Missing blocks: {missing.join(", ")}
               </span>
             </>
           ) : (

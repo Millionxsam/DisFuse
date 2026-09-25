@@ -57,16 +57,16 @@ export default function Templates() {
       </div>
 
       <p className="df-templates-lede">
-        Ready-made blocks from the community and the DisFuse team. Import one
-        into any project and it becomes ordinary blocks you can change however
-        you like.
+        Ready-made blocks shared by the community and the DisFuse team. Add
+        one to any project, and its blocks are yours to change however you
+        like.
       </p>
 
       <TemplateGallery
         viewer={userCache.user}
         onOpen={(template) => navigate(`/templates/${template._id}`)}
         onUse={use}
-        useLabel="Use"
+        useLabel="Add"
         onEdit={(template) => navigate(`/templates/${template._id}/builder`)}
         onCreate={create}
         initialFilter={searchParams.get("tab") ?? "all"}

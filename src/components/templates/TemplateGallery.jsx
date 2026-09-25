@@ -28,7 +28,7 @@ export const TABS = [
 
 const SORTS = [
   { id: "popular", label: "Most liked" },
-  { id: "imports", label: "Most imported" },
+  { id: "imports", label: "Most used" },
   { id: "newest", label: "Newest" },
   { id: "updated", label: "Recently updated", mineOnly: true },
 ];
@@ -52,7 +52,7 @@ function EmptyState({ filter, query, onCreate }) {
     all: {
       icon: "fa-solid fa-shapes",
       title: "No templates yet",
-      body: "Templates are blocks people have built for everyone to reuse. Be the first to share one.",
+      body: "Templates are sets of blocks that people share so anyone can reuse them. Be the first to share one.",
     },
     official: {
       icon: "fa-solid fa-circle-check",
@@ -62,12 +62,12 @@ function EmptyState({ filter, query, onCreate }) {
     mine: {
       icon: "fa-solid fa-pen-ruler",
       title: "You haven't made any templates",
-      body: "Build a set of blocks once, and import it into any project — or share it with everyone.",
+      body: "Build a set of blocks once, then add it to any of your projects or share it with everyone.",
     },
     liked: {
       icon: "fa-regular fa-heart",
       title: "Nothing liked yet",
-      body: "Tap the heart on any template and it'll wait for you here.",
+      body: "Tap the heart on any template to save it here.",
     },
   }[filter];
 
@@ -287,7 +287,7 @@ export default function TemplateGallery({
             onClick={() => goToPage(Math.max(page - 1, 1))}
             disabled={page === 1}
           >
-            <i className="fa-solid fa-chevron-left" /> Prev
+            <i className="fa-solid fa-chevron-left" /> Previous
           </button>
           <span className="page-indicator">
             Page {page} of {pages}

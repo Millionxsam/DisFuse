@@ -8,6 +8,7 @@ import addTooltips from "../../blocks/lib/addTooltips";
 import { executeRestrictions } from "../../blocks/lib/restrictions";
 import { applyOptionalStyles, buildBlocklyOptions } from "./editor/blocklyOptions.js";
 import { isSavableEvent } from "./useAutosave.js";
+import { loadWorkspaceState } from "../../functions/workspaceState.js";
 
 /* =====================================================================
    The Blockly workspace itself
@@ -196,12 +197,12 @@ export default function useBlocklyEditor({
    * Events are suppressed around the load so it doesn't register as a
    * hundred edits and trigger an immediate save of what was just read.
    *
-   * `keepBackpack` is for blocks saved without a backpack in them — a
-   * template's. `workspaces.load` clears every plugin's state before it
-   * loads, the backpack's included, and the housekeeping that follows
-   * would then save that empty backpack over the user's real one.
+   * The user's backpack is kept whatever the data holds: a plain
+   * `workspaces.load` would replace it with the backpack saved in that
+   * tab (a collaborator's, or none), and the housekeeping that follows
+   * would persist that over the user's real one.
    */
-  const loadBlocks = useCallback((data, { keepBackpack = false } = {}) => {
+  const loadBlocks = useCallback((data) => {
     const workspace = workspaceRef.current;
     if (!workspace) return false;
 
@@ -213,12 +214,7 @@ export default function useBlocklyEditor({
          up here as "clear the canvas". */
       const parsed = data?.length ? JSON.parse(data) : null;
 
-      if (parsed && keepBackpack && backpackRef.current)
-        parsed.backpack = backpackRef.current
-          .getContents()
-          .map((item) => JSON.parse(item));
-
-      if (parsed) Blockly.serialization.workspaces.load(parsed, workspace);
+      if (parsed) loadWorkspaceState(parsed, workspace);
       else workspace.clear();
 
       return true;

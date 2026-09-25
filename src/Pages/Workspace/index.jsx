@@ -828,7 +828,7 @@ export default function Workspace() {
       draft: data,
       initialName: suggestedName,
       intro:
-        "A copy of these blocks goes into a new template, in a builder of its own. It isn't linked to this project — changing one never changes the other.",
+        "A copy of these blocks will go into a new template. The template and this project are separate, so changing one won't change the other.",
       modalColors,
     });
   }

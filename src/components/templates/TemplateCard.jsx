@@ -67,10 +67,10 @@ export function TemplateBadges({ template, showOwnerState = false }) {
       {showOwnerState && template.published && template.unpublishedChanges && (
         <span
           className="df-template-badge changes"
-          title="You've changed it in the builder since you last published"
+          title="You've made changes since you last published"
         >
           <i className="fa-solid fa-circle-half-stroke" aria-hidden="true" />{" "}
-          Unpublished changes
+          Changes not published
         </span>
       )}
     </>
@@ -92,7 +92,7 @@ export default function TemplateCard({
   template: initial,
   onOpen,
   onUse,
-  useLabel = "Use",
+  useLabel = "Add",
   useIcon = "fa-solid fa-plus",
   onEdit,
   viewer,
@@ -170,7 +170,7 @@ export default function TemplateCard({
               ? template.liked
                 ? "Unlike"
                 : "Like"
-              : "Publish it to collect likes")
+              : "Publish it so people can like it")
           }
           aria-pressed={Boolean(template.liked)}
         >
@@ -179,11 +179,11 @@ export default function TemplateCard({
           />
           {template.likes}
         </button>
-        <span className="stat-chip" title="People who imported it">
+        <span className="stat-chip" title="Times added to a project">
           <i className="fa-solid fa-file-import" /> {template.imports}
         </span>
         {template.published && (
-          <span className="stat-chip" title="Blocks in it">
+          <span className="stat-chip" title="Number of blocks">
             <i className="fa-solid fa-cube" /> {template.blockCount}
           </span>
         )}
