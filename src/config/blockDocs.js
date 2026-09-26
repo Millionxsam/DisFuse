@@ -557,6 +557,7 @@ const PAGE_BLOCKS = {
     ["member_dmChannel", "reading-a-member-or-user"],
     ["member_foreach", "getting-a-member-or-user"],
     ["member_getone", "getting-a-member-or-user"],
+    ["member_getServer", "reading-a-member-or-user"],
     ["member_getuser", "getting-a-member-or-user"],
     ["member_hasBadge", "reading-a-member-or-user"],
     ["member_hasPermission", "permission-and-safety-checks"],
