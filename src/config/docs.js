@@ -18,6 +18,7 @@ export const DOCS = {
   versionControl: "Guide/version-control",
   templates: "Guide/templates",
   componentsV2: "Guide/componentsV2",
+  previews: "Guide/previews",
 
   /* ---- Features ----------------------------------------------------- */
   dashboard: "Features/dashboard",
