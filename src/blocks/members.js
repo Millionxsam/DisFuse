@@ -551,6 +551,17 @@ Blockly.Blocks["member_user"] = {
   },
 };
 
+Blockly.Blocks["member_getServer"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .setCheck("member")
+      .appendField("server of member:");
+    this.setInputsInline(true);
+    this.setOutput(true, "server");
+    this.setColour("#3c9e56");
+  },
+};
+
 Blockly.Blocks["member_username"] = {
   init: function () {
     this.appendValueInput("member")
@@ -690,6 +701,10 @@ javascriptGenerator.forBlock["member_bannerURL"] = function (block, generator) {
   ];
 };
 
+javascriptGenerator.forBlock["member_getServer"] = (b, g) => [
+  `${g.valueToCode(b, "member", Order.ATOMIC)}.guild`,
+  Order.NONE,
+];
 javascriptGenerator.forBlock["member_user"] = (b, g) => [
   `${g.valueToCode(b, "member", Order.ATOMIC)}.user`,
   Order.NONE,
@@ -882,6 +897,7 @@ createRestrictions(
     "member_system",
     "member_username",
     "member_user",
+    "member_getServer",
     "member_nickname",
     "member_joined",
     "member_id",

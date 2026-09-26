@@ -397,6 +397,7 @@ export default {
         block("member_accent"),
         block("member_created"),
         block("member_user"),
+        block("member_getServer"),
         label("Actions on users/members ↓"),
         block("member_ban"),
         block("member_unban"),
