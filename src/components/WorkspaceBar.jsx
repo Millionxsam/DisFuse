@@ -65,6 +65,7 @@ const HELP_LINKS = [
     label: "Building a message",
     icon: "fa-wand-magic-sparkles",
   },
+  { page: DOCS.previews, label: "Message & modal previews", icon: "fa-eye" },
   { page: DOCS.templates, label: "Templates", icon: "fa-clone" },
   { page: DOCS.secrets, label: "Secrets", icon: "fa-key" },
   {

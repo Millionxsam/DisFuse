@@ -8,6 +8,8 @@ import {
 } from "../../../../api/websites";
 import { publishedWebsiteUrl, sitesUrl } from "../../../../config/config";
 import { Field } from "./PropertyControls";
+import DocsLink from "../../../../components/DocsLink.jsx";
+import { DOCS } from "../../../../config/docs.js";
 
 /* =====================================================================
    Site-wide settings that aren't part of the page design
@@ -307,6 +309,15 @@ export function DiscordEmbed({ editor }) {
   return (
     <section className="df-ws-section">
       <h4>Discord link preview</h4>
+
+      <p className="df-ws-note">
+        <i className="fa-solid fa-circle-question"></i> Not sure how this looks?{" "}
+        <DocsLink
+          page={`${DOCS.websites}#discord-link-preview`}
+          variant="inline"
+          label="Read about link previews"
+        />
+      </p>
 
       <Field
         label="Custom preview"

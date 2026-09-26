@@ -186,12 +186,10 @@ export default function MessagePreview({ workspaceRef, project }) {
           {preview?.destination && <span>{preview.destination}</span>}
         </div>
 
-        {/* What is being previewed is a Components V2 message, and that
-            is the page that explains how the pieces fit together. */}
         <DocsLink
-          page={DOCS.componentsV2}
+          page={`${DOCS.previews}#previewing-a-message`}
           variant="icon"
-          label="How messages are built"
+          label="About message previews"
         />
 
         <button type="button" onClick={locate} title="Find this block">

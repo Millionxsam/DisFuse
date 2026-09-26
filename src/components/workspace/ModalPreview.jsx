@@ -428,7 +428,11 @@ export default function ModalPreview({ workspaceRef, project }) {
           </span>
         </div>
 
-        <DocsLink page={DOCS.modals} variant="icon" label="How modals work" />
+        <DocsLink
+          page={`${DOCS.previews}#previewing-a-modal`}
+          variant="icon"
+          label="About modal previews"
+        />
 
         <button type="button" onClick={locate} title="Find this block">
           <i className="fa-solid fa-location-crosshairs"></i>

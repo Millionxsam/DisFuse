@@ -692,7 +692,7 @@ export default function TemplateBuilder() {
         </div>
 
         <div>
-          <DocsLink page={DOCS.templates} label="Help" />
+          <DocsLink page={`${DOCS.templates}#the-template-builder`} label="Help" />
 
           {published ? (
             <a
