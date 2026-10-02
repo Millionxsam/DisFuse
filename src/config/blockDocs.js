@@ -301,6 +301,7 @@ const PAGE_BLOCKS = {
     ["menus_del", "replying"],
     ["menus_event", "responding-to-a-selection"],
     ["menus_id", "responding-to-a-selection"],
+    ["cv2_updateInteraction", "replying"],
     ["menus_update", "replying"],
     ["menus_value", "responding-to-a-selection"],
     ["misc_channelType", "menus-discord-fills-in"],

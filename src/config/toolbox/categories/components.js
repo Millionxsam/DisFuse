@@ -413,11 +413,7 @@ export default {
         }),
         block("cv2_replyInteraction"),
         block("cv2_editReplyInteraction"),
-        block("menus_update", {
-          inputs: {
-            content: { shadow: shadow("text") }
-          }
-        }),
+        block("cv2_updateInteraction"),
         block("menus_del")
       ]
     }

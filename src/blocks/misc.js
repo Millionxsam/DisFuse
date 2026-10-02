@@ -364,6 +364,7 @@ createRestrictions(
         "cv2_replyInteraction",
         "cv2_replyMsg",
         "cv2_editReplyInteraction",
+        "cv2_updateInteraction",
         "cv2_editMsg",
         "cv2_container",
       ],

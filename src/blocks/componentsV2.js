@@ -530,6 +530,47 @@ javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
 };
 
 createMutatorBlock({
+  id: "cv2_updateInteraction",
+  optionsBlockId: "cv2_updateInteraction_mutator",
+  colour: "#4192E9",
+  inputs: [
+    { type: "dummy", label: "update the original message" },
+    { type: "statement", name: "components", check: "rootComponents", label: "components:" },
+  ],
+  mutatorFields: [
+    { name: "files", label: "include files", inputType: "statement", inputLabel: "files:", valueCheck: "files" },
+  ],
+  previousStatement: "default",
+  nextStatement: "default",
+  tooltip: "Updates the message the button / menu is attached to using Components V2.",
+});
+
+javascriptGenerator.forBlock["cv2_updateInteraction"] = function (
+  block,
+  generator,
+) {
+  const components = generator.statementToCode(block, "components");
+  const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
+
+  const componentArray = components
+    ? `[\n    ${components
+        .trim()
+        .split(",\n")
+        .filter(Boolean)
+        .map((s) => s.trim().replace(/,$/, ""))
+        .join(",\n    ")}\n  ]`
+    : "[]";
+
+  const filesStr = files ? `files: [${files}],\n  ` : "";
+
+  return `await interaction.update({
+  components: ${componentArray},
+  ${filesStr}
+  flags: Discord.MessageFlags.IsComponentsV2,
+});\n`;
+};
+
+createMutatorBlock({
   id: "cv2_editMsg",
   optionsBlockId: "cv2_editMsg_mutator",
   colour: "#336EFF",
@@ -609,6 +650,22 @@ createRestrictions(
         "contextMenu_received",
       ],
       message: "This block must be under an interaction event",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["components"],
+      message: "You must add at least one component",
+    },
+  ],
+);
+
+createRestrictions(
+  ["cv2_updateInteraction"],
+  [
+    {
+      type: "hasHat",
+      blockTypes: ["buttons_event", "menus_event"],
+      message: "This block must be under a button or menu event",
     },
     {
       type: "notEmpty",

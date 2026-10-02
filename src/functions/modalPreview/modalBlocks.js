@@ -35,6 +35,7 @@ export const RESPONSE_BLOCKS = new Set([
   "misc_int_deferReply",
   "cv2_replyInteraction",
   "cv2_editReplyInteraction",
+  "cv2_updateInteraction",
   "menus_reply",
   "captcha_replyInteraction",
   // Retired blocks that can still be sitting in an older project.

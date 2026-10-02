@@ -49,6 +49,11 @@ export const SEND_BLOCKS = {
     icon: "fa-bolt",
     context: "Replaces a deferred or already-sent interaction reply.",
   },
+  cv2_updateInteraction: {
+    title: "Update the original message",
+    icon: "fa-bolt",
+    context: "Replaces the message the button or menu is attached to.",
+  },
 };
 
 export function isSendBlock(block) {
