@@ -267,6 +267,7 @@ const PAGE_BLOCKS = {
     ["buttons_message", "what-you-get-from-the-click"],
     ["cv2_editReplyInteraction", "slow-work-defer-first"],
     ["cv2_replyInteraction", "replying"],
+    ["cv2_updateInteraction", "replying"],
     ["misc_int_channel", "what-you-get-from-the-click"],
     ["misc_int_deferReply", "slow-work-defer-first"],
     ["misc_int_member", "what-you-get-from-the-click"],

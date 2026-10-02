@@ -174,6 +174,7 @@ export default {
           }
         }),
         block("cv2_editReplyInteraction"),
+        block("cv2_updateInteraction"),
         block("buttons_del")
       ]
     },
