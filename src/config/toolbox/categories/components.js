@@ -32,6 +32,16 @@ export default {
               })
             }
           }
+        }),
+        label(
+          "Put any loop (like \"repeat\" or \"for each member\") in a components section to repeat the components inside it ↓"
+        ),
+        block("controls_repeat_ext", {
+          inputs: {
+            TIMES: {
+              shadow: shadow("math_number", { fields: { NUM: 3 } })
+            }
+          }
         })
       ]
     },

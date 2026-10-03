@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
+import { COMPONENT_LOOP_TYPES } from "./lib/componentLoopTypes";
 
 Blockly.Blocks["buttons_add"] = {
   init: function () {
@@ -234,6 +235,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["misc_addrow"],
+      through: COMPONENT_LOOP_TYPES,
       message: 'This block must be under a "add row" block',
     },
     {

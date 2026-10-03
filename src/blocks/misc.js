@@ -2,6 +2,8 @@ import * as Blockly from "blockly";
 import javascript, { javascriptGenerator, Order } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
 import { createMutatorBlock } from "./lib/createMutator";
+import { componentList } from "./lib/componentLoops";
+import { COMPONENT_LOOP_TYPES } from "./lib/componentLoopTypes";
 
 createMutatorBlock({
   id: "misc_int_reply_mutator",
@@ -335,7 +337,8 @@ javascript.javascriptGenerator.forBlock["misc_addrow"] = function (
   block,
   generator,
 ) {
-  var statements_components = generator.statementToCode(block, "components");
+  var list = componentList(block, generator, "components");
+  var statements_components = list.expression ?? list.items;
 
   var code = `new Discord.ActionRowBuilder().addComponents(
   ${statements_components}),\n`;
@@ -368,6 +371,7 @@ createRestrictions(
         "cv2_editMsg",
         "cv2_container",
       ],
+      through: COMPONENT_LOOP_TYPES,
       message:
         "This block must be under a block that has a 'components' section",
     },

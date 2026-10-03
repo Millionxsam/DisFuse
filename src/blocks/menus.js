@@ -2,6 +2,8 @@ import * as Blockly from "blockly";
 import javascript, { Order } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
 import { isValidEmoji } from "./lib/fixers";
+import { componentList } from "./lib/componentLoops";
+import { COMPONENT_LOOP_TYPES } from "./lib/componentLoopTypes";
 
 Blockly.Blocks["menus_add"] = {
   init: function () {
@@ -487,13 +489,13 @@ javascript.javascriptGenerator.forBlock["menus_add"] = function (
     "disabled",
     javascript.Order.ATOMIC,
   );
-  var statements_options = generator.statementToCode(block, "options");
+  var options = componentList(block, generator, "options");
 
   return `new Discord.StringSelectMenuBuilder()
   .setPlaceholder(${value_placeholder || "''"})
   .setCustomId(${value_id || "''"})
   .setDisabled(${value_disabled || "false"})
-  .addOptions([\n${statements_options}]),\n`;
+  .addOptions(${options.expression ?? `[\n${options.items}]`}),\n`;
 };
 
 javascript.javascriptGenerator.forBlock["menus_addoption"] = function (
@@ -561,6 +563,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["misc_addrow"],
+      through: COMPONENT_LOOP_TYPES,
       message: 'This block must be under an "add row" block',
     },
     {
@@ -601,6 +604,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["menus_add"],
+      through: COMPONENT_LOOP_TYPES,
       message: 'This block must be under a "add menu" block',
     },
     {

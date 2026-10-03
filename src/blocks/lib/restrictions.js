@@ -43,11 +43,23 @@ export function executeRestrictions(workspace) {
           if (empty) errors.push(restriction.message);
           break;
         case "surroundParent":
-          let passSP = false;
-          restriction.blockTypes.forEach((type) => {
-            if (block.getSurroundParent()?.type === type) passSP = true;
-          });
-          if (!passSP) errors.push(restriction.message);
+          /* `through` lists block types that don't count as the parent,
+             so the check looks past them — a button in a loop in a row
+             is still in the row. */
+          let surroundParent = block.getSurroundParent();
+          while (
+            surroundParent &&
+            restriction.through?.includes(surroundParent.type) &&
+            !restriction.blockTypes.includes(surroundParent.type)
+          )
+            surroundParent = surroundParent.getSurroundParent();
+
+          if (!restriction.blockTypes.includes(surroundParent?.type))
+            errors.push(restriction.message);
+          break;
+        case "custom":
+          if (!restriction.check(block, workspace))
+            errors.push(restriction.message);
           break;
         case "hasHat":
           if (!restriction.blockTypes.includes(block.getRootBlock().type))

@@ -1,5 +1,9 @@
 import { SEND_BLOCKS } from "./sendBlocks.js";
 import {
+  COMPONENT_LOOP_INPUTS,
+  isComponentLoop,
+} from "../../blocks/lib/componentLoopTypes.js";
+import {
   literalOnly,
   parseEmoji,
   placeholderImage,
@@ -77,10 +81,75 @@ function statementChain(block, inputName) {
   return out;
 }
 
-function walk(block, inputName, ctx, depth) {
+/* Most loops can't be counted until the bot runs, so their contents
+   are drawn once. A "repeat" with a typed-in number is drawn that many
+   times, up to a point — past Discord's limit it's a warning either
+   way, and drawing hundreds of copies helps nobody. */
+const MAX_PREVIEW_REPEATS = 50;
+
+function previewRepeats(loop) {
+  let times = null;
+
+  if (loop.type === "controls_repeat")
+    times = Number(loop.getFieldValue("TIMES"));
+  else if (loop.type === "controls_repeat_ext")
+    times = Number(literalOnly(resolveText(loop, "TIMES")) ?? NaN);
+
+  if (times === null || !Number.isFinite(times)) return null;
+  return Math.min(Math.max(Math.floor(times), 0), MAX_PREVIEW_REPEATS);
+}
+
+/**
+ * The blocks in a statement input, with any loops in it replaced by
+ * what they'd put there. The same loop blocks the generator collects
+ * through — see blocks/lib/componentLoops.js.
+ */
+function expandedChain(block, inputName, ctx, depth) {
   const out = [];
 
   for (const child of statementChain(block, inputName)) {
+    if (!isComponentLoop(child)) {
+      out.push(child);
+      continue;
+    }
+
+    if (depth > 8) continue;
+
+    if (child.type === "controls_if") {
+      note(
+        ctx,
+        "info",
+        "Components inside an “if” block are shown as if its first condition is true.",
+      );
+      out.push(...expandedChain(child, "DO0", ctx, depth + 1));
+      continue;
+    }
+
+    const inner = () =>
+      COMPONENT_LOOP_INPUTS[child.type].flatMap((name) =>
+        expandedChain(child, name, ctx, depth + 1),
+      );
+    const times = previewRepeats(child);
+
+    if (times === null) {
+      note(
+        ctx,
+        "info",
+        "Components inside a loop are shown once. The bot repeats them each time the loop runs.",
+      );
+      out.push(...inner());
+    } else {
+      for (let i = 0; i < times; i += 1) out.push(...inner());
+    }
+  }
+
+  return out;
+}
+
+function walk(block, inputName, ctx, depth) {
+  const out = [];
+
+  for (const child of expandedChain(block, inputName, ctx, depth)) {
     const node = convert(child, ctx, depth);
     if (node) out.push(node);
   }
@@ -163,7 +232,7 @@ function convert(block, ctx, depth) {
     }
 
     case "cv2_mediaGallery": {
-      const items = statementChain(block, "items")
+      const items = expandedChain(block, "items", ctx, depth + 1)
         .filter((item) => item.type === "cv2_mediaGalleryItem")
         .map((item) => {
           const url = literalOnly(resolveText(item, "url"));
@@ -262,7 +331,9 @@ function convert(block, ctx, depth) {
           custom_id: toDisplay(resolveText(block, "id")),
           placeholder: toDisplay(resolveText(block, "placeholder")),
           disabled: resolveBoolean(block, "disabled") === true,
-          ...(selectType === 3 ? { options: readSelectOptions(block) } : {}),
+          ...(selectType === 3
+            ? { options: readSelectOptions(block, ctx, depth) }
+            : {}),
         };
 
       /* A block pack, or a block from a category that has nothing to do
@@ -279,8 +350,8 @@ function convert(block, ctx, depth) {
   }
 }
 
-function readSelectOptions(block) {
-  return statementChain(block, "options")
+function readSelectOptions(block, ctx, depth) {
+  return expandedChain(block, "options", ctx, depth + 1)
     .filter((option) => option.type === "menus_addoption")
     .map((option) => ({
       label: toDisplay(resolveText(option, "label")),

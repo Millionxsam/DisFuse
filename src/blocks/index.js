@@ -24,6 +24,7 @@
    ===================================================================== */
 
 import setHelpUrls from "./lib/setHelpUrls.js";
+import { enableComponentLoops } from "./lib/componentLoops.js";
 
 import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
   eager: true,
@@ -34,6 +35,11 @@ import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
    registry rather than being something each definition opts into — see
    lib/setHelpUrls.js. */
 setHelpUrls();
+
+/* Loops can go inside a message's components to repeat them. That means
+   reaching into loop and component blocks from several files, so it too
+   waits until every one of them is registered — see lib/componentLoops.js. */
+enableComponentLoops();
 
 /**
  * Block types that still load but are no longer in the toolbox.

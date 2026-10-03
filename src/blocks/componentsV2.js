@@ -3,6 +3,12 @@ import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
 import { createMutatorBlock } from "./lib/createMutator";
 import { isValidEmoji } from "./lib/fixers";
+import { componentList } from "./lib/componentLoops";
+import {
+  COMPONENT_LOOP_TYPES,
+  CV2_SEND_TYPES,
+  findComponentOwner,
+} from "./lib/componentLoopTypes";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
@@ -169,8 +175,8 @@ Blockly.Blocks["cv2_mediaGallery"] = {
 };
 
 javascriptGenerator.forBlock["cv2_mediaGallery"] = function (block, generator) {
-  const items = generator.statementToCode(block, "items");
-  return `new Discord.MediaGalleryBuilder().addItems(${items || ""}),\n`;
+  const list = componentList(block, generator, "items");
+  return `new Discord.MediaGalleryBuilder().addItems(${list.expression ?? (list.items || "")}),\n`;
 };
 
 Blockly.Blocks["cv2_mediaGalleryItem"] = {
@@ -220,7 +226,8 @@ Blockly.Blocks["cv2_container"] = {
 
 javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
   const color = generator.valueToCode(block, "color", Order.ATOMIC);
-  const components = generator.statementToCode(block, "components");
+  const list = componentList(block, generator, "components");
+  const components = list.items;
 
   const innerItems = components
     ? components
@@ -250,7 +257,11 @@ javascriptGenerator.forBlock["cv2_container"] = function (block, generator) {
       ? `_container.setAccentColor(parseInt((${color}).replace('#',''), 16));`
       : ""
   }
-  const _items = ${inner};
+  ${
+    list.statements !== undefined
+      ? `const ${list.variable} = [];\n${list.statements}  const _items = ${list.variable};`
+      : `const _items = ${inner};`
+  }
   for (const comp of _items) {
     if (comp instanceof Discord.TextDisplayBuilder) _container.addTextDisplayComponents(comp);
     else if (comp instanceof Discord.SeparatorBuilder) _container.addSeparatorComponents(comp);
@@ -317,6 +328,25 @@ javascriptGenerator.forBlock["cv2_addFile"] = function (block, generator) {
   return `new Discord.AttachmentBuilder(${path}, { name: ${name} }),\n`;
 };
 
+/**
+ * The `components: [...]` of a message. A stack with a loop in it is
+ * built at runtime instead — see lib/componentLoops.js.
+ */
+function componentsArray(block, generator) {
+  const list = componentList(block, generator, "components");
+  if (list.expression) return list.expression;
+
+  const components = list.items;
+  return components
+    ? `[\n    ${components
+        .trim()
+        .split(",\n")
+        .filter(Boolean)
+        .map((s) => s.trim().replace(/,$/, ""))
+        .join(",\n    ")}\n  ]`
+    : "[]";
+}
+
 createMutatorBlock({
   id: "cv2_sendMessage",
   optionsBlockId: "cv2_sendMessage_mutator",
@@ -337,18 +367,10 @@ createMutatorBlock({
 javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
   const channel =
     generator.valueToCode(block, "channel", Order.ATOMIC) || "null";
-  const components = generator.statementToCode(block, "components");
   const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const thenStr = then ? `.then(async (messageSent) => {\n${then}})` : "";
   const filesStr = files ? `files: [${files}],\n  ` : "";
@@ -379,18 +401,10 @@ createMutatorBlock({
 
 javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
   const member = generator.valueToCode(block, "member", Order.ATOMIC) || "null";
-  const components = generator.statementToCode(block, "components");
   const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const thenStr = then ? `.then(async (messageSent) => {\n${then}})` : "";
   const filesStr = files ? `files: [${files}],\n  ` : "";
@@ -425,17 +439,9 @@ javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
 ) {
   const ephemeral =
     generator.valueToCode(block, "ephemeral", Order.ATOMIC) || "false";
-  const components = generator.statementToCode(block, "components");
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const filesStr = files ? `files: [${files}],\n  ` : "";
 
@@ -466,17 +472,9 @@ createMutatorBlock({
 
 javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
   const then = block.getInput("then") ? generator.statementToCode(block, "then") : "";
-  const components = generator.statementToCode(block, "components");
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const thenStr = then ? `.then(async (messageSent) => {\n${then}})` : "";
   const filesStr = files ? `files: [${files}],\n  ` : "";
@@ -508,17 +506,9 @@ javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
   block,
   generator,
 ) {
-  const components = generator.statementToCode(block, "components");
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const filesStr = files ? `files: [${files}],\n  ` : "";
 
@@ -549,17 +539,9 @@ javascriptGenerator.forBlock["cv2_updateInteraction"] = function (
   block,
   generator,
 ) {
-  const components = generator.statementToCode(block, "components");
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const filesStr = files ? `files: [${files}],\n  ` : "";
 
@@ -589,17 +571,9 @@ createMutatorBlock({
 javascriptGenerator.forBlock["cv2_editMsg"] = function (block, generator) {
   const message =
     generator.valueToCode(block, "message", Order.ATOMIC) || "null";
-  const components = generator.statementToCode(block, "components");
   const files = block.getInput("files") ? generator.statementToCode(block, "files") : "";
 
-  const componentArray = components
-    ? `[\n    ${components
-        .trim()
-        .split(",\n")
-        .filter(Boolean)
-        .map((s) => s.trim().replace(/,$/, ""))
-        .join(",\n    ")}\n  ]`
-    : "[]";
+  const componentArray = componentsArray(block, generator);
 
   const filesStr = files ? `files: [${files}],\n  ` : "";
 
@@ -616,6 +590,7 @@ createRestrictions(
     {
       type: "surroundParent",
       blockTypes: ["cv2_mediaGallery"],
+      through: COMPONENT_LOOP_TYPES,
       message: "Gallery image blocks must be inside a 'media gallery' block",
     },
   ],
@@ -709,6 +684,46 @@ createRestrictions(
       type: "notEmpty",
       blockTypes: ["thumbnailUrl"],
       message: "You must specify the thumbnail URL",
+    },
+  ],
+);
+
+/* Component types already can't be dropped anywhere but a components
+   section — except through a loop, which takes them anywhere it goes. */
+createRestrictions(
+  [
+    "cv2_textDisplay",
+    "cv2_separator",
+    "cv2_section_thumbnail",
+    "cv2_section_button",
+    "cv2_mediaGallery",
+    "cv2_container",
+    "cv2_file",
+  ],
+  [
+    {
+      type: "custom",
+      check: (block) => {
+        const owner = findComponentOwner(block);
+        return Boolean(
+          owner &&
+            (CV2_SEND_TYPES.includes(owner.type) ||
+              owner.type === "cv2_container"),
+        );
+      },
+      message:
+        'This block must be inside the "components" of a message or container',
+    },
+  ],
+);
+
+createRestrictions(
+  ["cv2_container"],
+  [
+    {
+      type: "custom",
+      check: (block) => findComponentOwner(block)?.type !== "cv2_container",
+      message: "A container can't be inside another container",
     },
   ],
 );
