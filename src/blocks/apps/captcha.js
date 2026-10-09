@@ -263,7 +263,7 @@ javascriptGenerator.forBlock["captcha_replyInteraction"] = function (
   files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
-  ephemeral: ${value_ephemeral || "false"}
+  ephemeral: ${value_ephemeral || "false"},
   components: [
   ${rows}]
 });\n`;
