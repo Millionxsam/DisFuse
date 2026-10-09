@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
+import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
 
 Blockly.Blocks["fs_readFile"] = {
   init: function () {
@@ -190,6 +191,7 @@ javascriptGenerator.forBlock["fs_sendFile"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `await ${channel}.send({
+  ${ALLOWED_MENTIONS},
   files: [new Discord.AttachmentBuilder(${path})],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],

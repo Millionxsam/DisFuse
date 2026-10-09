@@ -5,7 +5,8 @@ import { createMutatorBlock } from "./lib/createMutator";
 import {
   formatEmbeds,
   buildMessageOptions,
-  buildThenSuffix
+  buildThenSuffix,
+  ALLOWED_MENTIONS
 } from "./lib/generatorUtils";
 
 Blockly.Blocks["msg_getone"] = {
@@ -445,6 +446,7 @@ javascriptGenerator.forBlock["msg_edit"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `await (${message}).edit({
+  ${ALLOWED_MENTIONS},
   content: ${content || "''"},
   embeds: [${formatEmbeds(embeds)}],
   components: [
@@ -474,6 +476,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `${message}.reply({
+  ${ALLOWED_MENTIONS},
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${formatEmbeds(embeds)}],

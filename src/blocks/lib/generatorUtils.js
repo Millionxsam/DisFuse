@@ -59,6 +59,10 @@ export function isEmptyString(str = "") {
   return !str || str === "" || str === "''" || str === '""' || str == "``";
 }
 
+/** Lets pings in user-written message content always notify. */
+export const ALLOWED_MENTIONS =
+  'allowedMentions: { parse: ["everyone", "roles", "users"] }';
+
 export function buildMessageOptions({
   content = "",
   embeds,
@@ -72,6 +76,7 @@ export function buildMessageOptions({
   if (rows) options.push(`components: [\n${rows}]`);
   if (files) options.push(`files: [\n${files}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
+  options.push(ALLOWED_MENTIONS);
   return options;
 }
 
@@ -85,6 +90,7 @@ export function buildDmSend(target, { content, embeds, rows }) {
     ...(!isEmptyString(content) ? [`content: ${content || "''"}`] : []),
     `embeds: [${formatEmbeds(embeds)}]`,
     ...(rows ? [`components: [${rows}]`] : []),
+    ALLOWED_MENTIONS,
   ];
 
   return `await ${target}.send({\n  ${parts.join(", ")}\n});\n`;

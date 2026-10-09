@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
+import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
 
 Blockly.Blocks["poll_create"] = {
   init: function () {
@@ -137,6 +138,7 @@ javascriptGenerator.forBlock["poll_sendchannel"] = function (block, generator) {
     generator.valueToCode(block, "MESSAGE", Order.ATOMIC) || "";
 
   return `await ${value_channel}.send({
+  ${ALLOWED_MENTIONS},
   content: ${value_message || "''"},
   poll: PollCreator${text_name}
 });\n`;

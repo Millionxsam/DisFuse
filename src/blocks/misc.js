@@ -4,6 +4,7 @@ import { createRestrictions } from "./lib/restrictions";
 import { createMutatorBlock } from "./lib/createMutator";
 import { componentList } from "./lib/componentLoops";
 import { COMPONENT_LOOP_TYPES } from "./lib/componentLoopTypes";
+import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
 
 createMutatorBlock({
   id: "misc_int_reply_mutator",
@@ -64,6 +65,7 @@ javascript.javascriptGenerator.forBlock["misc_int_reply_mutator"] = function (
   if (rows) options.push(`components: [\n${rows}]`);
   if (files) options.push(`files: [\n${files}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
+  options.push(ALLOWED_MENTIONS);
 
   return `await interaction.reply({
   ${options.join(",\n  ")}
@@ -121,6 +123,7 @@ javascript.javascriptGenerator.forBlock["misc_int_edit_mutator"] = function (
   if (embeds) options.push(`embeds: [${embeds.replaceAll("'", "")}]`);
   if (rows) options.push(`components: [\n${rows}]`);
   if (files) options.push(`files: [\n${files}]`);
+  options.push(ALLOWED_MENTIONS);
 
   return `await interaction.editReply({
   ${options.join(",\n  ")}

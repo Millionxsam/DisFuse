@@ -1,6 +1,7 @@
 import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
+import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
 
 Blockly.Blocks["webhooks_create"] = {
   init: function () {
@@ -51,6 +52,7 @@ javascriptGenerator.forBlock["webhooks_send"] = function (block, generator) {
   var webhook = generator.valueToCode(block, "webhook", Order.ATOMIC);
 
   var code = `await ${webhook}.send({
+  ${ALLOWED_MENTIONS},
   content: ${content || "''"}
 });`;
   return code;

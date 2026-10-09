@@ -9,6 +9,7 @@ import {
   CV2_SEND_TYPES,
   findComponentOwner,
 } from "./lib/componentLoopTypes";
+import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
@@ -378,6 +379,7 @@ javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
   return `await ${channel}.send({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -412,6 +414,7 @@ javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
   return `await ${member}.send({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -449,6 +452,7 @@ javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
   components: ${componentArray},
   ephemeral: ${ephemeral},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -482,6 +486,7 @@ javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
   return `await message.reply({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -515,6 +520,7 @@ javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
   return `await interaction.editReply({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -548,6 +554,7 @@ javascriptGenerator.forBlock["cv2_updateInteraction"] = function (
   return `await interaction.update({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -580,6 +587,7 @@ javascriptGenerator.forBlock["cv2_editMsg"] = function (block, generator) {
   return `await ${message}.edit({
   components: ${componentArray},
   ${filesStr}
+  ${ALLOWED_MENTIONS},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
