@@ -3,8 +3,8 @@ import { javascriptGenerator } from "blockly/javascript";
 import Swal from "sweetalert2";
 import modalThemeColor from "./modalThemeColor";
 import { userCache } from "../cache.ts";
-import api from "../api/client.js";
-import { saveVersionWorkspaceData } from "../api/versions";
+import api, { data as body } from "../api/client.js";
+import { getVersion, saveVersionWorkspaceData } from "../api/versions";
 import { withoutBackpack } from "./workspaceState.js";
 import {
   closeMessagePreview,
@@ -154,21 +154,51 @@ export function registerBlockToolMenus() {
  * workspace of the *active version*, which is what `versionId` selects —
  * without it the write would go to the project's own workspaces, which a
  * versioned project no longer reads.
+ *
+ * `onWorkspaceData(workspaceId, data)` is told whenever one of these
+ * writes lands, so the editor's copy of that workspace can be brought up
+ * to date before anyone switches to it.
  */
 export default function registerContextMenus(
   project,
   currentWorkspace,
   versionId = null,
+  onWorkspaceData = () => {},
 ) {
   /** Writes blocks into a sibling workspace, wherever this project saves. */
   function saveWorkspaceData(workspaceId, data) {
-    if (versionId)
-      return saveVersionWorkspaceData(project._id, versionId, workspaceId, data);
+    const saving = versionId
+      ? saveVersionWorkspaceData(project._id, versionId, workspaceId, data)
+      : api.patch(`/projects/${project._id}/workspaces/${workspaceId}/data`, {
+          data,
+        });
 
-    return api.patch(
-      `/projects/${project._id}/workspaces/${workspaceId}/data`,
-      { data },
+    return saving.then((result) => {
+      onWorkspaceData(workspaceId, data);
+      return result;
+    });
+  }
+
+  /**
+   * A sibling workspace as the server has it now.
+   *
+   * `project` is a snapshot from when these menus were registered, and
+   * nothing refreshes its other workspaces while you edit this one — so
+   * writing "its blocks plus this one" from the snapshot replaced
+   * everything added to that workspace since (including a block moved
+   * there a moment ago) with whatever it held when the page opened.
+   */
+  async function fetchWorkspace(workspaceId) {
+    const workspaces = versionId
+      ? (await getVersion(project._id, versionId)).workspaces
+      : (await api.get(`/projects/${project._id}`).then(body)).workspaces;
+
+    const workspace = (workspaces ?? []).find(
+      (ws) => String(ws._id) === String(workspaceId),
     );
+    if (!workspace) throw new Error("That workspace no longer exists.");
+
+    return workspace;
   }
 
   registerBlockToolMenus();
@@ -199,16 +229,20 @@ export default function registerContextMenus(
       }).then((response) => {
         if (!response.isConfirmed) return;
 
-        const toWorkspace = project.workspaces.find(
-          (ws) => ws._id === response.value,
-        );
-        const newData = parseWorkspaceData(toWorkspace);
+        /* Serialised now, while the menu's block is certainly still on
+           the canvas — the fetch below gives a collaborator time to
+           delete or change it. */
+        const moving = Blockly.serialization.blocks.save(scope.block);
+        let toWorkspace;
 
-        newData.blocks.blocks.push(
-          Blockly.serialization.blocks.save(scope.block),
-        );
+        fetchWorkspace(response.value)
+          .then((workspace) => {
+            toWorkspace = workspace;
+            const newData = parseWorkspaceData(workspace);
+            newData.blocks.blocks.push(moving);
 
-        saveWorkspaceData(response.value, JSON.stringify(newData))
+            return saveWorkspaceData(response.value, JSON.stringify(newData));
+          })
           .then(() => {
             /* The block is removed from *this* workspace only once the
                other one has it. It used to be disposed of immediately,
@@ -256,17 +290,19 @@ export default function registerContextMenus(
       }).then((response) => {
         if (!response.isConfirmed) return;
 
-        const target = project.workspaces.find(
-          (ws) => ws._id === response.value,
-        );
-        const newData = parseWorkspaceData(target);
+        const merging =
+          Blockly.serialization.workspaces.save(scope.workspace).blocks
+            ?.blocks ?? [];
+        let target;
 
-        newData.blocks.blocks.push(
-          ...(Blockly.serialization.workspaces.save(scope.workspace).blocks
-            ?.blocks ?? []),
-        );
+        fetchWorkspace(response.value)
+          .then((workspace) => {
+            target = workspace;
+            const newData = parseWorkspaceData(workspace);
+            newData.blocks.blocks.push(...merging);
 
-        saveWorkspaceData(response.value, JSON.stringify(newData))
+            return saveWorkspaceData(response.value, JSON.stringify(newData));
+          })
           .then(() =>
             Swal.fire({
               toast: true,

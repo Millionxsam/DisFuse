@@ -268,10 +268,35 @@ export default function Workspace() {
        the whole editor down to a blank page. */
     unregisterContextMenus();
 
+    /* A block moved or merged into another tab has to be in our copy of
+       that tab too: on a Version Control project, switching tab opens it
+       from this copy, and autosave would then write the old blocks back
+       over the ones just moved there. */
+    const withData = (workspaces, workspaceId, data) =>
+      workspaces?.map((ws) =>
+        String(ws._id) === String(workspaceId) ? { ...ws, data } : ws,
+      );
+
     registerContextMenus(
       session.project,
       currentWorkspace.current,
       activeVersion.current?._id,
+      (workspaceId, data) => {
+        session.setProject((current) => ({
+          ...current,
+          workspaces: withData(current.workspaces, workspaceId, data),
+        }));
+
+        if (activeVersion.current)
+          activeVersion.current = {
+            ...activeVersion.current,
+            workspaces: withData(
+              activeVersion.current.workspaces,
+              workspaceId,
+              data,
+            ),
+          };
+      },
     );
 
     /* Registered here rather than in registerContextMenus so the menu
