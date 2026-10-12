@@ -42,11 +42,12 @@ setHelpUrls();
 enableComponentLoops();
 
 /**
- * Block types that still load but are no longer in the toolbox.
+ * Block types that still load but are retired from the regular toolbox.
  *
  * Existing projects keep working — a saved workspace referencing one of
- * these deserialises and generates code exactly as it always did — but
- * nobody can drag a new one out. They live in `blocks/deprecated/`.
+ * these deserialises and generates code exactly as it always did — and
+ * they are still offered in the toolbox's Legacy category. They live in
+ * `blocks/deprecated/`.
  *
  * Kept as a list so the deprecation backlog can be *seen*: it used to be
  * spread across a file called `deprecated.js`, a file whose header

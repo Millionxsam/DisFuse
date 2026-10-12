@@ -17,6 +17,7 @@ import files from "./categories/files.js";
 import functions from "./categories/functions.js";
 import interactions from "./categories/interactions.js";
 import javascript from "./categories/javascript.js";
+import legacy from "./categories/legacy.js";
 import lists from "./categories/lists.js";
 import logic from "./categories/logic.js";
 import loops from "./categories/loops.js";
@@ -95,6 +96,7 @@ export default function getToolbox(
       sep(),
       workshopCategory(blockPacks),
       ...(blockBuddy ? [blockBuddyCategory(user)] : []),
+      legacy,
     ],
   };
 }

@@ -1,10 +1,11 @@
 /* =====================================================================
    Blocks that still load but can no longer be added
    ---------------------------------------------------------------------
-   Every file in this folder defines blocks that are no longer in the
-   toolbox. They are still registered, and deliberately so: a project
-   saved years ago must still open, still show its blocks, and still
-   generate the same code. What a user cannot do is drag out a new one.
+   Every file in this folder defines blocks that have been retired from
+   the regular toolbox categories. They are still registered, and
+   deliberately so: a project saved years ago must still open, still show
+   its blocks, and still generate the same code. They are only offered
+   in the toolbox's Legacy category (config/toolbox/categories/legacy.js).
 
    Deprecation used to be spread across four unrelated places — a file
    called `deprecated.js`, a file whose own header declared the whole
@@ -18,7 +19,8 @@
    `slash_*` and `menus_*` reply blocks and their mutator variants). They
    sit beside their replacements in the live files, because their
    generators share helpers with them and separating the two would mean
-   duplicating that code. They are just as retired.
+   duplicating that code. They are just as retired, and they are in the
+   Legacy category too.
    ===================================================================== */
 
 /**
