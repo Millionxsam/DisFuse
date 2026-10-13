@@ -302,6 +302,23 @@ export default function WorkshopWorkspace() {
               defaultValue={pack.color}
             />
           </div>
+          {pack.private && (
+            <>
+              <span className="separator"></span>
+              <div className="visibility">
+                <label htmlFor="packPublicInput">Visibility:</label>
+                <p>
+                  This pack is private. Making it public lets anyone view and
+                  use it. This can't be undone, since projects may come to
+                  depend on it.
+                </p>
+                <div style={{ flexDirection: "row", gap: ".5rem" }}>
+                  <input type="checkbox" id="packPublicInput" />
+                  <label htmlFor="packPublicInput">Make this pack public</label>
+                </div>
+              </div>
+            </>
+          )}
         </div>,
       ),
       confirmButtonText: "Save",
@@ -319,6 +336,9 @@ export default function WorkshopWorkspace() {
         .split(",")
         .map((d) => d.trim())
         .filter((d) => d.length > 0);
+      // Only ever sent as false: a public pack can't go back to private,
+      // since projects that use it would break.
+      const makePublic = document.getElementById("packPublicInput")?.checked;
 
       axios
         .patch(
@@ -328,6 +348,7 @@ export default function WorkshopWorkspace() {
             color,
             description,
             dependencies,
+            ...(makePublic ? { private: false } : {}),
           },
           {
             headers: {
