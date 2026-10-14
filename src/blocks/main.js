@@ -165,7 +165,7 @@ javascriptGenerator.forBlock["main_numberof"] = function (block, generator) {
   const property = block.getFieldValue("property");
 
   return [
-    `(await getCollection(client, ${property}))?.size ?? 0`,
+    `(await getCollection(client, "${property}"))?.size ?? 0`,
     Order.AWAIT,
   ];
 };
