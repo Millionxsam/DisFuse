@@ -81,6 +81,8 @@ export default function useBlocklyEditor({
       buildBlocklyOptions({ toolbox, settings }),
     );
 
+    window.poop = workspace;
+
     workspaceRef.current = workspace;
     Blockly.svgResize(workspace);
 

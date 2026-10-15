@@ -177,6 +177,7 @@ createRestrictions(
       blockTypes: [
         "modal_handle_interaction",
         "slash_received",
+        "slash_received_named",
         "contextMenu_received",
         "buttons_event",
         "menus_event",

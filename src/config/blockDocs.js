@@ -887,6 +887,7 @@ const PAGE_BLOCKS = {
     ["slash_getoption", "responding-to-a-command"],
     ["slash_name", "responding-to-a-command"],
     ["slash_received", "responding-to-a-command"],
+    ["slash_received_named", "responding-to-a-command"],
   ],
 };
 

@@ -12,6 +12,16 @@ Blockly.Blocks["slash_received"] = {
   },
 };
 
+Blockly.Blocks["slash_received_named"] = {
+  init: function () {
+    this.appendValueInput("name").setCheck("String").appendField("when slash command named");
+    this.appendDummyInput().appendField("is received");
+    this.appendStatementInput("event").setCheck("default");
+    this.setInputsInline(true);
+    this.setColour("#3366CC");
+  },
+};
+
 createMutatorBlock({
   id: "slash_create_mutator",
   optionsBlockId: "slash_create_mutator_options",
@@ -255,6 +265,17 @@ javascriptGenerator.forBlock["slash_received"] = function (block, generator) {
 ${code_statement}});\n`;
   return code;
 };
+
+javascriptGenerator.forBlock["slash_received_named"] = function (block, generator) {
+  var code_statement = generator.statementToCode(block, "event");
+  var value_name = generator.valueToCode(block, "name", Order.ATOMIC);
+
+  var code = `client.on("interactionCreate", async interaction => {
+  if (!interaction.isChatInputCommand() || interaction.commandName != ${value_name}) return;
+${code_statement}});\n`;
+  return code;
+};
+
 
 javascriptGenerator.forBlock["slash_addoption"] = function (block, generator) {
   var dropdown_type = block.getFieldValue("type");
@@ -502,7 +523,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received"],
+      blockTypes: ["slash_received", "slash_received_named"],
       message: 'This block must be under "when slash command received" event',
     },
     {
@@ -518,7 +539,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received"],
+      blockTypes: ["slash_received", "slash_received_named"],
       message: 'This block must be under "when slash command received" event',
     },
   ],
@@ -529,7 +550,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["slash_received", "contextMenu_received"],
+      blockTypes: ["slash_received", "slash_received_named", "contextMenu_received"],
       message:
         'This block must be under "when slash command received" or "when context menu clicked" event',
     },
@@ -548,6 +569,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: [
         "slash_received",
+        "slash_received_named",
         "modal_handle_interaction",
         "contextMenu_received",
       ],
@@ -563,6 +585,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: [
         "slash_received",
+        "slash_received_named",
         "modal_handle_interaction",
         "contextMenu_received",
       ],

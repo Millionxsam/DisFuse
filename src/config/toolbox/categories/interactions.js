@@ -53,6 +53,11 @@ export default {
         }),
         label("Events ↓"),
         block("slash_received"),
+        block("slash_received_named", {
+          inputs: {
+            name: { shadow: shadow("text") }
+          }
+        }),
         label("Actions ↓"),
         block("cv2_replyInteraction", {
           inputs: {

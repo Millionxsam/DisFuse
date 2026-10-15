@@ -276,6 +276,7 @@ createRestrictions(
       type: "hasHat",
       blockTypes: [
         "slash_received",
+        "slash_received_named",
         "buttons_event",
         "modal_handle_interaction",
         "menus_event",
