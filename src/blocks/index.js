@@ -25,6 +25,7 @@
 
 import setHelpUrls from "./lib/setHelpUrls.js";
 import { enableComponentLoops } from "./lib/componentLoops.js";
+import { enableMiscConnections } from "./lib/miscConnections.js";
 
 import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
   eager: true,
@@ -40,6 +41,10 @@ setHelpUrls();
    reaching into loop and component blocks from several files, so it too
    waits until every one of them is registered — see lib/componentLoops.js. */
 enableComponentLoops();
+
+/* Raw code and comment blocks skip connection type checks, so they fit
+   into any input of any block — see lib/miscConnections.js. */
+enableMiscConnections();
 
 /**
  * Block types that still load but are retired from the regular toolbox.
