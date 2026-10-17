@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@blockly/plugin-cross-tab-copy-paste": "^3.0.1",
     "@blockly/plugin-workspace-search": "^8.1.6",
     "@blockly/toolbox-search": "^1.2.9",
     "@blockly/workspace-backpack": "^5.3.7",

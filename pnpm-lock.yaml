@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@blockly/plugin-cross-tab-copy-paste':
+        specifier: ^3.0.1
+        version: 3.0.1(blockly@10.4.3)
       '@blockly/plugin-workspace-search':
         specifier: ^8.1.6
         version: 8.1.8(blockly@10.4.3)
@@ -77,6 +80,12 @@ importers:
         version: 8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)
 
 packages:
+
+  '@blockly/plugin-cross-tab-copy-paste@3.0.1':
+    resolution: {integrity: sha512-r3QG00551FU57S7oNbsjACnQ1MgCWs259DbtKCGXkc6q4okYf4CMlbRwLebbjgig7rxz17bSKCxrFFU4aYrN1Q==}
+    engines: {node: '>=8.17.0'}
+    peerDependencies:
+      blockly: ^10.0.0
 
   '@blockly/plugin-workspace-search@8.1.8':
     resolution: {integrity: sha512-OJA0gQuQn3k0wacsPry5VDiM+tg7sjxwcmjnQlYVO8FjB7MUfDPQerQoORo8eiszi1N0qLbOKcJpdrYY7kfjSg==}
@@ -1113,6 +1122,10 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@blockly/plugin-cross-tab-copy-paste@3.0.1(blockly@10.4.3)':
+    dependencies:
+      blockly: 10.4.3
 
   '@blockly/plugin-workspace-search@8.1.8(blockly@10.4.3)':
     dependencies:

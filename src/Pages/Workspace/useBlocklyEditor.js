@@ -3,6 +3,7 @@ import * as Blockly from "blockly";
 import { Backpack } from "@blockly/workspace-backpack";
 import { WorkspaceSearch } from "@blockly/plugin-workspace-search";
 import { ZoomToFitControl } from "@blockly/zoom-to-fit";
+import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
 
 import addTooltips from "../../blocks/lib/addTooltips";
 import { executeRestrictions } from "../../blocks/lib/restrictions";
@@ -93,10 +94,15 @@ export default function useBlocklyEditor({
     });
     const search = new WorkspaceSearch(workspace);
     const zoomToFit = new ZoomToFitControl(workspace);
+    const crossTabCopyPaste = new CrossTabCopyPaste();
 
     backpack.init();
     search.init();
     zoomToFit.init();
+    crossTabCopyPaste.init({
+      contextMenu: true,
+      shortcut: true
+    });
 
     backpackRef.current = backpack;
 
