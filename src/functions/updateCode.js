@@ -158,7 +158,8 @@ async function setUpCode(project, workspace, blocks, onlyWarning = false) {
   let js = `require("dotenv").config();
     const Discord = require("discord.js");
     let client = new Discord.Client({
-      intents: Object.values(Discord.GatewayIntentBits)
+      intents: Object.values(Discord.GatewayIntentBits),
+      partials: [Discord.Partials.Channel]
     });
     ${
       mobilePresenceBot === true
