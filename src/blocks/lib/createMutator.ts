@@ -1,11 +1,11 @@
 import * as Blockly from "blockly";
 import {
   PINGS_MUTATOR_FIELD,
-  LEGACY_PING_VALUES,
   NEW_PING_VALUES,
   appendPingsInput,
   readPingValues,
-  isLegacyPingsMutation,
+  readPingsMutation,
+  writePingsMutation,
 } from "./pings";
 
 interface BaseInput {
@@ -111,7 +111,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
         {} as Record<string, boolean>,
       );
 
-      this.pingValues_ = null;
+      this.pingValues_ = { ...NEW_PING_VALUES };
       this.setMutator(new Blockly.icons.MutatorIcon([], this));
       this.update_();
     },
@@ -119,16 +119,19 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
     mutationToDom() {
       const m = document.createElement("mutation");
       mutatorFields.forEach(f => {
-        m.setAttribute(f.name, String(this.settings_[f.name]));
+        if (f.inputType === "pings") writePingsMutation(this, m, this.settings_[f.name]);
+        else m.setAttribute(f.name, String(this.settings_[f.name]));
       });
       return m;
     },
     domToMutation(xml: Element | Record<string, string>) {
       mutatorFields.forEach(f => {
-        if (f.inputType === "pings" && isLegacyPingsMutation(xml)) {
-          /* Saved before the option existed, when every ping was on. */
-          this.settings_[f.name] = true;
-          this.pingValues_ = LEGACY_PING_VALUES;
+        if (f.inputType === "pings") {
+          /* The saved pings win over whatever the row shows now. */
+          const { visible, values } = readPingsMutation(xml);
+          this.settings_[f.name] = visible;
+          this.pingValues_ = values;
+          if (this.getInput(f.name)) this.removeInput(f.name);
         } else if (xml instanceof Element) {
           this.settings_[f.name] =
             (xml.getAttribute(f.name) ?? xml.getAttribute(f.name.toLowerCase())) ===
@@ -190,7 +193,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
           let input: Blockly.Input;
 
           if (f.inputType === "pings") {
-            appendPingsInput(this, this.pingValues_ ?? NEW_PING_VALUES);
+            appendPingsInput(this, this.pingValues_);
             continue;
           } else if (f.inputType === "value") {
             input = this.appendValueInput(f.name)

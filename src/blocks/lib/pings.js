@@ -7,28 +7,30 @@ import { ALLOWED_MENTIONS, NO_MENTIONS } from "./generatorUtils";
    A message a bot sends can ping users, roles and @everyone/@here. If a
    simple bot repeats what someone typed, anyone could use it to ping a
    role they couldn't ping themselves. So every block that sends a
-   message pings nobody unless the user turns the "allowed pings" option
-   on in the block's mutator and picks which pings are allowed.
+   message allows only user pings unless the user changes it. The
+   "include allowed pings" option in the block's mutator shows or hides
+   the row where they do; hiding it keeps whatever was picked.
 
-   Projects saved before the option existed kept every ping on, so a
-   block loaded without the option in its saved state has it switched on
-   with everything allowed.
+   The picked pings are saved in the mutation, so they apply whether the
+   row is shown or not. Projects saved before the option existed allowed
+   every ping, so a block loaded without them in its saved state allows
+   all three, with the row hidden.
    ===================================================================== */
 
 export const PINGS_INPUT = "pings";
 
 export const PING_TYPES = [
-  { field: "ping_users", label: "users", parse: "users", default: true },
-  { field: "ping_roles", label: "roles", parse: "roles", default: false },
+  { field: "ping_users", label: "users:", parse: "users", default: true },
+  { field: "ping_roles", label: "roles:", parse: "roles", default: false },
   {
     field: "ping_everyone",
-    label: "@everyone & @here",
+    label: "@everyone & @here:",
     parse: "everyone",
     default: false,
   },
 ];
 
-/** Values for a block that turned the option on just now. */
+/** Values for a block that was just created. */
 export const NEW_PING_VALUES = Object.fromEntries(
   PING_TYPES.map(p => [p.field, p.default]),
 );
@@ -38,7 +40,7 @@ export const LEGACY_PING_VALUES = Object.fromEntries(
   PING_TYPES.map(p => [p.field, true]),
 );
 
-/** The mutator option that adds the pings row. */
+/** The mutator option that shows the pings row. */
 export const PINGS_MUTATOR_FIELD = {
   name: PINGS_INPUT,
   label: "include allowed pings",
@@ -56,7 +58,12 @@ export function readPingValues(block) {
   );
 }
 
-/** Adds the "allowed pings: users [ ] roles [ ] @everyone & @here [ ]" row. */
+/** The pings a block allows, whether or not its row is shown. */
+export function currentPingValues(block) {
+  return readPingValues(block) ?? block.pingValues_ ?? null;
+}
+
+/** Adds the "allowed pings: users: [ ] roles: [ ] @everyone & @here: [ ]" row. */
 export function appendPingsInput(block, values = NEW_PING_VALUES) {
   const input = block
     .appendDummyInput(PINGS_INPUT)
@@ -79,7 +86,7 @@ export function appendPingsInput(block, values = NEW_PING_VALUES) {
  *   the same bot. `null` leaves the option out.
  */
 export function allowedMentions(block, legacyCode = ALLOWED_MENTIONS) {
-  const values = readPingValues(block);
+  const values = currentPingValues(block);
   if (!values) return NO_MENTIONS;
 
   const parse = PING_TYPES.filter(p => values[p.field]).map(p => `"${p.parse}"`);
@@ -92,6 +99,31 @@ export function allowedMentions(block, legacyCode = ALLOWED_MENTIONS) {
 export function isLegacyPingsMutation(xml) {
   if (xml instanceof Element) return !xml.hasAttribute(PINGS_INPUT);
   return !xml || !(PINGS_INPUT in xml);
+}
+
+/** Writes whether the row is shown and the picked pings into a mutation. */
+export function writePingsMutation(block, mutation, visible) {
+  const values = currentPingValues(block) ?? NEW_PING_VALUES;
+  mutation.setAttribute(PINGS_INPUT, String(!!visible));
+  PING_TYPES.forEach(p => mutation.setAttribute(p.field, String(!!values[p.field])));
+}
+
+/**
+ * Reads what writePingsMutation wrote. A mutation from before the option
+ * existed gives every ping, with the row hidden.
+ */
+export function readPingsMutation(xml) {
+  if (isLegacyPingsMutation(xml)) return { visible: false, values: { ...LEGACY_PING_VALUES } };
+
+  const get = name => (xml instanceof Element ? xml.getAttribute(name) : xml[name]);
+  const values = Object.fromEntries(
+    PING_TYPES.map(p => {
+      const saved = get(p.field);
+      return [p.field, saved == null ? p.default : saved === "true"];
+    }),
+  );
+
+  return { visible: get(PINGS_INPUT) === "true", values };
 }
 
 /* ---------------------------------------------------------------------
@@ -129,23 +161,19 @@ export function addPingsMutator(types) {
       init() {
         originalInit.call(this);
         this.pings_ = false;
-        this.pingValues_ = null;
+        this.pingValues_ = { ...NEW_PING_VALUES };
         this.setMutator(new Blockly.icons.MutatorIcon([], this));
       },
       mutationToDom() {
         const m = Blockly.utils.xml.createElement("mutation");
-        m.setAttribute(PINGS_INPUT, String(this.pings_));
+        writePingsMutation(this, m, this.pings_);
         return m;
       },
       domToMutation(xml) {
-        if (isLegacyPingsMutation(xml)) {
-          this.pings_ = true;
-          this.pingValues_ = LEGACY_PING_VALUES;
-        } else {
-          this.pings_ =
-            (xml instanceof Element ? xml.getAttribute(PINGS_INPUT) : xml[PINGS_INPUT]) ===
-            "true";
-        }
+        const { visible, values } = readPingsMutation(xml);
+        this.pings_ = visible;
+        this.pingValues_ = values;
+        if (this.getInput(PINGS_INPUT)) this.removeInput(PINGS_INPUT);
         this.updatePings_();
       },
       decompose(workspace) {
@@ -164,7 +192,7 @@ export function addPingsMutator(types) {
         if (current) this.pingValues_ = current;
 
         if (this.pings_ && !current) {
-          appendPingsInput(this, this.pingValues_ ?? NEW_PING_VALUES);
+          appendPingsInput(this, this.pingValues_);
           if (this.getInput("then")) this.moveInputBefore(PINGS_INPUT, "then");
         } else if (!this.pings_ && current) {
           this.removeInput(PINGS_INPUT);
