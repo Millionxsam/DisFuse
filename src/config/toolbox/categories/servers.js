@@ -83,6 +83,7 @@ export default {
         block("channel_id"),
         block("channel_url"),
         block("channel_created"),
+        block("channel_voiceMemberCount"),
         label("Channel actions ↓"),
         label("------------------------------------"),
         block("cv2_sendMessage"),

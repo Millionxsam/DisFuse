@@ -508,6 +508,7 @@ const PAGE_BLOCKS = {
     ["channel_starttyping", "bulk-actions"],
     ["channel_syncPerms", "changing-a-channel"],
     ["channel_url", "reading-a-channel"],
+    ["channel_voiceMemberCount", "reading-a-channel"],
     ["channel_waitForResponse", "waiting-for-a-reply"],
     ["cv2_sendMessage", "sending-a-message"],
   ],
