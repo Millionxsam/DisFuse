@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
 
+import api, { data, errorMessage } from "../../../api/client.js";
+
 /* =====================================================================
    Reasons a project can't be opened
    ---------------------------------------------------------------------
@@ -61,7 +63,12 @@ export default async function checkProject({
      setting, so a project made before that change has nowhere to log in
      from. */
   if (!project.botToken?.length) {
-    await Swal.fire({
+    /* An old project may still have its token in a "log in to bot"
+       block. If so, the owner can move it into the project settings in
+       one click instead of copying it over by hand. */
+    const oldToken = isOwner ? findOldBotToken(project) : null;
+
+    const { isDenied } = await Swal.fire({
       ...modalColors,
       title: "Project Setup Incomplete",
       icon: "warning",
@@ -69,10 +76,18 @@ export default async function checkProject({
         ? "We've made changes to the project creation process. You now have to enter your bot token in project settings before creating a project. In order to use this project, you must enter your bot token in the project settings."
         : "We've made changes to the project creation process. You now have to enter your bot token in project settings before creating a project. In order to use this project, ask the owner to enter the bot token in the project settings.",
       confirmButtonText: isOwner ? "Edit project" : "Back to Dashboard",
+      showDenyButton: Boolean(oldToken),
+      denyButtonText: "Convert automatically",
+      footer: oldToken
+        ? "This project has a bot token block. Convert automatically to move that token into the project settings."
+        : undefined,
       allowEscapeKey: false,
       allowOutsideClick: false,
       showCancelButton: false,
     });
+
+    if (isDenied && (await convertOldProject({ project, oldToken, modalColors })))
+      return null;
 
     return {
       to: isOwner
@@ -83,6 +98,110 @@ export default async function checkProject({
   }
 
   return null;
+}
+
+/**
+ * The token from an old project's "log in to bot with token" block, if
+ * any of its saved workspaces has one with the token typed straight in.
+ *
+ * @param {object} project
+ * @returns {string | null}
+ */
+export function findOldBotToken(project) {
+  const saved = [
+    project.data,
+    ...(project.workspaces ?? []).map((workspace) => workspace?.data),
+  ];
+
+  for (const json of saved) {
+    if (!json?.length) continue;
+
+    let state;
+    try {
+      state = JSON.parse(json);
+    } catch {
+      continue;
+    }
+
+    const token = tokenIn(state);
+    if (token) return token;
+  }
+
+  return null;
+}
+
+/* Walks a serialised workspace looking for a main_token block whose
+   token input is a plain text block. */
+function tokenIn(node) {
+  if (!node || typeof node !== "object") return null;
+
+  if (node.type === "main_token") {
+    const input = node.inputs?.token;
+    const value = input?.block ?? input?.shadow;
+    const text = value?.type === "text" ? value.fields?.TEXT : null;
+
+    if (typeof text === "string" && text.trim().length) return text.trim();
+  }
+
+  for (const child of Object.values(node)) {
+    const token = tokenIn(child);
+    if (token) return token;
+  }
+
+  return null;
+}
+
+/**
+ * Saves an old project's block token as its bot token. The API checks
+ * the token with Discord and fills in the bot's name and avatar.
+ *
+ * @returns {Promise<boolean>} whether the project can now be opened
+ */
+async function convertOldProject({ project, oldToken, modalColors }) {
+  Swal.fire({
+    ...modalColors,
+    title: "Converting project...",
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
+
+  try {
+    const updated = data(
+      await api.patch(`/projects/${project._id}`, { botToken: oldToken }),
+    );
+
+    /* The editor goes on to open this same project object, so it needs
+       the token for code generation and exports. */
+    project.botToken = updated.botToken ?? oldToken;
+    project.bot = updated.bot ?? project.bot;
+    project.name = updated.name ?? project.name;
+
+    await Swal.fire({
+      ...modalColors,
+      title: "Project Converted",
+      text: `Your project is now set up with ${project.bot?.username ?? "your bot"}. The old bot token block will be removed from your workspace.`,
+      icon: "success",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    });
+
+    return true;
+  } catch (error) {
+    await Swal.fire({
+      ...modalColors,
+      title: "Couldn't Convert Project",
+      text:
+        errorMessage(error, "The bot token in your workspace couldn't be used.") +
+        " Please enter your bot token in the project settings.",
+      icon: "error",
+      confirmButtonText: "Edit project",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    });
+
+    return false;
+  }
 }
 
 /**
