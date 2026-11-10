@@ -59,9 +59,13 @@ export function isEmptyString(str = "") {
   return !str || str === "" || str === "''" || str === '""' || str == "``";
 }
 
-/** Lets pings in user-written message content always notify. */
+/** Lets every ping in a message notify — what messages did before the
+    "allowed pings" option (lib/pings.js) existed. */
 export const ALLOWED_MENTIONS =
   'allowedMentions: { parse: ["everyone", "roles", "users"] }';
+
+/** Lets no ping in a message notify. */
+export const NO_MENTIONS = "allowedMentions: { parse: [] }";
 
 export function buildMessageOptions({
   content = "",
@@ -69,6 +73,7 @@ export function buildMessageOptions({
   rows,
   files,
   ephemeral,
+  allowedMentions = NO_MENTIONS,
 } = {}) {
   const options = [];
   if (!isEmptyString(content)) options.push(`content: ${content}`);
@@ -76,7 +81,7 @@ export function buildMessageOptions({
   if (rows) options.push(`components: [\n${rows}]`);
   if (files) options.push(`files: [\n${files}]`);
   if (ephemeral) options.push(`ephemeral: ${ephemeral}`);
-  options.push(ALLOWED_MENTIONS);
+  if (allowedMentions) options.push(allowedMentions);
   return options;
 }
 

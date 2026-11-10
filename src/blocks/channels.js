@@ -6,6 +6,7 @@ import {
   buildMessageOptions,
   buildThenSuffix,
 } from "./lib/generatorUtils";
+import { allowedMentions } from "./lib/pings";
 
 createMutatorBlock({
   id: "channel_send_mutator",
@@ -52,6 +53,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
 });
 
 javascriptGenerator.forBlock["channel_send_mutator"] = function (
@@ -66,7 +68,13 @@ javascriptGenerator.forBlock["channel_send_mutator"] = function (
   const files = generator.statementToCode(block, "files");
   const then = generator.statementToCode(block, "then");
 
-  const options = buildMessageOptions({ content, embeds, rows, files });
+  const options = buildMessageOptions({
+    content,
+    embeds,
+    rows,
+    files,
+    allowedMentions: allowedMentions(block),
+  });
   const thenCode = buildThenSuffix(then);
 
   return `await ${channel}.send({\n  ${options.join(",\n  ")}\n})${thenCode}`;
@@ -1013,6 +1021,7 @@ javascriptGenerator.forBlock["channel_send"] = function (block, generator) {
   const parts = buildMessageOptions({
     content: value_content,
     embeds: value_embeds,
+    allowedMentions: allowedMentions(block),
   });
 
   return `await ${value_channel}.send({\n  ${parts.join(", ")}\n})${buildThenSuffix(then)}`;
@@ -1032,6 +1041,7 @@ javascriptGenerator.forBlock["channel_send_rows"] = function (
     content: value_content,
     embeds: value_embeds,
     rows,
+    allowedMentions: allowedMentions(block),
   });
 
   return `await ${value_channel}.send({\n  ${parts.join(", ")}\n})${buildThenSuffix(then)}`;
