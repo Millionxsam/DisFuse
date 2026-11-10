@@ -143,45 +143,115 @@
 .exportErrors {
   display: flex !important;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .exportErrors p.exportError {
   display: flex;
   flex-direction: column;
-  background-color: var(--border-color);
-  gap: 0.5rem;
+  margin: 0;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid #f8bb86;
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px 14px;
 }
 
 .exportErrors p.exportError > span:first-child {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.25rem;
 }
 
 .exportErrors p.exportError span.exportErrorMessage {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  font-size: 15px;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+.exportErrors p.exportError span.exportErrorMessage + span.exportErrorMessage {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.exportErrors p.exportError span.exportErrorMessage > span {
+  flex: 1 1 14rem;
 }
 
 .exportErrors .exportErrorIgnore {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 13px;
-  opacity: 0.85;
-  cursor: pointer;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.75);
   background: transparent;
-  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.exportErrors .exportErrorIgnore:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.exportErrors .exportErrorIgnore:has(input:checked) {
+  border-color: #f8bb86;
+  background-color: rgba(248, 187, 134, 0.14);
+  color: #f8bb86;
 }
 
 .exportErrors .exportErrorIgnore input {
+  appearance: none;
+  display: grid;
+  place-content: center;
+  width: 14px;
+  height: 14px;
   margin: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
   cursor: pointer;
+}
+
+.exportErrors .exportErrorIgnore input::after {
+  content: "";
+  width: 4px;
+  height: 7px;
+  margin-top: -2px;
+  border: solid #1e1e1e;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.1s;
+}
+
+.exportErrors .exportErrorIgnore input:checked {
+  background-color: #f8bb86;
+  border-color: #f8bb86;
+}
+
+.exportErrors .exportErrorIgnore input:checked::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.exportErrors .exportErrorIgnore input:focus-visible {
+  outline: 2px solid #f8bb86;
+  outline-offset: 2px;
 }
 
 /* ---------------------------------------------------------------------
