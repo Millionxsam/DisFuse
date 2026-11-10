@@ -1407,3 +1407,54 @@ createRestrictions(
     },
   ],
 );
+
+Blockly.Blocks["channel_moveMember"] = {
+  init: function () {
+    this.appendValueInput("member")
+      .appendField("move member:")
+      .setCheck("member");
+    this.appendValueInput("channel")
+      .appendField("to voice channel:")
+      .setCheck("channel");
+    this.appendValueInput("reason").appendField("reason:").setCheck("String");
+    this.setNextStatement(true, "default");
+    this.setPreviousStatement(true, "default");
+    this.setColour("#AD509B");
+    this.setTooltip(
+      "Moves a member to another voice channel. Does nothing if the member is not in a voice channel.",
+    );
+  },
+};
+
+createRestrictions(
+  ["channel_moveMember"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["member"],
+      message: "You must specify the member to move",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["channel"],
+      message: "You must specify the voice channel to move the member to",
+    },
+    {
+      type: "validator",
+      blockTypes: ["reason"],
+      check: (val) => val.length <= 512,
+      message: "Reason cannot be greater than 512 characters",
+    },
+  ],
+);
+
+javascriptGenerator.forBlock["channel_moveMember"] = function (
+  block,
+  generator,
+) {
+  const member = generator.valueToCode(block, "member", Order.ATOMIC);
+  const channel = generator.valueToCode(block, "channel", Order.NONE);
+  const reason = generator.valueToCode(block, "reason", Order.NONE);
+
+  return `if (${member}.voice.channel) {\n  await ${member}.voice.setChannel(${channel}, ${reason || "undefined"});\n}\n`;
+};

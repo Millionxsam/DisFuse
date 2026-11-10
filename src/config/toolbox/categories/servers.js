@@ -132,6 +132,7 @@ export default {
           }
         }),
         block("channel_syncPerms"),
+        block("channel_moveMember"),
         block("channel_setPosition", {
           inputs: {
             position: {

@@ -493,6 +493,7 @@ const PAGE_BLOCKS = {
     ["channel_gettype", "reading-a-channel"],
     ["channel_id", "reading-a-channel"],
     ["channel_manageable", "reading-a-channel"],
+    ["channel_moveMember", "changing-a-channel"],
     ["channel_name", "reading-a-channel"],
     ["channel_responses", "waiting-for-a-reply"],
     ["channel_setParent", "changing-a-channel"],
