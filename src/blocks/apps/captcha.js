@@ -2,7 +2,7 @@ import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "../lib/restrictions";
 import { createMutatorBlock } from "../lib/createMutator";
-import { ALLOWED_MENTIONS } from "../lib/generatorUtils";
+import { allowedMentions } from "../lib/pings";
 
 Blockly.Blocks["captcha_create"] = {
   init: function () {
@@ -183,7 +183,7 @@ javascriptGenerator.forBlock["captcha_send"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   const code = `await ${channel}.send({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
@@ -220,7 +220,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `${message}.reply({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],
@@ -259,7 +259,7 @@ javascriptGenerator.forBlock["captcha_replyInteraction"] = function (
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   return `interaction.reply({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   files: [{ attachment: captcha.buffer, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "") || ""}],

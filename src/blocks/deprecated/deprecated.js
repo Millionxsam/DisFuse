@@ -1,5 +1,13 @@
 import * as Blockly from "blockly";
 import { Order, javascriptGenerator } from "blockly/javascript";
+import { allowedMentions } from "../lib/pings";
+
+/* These blocks never set allowedMentions, so while every ping is allowed
+   they leave it out and generate exactly what they always did. */
+function legacyMentions(block) {
+  const code = allowedMentions(block, null);
+  return code ? `${code}, ` : "";
+}
 
 Blockly.Blocks["slash_reply"] = {
   init: function () {
@@ -163,7 +171,7 @@ javascriptGenerator.forBlock["slash_editreply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `await interaction.editReply({
-    content: ${value_content || "''"},
+    ${legacyMentions(block)}content: ${value_content || "''"},
     embeds: [${value_embeds.replaceAll("'", "")}],
     components: [
     ${rows}]
@@ -177,7 +185,7 @@ javascriptGenerator.forBlock["slash_reply"] = function (block, generator) {
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   var code = `await interaction.reply({
-      content: ${value_content || "''"},
+      ${legacyMentions(block)}content: ${value_content || "''"},
       embeds: [${value_embeds.replaceAll("'", "")}],
       ephemeral: ${value_ephemeral || "false"}
     });`;
@@ -191,7 +199,7 @@ javascriptGenerator.forBlock["slash_reply_rows"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `await interaction.reply({
-    content: ${value_content || "''"},
+    ${legacyMentions(block)}content: ${value_content || "''"},
     embeds: [${value_embeds.replaceAll("'", "")}],
     ephemeral: ${value_ephemeral || "false"},
     components: [
@@ -247,7 +255,7 @@ javascriptGenerator.forBlock["msg_reply_rows"] = function (block, generator) {
   var then = generator.statementToCode(block, "then");
 
   var code = `message.reply({
-    content: ${content || "''"},
+    ${legacyMentions(block)}content: ${content || "''"},
     embeds: [${embeds.replaceAll("'", "") || ""}],
     components: [
     ${rows}]
@@ -262,7 +270,7 @@ javascriptGenerator.forBlock["msg_reply"] = function (block, generator) {
   var then = generator.statementToCode(block, "then");
 
   var code = `message.reply({
-    content: ${content || "''"},
+    ${legacyMentions(block)}content: ${content || "''"},
     embeds: [${embeds.replaceAll("'", "")}]
   }).then((messageSent) => {
     ${then}});\n`;
@@ -275,7 +283,7 @@ javascriptGenerator.forBlock["misc_int_reply"] = function (block, generator) {
   var value_ephemeral = generator.valueToCode(block, "ephemeral", Order.ATOMIC);
 
   var code = `await interaction.reply({
-  content: ${value_content || "''"},
+  ${legacyMentions(block)}content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   ephemeral: ${value_ephemeral || "false"}
 });\n`;
@@ -289,7 +297,7 @@ javascriptGenerator.forBlock["misc_int_reply_rows"] = function (block, generator
   var rows = generator.statementToCode(block, "rows");
 
   var code = `await interaction.reply({
-  content: ${value_content || "''"},
+  ${legacyMentions(block)}content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   ephemeral: ${value_ephemeral || "false"},
   components: [${rows}]
@@ -303,7 +311,7 @@ javascriptGenerator.forBlock["misc_int_edit"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   var code = `await interaction.editReply({
-  content: ${value_content || "''"},
+  ${legacyMentions(block)}content: ${value_content || "''"},
   embeds: [${value_embeds.replaceAll("'", "")}],
   components: [${rows}]
 });\n`;

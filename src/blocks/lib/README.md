@@ -11,6 +11,7 @@ now in one place, next to the blocks themselves.
 | --- | --- |
 | `createEvent.ts` | `createEventBlock` / `createEventVariable` — the whole family of blocks for one Discord event, from a short description |
 | `createMutator.ts` | `createMutatorBlock` — a block with optional inputs the user turns on with checkboxes |
+| `pings.js` | the "allowed pings" option every message-sending block has, and `allowedMentions(block)` for its generator |
 | `generatorUtils.js` | shared code-generation helpers, and `utilFunctions`, the runtime prelude injected into every exported bot |
 | `restrictions.js` | `createRestrictions` — the rules that put a warning on a block that is in the wrong place |
 | `addTooltips.js` | fills in the input/output/ID lines on tooltips at runtime |

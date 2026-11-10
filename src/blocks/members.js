@@ -2,6 +2,7 @@ import * as Blockly from "blockly/core";
 import { Order, javascriptGenerator } from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
 import { buildMessageOptions } from "./lib/generatorUtils";
+import { allowedMentions } from "./lib/pings";
 import { createMutatorBlock } from "./lib/createMutator";
 
 Blockly.Blocks["member_getone"] = {
@@ -152,6 +153,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
 });
 
 javascriptGenerator.forBlock["member_dm_mutator"] = function (
@@ -164,7 +166,13 @@ javascriptGenerator.forBlock["member_dm_mutator"] = function (
   const rows = generator.statementToCode(block, "rows");
   const files = generator.statementToCode(block, "files");
 
-  const options = buildMessageOptions({ content, embeds, rows, files });
+  const options = buildMessageOptions({
+    content,
+    embeds,
+    rows,
+    files,
+    allowedMentions: allowedMentions(block),
+  });
 
   return `await ${user}.send({\n  ${options.join(",\n  ")}\n});\n`;
 };
@@ -210,6 +218,7 @@ javascriptGenerator.forBlock["member_dm"] = function (block, generator) {
   const parts = buildMessageOptions({
     content,
     embeds,
+    allowedMentions: allowedMentions(block),
   });
 
   return `await ${user}.send({\n  ${parts.join(", ")}\n});\n`;
@@ -225,6 +234,7 @@ javascriptGenerator.forBlock["member_dm_rows"] = function (block, generator) {
     content,
     embeds,
     rows,
+    allowedMentions: allowedMentions(block),
   });
 
   return `await ${user}.send({\n  ${parts.join(", ")}\n});\n`;

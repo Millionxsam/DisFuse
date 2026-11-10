@@ -26,6 +26,7 @@
 import setHelpUrls from "./lib/setHelpUrls.js";
 import { enableComponentLoops } from "./lib/componentLoops.js";
 import { enableMiscConnections } from "./lib/miscConnections.js";
+import { addPingsMutator } from "./lib/pings.js";
 
 import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
   eager: true,
@@ -45,6 +46,36 @@ enableComponentLoops();
 /* Raw code and comment blocks skip connection type checks, so they fit
    into any input of any block — see lib/miscConnections.js. */
 enableMiscConnections();
+
+/* Messages ping nobody unless the user allows it. Blocks built with
+   createMutatorBlock opt in with `pings: true`; these message-sending
+   blocks had no mutator, so they get one with just that option. It runs
+   after the glob because a few of them are defined in more than one
+   file, and only the last definition counts — see lib/pings.js. */
+addPingsMutator([
+  "webhooks_send",
+  "poll_sendchannel",
+  "fs_sendFile",
+  "channel_send",
+  "channel_send_rows",
+  "member_dm",
+  "member_dm_rows",
+  "msg_edit",
+  "menus_reply",
+  "menus_edit",
+  "menus_update",
+  "captcha_send",
+  "captcha_reply",
+  "captcha_replyInteraction",
+  "slash_reply",
+  "slash_reply_rows",
+  "slash_editreply",
+  "msg_reply",
+  "msg_reply_rows",
+  "misc_int_reply",
+  "misc_int_reply_rows",
+  "misc_int_edit",
+]);
 
 /**
  * Block types that still load but are retired from the regular toolbox.

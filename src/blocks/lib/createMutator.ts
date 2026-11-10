@@ -1,4 +1,12 @@
 import * as Blockly from "blockly";
+import {
+  PINGS_MUTATOR_FIELD,
+  LEGACY_PING_VALUES,
+  NEW_PING_VALUES,
+  appendPingsInput,
+  readPingValues,
+  isLegacyPingsMutation,
+} from "./pings";
 
 interface BaseInput {
   type: "dummy" | "value" | "statement";
@@ -12,7 +20,7 @@ interface MutatorFieldConfig {
   name: string;
   label: string;
   default?: boolean;
-  inputType: "value" | "statement";
+  inputType: "value" | "statement" | "pings";
   inputLabel: string;
   valueCheck?: string;
 }
@@ -26,6 +34,8 @@ interface MutatorBlockConfig {
   nextStatement: string | null | boolean;
   previousStatement: string | null | boolean;
   tooltip?: string;
+  /** Adds the "allowed pings" option, for blocks that send a message. */
+  pings?: boolean;
 }
 
 export function createMutatorBlock(config: MutatorBlockConfig) {
@@ -34,11 +44,23 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
     optionsBlockId,
     colour,
     inputs = [],
-    mutatorFields,
+    mutatorFields: baseMutatorFields,
     nextStatement,
     previousStatement,
     tooltip,
+    pings = false,
   } = config;
+
+  /* The pings row goes just above "then", or last if there is none. */
+  const mutatorFields = [...baseMutatorFields];
+  if (pings) {
+    const thenIndex = mutatorFields.findIndex(f => f.name === "then");
+    mutatorFields.splice(
+      thenIndex === -1 ? mutatorFields.length : thenIndex,
+      0,
+      PINGS_MUTATOR_FIELD as MutatorFieldConfig,
+    );
+  }
 
   Blockly.Blocks[optionsBlockId] = {
     init() {
@@ -89,6 +111,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
         {} as Record<string, boolean>,
       );
 
+      this.pingValues_ = null;
       this.setMutator(new Blockly.icons.MutatorIcon([], this));
       this.update_();
     },
@@ -102,7 +125,11 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
     },
     domToMutation(xml: Element | Record<string, string>) {
       mutatorFields.forEach(f => {
-        if (xml instanceof Element) {
+        if (f.inputType === "pings" && isLegacyPingsMutation(xml)) {
+          /* Saved before the option existed, when every ping was on. */
+          this.settings_[f.name] = true;
+          this.pingValues_ = LEGACY_PING_VALUES;
+        } else if (xml instanceof Element) {
           this.settings_[f.name] =
             (xml.getAttribute(f.name) ?? xml.getAttribute(f.name.toLowerCase())) ===
             "true";
@@ -136,7 +163,9 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
         for (const f of mutatorFields) {
           const input = this.getInput(f.name);
 
-          if (input?.connection?.targetBlock()) {
+          if (f.inputType === "pings") {
+            this.pingValues_ = readPingValues(this) ?? this.pingValues_;
+          } else if (input?.connection?.targetBlock()) {
             const block = input.connection.targetBlock();
 
             if (block!.isShadow()) {
@@ -160,7 +189,10 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
 
           let input: Blockly.Input;
 
-          if (f.inputType === "value") {
+          if (f.inputType === "pings") {
+            appendPingsInput(this, this.pingValues_ ?? NEW_PING_VALUES);
+            continue;
+          } else if (f.inputType === "value") {
             input = this.appendValueInput(f.name)
               .setCheck(f.valueCheck || null)
               .appendField(f.inputLabel);

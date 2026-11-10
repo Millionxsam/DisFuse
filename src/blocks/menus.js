@@ -4,7 +4,7 @@ import { createRestrictions } from "./lib/restrictions";
 import { isValidEmoji } from "./lib/fixers";
 import { componentList } from "./lib/componentLoops";
 import { COMPONENT_LOOP_TYPES } from "./lib/componentLoopTypes";
-import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
+import { allowedMentions } from "./lib/pings";
 
 Blockly.Blocks["menus_add"] = {
   init: function () {
@@ -370,7 +370,7 @@ javascript.javascriptGenerator.forBlock["menus_edit"] = function (
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
   var code = `interaction.editReply({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "")}]
 });`;
@@ -390,7 +390,7 @@ javascript.javascriptGenerator.forBlock["menus_update"] = function (
   var rows = generator.statementToCode(block, "rows");
 
   var code = `interaction.update({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "")}],
   components: [
@@ -411,7 +411,7 @@ javascript.javascriptGenerator.forBlock["menus_reply"] = function (
   var embeds = generator.valueToCode(block, "embeds", javascript.Order.ATOMIC);
 
   var code = `interaction.reply({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   content: ${content || "''"},
   embeds: [${embeds.replaceAll("'", "")}]
 });`;

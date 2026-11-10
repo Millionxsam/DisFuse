@@ -9,7 +9,7 @@ import {
   CV2_SEND_TYPES,
   findComponentOwner,
 } from "./lib/componentLoopTypes";
-import { ALLOWED_MENTIONS } from "./lib/generatorUtils";
+import { allowedMentions } from "./lib/pings";
 
 Blockly.Blocks["cv2_textDisplay"] = {
   init: function () {
@@ -362,6 +362,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Sends a message using Discord's Components V2 system.",
 });
 
@@ -379,7 +380,7 @@ javascriptGenerator.forBlock["cv2_sendMessage"] = function (block, generator) {
   return `await ${channel}.send({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -398,6 +399,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Sends a DM using Discord's Components V2 system.",
 });
 
@@ -414,7 +416,7 @@ javascriptGenerator.forBlock["cv2_sendDm"] = function (block, generator) {
   return `await ${member}.send({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -433,6 +435,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Replies to a slash command / button / menu interaction using Components V2. Cannot use content or embeds.",
 });
 
@@ -452,7 +455,7 @@ javascriptGenerator.forBlock["cv2_replyInteraction"] = function (
   components: ${componentArray},
   ephemeral: ${ephemeral},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -471,6 +474,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Replies to a message using Components V2. Cannot use content or embeds.",
 });
 
@@ -486,7 +490,7 @@ javascriptGenerator.forBlock["cv2_replyMsg"] = function (block, generator) {
   return `await message.reply({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 })${thenStr};\n`;
 };
@@ -504,6 +508,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Edits a deferred or previously sent interaction reply using Components V2.",
 });
 
@@ -520,7 +525,7 @@ javascriptGenerator.forBlock["cv2_editReplyInteraction"] = function (
   return `await interaction.editReply({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -538,6 +543,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Updates the message the button / menu is attached to using Components V2.",
 });
 
@@ -554,7 +560,7 @@ javascriptGenerator.forBlock["cv2_updateInteraction"] = function (
   return `await interaction.update({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };
@@ -572,6 +578,7 @@ createMutatorBlock({
   ],
   previousStatement: "default",
   nextStatement: "default",
+  pings: true,
   tooltip: "Edits a deferred or previously sent interaction reply using Components V2.",
 });
 
@@ -587,7 +594,7 @@ javascriptGenerator.forBlock["cv2_editMsg"] = function (block, generator) {
   return `await ${message}.edit({
   components: ${componentArray},
   ${filesStr}
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   flags: Discord.MessageFlags.IsComponentsV2,
 });\n`;
 };

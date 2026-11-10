@@ -5,9 +5,9 @@ import { createMutatorBlock } from "./lib/createMutator";
 import {
   formatEmbeds,
   buildMessageOptions,
-  buildThenSuffix,
-  ALLOWED_MENTIONS
+  buildThenSuffix
 } from "./lib/generatorUtils";
+import { allowedMentions } from "./lib/pings";
 
 Blockly.Blocks["msg_getone"] = {
   init: function () {
@@ -89,7 +89,8 @@ createMutatorBlock({
     }
   ],
   previousStatement: "default",
-  nextStatement: "default"
+  nextStatement: "default",
+  pings: true,
 });
 
 javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) {
@@ -105,7 +106,8 @@ javascriptGenerator.forBlock["msg_reply_mutator"] = function (block, generator) 
     embeds,
     rows,
     files,
-    ephemeral
+    ephemeral,
+    allowedMentions: allowedMentions(block),
   });
   const thenCode = buildThenSuffix(then);
 
@@ -152,7 +154,8 @@ createMutatorBlock({
     }
   ],
   previousStatement: "default",
-  nextStatement: "default"
+  nextStatement: "default",
+  pings: true,
 });
 
 javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
@@ -168,7 +171,8 @@ javascriptGenerator.forBlock["msg_edit_mutator"] = function (block, generator) {
     embeds,
     rows,
     files,
-    ephemeral
+    ephemeral,
+    allowedMentions: allowedMentions(block),
   });
 
   return `await (${message}).edit({\n  ${options.join(",\n  ")}\n});\n`;
@@ -446,7 +450,7 @@ javascriptGenerator.forBlock["msg_edit"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `await (${message}).edit({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   content: ${content || "''"},
   embeds: [${formatEmbeds(embeds)}],
   components: [
@@ -476,7 +480,7 @@ javascriptGenerator.forBlock["captcha_reply"] = function (block, generator) {
   var rows = generator.statementToCode(block, "rows");
 
   return `${message}.reply({
-  ${ALLOWED_MENTIONS},
+  ${allowedMentions(block)},
   files: [{ attachment: captcha.PNGStream, name: "captcha.png" }],
   content: ${content || "''"},
   embeds: [${formatEmbeds(embeds)}],
