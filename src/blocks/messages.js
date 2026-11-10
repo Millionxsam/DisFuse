@@ -46,6 +46,18 @@ Blockly.Blocks["message_author_not_bot"] = {
   }
 };
 
+Blockly.Blocks["msg_dm_received"] = {
+  init: function () {
+    this.appendDummyInput().appendField("when the bot receives a DM");
+    this.appendStatementInput("event").setCheck("default");
+    this.setInputsInline(false);
+    this.setColour("#336EFF");
+    this.setTooltip(
+      "Runs when someone sends the bot a direct message. Messages sent in servers and messages from bots are ignored."
+    );
+  }
+};
+
 createMutatorBlock({
   id: "msg_reply_mutator",
   optionsBlockId: "msg_reply_mutator_options",
@@ -397,6 +409,14 @@ javascriptGenerator.forBlock["message_author_not_bot"] = function (block, genera
   return `client.on("messageCreate", async (message) => {\n  if (message.author.bot) return;\n${codeState}});\n`;
 };
 
+/* A DM has no guild, so that is what tells it apart from a server message.
+   Bots are skipped too, which includes this bot's own DMs: replying to a
+   DM fires messageCreate again and would otherwise loop. */
+javascriptGenerator.forBlock["msg_dm_received"] = function (block, generator) {
+  const codeState = generator.statementToCode(block, "event");
+  return `client.on("messageCreate", async (message) => {\n  if (message.guild || message.author.bot) return;\n${codeState}});\n`;
+};
+
 javascriptGenerator.forBlock["msg_msg"] = () => ["message", Order.NONE];
 javascriptGenerator.forBlock["msg_content"] = () => ["message.content", Order.NONE];
 javascriptGenerator.forBlock["msg_member"] = () => ["message.member", Order.NONE];
@@ -559,15 +579,20 @@ javascriptGenerator.forBlock["message_property"] = function (block, generator) {
 };
 
 createRestrictions(
+  ["msg_content", "msg_channel", "msg_msg"],
   [
-    "msg_content",
-    "msg_member",
-    "msg_user",
-    "msg_channel",
-    "msg_server",
-    "msg_delete",
-    "msg_msg"
-  ],
+    {
+      type: "hasHat",
+      blockTypes: ["msg_received", "message_author_not_bot", "msg_dm_received"],
+      message: 'This block must be in a "when a message is received" event'
+    }
+  ]
+);
+
+/* These read the sender's server membership or delete their message,
+   none of which exists in a DM. */
+createRestrictions(
+  ["msg_member", "msg_user", "msg_server", "msg_delete"],
   [
     {
       type: "hasHat",
@@ -582,7 +607,7 @@ createRestrictions(
   [
     {
       type: "hasHat",
-      blockTypes: ["msg_received", "message_author_not_bot"],
+      blockTypes: ["msg_received", "message_author_not_bot", "msg_dm_received"],
       message: 'This block must be in a "when a message is received" event'
     },
     {
