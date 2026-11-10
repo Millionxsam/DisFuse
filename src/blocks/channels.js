@@ -465,6 +465,19 @@ Blockly.Blocks["channel_gettype"] = {
   },
 };
 
+Blockly.Blocks["channel_voiceMemberCount"] = {
+  init: function () {
+    this.appendValueInput("channel")
+      .setCheck("channel")
+      .appendField("number of members in voice channel:");
+    this.setOutput(true, "Number");
+    this.setColour("#AD509B");
+    this.setTooltip(
+      "Returns how many members are currently connected to a voice or stage channel. Returns 0 for any other kind of channel.",
+    );
+  },
+};
+
 Blockly.Blocks["channel_getone"] = {
   init: function () {
     this.appendValueInput("value")
@@ -879,6 +892,17 @@ javascriptGenerator.forBlock["channel_getnsfw"] = function (block, generator) {
   return [
     `${generator.valueToCode(block, "channel", Order.ATOMIC)}.nsfw`,
     Order.NONE,
+  ];
+};
+
+javascriptGenerator.forBlock["channel_voiceMemberCount"] = function (
+  block,
+  generator,
+) {
+  const channel = generator.valueToCode(block, "channel", Order.ATOMIC);
+  return [
+    `(${channel}?.isVoiceBased?.() ? ${channel}.members.size : 0)`,
+    Order.ATOMIC,
   ];
 };
 
