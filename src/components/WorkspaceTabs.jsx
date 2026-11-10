@@ -1,11 +1,28 @@
 import Swal from "sweetalert2";
 import * as Blockly from "blockly";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 import api, { data, errorMessage } from "../api/client.js";
 import {
   createVersionWorkspace,
   deleteVersionWorkspace,
   renameVersionWorkspace,
+  reorderVersionWorkspaces,
 } from "../api/versions";
 
 import DocsLink from "./DocsLink.jsx";
@@ -229,6 +246,53 @@ export default function WorkspaceTabs({
     });
   }
 
+  /* Tabs only start dragging after the pointer moves a few pixels, so a
+     plain click still opens the tab and the buttons still work. */
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  /**
+   * Saves the order a tab was dragged into.
+   *
+   * The tabs move straight away; if the server refuses, they go back to
+   * where they were.
+   */
+  function reorderWorkspaces({ active, over }) {
+    if (!over || active.id === over.id) return;
+
+    const previous = project.workspaces;
+    const from = previous.findIndex((ws) => String(ws._id) === active.id);
+    const to = previous.findIndex((ws) => String(ws._id) === over.id);
+    if (from === -1 || to === -1) return;
+
+    const reordered = arrayMove(previous, from, to);
+    const order = reordered.map((ws) => String(ws._id));
+
+    setProject((current) => ({ ...current, workspaces: reordered }));
+
+    const restore = (error) => {
+      setProject((current) => ({ ...current, workspaces: previous }));
+      reportFailure(error);
+    };
+
+    if (activeVersionId)
+      return reorderVersionWorkspaces(project._id, activeVersionId, order)
+        .then(onVersionUpdate)
+        .catch(restore);
+
+    api
+      .patch(`/projects/${project._id}/workspaces/order`, { order })
+      .then(data)
+      .then(setProject)
+      .catch(restore);
+  }
+
+  const workspaceIds = (project.workspaces ?? []).map((ws) => String(ws._id));
+
   return (
     <div className="workspace-tabs">
       {editable ? (
@@ -239,40 +303,55 @@ export default function WorkspaceTabs({
         ""
       )}
 
-      {project.workspaces?.map((workspace, index) => (
-        <div
-          style={!editable && index === 0 ? { marginLeft: "1rem" } : undefined}
-          onClick={() => onClick(index)}
-          className={`tab${currentTab._id === workspace._id ? " active" : ""}`}
-          key={index}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={reorderWorkspaces}
+      >
+        <SortableContext
+          items={workspaceIds}
+          strategy={horizontalListSortingStrategy}
         >
-          <div>{workspace.name}</div>
-          {editable ? (
-            <div className="buttons">
-              <i
-                onClick={(e) =>
-                  editWorkspaceName(e, workspace, project, modalColors)
-                }
-                className="fa-solid fa-pen"
-              />
-              <i
-                onClick={(e) =>
-                  duplicateWorkspace(e, workspace, project, modalColors)
-                }
-                className="fa-solid fa-clone"
-              />
-              <i
-                onClick={(e) =>
-                  deleteWorkspace(e, workspace, project, modalColors)
-                }
-                className="fa-solid fa-trash"
-              />
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-      ))}
+          {project.workspaces?.map((workspace, index) => (
+            <SortableTab
+              key={String(workspace._id)}
+              id={String(workspace._id)}
+              disabled={!editable}
+              style={
+                !editable && index === 0 ? { marginLeft: "1rem" } : undefined
+              }
+              onClick={() => onClick(index)}
+              className={`tab${currentTab._id === workspace._id ? " active" : ""}`}
+            >
+              <div>{workspace.name}</div>
+              {editable ? (
+                <div className="buttons">
+                  <i
+                    onClick={(e) =>
+                      editWorkspaceName(e, workspace, project, modalColors)
+                    }
+                    className="fa-solid fa-pen"
+                  />
+                  <i
+                    onClick={(e) =>
+                      duplicateWorkspace(e, workspace, project, modalColors)
+                    }
+                    className="fa-solid fa-clone"
+                  />
+                  <i
+                    onClick={(e) =>
+                      deleteWorkspace(e, workspace, project, modalColors)
+                    }
+                    className="fa-solid fa-trash"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </SortableTab>
+          ))}
+        </SortableContext>
+      </DndContext>
       {editable ? (
         <div onClick={newWorkspace} key={"unknown2"} className="newTab">
           <i className="fa-solid fa-plus"></i>
@@ -293,6 +372,38 @@ export default function WorkspaceTabs({
       ) : (
         ""
       )}
+    </div>
+  );
+}
+
+/**
+ * One tab in the bar. The owner can drag it left or right to change the
+ * order of the workspaces.
+ */
+function SortableTab({ id, disabled, style, className, onClick, children }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id, disabled });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`${className}${isDragging ? " dragging" : ""}`}
+      style={{
+        ...style,
+        transform: CSS.Translate.toString(transform),
+        transition,
+      }}
+      onClick={onClick}
+      {...attributes}
+      {...listeners}
+    >
+      {children}
     </div>
   );
 }
