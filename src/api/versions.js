@@ -120,6 +120,15 @@ export function saveVersionWorkspaceData(
     .then(body);
 }
 
+/** `order` is every workspace ID in the version, in the new order. */
+export function reorderVersionWorkspaces(projectId, versionId, order) {
+  return api
+    .patch(`${versionsUrl(projectId)}/${versionId}/workspaces/order`, {
+      order,
+    })
+    .then(body);
+}
+
 export function deleteVersionWorkspace(projectId, versionId, workspaceId) {
   return api
     .delete(`${versionsUrl(projectId)}/${versionId}/workspaces/${workspaceId}`)

@@ -91,6 +91,14 @@
   transition: background-color 0.2s ease;
 }
 
+/* A tab being dragged to a new position. */
+.workspace-tabs .tab.dragging {
+  position: relative;
+  z-index: 1;
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
 .workspace-tabs > div:hover {
   background-color: var(--main-color);
 }
