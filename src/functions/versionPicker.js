@@ -26,15 +26,16 @@ function escapeHtml(value) {
  * Asks which version to take, and whether to take all of its workspaces
  * or one of them.
  *
- * @returns {Promise<{versionId: string, scope: string}|null>} scope is
- *   "project" for the whole version, or a workspace ID. Null if
- *   cancelled.
+ * @returns {Promise<{versionId: string, scope: string, denied?: boolean}|null>}
+ *   scope is "project" for the whole version, or a workspace ID.
+ *   `denied` is set when the deny button was used. Null if cancelled.
  */
 export async function pickVersionAndScope({
   versions = [],
   activeVersionId,
   title,
   confirmButtonText,
+  denyButtonText,
   html = "",
   modalColors = {},
 }) {
@@ -63,11 +64,25 @@ export async function pickVersionAndScope({
     ].join("");
   };
 
+  const readChoice = () => ({
+    versionId: document.querySelector("#df-pick-version")?.value,
+    scope: document.querySelector("#df-pick-scope")?.value || "project",
+  });
+
   const result = await Swal.fire({
     title,
     icon: "question",
     confirmButtonText,
     showCancelButton: true,
+    /* An optional second way to take the same choice, e.g. Export's
+       "Download file" next to "Download ZIP". */
+    ...(denyButtonText
+      ? {
+          showDenyButton: true,
+          denyButtonText,
+          preDeny: readChoice,
+        }
+      : {}),
     html: `
       <label class="df-version-dialog-label" for="df-pick-version">Version</label>
       <select id="df-pick-version" class="df-version-dialog-select">${versionOptions}</select>
@@ -87,13 +102,19 @@ export async function pickVersionAndScope({
           if (scope) scope.innerHTML = scopeOptions(e.target.value);
         });
     },
-    preConfirm: () => ({
-      versionId: document.querySelector("#df-pick-version")?.value,
-      scope: document.querySelector("#df-pick-scope")?.value || "project",
-    }),
+    preConfirm: readChoice,
     ...modalColors,
+    ...(denyButtonText
+      ? {
+          customClass: {
+            ...(modalColors.customClass ?? {}),
+            denyButton: "df-swal-neutral",
+          },
+        }
+      : {}),
   });
 
+  if (result.isDenied) return { ...result.value, denied: true };
   if (!result.isConfirmed) return null;
   return result.value;
 }

@@ -24,6 +24,7 @@ import { DOCS, docsUrl } from "../../../config/docs.js";
    ---------------------------------------------------------------------
    A ZIP of the bot's code, plus the `.df` of the blocks it was built
    from, plus a `.env` holding the bot token and the project's secrets.
+   Or, with "Download file", just the bot's `index.js` on its own.
 
    On a Version Control project the dialog asks which version to export
    as well as whether to export all of its workspaces or just one, and
@@ -37,7 +38,7 @@ const docsAnchor = (page, text) =>
     page,
   )}">${text}</a>`;
 
-const HELP_TEXT = `After exporting, extract the ZIP and read instructions.txt if you don't know what to do next.<br /><br />
+const HELP_TEXT = `After exporting, extract the ZIP and read instructions.txt if you don't know what to do next. "Download file" downloads only index.js, for updating a bot you already set up.<br /><br />
 ${docsAnchor(
   DOCS.runningYourBot,
   "Read how to run your bot",
@@ -50,7 +51,10 @@ function titleCase(text) {
   );
 }
 
-/** Asks what to export. Resolves to null if the dialog is dismissed. */
+/**
+ * Asks what to export. Resolves to null if the dialog is dismissed.
+ * `onlyIndex` is set when "Download file" was picked over "Download ZIP".
+ */
 async function askWhatToExport({
   activeVersion,
   versions,
@@ -62,6 +66,9 @@ async function askWhatToExport({
       title: "Export Project",
       icon: "info",
       confirmButtonText: "Download ZIP",
+      showDenyButton: true,
+      denyButtonText: "Download file",
+      returnInputValueOnDeny: true,
       input: "select",
       inputOptions: {
         project: "Export whole project",
@@ -70,25 +77,36 @@ async function askWhatToExport({
       showCancelButton: false,
       html: HELP_TEXT,
       ...modalColors,
+      customClass: {
+        ...(modalColors?.customClass ?? {}),
+        denyButton: "df-swal-neutral",
+      },
     });
 
-    if (!result.isConfirmed) return null;
+    if (!result.isConfirmed && !result.isDenied) return null;
 
     return {
+      onlyIndex: result.isDenied,
       versionId: null,
       scope:
         result.value === "project" ? "project" : String(currentWorkspaceId),
     };
   }
 
-  return pickVersionAndScope({
+  const picked = await pickVersionAndScope({
     versions,
     activeVersionId: activeVersion._id,
     title: "Export Project",
     confirmButtonText: "Download ZIP",
+    denyButtonText: "Download file",
     html: HELP_TEXT,
     modalColors,
   });
+
+  if (!picked) return null;
+
+  const { denied, ...choice } = picked;
+  return { ...choice, onlyIndex: Boolean(denied) };
 }
 
 /**
@@ -254,7 +272,7 @@ async function confirmDespiteErrors(exportingWs, modalColors) {
   return isConfirmed;
 }
 
-/** Hands the finished ZIP to the browser. */
+/** Hands the finished file to the browser. */
 function download(blob, filename) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -264,6 +282,33 @@ function download(blob, filename) {
   anchor.click();
 
   URL.revokeObjectURL(url);
+}
+
+/** The full export: code, `.df`, `.env` and the files to run it. */
+async function downloadZip({ project, exportingWs, df, code, blockPacks }) {
+  const zip = new JSZip();
+
+  const env = [
+    `DISFUSE_SECURE_BOT_TOKEN=${project?.botToken || "invalid_token"}`,
+    ...(project.secrets ?? []).map((secret) => `${secret.name}=${secret.value}`),
+  ].join("\n");
+
+  const dependencies = blockPacks.flatMap((pack) => pack.dependencies || []);
+
+  for (const file of getExportFiles(
+    dependencies,
+    exportingWs.getAllBlocks(false),
+  ))
+    zip.file(file.name, file.content);
+
+  zip.file("index.js", await format(code));
+  zip.file(".env", env);
+  zip.file(`${project.name}.df`, JSON.stringify(df));
+
+  download(
+    await zip.generateAsync({ type: "blob" }),
+    `${project.name}.zip`,
+  );
 }
 
 /**
@@ -323,29 +368,14 @@ export default async function exportProject({
   try {
     if (!(await confirmDespiteErrors(exportingWs, modalColors))) return false;
 
-    const zip = new JSZip();
-
-    const env = [
-      `DISFUSE_SECURE_BOT_TOKEN=${project?.botToken || "invalid_token"}`,
-      ...(project.secrets ?? []).map((secret) => `${secret.name}=${secret.value}`),
-    ].join("\n");
-
-    const dependencies = blockPacks.flatMap((pack) => pack.dependencies || []);
-
-    for (const file of getExportFiles(
-      dependencies,
-      exportingWs.getAllBlocks(false),
-    ))
-      zip.file(file.name, file.content);
-
-    zip.file("index.js", await format(code));
-    zip.file(".env", env);
-    zip.file(`${project.name}.df`, JSON.stringify(df));
-
-    download(
-      await zip.generateAsync({ type: "blob" }),
-      `${project.name}.zip`,
-    );
+    if (choice.onlyIndex) {
+      download(
+        new Blob([await format(code)], { type: "text/javascript" }),
+        "index.js",
+      );
+    } else {
+      await downloadZip({ project, exportingWs, df, code, blockPacks });
+    }
 
     Swal.fire({
       toast: true,
