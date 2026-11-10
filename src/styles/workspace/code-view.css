@@ -155,11 +155,33 @@
   padding: 10px;
 }
 
-.exportErrors p.exportError span:first-child {
+.exportErrors p.exportError > span:first-child {
   font-size: 20px;
   font-weight: 700;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--border-color);
+}
+
+.exportErrors p.exportError span.exportErrorMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.exportErrors .exportErrorIgnore {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 13px;
+  opacity: 0.85;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+}
+
+.exportErrors .exportErrorIgnore input {
+  margin: 0;
+  cursor: pointer;
 }
 
 /* ---------------------------------------------------------------------

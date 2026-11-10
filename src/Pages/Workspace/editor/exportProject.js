@@ -185,6 +185,9 @@ function saveIgnoredErrors(keys) {
   }
 }
 
+const escapeAttr = (text) =>
+  String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
 /** Warns about blocks carrying errors. Resolves false if the user backs out. */
 async function confirmDespiteErrors(exportingWs, modalColors) {
   const ignored = new Set(getIgnoredErrors());
@@ -210,9 +213,6 @@ async function confirmDespiteErrors(exportingWs, modalColors) {
     showCancelButton: true,
     confirmButtonText: "Download Anyway",
     confirmButtonColor: "#e40000",
-    input: "checkbox",
-    inputValue: 0,
-    inputPlaceholder: "Don't show these errors again",
     html: `
       <p>You have the following errors in your code:</p>
       ${warnings
@@ -220,24 +220,36 @@ async function confirmDespiteErrors(exportingWs, modalColors) {
           (warning) => `
           <p class="exportError">
             <span>${titleCase(warning.type.replaceAll("_", " "))}</span>
-            ${warning.messages.map((message) => `<span>${message}</span>`).join("")}
+            ${warning.messages
+              .map(
+                (message) => `
+              <span class="exportErrorMessage">
+                <span>${message}</span>
+                <label class="exportErrorIgnore">
+                  <input type="checkbox" data-error-key="${escapeAttr(
+                    errorKey(warning.type, message),
+                  )}" />
+                  Don't show this again
+                </label>
+              </span>`,
+              )
+              .join("")}
           </p>`,
         )
         .join("")}
     `,
     ...modalColors,
+    preConfirm: () =>
+      [
+        ...Swal.getHtmlContainer().querySelectorAll(
+          "input[data-error-key]:checked",
+        ),
+      ].map((input) => input.dataset.errorKey),
     customClass: { container: "dark", htmlContainer: "exportErrors" },
   });
 
-  if (isConfirmed && value)
-    saveIgnoredErrors([
-      ...new Set([
-        ...ignored,
-        ...warnings.flatMap((warning) =>
-          warning.messages.map((message) => errorKey(warning.type, message)),
-        ),
-      ]),
-    ]);
+  if (isConfirmed && value?.length)
+    saveIgnoredErrors([...new Set([...ignored, ...value])]);
 
   return isConfirmed;
 }
