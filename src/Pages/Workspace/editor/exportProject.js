@@ -165,30 +165,61 @@ async function resolveExport({
   };
 }
 
+const IGNORED_ERRORS_KEY = "disfuse-ignored-export-errors";
+
+/** Export errors the user chose not to be warned about again. */
+function getIgnoredErrors() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(IGNORED_ERRORS_KEY));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveIgnoredErrors(keys) {
+  try {
+    localStorage.setItem(IGNORED_ERRORS_KEY, JSON.stringify(keys));
+  } catch {
+    /* Storage is unavailable; the errors just show again next time. */
+  }
+}
+
 /** Warns about blocks carrying errors. Resolves false if the user backs out. */
 async function confirmDespiteErrors(exportingWs, modalColors) {
+  const ignored = new Set(getIgnoredErrors());
+  const errorKey = (type, message) => `${type}::${message}`;
+
   const warnings = exportingWs
     .getAllBlocks(false)
     .filter((block) => block.data?.length)
-    .map((block) => ({ id: block.id, messages: block.data }));
+    .map((block) => ({
+      id: block.id,
+      type: block.type,
+      messages: block.data.filter(
+        (message) => !ignored.has(errorKey(block.type, message)),
+      ),
+    }))
+    .filter((warning) => warning.messages.length);
 
   if (!warnings.length) return true;
 
-  const { isConfirmed } = await Swal.fire({
+  const { isConfirmed, value } = await Swal.fire({
     title: "Errors",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Download Anyway",
     confirmButtonColor: "#e40000",
+    input: "checkbox",
+    inputValue: 0,
+    inputPlaceholder: "Don't show these errors again",
     html: `
       <p>You have the following errors in your code:</p>
       ${warnings
         .map(
           (warning) => `
           <p class="exportError">
-            <span>${titleCase(
-              exportingWs.getBlockById(warning.id).type.replaceAll("_", " "),
-            )}</span>
+            <span>${titleCase(warning.type.replaceAll("_", " "))}</span>
             ${warning.messages.map((message) => `<span>${message}</span>`).join("")}
           </p>`,
         )
@@ -197,6 +228,16 @@ async function confirmDespiteErrors(exportingWs, modalColors) {
     ...modalColors,
     customClass: { container: "dark", htmlContainer: "exportErrors" },
   });
+
+  if (isConfirmed && value)
+    saveIgnoredErrors([
+      ...new Set([
+        ...ignored,
+        ...warnings.flatMap((warning) =>
+          warning.messages.map((message) => errorKey(warning.type, message)),
+        ),
+      ]),
+    ]);
 
   return isConfirmed;
 }
