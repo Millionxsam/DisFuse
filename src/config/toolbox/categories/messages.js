@@ -22,6 +22,7 @@ export default {
         label("Events ↓"),
         block("msg_received"),
         block("message_author_not_bot"),
+        block("msg_dm_received"),
         block("msg_msg"),
         label("Information about a message ↓"),
         block("message_property", {

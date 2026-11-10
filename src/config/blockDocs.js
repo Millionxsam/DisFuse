@@ -417,6 +417,7 @@ const PAGE_BLOCKS = {
     ["message_property", "reading-a-message"],
     ["misc_messageSent", "sending-and-editing"],
     ["msg_deleteOther", "deleting"],
+    ["msg_dm_received", "when-the-bot-receives-a-dm"],
     ["msg_get_reactions", "reading-reactions"],
     ["msg_getone", "getting-a-specific-message"],
     ["msg_isReply", "reading-a-message"],
