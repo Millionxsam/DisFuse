@@ -16,6 +16,7 @@ import {
 } from "../../../functions/versionPicker.js";
 import { refreshProjectWorkspaces } from "../../../functions/projectData";
 import { saveWorkspaceState } from "../../../functions/workspaceState.js";
+import { executeRestrictions } from "../../../blocks/lib/restrictions";
 
 import { DOCS, docsUrl } from "../../../config/docs.js";
 
@@ -154,10 +155,17 @@ async function resolveExport({
       currentWorkspaceId,
     );
 
+    const code = await generateWorkspaceCode(latest, exportingWs);
+
+    /* The warnings saved with each tab were worked out from that tab
+       alone. With every tab together, a block another tab provides (a
+       "create database", say) is no longer missing. */
+    executeRestrictions(exportingWs);
+
     return {
       exportingWs,
       df: buildProjectDf(latest, workspace, currentWorkspaceId),
-      code: await generateWorkspaceCode(latest, exportingWs),
+      code,
       temporary: true,
     };
   }

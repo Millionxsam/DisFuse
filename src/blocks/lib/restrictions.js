@@ -12,7 +12,13 @@ export function createRestrictions(blockNames, newRestrictions) {
   });
 }
 
-export function executeRestrictions(workspace) {
+/**
+ * @param {object} workspace  the workspace on screen
+ * @param {Set<string>} [otherBlockTypes]  block types in the project's
+ *   other workspaces, so a rule like "you must create a database first"
+ *   is satisfied by a block in another tab, not only this one
+ */
+export function executeRestrictions(workspace, otherBlockTypes = new Set()) {
   const blocks = workspace.getAllBlocks(false);
 
   blocks.forEach((block) => {
@@ -79,7 +85,8 @@ export function executeRestrictions(workspace) {
             !blocks.some(
               (b) =>
                 b.id !== block.id && restriction.blockTypes.includes(b.type),
-            )
+            ) &&
+            !restriction.blockTypes.some((type) => otherBlockTypes.has(type))
           )
             errors.push(restriction.message);
           break;

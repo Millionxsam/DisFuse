@@ -50,6 +50,8 @@ const HOUSEKEEPING_DELAY_MS = 200;
  * @param {(event: object) => void} options.onAnyChange      every event
  * @param {(workspace: object) => void} options.onHousekeeping  debounced,
  *   after a real edit — where the block count and warnings are refreshed
+ * @param {() => Set<string>} [options.getOtherBlockTypes]  block types in
+ *   the project's other workspaces, for restrictions that look across tabs
  */
 export default function useBlocklyEditor({
   enabled,
@@ -60,6 +62,7 @@ export default function useBlocklyEditor({
   onSelect,
   onAnyChange,
   onHousekeeping,
+  getOtherBlockTypes,
 }) {
   const workspaceRef = useRef(null);
   const backpackRef = useRef(null);
@@ -67,7 +70,13 @@ export default function useBlocklyEditor({
 
   /* Callbacks change every render; the listeners must not. */
   const callbacks = useRef({});
-  callbacks.current = { onProjectChange, onSelect, onAnyChange, onHousekeeping };
+  callbacks.current = {
+    onProjectChange,
+    onSelect,
+    onAnyChange,
+    onHousekeeping,
+    getOtherBlockTypes,
+  };
 
   useEffect(() => {
     if (!enabled || !toolbox) return undefined;
@@ -138,7 +147,7 @@ export default function useBlocklyEditor({
       if (!workspaceRef.current) return;
 
       addTooltips(workspace);
-      executeRestrictions(workspace);
+      executeRestrictions(workspace, callbacks.current.getOtherBlockTypes?.());
       persistBackpack();
       callbacks.current.onHousekeeping?.(workspace);
     }

@@ -30,6 +30,7 @@ import joinServer from "../../functions/joinServer.js";
 import modalThemeColor from "../../functions/modalThemeColor";
 import registerContextMenus from "../../functions/registerContextMenus";
 import { updateCode } from "../../functions/updateCode";
+import { parseDfWorkspaceData } from "../../functions/dfFile";
 import {
   blockTypesIn,
   checkTemplateTypes,
@@ -257,6 +258,14 @@ export default function Workspace() {
     onAnyChange: () => presence.current?.onWorkspaceChange(),
     onHousekeeping: (workspace) =>
       setBlockCount(workspace.getAllBlocks(false).length),
+    getOtherBlockTypes: () =>
+      blockTypesIn(
+        (session.project?.workspaces ?? [])
+          .filter(
+            (ws) => String(ws._id) !== String(currentWorkspace.current?._id),
+          )
+          .flatMap((ws) => parseDfWorkspaceData(ws.data)?.blocks?.blocks ?? []),
+      ),
   });
 
   /* ---- Opening a sub-workspace -------------------------------------- */
