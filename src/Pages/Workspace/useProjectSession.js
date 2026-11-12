@@ -29,6 +29,7 @@ import { authToken, tabSessionId } from "../../api/client.js";
  * @param {(payload: object) => void} handlers.onRemoteUpdate  someone else saved
  * @param {(payload: object) => void} handlers.onRemoteSelect   someone else selected a block
  * @param {(payload: object) => void} handlers.onServerError    a socket-level error
+ * @param {() => Promise<void>}     handlers.onKicked         about to be replaced by another device; save now
  */
 export default function useProjectSession(projectId, handlers = {}) {
   const [state, setState] = useState({
@@ -48,6 +49,8 @@ export default function useProjectSession(projectId, handlers = {}) {
      one — which drives the loading screen — from later ones, which must
      not throw the user back to a spinner mid-edit. */
   const joinedOnce = useRef(false);
+  /* The current socket's join, kept so `takeover` can call it again. */
+  const joinRef = useRef(null);
 
   useEffect(() => {
     if (!projectId) return undefined;
@@ -68,8 +71,8 @@ export default function useProjectSession(projectId, handlers = {}) {
 
     let disposed = false;
 
-    function join() {
-      socket.emit("projectJoin", { projectId }, (project, activeUsers) => {
+    function join(takeover = false) {
+      socket.emit("projectJoin", { projectId, takeover }, (project, activeUsers) => {
         if (disposed) return;
 
         const error = project?.error || activeUsers?.error;
@@ -101,7 +104,8 @@ export default function useProjectSession(projectId, handlers = {}) {
        middleware, so its `projectJoin` listener is registered before the
        connection is handed to us. It was not always — see the note in
        the API's functions/registerWebSocket.js. */
-    socket.on("connect", join);
+    socket.on("connect", () => join());
+    joinRef.current = join;
 
     /* A refusal from the server's auth middleware arrives here rather
        than as an `error` event, and socket.io stops reconnecting after
@@ -142,6 +146,27 @@ export default function useProjectSession(projectId, handlers = {}) {
 
     socket.on("error", (payload) => {
       handlersRef.current.onServerError?.(payload);
+    });
+
+    /* The same user opened the project on another device and chose to
+       continue there. The server waits for this acknowledgement before
+       disconnecting us, so anything unsaved is sent first. */
+    socket.on("sessionKicked", async (_payload, ack) => {
+      try {
+        await handlersRef.current.onKicked?.();
+      } catch (error) {
+        console.error("Saving before handing over failed:", error);
+      }
+
+      if (typeof ack === "function") ack({ saved: true });
+      if (disposed) return;
+
+      setState({
+        status: "error",
+        project: null,
+        activeUsers: [],
+        error: "This project was opened on another device",
+      });
     });
 
     socket.on("projectClosed", ({ reason }) => {
@@ -187,12 +212,21 @@ export default function useProjectSession(projectId, handlers = {}) {
       socket.removeAllListeners();
       socket.disconnect();
       socketRef.current = null;
+      joinRef.current = null;
     };
   }, [projectId]);
 
   /** Tells collaborators which block this user is on. */
   const announceSelection = useCallback((blockId) => {
     socketRef.current?.emit("blockSelect", { blockId });
+  }, []);
+
+  /** Joins again, disconnecting this user's session on another device. */
+  const takeover = useCallback(() => {
+    if (!joinRef.current) return;
+
+    setState((current) => ({ ...current, status: "connecting", error: null }));
+    joinRef.current(true);
   }, []);
 
   /** Replaces the project the page is working with, after a save or a switch. */
@@ -208,6 +242,7 @@ export default function useProjectSession(projectId, handlers = {}) {
     ...state,
     socket: socketRef.current,
     announceSelection,
+    takeover,
     setProject,
   };
 }

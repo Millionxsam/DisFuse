@@ -163,6 +163,8 @@ export default function Workspace() {
       if (fatal) console.error("Editor socket refused:", error);
     },
     onUserLeave: (leaving) => presence.current?.forget(leaving.id),
+    /* Another device is taking over: get everything saved first. */
+    onKicked: () => autosave.flush(),
   });
 
   const project = session.project;
@@ -686,9 +688,30 @@ export default function Workspace() {
         ...modalColors,
         title: "Already in Project",
         icon: "info",
-        text: "You're already part of this project from another tab or device.",
-        confirmButtonText: "OK",
+        text: "You're already part of this project from another tab or device. You can open it here instead, which saves and closes it on the other device.",
+        showDenyButton: true,
+        confirmButtonText: "Open Here Instead",
+        denyButtonText: "Back to Projects",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) return session.takeover();
+        window.location.replace("/projects");
+      });
+
+    if (error === "This project was opened on another device") {
+      setPhase("blocked");
+
+      return void Swal.fire({
+        ...modalColors,
+        title: "Opened Elsewhere",
+        icon: "info",
+        text: "This project was opened on another device, so it was closed here. Your changes were saved.",
+        confirmButtonText: "Back to Projects",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
       }).then(() => window.location.replace("/projects"));
+    }
 
     /* Every other join failure used to fall through with no `return`, so
        the page carried on with an error object where the project should
@@ -711,7 +734,7 @@ export default function Workspace() {
       allowEscapeKey: false,
       allowOutsideClick: false,
     }).then(() => window.location.replace("/projects"));
-  }, [modalColors, session.error, session.status]);
+  }, [modalColors, session.error, session.status, session.takeover]);
 
   /* ---- Toolbar -------------------------------------------------------- */
 
