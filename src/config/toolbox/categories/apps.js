@@ -10,7 +10,18 @@ const githubToken = () => ({
   }),
 });
 
-/** Integrations with things that aren't Discord: Scratch, Roblox, GitHub, captchas, HTTP, WebSockets, canvas. */
+/** A secret input, pre-filled with "get secret NAME". */
+const secret = (name) => ({
+  block: block("main_env", {
+    inputs: { value: { shadow: githubText(name) } },
+  }),
+});
+
+const num = (value) => ({
+  shadow: shadow("math_number", { fields: { NUM: value } }),
+});
+
+/** Integrations with things that aren't Discord: Scratch, Roblox, Minecraft, YouTube, Reddit, GitHub, captchas, HTTP, WebSockets, canvas. */
 export default {
   kind: "category",
   name: "Apps / Utils",
@@ -67,6 +78,28 @@ export default {
             username: { shadow: shadow("text") },
           },
         }),
+        block("roblox_userThumbnail", {
+          inputs: {
+            username: { shadow: shadow("text") },
+          },
+        }),
+        block("roblox_userList", {
+          inputs: {
+            username: { shadow: shadow("text") },
+          },
+        }),
+        block("roblox_searchUsers", {
+          inputs: {
+            keyword: { shadow: shadow("text") },
+          },
+        }),
+        label("Already have a user ID? ↓"),
+        block("roblox_getUserById", {
+          inputs: { id: num(156) },
+        }),
+        block("roblox_usernameFromId", {
+          inputs: { id: num(156) },
+        }),
         label("----------------------------------------------"),
         label("Groups ↓"),
         block("roblox_getGroup", {
@@ -87,6 +120,9 @@ export default {
             id: { shadow: shadow("math_number", { fields: { NUM: 7 } }) },
           },
         }),
+        block("roblox_groupRoles", {
+          inputs: { id: num(7) },
+        }),
         label("----------------------------------------------"),
         label("Games (the place ID is the number in the game's link) ↓"),
         block("roblox_getGame", {
@@ -97,6 +133,13 @@ export default {
           },
         }),
         block("roblox_gameInfo"),
+        block("roblox_gamePlayers", {
+          inputs: { id: num(1818) },
+        }),
+        block("roblox_forEachServer", {
+          inputs: { id: num(1818) },
+        }),
+        block("roblox_serverInfo"),
         label("----------------------------------------------"),
         label("Gamepasses & badges ↓"),
         block("roblox_ownsGamepass", {
@@ -109,6 +152,58 @@ export default {
           inputs: {
             username: { shadow: shadow("text") },
             id: { shadow: shadow("math_number", { fields: { NUM: 0 } }) },
+          },
+        }),
+        block("roblox_getBadge", {
+          inputs: { id: num(0) },
+        }),
+        block("roblox_badgeInfo"),
+        block("roblox_getGamepass", {
+          inputs: { id: num(0) },
+        }),
+        block("roblox_gamepassInfo"),
+        label("Avatar shop items (the ID is the number in the item's link) ↓"),
+        block("roblox_getItem", {
+          inputs: { id: num(1365767) },
+        }),
+        block("roblox_itemInfo"),
+        label("----------------------------------------------"),
+        label("Your own game: these need an Open Cloud API key ↓"),
+        label(
+          'Make one at create.roblox.com/dashboard/credentials and save it as a secret named "ROBLOX_API_KEY"',
+        ),
+        block("roblox_publishMessage", {
+          inputs: {
+            message: { shadow: githubText("Hello from Discord!") },
+            topic: { shadow: githubText("discord") },
+            place: num(0),
+            key: secret("ROBLOX_API_KEY"),
+          },
+        }),
+        block("roblox_getDataStore", {
+          inputs: {
+            entry: { shadow: githubText("Player_1") },
+            datastore: { shadow: githubText("PlayerData") },
+            place: num(0),
+            key: secret("ROBLOX_API_KEY"),
+          },
+        }),
+        block("roblox_setDataStore", {
+          inputs: {
+            entry: { shadow: githubText("Player_1") },
+            value: { shadow: githubText("") },
+            datastore: { shadow: githubText("PlayerData") },
+            place: num(0),
+            key: secret("ROBLOX_API_KEY"),
+          },
+        }),
+        block("roblox_banUser", {
+          inputs: {
+            username: { shadow: shadow("text") },
+            place: num(0),
+            duration: num(0),
+            reason: { shadow: githubText("Banned from Discord") },
+            key: secret("ROBLOX_API_KEY"),
           },
         }),
       ],
@@ -144,6 +239,11 @@ export default {
             username: { shadow: shadow("text") },
           },
         }),
+        block("minecraft_usernameFromUUID", {
+          inputs: {
+            uuid: { shadow: shadow("text") },
+          },
+        }),
         label("----------------------------------------------"),
         label("Servers ↓"),
         label("Get a server first, then use the info block ↓"),
@@ -170,6 +270,254 @@ export default {
               shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
             },
             username: { shadow: shadow("text") },
+          },
+        }),
+        block("minecraft_serverQuickInfo", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+          },
+        }),
+        block("minecraft_serverImage", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Server status alerts (these go on their own, not inside an event) ↓"),
+        block("minecraft_onServerStatus", {
+          inputs: {
+            address: {
+              shadow: shadow("text", { fields: { TEXT: "play.hypixel.net" } }),
+            },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Game versions ↓"),
+        block("minecraft_latestVersion"),
+      ],
+    },
+    {
+      kind: "category",
+      name: "YouTube",
+      colour: "#FF0000",
+      contents: [
+        label("No API key needed, all of this is public info ↓"),
+        label('Channels can be an @handle, a channel link or a channel ID'),
+        label("----------------------------------------------"),
+        label("Videos: get a video first, then use the info block ↓"),
+        block("youtube_getVideo", {
+          inputs: {
+            video: { shadow: githubText("https://youtu.be/dQw4w9WgXcQ") },
+          },
+        }),
+        block("youtube_getLatestVideo", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_forEachVideo", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_forEachPlaylistVideo", {
+          inputs: { playlist: { shadow: githubText("") } },
+        }),
+        block("youtube_videoInfo"),
+        label("----------------------------------------------"),
+        label("Notifications (these go on their own, not inside an event) ↓"),
+        block("youtube_onNewVideo", {
+          inputs: {
+            channel: { shadow: githubText("@YouTube") },
+            minutes: num(5),
+          },
+        }),
+        block("youtube_onLive", {
+          inputs: {
+            channel: { shadow: githubText("@YouTube") },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Channels: get a channel first, then use the info block ↓"),
+        block("youtube_getChannel", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_channelInfo"),
+        label("----------------------------------------------"),
+        label("Quick info (no need to get anything first) ↓"),
+        block("youtube_latestVideoLink", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_subscribers", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_isLive", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_channelId", {
+          inputs: { channel: { shadow: githubText("@YouTube") } },
+        }),
+        block("youtube_videoExists", {
+          inputs: { video: { shadow: githubText("") } },
+        }),
+        block("youtube_videoId", {
+          inputs: { video: { shadow: githubText("") } },
+        }),
+        block("youtube_thumbnail", {
+          inputs: { video: { shadow: githubText("") } },
+        }),
+        label("----------------------------------------------"),
+        label("Search, comments and exact stats: these need a YouTube API key ↓"),
+        label(
+          'Make a free one at console.cloud.google.com (YouTube Data API v3) and save it as a secret named "YOUTUBE_API_KEY"',
+        ),
+        block("youtube_apiSearch", {
+          inputs: {
+            query: { shadow: githubText("discord bots") },
+            count: num(5),
+            key: secret("YOUTUBE_API_KEY"),
+          },
+        }),
+        block("youtube_apiVideoStat", {
+          inputs: {
+            video: { shadow: githubText("") },
+            key: secret("YOUTUBE_API_KEY"),
+          },
+        }),
+        block("youtube_apiChannelStat", {
+          inputs: {
+            channel: { shadow: githubText("@YouTube") },
+            key: secret("YOUTUBE_API_KEY"),
+          },
+        }),
+        block("youtube_apiForEachComment", {
+          inputs: {
+            video: { shadow: githubText("") },
+            count: num(10),
+            key: secret("YOUTUBE_API_KEY"),
+          },
+        }),
+        block("youtube_commentInfo"),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Reddit",
+      colour: "#FF4500",
+      contents: [
+        label("No login needed, all of this is public info ↓"),
+        label('Subreddits can be written like "memes" or "r/memes", users like "spez" or "u/spez"'),
+        label("----------------------------------------------"),
+        label("Posts: these run the blocks inside with a post ↓"),
+        block("reddit_getRandomPost", {
+          inputs: { subreddit: { shadow: githubText("memes") } },
+        }),
+        block("reddit_forEachPost", {
+          inputs: {
+            subreddit: { shadow: githubText("memes") },
+            limit: num(5),
+          },
+        }),
+        block("reddit_getPost", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        block("reddit_searchPosts", {
+          inputs: {
+            query: { shadow: githubText("discord bot") },
+            subreddit: { shadow: githubText("") },
+            limit: num(5),
+          },
+        }),
+        block("reddit_forEachUserPost", {
+          inputs: {
+            user: { shadow: githubText("spez") },
+            limit: num(5),
+          },
+        }),
+        block("reddit_postInfo"),
+        label("New posts feed (this goes on its own, not inside an event) ↓"),
+        block("reddit_onNewPost", {
+          inputs: {
+            subreddit: { shadow: githubText("memes") },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Comments ↓"),
+        block("reddit_forEachComment", {
+          inputs: {
+            post: { shadow: githubText("") },
+            limit: num(5),
+          },
+        }),
+        block("reddit_commentInfo"),
+        label("----------------------------------------------"),
+        label("Subreddits and users: get one first, then use the info block ↓"),
+        block("reddit_getSubreddit", {
+          inputs: { subreddit: { shadow: githubText("memes") } },
+        }),
+        block("reddit_subredditInfo"),
+        block("reddit_getUser", {
+          inputs: { user: { shadow: githubText("spez") } },
+        }),
+        block("reddit_userInfo"),
+        label("----------------------------------------------"),
+        label("Quick info (no need to get anything first) ↓"),
+        block("reddit_postList", {
+          inputs: {
+            subreddit: { shadow: githubText("memes") },
+            limit: num(5),
+          },
+        }),
+        block("reddit_memberCount", {
+          inputs: { subreddit: { shadow: githubText("memes") } },
+        }),
+        block("reddit_subredditExists", {
+          inputs: { subreddit: { shadow: githubText("memes") } },
+        }),
+        block("reddit_userKarma", {
+          inputs: { user: { shadow: githubText("spez") } },
+        }),
+        block("reddit_userExists", {
+          inputs: { user: { shadow: githubText("spez") } },
+        }),
+        label("----------------------------------------------"),
+        label("Logging in: needs a Reddit app ↓"),
+        label(
+          'Create a "script" app at reddit.com/prefs/apps, then save its ID and secret as secrets',
+        ),
+        label(
+          "Optional for everything above (it makes Reddit more reliable), required for the blocks below",
+        ),
+        block("reddit_login", {
+          inputs: {
+            clientId: secret("REDDIT_CLIENT_ID"),
+            clientSecret: secret("REDDIT_CLIENT_SECRET"),
+            username: { shadow: githubText("") },
+            password: secret("REDDIT_PASSWORD"),
+          },
+        }),
+        label("Acting as your account (needs a username and password above) ↓"),
+        block("reddit_submitPost", {
+          inputs: {
+            subreddit: { shadow: githubText("test") },
+            title: { shadow: githubText("Hello from Discord!") },
+            content: { shadow: githubText("") },
+          },
+        }),
+        block("reddit_reply", {
+          inputs: {
+            text: { shadow: githubText("Thanks!") },
+            thing: { shadow: githubText("") },
+          },
+        }),
+        block("reddit_sendMessage", {
+          inputs: {
+            user: { shadow: githubText("") },
+            subject: { shadow: githubText("Hello") },
+            text: { shadow: githubText("") },
           },
         }),
       ],
