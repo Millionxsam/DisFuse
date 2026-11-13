@@ -21,7 +21,7 @@ const num = (value) => ({
   shadow: shadow("math_number", { fields: { NUM: value } }),
 });
 
-/** Integrations with things that aren't Discord: Scratch, Roblox, Minecraft, YouTube, Reddit, GitHub, captchas, HTTP, WebSockets, canvas. */
+/** Integrations with things that aren't Discord: Scratch, Roblox, Minecraft, YouTube, Reddit, Twitch, Kick, X, Instagram, TikTok, Bluesky, GitHub, captchas, HTTP, WebSockets, canvas. */
 export default {
   kind: "category",
   name: "Apps / Utils",
@@ -520,6 +520,394 @@ export default {
             text: { shadow: githubText("") },
           },
         }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Twitch",
+      colour: "#9146FF",
+      contents: [
+        label("No login needed, all of this is public info ↓"),
+        label('Channels can be a name like "shroud" or a twitch.tv link'),
+        label("----------------------------------------------"),
+        label("Live streams: these run the blocks inside with a stream ↓"),
+        block("twitch_getStream", {
+          inputs: { channel: { shadow: githubText("twitch") } },
+        }),
+        block("twitch_streamInfo"),
+        label("Live notifications (these go on their own, not inside an event) ↓"),
+        block("twitch_onLive", {
+          inputs: {
+            channel: { shadow: githubText("twitch") },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Quick info (no need to get anything first) ↓"),
+        block("twitch_isLive", {
+          inputs: { channel: { shadow: githubText("twitch") } },
+        }),
+        block("twitch_quickInfo", {
+          inputs: { channel: { shadow: githubText("twitch") } },
+        }),
+        label("----------------------------------------------"),
+        label("Channels, videos, clips and top streams: these need a Twitch app ↓"),
+        label(
+          'Register a free app at dev.twitch.tv/console and save its client ID and secret as secrets',
+        ),
+        label("Once logged in, the stream blocks above give more info too"),
+        block("twitch_login", {
+          inputs: {
+            clientId: secret("TWITCH_CLIENT_ID"),
+            clientSecret: secret("TWITCH_CLIENT_SECRET"),
+          },
+        }),
+        label("Channels ↓"),
+        block("twitch_getChannel", {
+          inputs: { channel: { shadow: githubText("twitch") } },
+        }),
+        block("twitch_searchChannels", {
+          inputs: {
+            query: { shadow: githubText("minecraft") },
+            count: num(5),
+          },
+        }),
+        block("twitch_channelInfo"),
+        label("Videos and clips ↓"),
+        block("twitch_getLatestVideo", {
+          inputs: { channel: { shadow: githubText("twitch") } },
+        }),
+        block("twitch_forEachVideo", {
+          inputs: {
+            channel: { shadow: githubText("twitch") },
+            count: num(5),
+          },
+        }),
+        block("twitch_onNewVideo", {
+          inputs: {
+            channel: { shadow: githubText("twitch") },
+            minutes: num(5),
+          },
+        }),
+        block("twitch_videoInfo"),
+        label("Directory ↓"),
+        block("twitch_forEachTopStream", {
+          inputs: {
+            count: num(5),
+            game: { shadow: githubText("") },
+          },
+        }),
+        block("twitch_topGames", { inputs: { count: num(10) } }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Kick",
+      colour: "#2BA52E",
+      contents: [
+        label("Kick blocks need a free Kick app ↓"),
+        label(
+          'Create one at kick.com/settings/developer and save its client ID and secret as secrets',
+        ),
+        block("kick_login", {
+          inputs: {
+            clientId: secret("KICK_CLIENT_ID"),
+            clientSecret: secret("KICK_CLIENT_SECRET"),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Channels: get a channel first, then use the info block ↓"),
+        block("kick_getChannel", {
+          inputs: { channel: { shadow: githubText("xqc") } },
+        }),
+        block("kick_forEachLivestream", {
+          inputs: {
+            count: num(5),
+            category: { shadow: githubText("") },
+          },
+        }),
+        block("kick_channelInfo"),
+        label("Live notifications (these go on their own, not inside an event) ↓"),
+        block("kick_onLive", {
+          inputs: {
+            channel: { shadow: githubText("xqc") },
+            minutes: num(5),
+          },
+        }),
+        label("Quick info ↓"),
+        block("kick_isLive", {
+          inputs: { channel: { shadow: githubText("xqc") } },
+        }),
+        block("kick_viewerCount", {
+          inputs: { channel: { shadow: githubText("xqc") } },
+        }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "X (Twitter)",
+      colour: "#1D9BF0",
+      contents: [
+        label("No login needed, all of this is public info ↓"),
+        label('Users can be written like "NASA", "@NASA" or an x.com link'),
+        label("----------------------------------------------"),
+        label("Posts: these run the blocks inside with a post ↓"),
+        block("x_getPost", {
+          inputs: { post: { shadow: githubText("https://x.com/jack/status/20") } },
+        }),
+        block("x_getLatestPost", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_forEachPost", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_postInfo"),
+        label("New posts (this goes on its own, not inside an event) ↓"),
+        block("x_onNewPost", {
+          inputs: {
+            user: { shadow: githubText("NASA") },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Users: get a user first, then use the info block ↓"),
+        block("x_getUser", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_userInfo"),
+        label("----------------------------------------------"),
+        label("Quick info (no need to get anything first) ↓"),
+        block("x_latestPostLink", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_followers", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_userExists", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_postId", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        label("----------------------------------------------"),
+        label("Acting as your account: these need an X developer app ↓"),
+        label(
+          'Make an app at developer.x.com with "Read and write" permissions, then save its keys and access token as secrets',
+        ),
+        block("x_login", {
+          inputs: {
+            apiKey: secret("X_API_KEY"),
+            apiSecret: secret("X_API_SECRET"),
+            accessToken: secret("X_ACCESS_TOKEN"),
+            accessSecret: secret("X_ACCESS_SECRET"),
+          },
+        }),
+        block("x_createPost", {
+          inputs: {
+            text: { shadow: githubText("Hello from Discord!") },
+            image: { shadow: githubText("") },
+            replyTo: { shadow: githubText("") },
+          },
+        }),
+        block("x_postAction", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        block("x_followUser", {
+          inputs: { user: { shadow: githubText("NASA") } },
+        }),
+        block("x_getMe"),
+        label("Searching with the official API (needs a plan with read access) ↓"),
+        block("x_apiSearch", {
+          inputs: {
+            query: { shadow: githubText("from:NASA") },
+            count: num(10),
+          },
+        }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Instagram",
+      colour: "#E1306C",
+      contents: [
+        label("Instagram blocks need an access token for a professional account ↓"),
+        label(
+          'Make an app at developers.facebook.com with "Instagram API with Instagram Login", generate a token and save it as a secret',
+        ),
+        block("instagram_login", {
+          inputs: { token: secret("INSTAGRAM_TOKEN") },
+        }),
+        label("----------------------------------------------"),
+        label("Your account ↓"),
+        block("instagram_getAccount"),
+        block("instagram_accountInfo"),
+        block("instagram_followers"),
+        label("----------------------------------------------"),
+        label("Your posts: these run the blocks inside with a post ↓"),
+        block("instagram_getLatestPost"),
+        block("instagram_forEachPost", { inputs: { count: num(5) } }),
+        block("instagram_getPost", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        block("instagram_postInfo"),
+        label("New posts (this goes on its own, not inside an event) ↓"),
+        block("instagram_onNewPost", { inputs: { minutes: num(5) } }),
+        label("Publishing ↓"),
+        block("instagram_publish", {
+          inputs: {
+            url: { shadow: githubText("https://example.com/photo.jpg") },
+            caption: { shadow: githubText("Posted from Discord!") },
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Comments ↓"),
+        block("instagram_forEachComment", {
+          inputs: {
+            post: { shadow: githubText("") },
+            count: num(10),
+          },
+        }),
+        block("instagram_commentInfo"),
+        block("instagram_comment", {
+          inputs: {
+            text: { shadow: githubText("Thanks!") },
+            target: { shadow: githubText("") },
+          },
+        }),
+        block("instagram_commentAction", {
+          inputs: { comment: { shadow: githubText("") } },
+        }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "TikTok",
+      colour: "#EE1D52",
+      contents: [
+        label("No login needed, all of this is public info ↓"),
+        block("tiktok_userExists", {
+          inputs: { user: { shadow: githubText("@tiktok") } },
+        }),
+        block("tiktok_displayName", {
+          inputs: { user: { shadow: githubText("@tiktok") } },
+        }),
+        block("tiktok_profileLink", {
+          inputs: { user: { shadow: githubText("@tiktok") } },
+        }),
+        block("tiktok_videoId", {
+          inputs: { video: { shadow: githubText("") } },
+        }),
+        label("----------------------------------------------"),
+        label("Your account and videos: these need a TikTok app ↓"),
+        label(
+          "Make an app at developers.tiktok.com, authorize it once, and save its client key, secret and refresh token as secrets",
+        ),
+        block("tiktok_login", {
+          inputs: {
+            clientKey: secret("TIKTOK_CLIENT_KEY"),
+            clientSecret: secret("TIKTOK_CLIENT_SECRET"),
+            refreshToken: secret("TIKTOK_REFRESH_TOKEN"),
+          },
+        }),
+        block("tiktok_getAccount"),
+        block("tiktok_accountInfo"),
+        block("tiktok_followers"),
+        label("Your videos: these run the blocks inside with a video ↓"),
+        block("tiktok_getLatestVideo"),
+        block("tiktok_forEachVideo", { inputs: { count: num(5) } }),
+        block("tiktok_getVideo", {
+          inputs: { video: { shadow: githubText("") } },
+        }),
+        block("tiktok_videoInfo"),
+        label("New videos (this goes on its own, not inside an event) ↓"),
+        block("tiktok_onNewVideo", { inputs: { minutes: num(5) } }),
+        label("Uploading ↓"),
+        block("tiktok_uploadVideo", {
+          inputs: {
+            url: { shadow: githubText("https://example.com/video.mp4") },
+            caption: { shadow: githubText("") },
+          },
+        }),
+      ],
+    },
+    {
+      kind: "category",
+      name: "Bluesky",
+      colour: "#1185FE",
+      contents: [
+        label("No login needed, all of this is public info ↓"),
+        label('Users can be a handle like "bsky.app", "@bsky.app" or a profile link'),
+        label("----------------------------------------------"),
+        label("Posts: these run the blocks inside with a post ↓"),
+        block("bluesky_getPost", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        block("bluesky_getLatestPost", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        block("bluesky_forEachPost", {
+          inputs: {
+            user: { shadow: githubText("bsky.app") },
+            count: num(5),
+          },
+        }),
+        block("bluesky_postInfo"),
+        label("New posts (this goes on its own, not inside an event) ↓"),
+        block("bluesky_onNewPost", {
+          inputs: {
+            user: { shadow: githubText("bsky.app") },
+            minutes: num(5),
+          },
+        }),
+        label("----------------------------------------------"),
+        label("Users: get a user first, then use the info block ↓"),
+        block("bluesky_getUser", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        block("bluesky_userInfo"),
+        label("Quick info (no need to get anything first) ↓"),
+        block("bluesky_latestPostLink", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        block("bluesky_followers", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        block("bluesky_userExists", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        label("----------------------------------------------"),
+        label("Acting as your account: these need an app password ↓"),
+        label(
+          'Make one in Bluesky (Settings → Privacy and security → App passwords) and save it as a secret named "BLUESKY_APP_PASSWORD"',
+        ),
+        block("bluesky_login", {
+          inputs: {
+            handle: { shadow: githubText("yourname.bsky.social") },
+            password: secret("BLUESKY_APP_PASSWORD"),
+          },
+        }),
+        block("bluesky_createPost", {
+          inputs: {
+            text: { shadow: githubText("Hello from Discord!") },
+            image: { shadow: githubText("") },
+            alt: { shadow: githubText("") },
+            replyTo: { shadow: githubText("") },
+          },
+        }),
+        block("bluesky_postAction", {
+          inputs: { post: { shadow: githubText("") } },
+        }),
+        block("bluesky_followUser", {
+          inputs: { user: { shadow: githubText("bsky.app") } },
+        }),
+        block("bluesky_searchPosts", {
+          inputs: {
+            query: { shadow: githubText("discord bot") },
+            count: num(5),
+          },
+        }),
+        label("Notifications (this goes on its own, not inside an event) ↓"),
+        block("bluesky_onNotification", { inputs: { minutes: num(5) } }),
       ],
     },
     {
