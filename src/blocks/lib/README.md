@@ -16,6 +16,7 @@ now in one place, next to the blocks themselves.
 | `restrictions.js` | `createRestrictions` — the rules that put a warning on a block that is in the wrong place |
 | `addTooltips.js` | fills in the input/output/ID lines on tooltips at runtime |
 | `registerCustomBlocks.js` | builds Blockly blocks from a Workshop pack's JSON |
+| `databaseNames.js` | `FieldDatabaseDropdown` — the dropdown of every database created anywhere in the project |
 | `fixers.js` | small validators shared by a couple of block files |
 
 Registration itself is `blocks/index.js`: every file under `blocks/`

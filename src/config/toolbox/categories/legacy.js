@@ -132,6 +132,19 @@ export default {
       "events_joins_guildmemberadd_server"
     ]),
 
+    /* Replaced by the _v2 blocks, which pick the database from a dropdown. */
+    legacy("Databases", [
+      "db_get",
+      "db_has",
+      "db_all",
+      "db_set",
+      "db_del",
+      "db_add",
+      "db_sub",
+      "db_push",
+      "db_clear"
+    ]),
+
     legacy("Captcha", [
       "captcha_create",
       "captcha_send",

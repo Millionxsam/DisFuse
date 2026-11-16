@@ -31,6 +31,7 @@ import modalThemeColor from "../../functions/modalThemeColor";
 import registerContextMenus from "../../functions/registerContextMenus";
 import { updateCode } from "../../functions/updateCode";
 import { parseDfWorkspaceData } from "../../functions/dfFile";
+import { setOtherWorkspaceBlocks } from "../../blocks/lib/databaseNames.js";
 import {
   blockTypesIn,
   checkTemplateTypes,
@@ -250,6 +251,12 @@ export default function Workspace() {
 
   /* ---- The editor -------------------------------------------------- */
 
+  /** The serialised top blocks of every workspace except the one on screen. */
+  const otherWorkspaceBlocks = () =>
+    (session.project?.workspaces ?? [])
+      .filter((ws) => String(ws._id) !== String(currentWorkspace.current?._id))
+      .flatMap((ws) => parseDfWorkspaceData(ws.data)?.blocks?.blocks ?? []);
+
   const editor = useBlocklyEditor({
     enabled: Boolean(toolbox),
     toolbox,
@@ -260,15 +267,15 @@ export default function Workspace() {
     onAnyChange: () => presence.current?.onWorkspaceChange(),
     onHousekeeping: (workspace) =>
       setBlockCount(workspace.getAllBlocks(false).length),
-    getOtherBlockTypes: () =>
-      blockTypesIn(
-        (session.project?.workspaces ?? [])
-          .filter(
-            (ws) => String(ws._id) !== String(currentWorkspace.current?._id),
-          )
-          .flatMap((ws) => parseDfWorkspaceData(ws.data)?.blocks?.blocks ?? []),
-      ),
+    getOtherBlockTypes: () => blockTypesIn(otherWorkspaceBlocks()),
   });
+
+  /* The database dropdowns list databases created in any tab, not only
+     the one on screen. */
+  useEffect(() => {
+    setOtherWorkspaceBlocks(otherWorkspaceBlocks);
+  });
+  useEffect(() => () => setOtherWorkspaceBlocks(null), []);
 
   /* ---- Opening a sub-workspace -------------------------------------- */
 

@@ -1,6 +1,10 @@
 import * as Blockly from "blockly";
 import javascript from "blockly/javascript";
 import { createRestrictions } from "./lib/restrictions";
+import {
+  FieldDatabaseDropdown,
+  getDatabaseNames,
+} from "./lib/databaseNames";
 
 Blockly.Blocks["db_create"] = {
   init: function () {
@@ -293,3 +297,143 @@ createRestrictions(
     },
   ],
 );
+
+/* =====================================================================
+   Database blocks that pick the database from a dropdown
+   ---------------------------------------------------------------------
+   The blocks above take the database's name as typed text, so a single
+   wrong letter pointed them at a database that doesn't exist. These
+   `_v2` versions list every "create database" block in the project, in
+   all of its workspaces, instead. They generate exactly the same code.
+
+   The text versions stay registered so saved projects still open, and
+   are offered in the toolbox's Legacy category.
+   ===================================================================== */
+
+const DB_V2 = {
+  db_get: (block) => {
+    block.appendValueInput("id").setCheck("String").appendField("get");
+    block
+      .appendDummyInput()
+      .appendField("from the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+    block.setOutput(true, null);
+  },
+  db_has: (block) => {
+    block.appendValueInput("id").setCheck("String");
+    block
+      .appendDummyInput()
+      .appendField("exists in the database")
+      .appendField(new FieldDatabaseDropdown(), "db")
+      .appendField("?");
+    block.setOutput(true, "Boolean");
+  },
+  db_all: (block) => {
+    block
+      .appendDummyInput()
+      .appendField("all data from the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+    block.setOutput(true, "Array");
+  },
+  db_set: (block) => {
+    block.appendValueInput("id").setCheck("String").appendField("set");
+    block.appendValueInput("val").setCheck(null).appendField("to");
+    block
+      .appendDummyInput()
+      .appendField("in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+  db_del: (block) => {
+    block.appendValueInput("id").setCheck("String").appendField("delete");
+    block
+      .appendDummyInput()
+      .appendField("in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+  db_add: (block) => {
+    block.appendValueInput("val").setCheck("Number").appendField("add");
+    block.appendValueInput("id").setCheck("String").appendField("to");
+    block
+      .appendDummyInput()
+      .appendField("in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+  db_sub: (block) => {
+    block.appendValueInput("val").setCheck("Number").appendField("subtract");
+    block.appendValueInput("id").setCheck("String").appendField("from");
+    block
+      .appendDummyInput()
+      .appendField("in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+  db_push: (block) => {
+    block.appendValueInput("val").setCheck(null).appendField("push");
+    block.appendValueInput("id").setCheck("String").appendField("to");
+    block
+      .appendDummyInput()
+      .appendField("in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+  db_clear: (block) => {
+    block
+      .appendDummyInput()
+      .appendField("clear all data in the database")
+      .appendField(new FieldDatabaseDropdown(), "db");
+  },
+};
+
+Object.entries(DB_V2).forEach(([type, build]) => {
+  Blockly.Blocks[`${type}_v2`] = {
+    init: function () {
+      build(this);
+      this.setInputsInline(true);
+      if (!this.outputConnection) {
+        this.setPreviousStatement(true, "default");
+        this.setNextStatement(true, "default");
+      }
+      this.setColour("C66953");
+    },
+  };
+
+  javascript.javascriptGenerator.forBlock[`${type}_v2`] =
+    javascript.javascriptGenerator.forBlock[type];
+});
+
+const DB_EXISTS = {
+  type: "custom",
+  check: (block) =>
+    getDatabaseNames(block.workspace).includes(block.getFieldValue("db")),
+  message:
+    "No database with this name exists. Create one with the 'create database' block, or pick another from the dropdown",
+};
+
+createRestrictions(
+  ["db_get_v2", "db_has_v2", "db_del_v2"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["id"],
+      message: "You must specify the key",
+    },
+    DB_EXISTS,
+  ],
+);
+
+createRestrictions(
+  ["db_set_v2", "db_add_v2", "db_sub_v2", "db_push_v2"],
+  [
+    {
+      type: "notEmpty",
+      blockTypes: ["id"],
+      message: "You must specify the key to modify",
+    },
+    {
+      type: "notEmpty",
+      blockTypes: ["val"],
+      message: "You must specify the value",
+    },
+    DB_EXISTS,
+  ],
+);
+
+createRestrictions(["db_all_v2", "db_clear_v2"], [DB_EXISTS]);
