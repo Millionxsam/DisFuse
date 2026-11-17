@@ -19,6 +19,12 @@ import { saveWorkspaceState } from "../../../functions/workspaceState.js";
 import { executeRestrictions } from "../../../blocks/lib/restrictions";
 
 import { DOCS, docsUrl } from "../../../config/docs.js";
+import {
+  PACKAGE_MANAGERS,
+  RUNTIMES,
+  resolveExportSettings,
+} from "../../../config/exportSettings.js";
+import { userCache } from "../../../cache.ts";
 
 /* =====================================================================
    Export
@@ -38,6 +44,12 @@ const docsAnchor = (page, text) =>
   `<a style="color: #ffb648" rel="noopener noreferrer" target="_blank" href="${docsUrl(
     page,
   )}">${text}</a>`;
+
+/** Which runtime and package manager the ZIP is set up for, and where to change them. */
+const exportSettingsText = ({ runtime, packageManager }) =>
+  `Exporting for <strong>${RUNTIMES[runtime].label}</strong> with <strong>${
+    PACKAGE_MANAGERS[packageManager].label
+  }</strong>. You can change this in <a style="color: #ffb648" rel="noopener" target="_blank" href="/settings/export">Settings → Export</a>, or for just this bot in its project settings.<br /><br />`;
 
 const HELP_TEXT = `After exporting, extract the ZIP and read instructions.txt if you don't know what to do next. "Download file" downloads only index.js, for updating a bot you already set up.<br /><br />
 ${docsAnchor(
@@ -61,7 +73,10 @@ async function askWhatToExport({
   versions,
   currentWorkspaceId,
   modalColors,
+  exportSettings,
 }) {
+  const html = exportSettingsText(exportSettings) + HELP_TEXT;
+
   if (!activeVersion) {
     const result = await Swal.fire({
       title: "Export Project",
@@ -76,7 +91,7 @@ async function askWhatToExport({
         workspace: "Export current workspace",
       },
       showCancelButton: false,
-      html: HELP_TEXT,
+      html,
       ...modalColors,
       customClass: {
         ...(modalColors?.customClass ?? {}),
@@ -100,7 +115,7 @@ async function askWhatToExport({
     title: "Export Project",
     confirmButtonText: "Download ZIP",
     denyButtonText: "Download file",
-    html: HELP_TEXT,
+    html,
     modalColors,
   });
 
@@ -280,6 +295,12 @@ async function confirmDespiteErrors(exportingWs, modalColors) {
   return isConfirmed;
 }
 
+/** Bun loads `.env` by itself, so its bots don't need dotenv. */
+function codeForRuntime(code, { runtime }) {
+  if (runtime !== "bun") return code;
+  return code.replace(/^\s*require\(["']dotenv["']\)\.config\(\);?[ \t]*\n?/m, "");
+}
+
 /** Hands the finished file to the browser. */
 function download(blob, filename) {
   const url = URL.createObjectURL(blob);
@@ -293,7 +314,14 @@ function download(blob, filename) {
 }
 
 /** The full export: code, `.df`, `.env` and the files to run it. */
-async function downloadZip({ project, exportingWs, df, code, blockPacks }) {
+async function downloadZip({
+  project,
+  exportingWs,
+  df,
+  code,
+  blockPacks,
+  exportSettings,
+}) {
   const zip = new JSZip();
 
   const env = [
@@ -306,10 +334,11 @@ async function downloadZip({ project, exportingWs, df, code, blockPacks }) {
   for (const file of getExportFiles(
     dependencies,
     exportingWs.getAllBlocks(false),
+    exportSettings,
   ))
     zip.file(file.name, file.content);
 
-  zip.file("index.js", await format(code));
+  zip.file("index.js", await format(codeForRuntime(code, exportSettings)));
   zip.file(".env", env);
   zip.file(`${project.name}.df`, JSON.stringify(df));
 
@@ -336,11 +365,14 @@ export default async function exportProject({
 }) {
   await updateCode(workspace, project, currentWorkspaceId);
 
+  const exportSettings = resolveExportSettings(userCache.user, project);
+
   const choice = await askWhatToExport({
     activeVersion,
     versions,
     currentWorkspaceId,
     modalColors,
+    exportSettings,
   });
 
   if (!choice) return false;
@@ -378,11 +410,20 @@ export default async function exportProject({
 
     if (choice.onlyIndex) {
       download(
-        new Blob([await format(code)], { type: "text/javascript" }),
+        new Blob([await format(codeForRuntime(code, exportSettings))], {
+          type: "text/javascript",
+        }),
         "index.js",
       );
     } else {
-      await downloadZip({ project, exportingWs, df, code, blockPacks });
+      await downloadZip({
+        project,
+        exportingWs,
+        df,
+        code,
+        blockPacks,
+        exportSettings,
+      });
     }
 
     Swal.fire({

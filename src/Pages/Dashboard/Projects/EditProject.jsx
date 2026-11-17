@@ -10,6 +10,11 @@ import { Helmet } from "react-helmet-async";
 
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
+import {
+  PACKAGE_MANAGERS,
+  RUNTIMES,
+  userExportSettings,
+} from "../../../config/exportSettings.js";
 
 export default function EditProject() {
   const [project, setProject] = useState({});
@@ -20,6 +25,9 @@ export default function EditProject() {
   const [projectVisibility, setProjectVisibility] = useState();
   const [botVisibility, setBotVisibility] = useState();
   const [permissions, setPermissions] = useState(0);
+  /* "" means "use my default from Settings → Export". */
+  const [runtime, setRuntime] = useState("");
+  const [packageManager, setPackageManager] = useState("");
 
   const [botFailed, setBotFailed] = useState(false);
 
@@ -31,6 +39,8 @@ export default function EditProject() {
     setProjectVisibility(project.private ? "private" : "public");
     setBotVisibility(project.botPrivate ? "private" : "public");
     setPermissions(project.permissions || 0);
+    setRuntime(project.exportSettings?.runtime || "");
+    setPackageManager(project.exportSettings?.packageManager || "");
   }, [project]);
 
   useEffect(() => {
@@ -224,6 +234,52 @@ export default function EditProject() {
             onChange={(e) => setPermissions(parseInt(e.target.value))}
           />
 
+          <div style={{ gap: "2px" }}>
+            <h2>
+              Export{" "}
+              <DocsLink
+                page={`${DOCS.projectSettings}#export`}
+                variant="icon"
+                label="About export settings"
+              />
+            </h2>
+            <p style={{ opacity: ".5" }}>
+              What this bot is set up to run with when you export it. By
+              default it uses your choice in{" "}
+              <Link to="/settings/export">Settings → Export</Link>.
+            </p>
+          </div>
+          <select value={runtime} onChange={(e) => setRuntime(e.target.value)}>
+            <option value="">
+              Runtime: my default (
+              {RUNTIMES[userExportSettings(userCache.user).runtime].label})
+            </option>
+            {Object.entries(RUNTIMES).map(([value, { label }]) => (
+              <option value={value} key={value}>
+                Runtime: {label}
+              </option>
+            ))}
+          </select>
+          <select
+            value={packageManager}
+            onChange={(e) => setPackageManager(e.target.value)}
+          >
+            <option value="">
+              Package manager: my default (
+              {
+                PACKAGE_MANAGERS[
+                  userExportSettings(userCache.user).packageManager
+                ].label
+              }
+              )
+            </option>
+            {Object.entries(PACKAGE_MANAGERS).map(([value, { label }]) => (
+              <option value={value} key={value}>
+                Package manager: {label}
+              </option>
+            ))}
+          </select>
+
           <button onClick={saveProject}>Save Project</button>
         </div>
       </div>
@@ -293,6 +349,10 @@ export default function EditProject() {
               botPrivate: botVisibility === "private",
               botToken: token,
               permissions,
+              exportSettings: {
+                runtime: runtime || null,
+                packageManager: packageManager || null,
+              },
             },
             {
               headers: {

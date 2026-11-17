@@ -18,6 +18,7 @@ import Inbox from "./Pages/Dashboard/Inbox";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
 import OptimizationSettings from "./Pages/Dashboard/Settings/OptimizationSettings";
+import ExportSettings from "./Pages/Dashboard/Settings/ExportSettings";
 import StaffPanel from "./Pages/Dashboard/StaffPanel";
 import Workshop from "./Pages/Dashboard/Workshop/Workshop";
 import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
@@ -186,6 +187,7 @@ export default function App() {
               path="optimization"
               element={<OptimizationSettings key={0} />}
             />
+            <Route path="export" element={<ExportSettings key={0} />} />
             <Route path="premium" element={<PremiumSettings key={0} />} />
           </Route>
           <Route path="staff/panel" element={<StaffPanel key={0} />} />

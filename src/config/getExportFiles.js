@@ -1,11 +1,29 @@
 import packageDependenciesFromBlocks from "../functions/packageDependenciesFromBlocks";
+import {
+  DEFAULT_EXPORT_SETTINGS,
+  PACKAGE_MANAGERS,
+  RUNTIMES,
+} from "./exportSettings";
 
-export default function getExportFiles(dependencies = [], blocks = []) {
+export default function getExportFiles(
+  dependencies = [],
+  blocks = [],
+  exportSettings = DEFAULT_EXPORT_SETTINGS,
+) {
+  const runtimeKey = RUNTIMES[exportSettings.runtime]
+    ? exportSettings.runtime
+    : "node";
+  const runtime = RUNTIMES[runtimeKey];
+  const packageManager =
+    PACKAGE_MANAGERS[exportSettings.packageManager] ?? PACKAGE_MANAGERS.npm;
+  /* Bun reads .env on its own, so it doesn't need dotenv. */
+  const isBun = runtimeKey === "bun";
+
   const packageDependencies = packageDependenciesFromBlocks(blocks);
   const allDependencies = [
     "discord.js",
     "process",
-    "dotenv",
+    ...(isBun ? [] : ["dotenv"]),
     ...dependencies,
     ...packageDependencies.map((d) => (d.package ? d.package : d)),
   ].sort();
@@ -53,16 +71,33 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       
       Do the following steps on whatever computer you want to host your bot on:
       
-      Step 1: Install NodeJS
-      
+      This project was exported to run with ${runtime.label} and to install its packages with ${packageManager.label}. You can change this in Settings > Export on the DisFuse website, or for just this bot in its project settings.
+
+      Step 1: Install ${runtime.label}
+      ${
+        isBun
+          ? `
+      Bun is a fast runtime for JavaScript that can run on computers, like Node.js. It runs your bot's code and can also install its packages.
+
+      go to ${runtime.url}
+      Follow the install command shown for your operating system.
+      `
+          : `
       If you don't know what NodeJS is, it is runtime environment for JavaScript that can run on computers. JavaScript is primarily used for client-side programming, while Node.js allows developers to build server-side applications using JavaScript.
       Even though Discord bots are created using the javascript language, it actually uses Node.js, and that uses javascript as its language.
       
-      go to https://nodejs.org
+      go to ${runtime.url}
       Download Node.js (LTS)
       
       It should download a .msi file. Run the file and go through the setup process just like any other app, and leave all the options on default.
-
+      `
+      }${
+        packageManager.comesWith === runtimeKey
+          ? ""
+          : `
+      You also need ${packageManager.label}, which installs your bot's packages. See ${packageManager.url} for how to install it.
+      `
+      }
       Step 2. Run the code
       Now you actually have to run the code that came in this zip folder.
 
@@ -79,8 +114,9 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       Delete the whole path after clicking it, and type: "cmd" and press enter. This will also open terminal in that folder.
       NOTE: You can also open the terminal app by searching in the start menu, like any other app. But this will not work because the terminal has to be opened TO your project folder. There is a way to open the terminal app like any other app, and navigate to your project folder. But it's easier to just do one of the above methods.
 
-      Once you have the terminal opened to your folder, type: "npm start" and press enter.
-      This will start your project. If you are running it for the first time, it might do some steps to install required dependencies first and take a little longer.
+      Once you have the terminal opened to your folder, type: "${packageManager.install}" and press enter. This installs the packages your bot needs. You only need to do this the first time, or after exporting again with new blocks.
+      Then type: "${packageManager.run}" and press enter.
+      This will start your project.
       Then it should start your bot like normal and your bot should be online.
       If you want to keep this program running 24/7, you will have to keep the terminal open.
       If you press Control + C keys at the same time while in the terminal, it will stop your project.
@@ -102,11 +138,11 @@ export default function getExportFiles(dependencies = [], blocks = []) {
       There should be a button to create a repl.
 
       Click "create repl"
-      Choose template "Node.JS"
+      Choose template "${isBun ? "Bun" : "Node.JS"}"
       Make a title for your repl, this can be whatever you want.
 
       Step 2: Import your files
-      On the left side of your screen, there should be a section that shows your current files in your repl. By default, in the Node.JS template, there are index.js and package.json files.
+      On the left side of your screen, there should be a section that shows your current files in your repl. By default, in the ${isBun ? "Bun" : "Node.JS"} template, there are index.js and package.json files.
       Delete all the files that are there already. Click the three dots next to the file, and click delete for all of the files.
       
       To import your code, click the three dots at the top of the section
@@ -184,7 +220,7 @@ export default function getExportFiles(dependencies = [], blocks = []) {
         "main": "index.js",
         "dependencies": ${JSON.stringify(dependenciesObject, null, 2)},
         "scripts": {
-          "start": "node index.js",
+          "start": "${runtime.start}",
           "test": "echo Error: no test specified && exit 1"
         },
         "keywords": [],
