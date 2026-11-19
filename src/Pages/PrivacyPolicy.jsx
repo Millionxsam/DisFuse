@@ -204,7 +204,7 @@ const parts = [
                 ],
                 [
                   <strong>Settings</strong>,
-                  "Workspace theme, renderer, grid, sounds and toolbox preferences; notification preferences; optimization preferences; and your Insights retention choice.",
+                  "Workspace theme, renderer, grid, sounds and toolbox preferences; site theme and custom theme colors; notification preferences; optimization preferences; and your Insights retention choice.",
                 ],
                 [
                   <strong>Support messages</strong>,

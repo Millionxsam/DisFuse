@@ -19,6 +19,7 @@ import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
 import OptimizationSettings from "./Pages/Dashboard/Settings/OptimizationSettings";
 import ExportSettings from "./Pages/Dashboard/Settings/ExportSettings";
+import AppearanceSettings from "./Pages/Dashboard/Settings/AppearanceSettings";
 import StaffPanel from "./Pages/Dashboard/StaffPanel";
 import Workshop from "./Pages/Dashboard/Workshop/Workshop";
 import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
@@ -179,6 +180,7 @@ export default function App() {
               element={<Navigate to={"/settings/workspace"} key={0} />}
             />
             <Route path="workspace" element={<WorkspaceSettings key={0} />} />
+            <Route path="appearance" element={<AppearanceSettings key={0} />} />
             <Route
               path="notifications"
               element={<NotificationSettings key={0} />}

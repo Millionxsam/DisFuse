@@ -20,3 +20,10 @@
 body {
   background-color: #00040f;
 }
+
+/* A site theme (functions/siteTheme.js) sets --df-page-bg, which may be a
+   gradient. Fixed so a long page doesn't stretch it into a stripe. */
+html[data-df-site-theme] body {
+  background: var(--df-page-bg) fixed;
+  min-height: 100vh;
+}

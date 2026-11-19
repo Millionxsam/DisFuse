@@ -157,3 +157,85 @@
     padding: 1.5rem;
   }
 }
+
+/* =====================================================================
+   Appearance — site theme picker (.df-theme-*)
+   ===================================================================== */
+
+.df-settings-content .settings .df-theme-option > .df-theme-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.df-theme-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--df-surface-2);
+  border: 2px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  color: var(--df-text-dim);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s var(--df-ease),
+    color 0.15s var(--df-ease);
+}
+
+.df-theme-swatch:hover {
+  border-color: var(--df-border-strong);
+  color: white;
+}
+
+.df-theme-swatch.active {
+  border-color: var(--main-color);
+  color: white;
+  font-weight: 600;
+}
+
+.df-theme-swatch-preview {
+  display: flex;
+  align-self: stretch;
+  width: 100%;
+  align-items: flex-end;
+  height: 4.5rem;
+  padding: 0.5rem;
+  border-radius: var(--df-r-sm);
+}
+
+.df-theme-swatch-panel {
+  display: flex;
+  align-items: center;
+  width: 70%;
+  height: 1.6rem;
+  padding: 0 0.4rem;
+  border-radius: 6px;
+}
+
+.df-theme-swatch-panel > span {
+  width: 45%;
+  height: 0.55rem;
+  border-radius: 999px;
+}
+
+.df-theme-swatch-label {
+  text-align: left;
+}
+
+.df-settings-content .settings input[type="color"] {
+  width: 3rem;
+  height: 2rem;
+  padding: 0.15rem;
+  background: var(--df-surface-2);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-sm);
+  cursor: pointer;
+}
+
+.df-theme-warning {
+  color: var(--df-amber);
+  font-size: 13.5px;
+}

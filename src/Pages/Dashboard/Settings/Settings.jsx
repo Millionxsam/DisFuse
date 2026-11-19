@@ -9,6 +9,7 @@ import { DOCS } from "../../../config/docs.js";
 
 const tabs = [
   { to: "/settings/workspace", key: "workspace", label: "Workspace" },
+  { to: "/settings/appearance", key: "appearance", label: "Appearance" },
   { to: "/settings/notifications", key: "notifications", label: "Notifications" },
   { to: "/settings/optimization", key: "optimization", label: "Optimization" },
   { to: "/settings/export", key: "export", label: "Export" },

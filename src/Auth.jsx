@@ -14,6 +14,7 @@ import {
   consumeReturnDestination,
   redirectToLogin,
 } from "./functions/authRedirect.js";
+import { applySiteTheme } from "./functions/siteTheme.js";
 
 /* =====================================================================
    Signing in
@@ -64,6 +65,7 @@ function loadUser() {
   ])
     .then(([user, staff]) => {
       userCache.user = user;
+      applySiteTheme(user.settings?.appearance);
       userCache.isStaff = (staff.users ?? []).some((s) => s.id === user.id);
       return user;
     })

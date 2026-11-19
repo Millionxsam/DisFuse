@@ -65,6 +65,11 @@ html:has(.df-home)::before {
     );
 }
 
+/* A gradient site theme replaces the home page's glows with the
+   gradient the user chose. */
+html[data-df-site-theme="gradient"]:has(.df-home)::before {
+  background-image: var(--df-page-bg);
+}
 
 .df-hero {
   display: grid;
