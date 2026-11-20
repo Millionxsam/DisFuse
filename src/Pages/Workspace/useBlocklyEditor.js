@@ -10,6 +10,7 @@ import { executeRestrictions } from "../../blocks/lib/restrictions";
 import { applyOptionalStyles, buildBlocklyOptions } from "./editor/blocklyOptions.js";
 import { isSavableEvent } from "./useAutosave.js";
 import { loadWorkspaceState } from "../../functions/workspaceState.js";
+import enablePasteAtCursor from "./editor/pasteAtCursor.js";
 
 /* =====================================================================
    The Blockly workspace itself
@@ -110,6 +111,7 @@ export default function useBlocklyEditor({
       contextMenu: true,
       shortcut: true
     });
+    const disablePasteAtCursor = enablePasteAtCursor(workspace);
 
     backpackRef.current = backpack;
 
@@ -195,6 +197,7 @@ export default function useBlocklyEditor({
       backpack.dispose?.();
       search.dispose?.();
       zoomToFit.dispose?.();
+      disablePasteAtCursor();
 
       workspace.dispose();
 
