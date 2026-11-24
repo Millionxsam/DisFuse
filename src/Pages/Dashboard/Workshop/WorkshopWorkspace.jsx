@@ -600,9 +600,14 @@ export default function WorkshopWorkspace() {
         ].join(".");
         const changelog = document.getElementById("packChangelogInput").value;
 
+        // Compare each part numerically, so 1.2.0 is higher than 1.1.12.
+        const newParts = version.split(".");
+        const difference = newParts
+          .map((part, i) => Number(part) - (Number(latestVersion[i]) || 0))
+          .find((d) => d !== 0);
         if (
-          parseInt(latestVersion.join("")) >=
-          parseInt(version.replaceAll(".", ""))
+          newParts.some((part) => !/^\d+$/.test(part)) ||
+          !(difference > 0)
         ) {
           Swal.showValidationMessage(
             "The new version must be higher than the current version",
