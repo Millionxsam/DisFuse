@@ -112,5 +112,11 @@ export const workshopToolbox = {
         { kind: "block", type: "output_fieldValue" },
       ],
     },
+    {
+      kind: "category",
+      name: "Archived Blocks",
+      colour: "#7a7a7a",
+      custom: "WORKSHOP_ARCHIVED_BLOCKS",
+    },
   ],
 };

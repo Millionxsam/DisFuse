@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import LoadingAnim from "../../../components/LoadingAnim";
@@ -23,12 +23,41 @@ import { apiUrl, discordUrl } from "../../../config/config.js";
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
 
+/* =====================================================================
+   Archived blocks
+   ---------------------------------------------------------------------
+   A published block can't simply be deleted: projects that use it would
+   be left with a block nothing defines, so publishing refuses. Archiving
+   takes it off the canvas and out of the toolbox of everyone who has the
+   pack installed, while its definition keeps being published so those
+   projects still open and still generate code.
+
+   Each archived block is kept as { state, definition }: the canvas
+   block, so it can be restored exactly as it was, and the definition it
+   generated, which is published with `archived: true`. Both are saved
+   with the workspace, under a key Blockly's own loader ignores.
+   ===================================================================== */
+
+const ARCHIVED_CATEGORY = "WORKSHOP_ARCHIVED_BLOCKS";
+const ARCHIVE_MENU_ID = "workshopArchiveBlock";
+
+/** The definition a block creator generates, or null if it doesn't parse. */
+function blockDefinition(block) {
+  javascriptGenerator.init(block.workspace);
+  try {
+    return JSON.parse(javascriptGenerator.blockToCode(block));
+  } catch {
+    return null;
+  }
+}
+
 export default function WorkshopWorkspace() {
   const [pack, setPack] = useState({});
   const [user, setUser] = useState({});
   const [workspace, setWorkspace] = useState();
   const [isLoading, setLoading] = useState(true);
   const [blocks, setBlocks] = useState([]);
+  const archivedBlocks = useRef([]);
 
   const { packId } = useParams();
 
@@ -107,11 +136,17 @@ export default function WorkshopWorkspace() {
 
                     setWorkspace(workspace);
 
-                    if (pack.data?.length)
-                      Blockly.serialization.workspaces.load(
-                        JSON.parse(pack.data),
-                        workspace,
-                      );
+                    if (pack.data?.length) {
+                      const saved = JSON.parse(pack.data);
+                      archivedBlocks.current = Array.isArray(
+                        saved.archivedBlocks,
+                      )
+                        ? saved.archivedBlocks
+                        : [];
+                      Blockly.serialization.workspaces.load(saved, workspace);
+                    }
+
+                    registerArchive(workspace);
 
                     const modalColors = modalThemeColor(user);
 
@@ -160,14 +195,23 @@ export default function WorkshopWorkspace() {
                           }
                         });
 
+                      /* Archived blocks are still published, so projects
+                         using them keep working. */
+                      blockList.push(
+                        ...archivedBlocks.current.map((a) => a.definition),
+                      );
+
                       setBlocks(blockList);
 
                       axios.patch(
                         apiUrl + `/workshop/${packId}/data`,
                         {
-                          data: JSON.stringify(
-                            Blockly.serialization.workspaces.save(workspace),
-                          ),
+                          data: JSON.stringify({
+                            ...Blockly.serialization.workspaces.save(
+                              workspace,
+                            ),
+                            archivedBlocks: archivedBlocks.current,
+                          }),
                         },
                         {
                           headers: {
@@ -181,7 +225,14 @@ export default function WorkshopWorkspace() {
               });
           });
       });
+
+    return () => {
+      if (Blockly.ContextMenuRegistry.registry.getItem(ARCHIVE_MENU_ID))
+        Blockly.ContextMenuRegistry.registry.unregister(ARCHIVE_MENU_ID);
+    };
   }, [packId]);
+
+  const activeBlockCount = blocks.filter((b) => !b.archived).length;
 
   return (
     <>
@@ -198,8 +249,11 @@ export default function WorkshopWorkspace() {
           </div>
           <h1 className="packName">{pack.name}</h1>
           <i className="blockCount">
-            <i className="fa-solid fa-cubes"></i> {blocks.length} block
-            {blocks.length === 1 ? "" : "s"}
+            <i className="fa-solid fa-cubes"></i> {activeBlockCount} block
+            {activeBlockCount === 1 ? "" : "s"}
+            {blocks.length > activeBlockCount
+              ? ` (${blocks.length - activeBlockCount} archived)`
+              : ""}
           </i>
         </div>
         <div>
@@ -258,6 +312,91 @@ export default function WorkshopWorkspace() {
       </div>
     </>
   );
+
+  /** The "Archive Block" menu item and the Archived Blocks category. */
+  function registerArchive(workspace) {
+    if (Blockly.ContextMenuRegistry.registry.getItem(ARCHIVE_MENU_ID))
+      Blockly.ContextMenuRegistry.registry.unregister(ARCHIVE_MENU_ID);
+
+    Blockly.ContextMenuRegistry.registry.register({
+      id: ARCHIVE_MENU_ID,
+      displayText: "Archive Block",
+      scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+      weight: 10,
+      preconditionFn: (scope) =>
+        scope.block?.type === "main_blockcreator" &&
+        scope.block.workspace === workspace
+          ? "enabled"
+          : "hidden",
+      callback: (scope) => archiveBlock(scope.block),
+    });
+
+    workspace.registerToolboxCategoryCallback(ARCHIVED_CATEGORY, () => {
+      const archived = archivedBlocks.current;
+      if (!archived.length)
+        return [
+          {
+            kind: "label",
+            text: "No archived blocks. Right-click a block and choose Archive Block to hide it.",
+          },
+        ];
+
+      return [
+        {
+          kind: "label",
+          text: "Hidden from the toolbox. Projects using them keep working.",
+        },
+        ...archived.flatMap((entry, index) => {
+          const key = `restoreArchivedBlock_${index}`;
+          workspace.registerButtonCallback(key, () =>
+            restoreBlock(workspace, entry),
+          );
+          return [
+            { kind: "label", text: entry.definition.name },
+            { kind: "button", text: "Restore", callbackKey: key },
+          ];
+        }),
+      ];
+    });
+  }
+
+  function archiveBlock(block) {
+    const definition = blockDefinition(block);
+    if (!definition)
+      return Swal.fire({
+        ...modalThemeColor(userCache.user, false),
+        icon: "error",
+        title: "Can't archive this block",
+        text: "This block has an error in it, so it can't be archived. Fix it first.",
+      });
+
+    const state = Blockly.serialization.blocks.save(block, {
+      addCoordinates: false,
+    });
+    delete state.id;
+
+    archivedBlocks.current = [
+      ...archivedBlocks.current,
+      { state, definition: { ...definition, archived: true } },
+    ];
+
+    /* Fires a delete event, which recounts the blocks and autosaves. */
+    block.dispose(true, true);
+  }
+
+  function restoreBlock(workspace, entry) {
+    archivedBlocks.current = archivedBlocks.current.filter((a) => a !== entry);
+
+    const restored = Blockly.serialization.blocks.append(
+      entry.state,
+      workspace,
+    );
+    const { left, top } = workspace.getMetricsManager().getViewMetrics(true);
+    restored.moveTo(new Blockly.utils.Coordinate(left + 40, top + 40));
+    restored.select();
+
+    workspace.getToolbox()?.refreshSelection();
+  }
 
   function configurePack() {
     if (isLoading) return;
@@ -526,7 +665,11 @@ export default function WorkshopWorkspace() {
               .join("<br />")}
               <br />
               <br />
-              This means you have changed your blocks in such a way that they would cause other projects that use these blocks to become corrupt. Please fix the issues and try again.`,
+              This means you have changed your blocks in such a way that they would cause other projects that use these blocks to become corrupt. Please fix the issues and try again.${
+                e.response.data.errors.some((b) => b[1] === "Block not found")
+                  ? "<br /><br />To remove a block you no longer want, keep it in the editor (use Undo if you deleted it), right-click it and choose <strong>Archive Block</strong>. It will be hidden from the toolbox without breaking projects that use it."
+                  : ""
+              }`,
             });
           else if (e.response.data.error === "At least one block is required")
             Swal.fire({

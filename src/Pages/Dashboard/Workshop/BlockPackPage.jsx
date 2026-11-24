@@ -126,6 +126,12 @@ export default function BlockPackPage() {
       });
   }, [packId]);
 
+  /* Archived blocks are still published so projects using them work,
+     but the pack no longer offers them. */
+  const visibleBlocks = (
+    pack.versions?.[pack.versions.length - 1]?.blocks || []
+  ).filter((block) => !block.archived);
+
   return loading ? (
     <LoadingAnim />
   ) : (
@@ -144,12 +150,8 @@ export default function BlockPackPage() {
         <div className="stat-row">
           <span className="stat-chip">
             <i className="fa-solid fa-cubes"></i>{" "}
-            {pack.versions[pack.versions?.length - 1]?.blocks?.length || 0}{" "}
-            Block
-            {(pack.versions[pack.versions?.length - 1]?.blocks?.length || 0) ===
-            1
-              ? ""
-              : "s"}
+            {visibleBlocks.length} Block
+            {visibleBlocks.length === 1 ? "" : "s"}
           </span>
           <span className="stat-chip">
             <i className="fa-solid fa-users"></i> {pack.users?.length || 0}{" "}
@@ -226,8 +228,8 @@ export default function BlockPackPage() {
       <div className="body">
         <h1>Blocks</h1>
         <div className="blocksList">
-          {pack.versions[pack.versions.length - 1]?.blocks?.length > 0 ? (
-            pack.versions[pack.versions.length - 1]?.blocks.map(
+          {visibleBlocks.length > 0 ? (
+            visibleBlocks.map(
               (block, index) => {
                 return (
                   <div

@@ -98,7 +98,10 @@ export default function WorkshopItem({ pack: p, editable = false }) {
       <div className="stat-row">
         <span className="stat-chip">
           <i className="fa-solid fa-cubes"></i>{" "}
-          {pack.versions[pack.versions.length - 1]?.blocks?.length || 0} Blocks
+          {(pack.versions[pack.versions.length - 1]?.blocks || []).filter(
+            (b) => !b.archived,
+          ).length}{" "}
+          Blocks
         </span>
         <span className="stat-chip">
           <i className="fa-solid fa-users"></i> {pack.users?.length || 0} Users

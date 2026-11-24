@@ -45,9 +45,11 @@ export function workshopCategory(blockPacks = []) {
         kind: "category",
         name: pack.name,
         colour: pack.color || "#014f98",
-        contents: pack.versions[pack.versions.length - 1]?.blocks?.length
-          ? pack.versions[pack.versions.length - 1]?.blocks?.map(b => block(b.name))
-          : []
+        /* Archived blocks stay defined, so projects using them still
+           open, but they are no longer offered. */
+        contents: (pack.versions[pack.versions.length - 1]?.blocks || [])
+          .filter(b => !b.archived)
+          .map(b => block(b.name))
       }))
     ]
   };
