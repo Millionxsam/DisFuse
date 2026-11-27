@@ -33,6 +33,14 @@ const SORTS = [
   { id: "updated", label: "Recently updated", mineOnly: true },
 ];
 
+/* Which editor's templates. Block Editor projects can only use block
+   templates and DisFuse Builder projects only builder ones. */
+const TYPES = [
+  { id: "", label: "All templates" },
+  { id: "blocks", label: "Made with the Block Editor" },
+  { id: "builder", label: "Made with DisFuse Builder" },
+];
+
 const defaultSort = (filter) => (filter === "mine" ? "updated" : "popular");
 
 /** Wait this long after the last keystroke before searching. */
@@ -96,6 +104,12 @@ function EmptyState({ filter, query, onCreate }) {
  * @param {() => void} [props.onCreate]
  * @param {string} [props.initialFilter]
  * @param {(filter: string) => void} [props.onFilterChange]
+ * @param {"blocks"|"builder"} [props.type]  only templates made this way,
+ *   with no way to pick another. Every template works in every project,
+ *   so nothing passes this today.
+ * @param {string} [props.initialType]  the kind picked at first, where
+ *   the viewer can pick
+ * @param {(type: string) => void} [props.onTypeChange]
  * @param {number} [props.reloadKey]  change it to fetch again
  * @param {"page"|"editor"} [props.context]
  */
@@ -109,9 +123,16 @@ export default function TemplateGallery({
   onCreate,
   initialFilter = "all",
   onFilterChange,
+  type: lockedType,
+  initialType = "",
+  onTypeChange,
   reloadKey = 0,
   context = "page",
 }) {
+  const [pickedType, setPickedType] = useState(
+    TYPES.some((option) => option.id === initialType) ? initialType : "",
+  );
+  const type = lockedType ?? pickedType;
   const [filter, setFilter] = useState(
     TABS.some((tab) => tab.id === initialFilter) ? initialFilter : "all",
   );
@@ -151,7 +172,14 @@ export default function TemplateGallery({
     setError(null);
 
     listTemplates(
-      { filter, sort, q: query, page, limit: context === "editor" ? 12 : 24 },
+      {
+        filter,
+        sort,
+        q: query,
+        page,
+        type,
+        limit: context === "editor" ? 12 : 24,
+      },
       { signal: controller.signal },
     )
       .then((next) => {
@@ -165,7 +193,7 @@ export default function TemplateGallery({
       });
 
     return () => controller.abort();
-  }, [context, filter, sort, query, page, reloadKey, retry]);
+  }, [context, filter, sort, query, page, type, reloadKey, retry]);
 
   function chooseFilter(next) {
     if (next === filter) return;
@@ -182,6 +210,12 @@ export default function TemplateGallery({
           : current,
     );
     onFilterChange?.(next);
+  }
+
+  function chooseType(next) {
+    setPickedType(next);
+    setPage(1);
+    onTypeChange?.(next);
   }
 
   function chooseSort(next) {
@@ -225,6 +259,20 @@ export default function TemplateGallery({
             onChange={(event) => setTyped(event.target.value)}
             aria-label="Search templates"
           />
+
+          {lockedType ? null : (
+            <select
+              value={type}
+              onChange={(event) => chooseType(event.target.value)}
+              aria-label="Which editor the templates were made with"
+            >
+              {TYPES.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          )}
 
           <select
             value={sort}

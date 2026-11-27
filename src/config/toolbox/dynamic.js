@@ -1,4 +1,6 @@
 import { block, label } from "./helpers.js";
+import { packType } from "../../builder/model/packs.js";
+import { builderPackToolbox } from "../../Pages/Workspace/editor/builderPackBlocks.js";
 
 /* =====================================================================
    Categories that depend on who is looking
@@ -28,9 +30,9 @@ export function workshopCategory(blockPacks = []) {
     colour: "#014f98",
     contents: [
       label(
-        `You have ${blockPacks.length} installed block pack${
+        `You have ${blockPacks.length} installed pack${
           blockPacks.length === 0
-            ? "s. Go to the workshop page to discover and install new block packs."
+            ? "s. Go to the workshop page to discover and install new packs."
             : blockPacks.length === 1
               ? ":"
               : "s:"
@@ -45,11 +47,15 @@ export function workshopCategory(blockPacks = []) {
         kind: "category",
         name: pack.name,
         colour: pack.color || "#014f98",
-        /* Archived blocks stay defined, so projects using them still
+        /* Packs made for DisFuse Builder work here too, as blocks.
+           Archived blocks stay defined, so projects using them still
            open, but they are no longer offered. */
-        contents: (pack.versions[pack.versions.length - 1]?.blocks || [])
-          .filter(b => !b.archived)
-          .map(b => block(b.name))
+        contents:
+          packType(pack) === "builder"
+            ? builderPackToolbox(pack)
+            : (pack.versions[pack.versions.length - 1]?.blocks ?? [])
+                .filter(b => !b.archived)
+                .map(b => block(b.name))
       }))
     ]
   };

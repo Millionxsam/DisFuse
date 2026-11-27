@@ -30,7 +30,7 @@ import MessageComponents from "./MessageComponents";
 
 const BUTTON_STYLES = [
   { value: "primary", label: "Primary", hint: "Blurple" },
-  { value: "secondary", label: "Secondary", hint: "Grey" },
+  { value: "secondary", label: "Secondary", hint: "Gray" },
   { value: "success", label: "Success", hint: "Green" },
   { value: "danger", label: "Danger", hint: "Red" },
   { value: "link", label: "Link", hint: "Opens a URL" },
@@ -512,7 +512,7 @@ function ButtonFields({ button, only, onChange, onRemove }) {
             checked={button.disabled}
             onChange={(e) => onChange({ disabled: e.target.checked })}
           />
-          Show it greyed out
+          Show it grayed out
         </label>
 
         {!only && (
@@ -613,7 +613,7 @@ function SelectFields({ select, onChange }) {
           checked={select.disabled}
           onChange={(e) => onChange({ disabled: e.target.checked })}
         />
-        Show it greyed out
+        Show it grayed out
       </label>
 
       {select.kind === "string" ? (

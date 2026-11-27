@@ -1,36 +1,47 @@
 /* =====================================================================
    Registering every DisFuse block
    ---------------------------------------------------------------------
-   Each file under `blocks/` registers itself with Blockly when it loads:
-   it assigns to `Blockly.Blocks[type]` and to
-   `javascriptGenerator.forBlock[type]`, and declares its restrictions.
-   None of them export anything the app calls — loading them *is* the
-   registration.
+   Every block is made from its element in src/elements: the same
+   definition the DisFuse Builder reads, so a block and its builder
+   element never drift apart. Importing this module registers them all
+   with Blockly (see lib/registerElements.js).
 
-   That is why this is a glob rather than a list of imports. The
-   alternative is a barrel with two hundred lines that has to be edited
-   every time a block file is added, and which silently breaks a whole
-   category the first time somebody forgets.
-
-   The important part is that this module exists at all. The glob used to
-   sit inline in the workspace page, which meant every *other* place that
-   injects Blockly — the project preview, the block-pack preview, the
-   read-only project view — rendered a toolbox full of block types that
-   had never been defined. Those pages import this instead.
-
-   `eager: true` because a block definition has to exist before a saved
-   workspace referencing it is loaded; there is no point at which it
-   would be safe to still be fetching them.
+   Every page that injects Blockly (the workspace, the project preview,
+   the block-pack preview, the read-only project view) imports this, so
+   none of them render a toolbox of blocks that were never defined.
    ===================================================================== */
 
+import * as Blockly from "blockly";
 import setHelpUrls from "./lib/setHelpUrls.js";
 import { enableComponentLoops } from "./lib/componentLoops.js";
 import { enableMiscConnections } from "./lib/miscConnections.js";
-import { addPingsMutator } from "./lib/pings.js";
+import { registerElements } from "./lib/registerElements.js";
+/* The database dropdown field the database blocks use. */
+import "./lib/databaseNames.js";
+import { ELEMENTS } from "../elements/index.js";
 
-import.meta.glob(["./**/*.js", "!./index.js", "!./deprecated/index.js"], {
-  eager: true,
+registerElements(ELEMENTS);
+
+/* Blockly's English messages spell "colour" the British way. DisFuse is
+   written in American English, so its own color blocks say "color".
+   Importing "blockly" above loads those messages first; these replace
+   them before any block is made. */
+Object.assign(Blockly.Msg, {
+  COLOUR_BLEND_COLOUR1: "color 1",
+  COLOUR_BLEND_COLOUR2: "color 2",
+  COLOUR_BLEND_TOOLTIP: "Blends two colors together with a given ratio (0.0 - 1.0).",
+  COLOUR_PICKER_TOOLTIP: "Choose a color from the palette.",
+  COLOUR_RANDOM_TITLE: "random color",
+  COLOUR_RANDOM_TOOLTIP: "Choose a color at random.",
+  COLOUR_RGB_TITLE: "color with",
+  COLOUR_RGB_TOOLTIP:
+    "Create a color with the specified amount of red, green, and blue. All values must be between 0 and 100.",
+  NEW_COLOUR_VARIABLE: "Create color variable...",
 });
+
+/* The "asynchronous" option on Blockly's own function blocks. It wraps
+   their definitions, so it runs after they exist. */
+import "./functions.js";
 
 /* Every block now registered gets a Help item pointing at its page on
    the docs site. It runs here, after the glob, because it walks the
@@ -46,36 +57,6 @@ enableComponentLoops();
 /* Raw code and comment blocks skip connection type checks, so they fit
    into any input of any block — see lib/miscConnections.js. */
 enableMiscConnections();
-
-/* Messages ping nobody unless the user allows it. Blocks built with
-   createMutatorBlock opt in with `pings: true`; these message-sending
-   blocks had no mutator, so they get one with just that option. It runs
-   after the glob because a few of them are defined in more than one
-   file, and only the last definition counts — see lib/pings.js. */
-addPingsMutator([
-  "webhooks_send",
-  "poll_sendchannel",
-  "fs_sendFile",
-  "channel_send",
-  "channel_send_rows",
-  "member_dm",
-  "member_dm_rows",
-  "msg_edit",
-  "menus_reply",
-  "menus_edit",
-  "menus_update",
-  "captcha_send",
-  "captcha_reply",
-  "captcha_replyInteraction",
-  "slash_reply",
-  "slash_reply_rows",
-  "slash_editreply",
-  "msg_reply",
-  "msg_reply_rows",
-  "misc_int_reply",
-  "misc_int_reply_rows",
-  "misc_int_edit",
-]);
 
 /**
  * Block types that still load but are retired from the regular toolbox.

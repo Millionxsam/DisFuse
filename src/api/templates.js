@@ -2,13 +2,15 @@
    Templates API
    ---------------------------------------------------------------------
    Templates are blocks people build in the template builder for others
-   to import. Each has a draft (what the builder autosaves, only ever
+   to import — or, for DisFuse Builder projects, commands and events
+   (`type: "builder"`; see src/builder/model/templates.js). Each has a draft (what the builder autosaves, only ever
    sent to its owner) and a published version (what everyone else sees
    and imports), and nothing changes for importers until the owner
    presses Publish.
 
    Importing is done by the editor — the blocks are copied into the
-   project like any others — so nothing here writes to a project. The
+   project like any others, or a builder template is added with the
+   builder's own import route — so nothing here writes to a project. The
    API is told about an import afterwards, only so it can be counted.
 
    Routes:
@@ -33,6 +35,7 @@ import api, { authToken, data as body } from "./client.js";
  *
  * @param {object} query
  * @param {"all"|"official"|"mine"|"liked"} [query.filter]
+ * @param {"blocks"|"builder"} [query.type]  only one kind (default: both)
  * @param {"popular"|"imports"|"newest"|"updated"} [query.sort]
  * @param {string} [query.q]      search names and descriptions
  * @param {number} [query.page]
@@ -54,7 +57,7 @@ export function getTemplate(templateId, { signal } = {}) {
 /**
  * Creates a template. It starts unpublished whatever its visibility.
  *
- * @param {{name: string, description?: string, private?: boolean, draft?: string}} template
+ * @param {{name: string, description?: string, private?: boolean, type?: "blocks"|"builder", draft?: string}} template
  */
 export function createTemplate(template) {
   return api.post("/templates", template).then(body);
@@ -65,7 +68,11 @@ export function updateTemplate(templateId, changes) {
   return api.patch(`/templates/${templateId}`, changes).then(body);
 }
 
-/** The builder's autosave. Never changes what importers get. */
+/**
+ * The builder's autosave. Never changes what importers get. `data` is a
+ * serialised Blockly workspace, or a builder template's
+ * { commands, events, variables } as JSON.
+ */
 export function saveTemplateDraft(templateId, data, { signal } = {}) {
   return api
     .put(`/templates/${templateId}/draft`, { data }, { signal })
@@ -105,8 +112,10 @@ export function saveTemplateDraftOnExit(templateId, data) {
 /**
  * Makes these blocks what importers get.
  *
- * @param {string}   data   the builder's workspace, serialised
+ * @param {string}   data   the builder's workspace, serialised (or a
+ *   builder template's content)
  * @param {string[]} packs  ids of the Workshop packs whose blocks it uses
+ *   (block templates only)
  */
 export function publishTemplate(templateId, { data, packs = [] }) {
   return api

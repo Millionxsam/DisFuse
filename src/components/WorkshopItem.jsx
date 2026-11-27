@@ -6,6 +6,7 @@ import modalThemeColor from "../functions/modalThemeColor.js";
 import { userCache } from "../cache.ts";
 
 import { apiUrl, discordUrl } from "../config/config";
+import { PACK_TYPES, countOfferedPackItems, packType } from "../builder/model/packs.js";
 
 export default function WorkshopItem({ pack: p, editable = false }) {
   const [pack, setPack] = useState(p);
@@ -78,6 +79,14 @@ export default function WorkshopItem({ pack: p, editable = false }) {
   }
 
   const installed = localUser?.installedBlockPacks?.includes(pack._id);
+  const type = packType(pack);
+  const latest = pack.versions?.[pack.versions.length - 1];
+  const count =
+    type === "builder"
+      ? countOfferedPackItems(latest?.items)
+      : /* Archived blocks still load for projects using them, but the
+           pack no longer offers them. */
+        (latest?.blocks || []).filter((b) => !b.archived).length;
 
   return (
     <div className="df-pack-card">
@@ -88,6 +97,13 @@ export default function WorkshopItem({ pack: p, editable = false }) {
         </h3>
       </div>
 
+      <span
+        className={`df-pack-type df-pack-type-${type}`}
+        title={`Made with ${PACK_TYPES[type].editor}. Works in every project.`}
+      >
+        <i className={PACK_TYPES[type].icon}></i> {PACK_TYPES[type].editor}
+      </span>
+
       <UserTag user={user} />
 
       <p className="description">
@@ -97,11 +113,14 @@ export default function WorkshopItem({ pack: p, editable = false }) {
 
       <div className="stat-row">
         <span className="stat-chip">
-          <i className="fa-solid fa-cubes"></i>{" "}
-          {(pack.versions[pack.versions.length - 1]?.blocks || []).filter(
-            (b) => !b.archived,
-          ).length}{" "}
-          Blocks
+          <i className="fa-solid fa-cubes"></i> {count}{" "}
+          {type === "builder"
+            ? count === 1
+              ? "Item"
+              : "Items"
+            : count === 1
+              ? "Block"
+              : "Blocks"}
         </span>
         <span className="stat-chip">
           <i className="fa-solid fa-users"></i> {pack.users?.length || 0} Users

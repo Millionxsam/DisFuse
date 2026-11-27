@@ -247,7 +247,7 @@ export const styleGroups = {
         type: "text",
         placeholder: "0",
       },
-      { key: "color", label: "Colour", type: "color" },
+      { key: "color", label: "Color", type: "color" },
       {
         key: "textAlign",
         label: "Text align",
@@ -260,7 +260,7 @@ export const styleGroups = {
     label: "Background",
     icon: "fa-solid fa-fill-drip",
     fields: [
-      { key: "background", label: "Colour", type: "color" },
+      { key: "background", label: "Color", type: "color" },
       {
         key: "backgroundImage",
         label: "Image",
@@ -301,7 +301,7 @@ export const styleGroups = {
           { value: "none", label: "None" },
         ],
       },
-      { key: "borderColor", label: "Colour", type: "color" },
+      { key: "borderColor", label: "Color", type: "color" },
       {
         key: "borderRadius",
         label: "Radius",

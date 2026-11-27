@@ -20,6 +20,7 @@ export default function PriProject({
   let lastEdited = new Date(project?.lastEdited);
   const isOwner = project?.owner?.id === userCache?.user?.id;
   const isSuspended = project?.suspension?.status === true;
+  const hasEdited = project?.lastEdited && lastEdited.getTime() !== 0;
 
   /* The project's website. The owner's copy carries the website's id, so
      their card opens the builder; a collaborator only ever gets one that
@@ -31,6 +32,12 @@ export default function PriProject({
 
   return (
     <div className={`df-project-card${isSuspended ? " suspended" : ""}`}>
+      {project.type === "builder" && (
+        <div className="builder-ribbon" title="Built with DisFuse Builder">
+          <i className="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+      )}
+
       <div className="card-top">
         {project?.bot?.id ? (
           <img
@@ -70,15 +77,13 @@ export default function PriProject({
               navigate(`/@${project?.owner?.username}/${project?._id}`)
             }
           >
+            {project.private && project.botPrivate && (
+              <i className="fa-solid fa-lock title-lock" title="Private"></i>
+            )}
             {project.name}
           </h1>
 
           <div className="badges">
-            {project.private && project.botPrivate && (
-              <span className="badge private">
-                <i className="fa-solid fa-lock"></i> Private
-              </span>
-            )}
             {websiteLink && (
               <span
                 className="badge website"
@@ -107,22 +112,23 @@ export default function PriProject({
             )}
           </div>
         </div>
-
-        {isOwner && !isSuspended && (
-          <i
-            className="fa-solid fa-pen-to-square card-edit"
-            onClick={() =>
-              navigate(`/@${project.owner.username}/${project._id}/edit`)
-            }
-          />
-        )}
       </div>
 
       <p className="description">{project.description || "No description"}</p>
 
-      {isOwner && project?.lastEdited && lastEdited.getTime() !== 0 && (
+      {isOwner && (hasEdited || !isSuspended) && (
         <p className="meta">
-          Edited {ms(Date.now() - lastEdited.getTime(), { long: true })} ago
+          {hasEdited &&
+            `Edited ${ms(Date.now() - lastEdited.getTime(), { long: true })} ago`}
+          {!isSuspended && (
+            <i
+              className="fa-solid fa-pen-to-square card-edit"
+              title="Edit project"
+              onClick={() =>
+                navigate(`/@${project.owner.username}/${project._id}/edit`)
+              }
+            />
+          )}
         </p>
       )}
 

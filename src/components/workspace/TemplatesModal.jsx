@@ -91,7 +91,7 @@ export default function TemplatesModal({
       open={open}
       onClose={onClose}
       title="Templates"
-      subtitle="Ready-made blocks shared by the community and the DisFuse team. Adding one puts a copy of its blocks in this project."
+      subtitle="Ready-made blocks, commands and events shared by the community and the DisFuse team. Adding one puts a copy of it in this project as blocks."
       icon="fa-solid fa-shapes"
       docsPage={DOCS.templates}
       className="df-templates-modal"
@@ -100,6 +100,8 @@ export default function TemplatesModal({
         {opened ? (
           <TemplateGallery
             context="editor"
+            /* Every template works here, whichever editor made it: a
+               DisFuse Builder template is turned into blocks on import. */
             viewer={viewer}
             reloadKey={reloadKey}
             onOpen={(found) => setOpenId(found._id)}

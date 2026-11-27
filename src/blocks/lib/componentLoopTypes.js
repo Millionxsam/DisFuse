@@ -67,6 +67,8 @@ export const CV2_SEND_TYPES = [
   "cv2_editReplyInteraction",
   "cv2_updateInteraction",
   "cv2_editMsg",
+  "cv2_replyToMsg",
+  "cv2_followUpInteraction",
 ];
 
 /**

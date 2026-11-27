@@ -624,3 +624,136 @@
   color: white;
   border-color: var(--df-border-strong);
 }
+
+/* ---- Two kinds of pack ---------------------------------------------------
+   Block packs (the block editor) and builder packs (DisFuse Builder). */
+
+.df-pack-filter {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.df-pack-filter button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.df-pack-filter button:hover {
+  opacity: 1;
+}
+
+.df-pack-filter button.active {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.df-pack-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ffcf8a;
+  background: rgba(255, 182, 72, 0.14);
+}
+
+.df-pack-type-builder {
+  color: #c4b5ff;
+  background: rgba(139, 108, 255, 0.16);
+}
+
+.df-pack-types {
+  text-align: left;
+}
+
+/* A builder pack's events, steps and values, on its page. */
+.df-bp-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.df-bp-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.df-bp-item {
+  display: flex;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.df-bp-item-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 10px;
+  color: #fff;
+  background: var(--pack);
+}
+
+.df-bp-item h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.df-bp-item h2 small {
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.75;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.df-bp-item p {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  opacity: 0.8;
+}
+
+.df-bp-item .df-bp-item-meta {
+  font-size: 0.78rem;
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .df-pack-filter {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .df-bp-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -23,7 +23,9 @@ const modalColors = modalThemeColor(null, true);
    the editor does the import itself.
 
    The open tab lives in the URL (`?tab=mine`), so "back to my
-   templates" from the builder is a link.
+   templates" from the builder is a link. So does the editor the
+   templates were made with (`?type=builder`). That's only a filter:
+   every template can be added to every project.
    ===================================================================== */
 
 export default function Templates() {
@@ -33,6 +35,13 @@ export default function Templates() {
   async function use(template) {
     const project = await pickProjectForTemplate(template, modalColors);
     if (project) navigate(projectUrlWithTemplate(project, template._id));
+  }
+
+  function setParam(key, value) {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setSearchParams(next, { replace: true });
   }
 
   function create() {
@@ -57,9 +66,9 @@ export default function Templates() {
       </div>
 
       <p className="df-templates-lede">
-        Ready-made blocks shared by the community and the DisFuse team. Add
-        one to any project, and its blocks are yours to change however you
-        like.
+        Ready-made blocks, commands and events shared by the community and
+        the DisFuse team. Add one to a project, and it's yours to change
+        however you like.
       </p>
 
       <TemplateGallery
@@ -70,9 +79,9 @@ export default function Templates() {
         onEdit={(template) => navigate(`/templates/${template._id}/builder`)}
         onCreate={create}
         initialFilter={searchParams.get("tab") ?? "all"}
-        onFilterChange={(tab) =>
-          setSearchParams(tab === "all" ? {} : { tab }, { replace: true })
-        }
+        onFilterChange={(tab) => setParam("tab", tab === "all" ? "" : tab)}
+        initialType={searchParams.get("type") ?? ""}
+        onTypeChange={(type) => setParam("type", type)}
       />
     </div>
   );

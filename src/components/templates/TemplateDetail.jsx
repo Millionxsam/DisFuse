@@ -3,8 +3,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import UserTag from "../UserTag";
+import BuilderTemplatePreview from "./BuilderTemplatePreview.jsx";
 import TemplatePreview from "./TemplatePreview.jsx";
-import { TemplateBadges } from "./TemplateCard.jsx";
+import {
+  TemplateBadges,
+  templateIcon,
+  templateStats,
+} from "./TemplateCard.jsx";
 import { errorMessage } from "../../api/client.js";
 import { toggleTemplateLike } from "../../api/templates.js";
 
@@ -59,6 +64,7 @@ export default function TemplateDetail({
   useEffect(() => setPopped(false), [template._id]);
 
   const own = Boolean(viewer?.id) && template.owner?.id === viewer.id;
+  const builderTemplate = template.type === "builder";
 
   /* The owner is looking at a template nobody else can see yet: show them
      the draft, which is what they have been building. */
@@ -122,7 +128,7 @@ export default function TemplateDetail({
       <header className="df-project-detail-head df-template-detail-head">
         <h1 className="title-row">
           <span className="df-template-icon" aria-hidden="true">
-            <i className="fa-solid fa-shapes" />
+            <i className={templateIcon(template)} />
           </span>
           <span className="df-template-title">{template.name}</span>
         </h1>
@@ -222,15 +228,20 @@ export default function TemplateDetail({
             </div>
           </span>
 
-          {template.published ? (
-            <span className="darkBtn static" title="Number of blocks">
-              <i className="fa-solid fa-cube" />
-              <div>
-                {template.blockCount} Block
-                {template.blockCount === 1 ? "" : "s"}
-              </div>
-            </span>
-          ) : null}
+          {template.published
+            ? templateStats(template).map((stat) => (
+                <span
+                  className="darkBtn static"
+                  title={stat.title}
+                  key={stat.title}
+                >
+                  <i className={stat.icon} />
+                  <div>
+                    {stat.value} {stat.unit[stat.value === 1 ? 0 : 1]}
+                  </div>
+                </span>
+              ))
+            : null}
 
           {own ? ownerActions.map(renderAction) : null}
           {!own ? staffActions.map(renderAction) : null}
@@ -245,7 +256,7 @@ export default function TemplateDetail({
             <i className="fa-solid fa-cubes-stacked" /> Workshop packs
           </h2>
           <p>
-            This template uses blocks from{" "}
+            This template uses{" "}
             {template.packs.length === 1
               ? "this Workshop pack"
               : "these Workshop packs"}
@@ -287,13 +298,40 @@ export default function TemplateDetail({
         </section>
       ) : null}
 
-      <section className="df-template-blocks">
-        <h2>
-          <i className="fa-solid fa-cubes" />{" "}
-          {template.published ? "Blocks" : "Draft blocks"}
-        </h2>
-        <TemplatePreview data={previewData} packs={template.packs ?? []} />
-      </section>
+      {builderTemplate ? (
+        <section className="df-template-blocks">
+          <h2>
+            <i className="fa-solid fa-wand-magic-sparkles" />{" "}
+            {template.published
+              ? "Commands and events"
+              : "Draft commands and events"}
+          </h2>
+          <p className="df-template-for">
+            Made with <b>DisFuse Builder</b>, and works in every project.
+            Adding it puts a copy of these commands and events in your
+            project, as blocks in a Block Editor project. Secrets aren't part
+            of a template, so if it uses any, you'll add your own.
+          </p>
+          <BuilderTemplatePreview
+            data={previewData}
+            name={template.name}
+            templateId={template._id}
+          />
+        </section>
+      ) : (
+        <section className="df-template-blocks">
+          <h2>
+            <i className="fa-solid fa-cubes" />{" "}
+            {template.published ? "Blocks" : "Draft blocks"}
+          </h2>
+          <p className="df-template-for">
+            Made with the <b>Block Editor</b>, and works in every project. In a
+            DisFuse Builder project, its blocks become commands and events
+            when you add it.
+          </p>
+          <TemplatePreview data={previewData} packs={template.packs ?? []} />
+        </section>
+      )}
     </article>
   );
 }

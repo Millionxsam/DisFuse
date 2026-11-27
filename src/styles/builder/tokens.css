@@ -1,0 +1,168 @@
+/* =====================================================================
+   DisFuse Builder: tokens
+   ---------------------------------------------------------------------
+   The builder's palette, shape and motion, built on the site's --df-*
+   tokens (styles/base/tokens.css). Declared on :root, not on a builder
+   wrapper, because modals, menus and toasts render in portals at the
+   end of <body> and still need them.
+
+   The look: the DisFuse dark night sky, brighter and more playful.
+   Color-coded categories, soft gradients, glassy panels, and springy
+   motion that settles instead of snapping.
+   ===================================================================== */
+
+:root {
+  --dfb-bg: #050913;
+  --dfb-bg-2: #0a1122;
+  --dfb-panel: rgba(17, 27, 49, 0.78);
+  --dfb-card: #0f1a31;
+  --dfb-card-2: #14223f;
+  --dfb-card-3: #1a2b4d;
+  --dfb-line: rgba(255, 255, 255, 0.08);
+  --dfb-line-strong: rgba(255, 255, 255, 0.16);
+
+  --dfb-text: var(--df-text, #f3f7fb);
+  --dfb-dim: var(--df-text-dim, rgba(243, 247, 251, 0.68));
+  --dfb-faint: var(--df-text-faint, rgba(243, 247, 251, 0.42));
+
+  --dfb-violet: #8b6cff;
+  --dfb-violet-rgb: 139, 108, 255;
+  --dfb-mint: var(--df-mint, #35d0a0);
+  --dfb-amber: var(--df-amber, #ffb648);
+  --dfb-pink: var(--df-pink, #e23fe2);
+  --dfb-sky: #4fa8ff;
+  --dfb-danger: var(--df-danger, #ff5c5c);
+
+  --dfb-grad: linear-gradient(120deg, #8b6cff 0%, #e23fe2 55%, #ffb648 100%);
+  --dfb-grad-cool: linear-gradient(135deg, #4fa8ff 0%, #8b6cff 100%);
+  --dfb-grad-mint: linear-gradient(135deg, #35d0a0 0%, #4fa8ff 100%);
+
+  --dfb-r-xs: 8px;
+  --dfb-r-sm: 10px;
+  --dfb-r-md: 14px;
+  --dfb-r-lg: 20px;
+  --dfb-r-xl: 28px;
+
+  --dfb-shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.28);
+  --dfb-shadow: 0 14px 40px rgba(0, 0, 0, 0.42);
+  --dfb-shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.6);
+  --dfb-glow: 0 0 0 1px rgba(var(--dfb-violet-rgb), 0.5), 0 8px 30px rgba(var(--dfb-violet-rgb), 0.35);
+
+  --dfb-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dfb-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dfb-fast: 140ms;
+  --dfb-mid: 240ms;
+  --dfb-slow: 420ms;
+
+  --dfb-font: "Ubuntu Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --dfb-display: "Poetsen One", "Ubuntu Sans", system-ui, sans-serif;
+  --dfb-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+@keyframes dfb-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dfb-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dfb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dfb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dfb-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes dfb-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.06);
+  }
+}
+
+@keyframes dfb-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dfb-fast: 0ms;
+    --dfb-mid: 0ms;
+    --dfb-slow: 0ms;
+  }
+
+  .dfb-root *,
+  .dfb-portal *,
+  .dfb-root,
+  .dfb-portal {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* A site theme (Settings → Appearance, functions/siteTheme.js) recolors
+   the site's --df-* surfaces and marks <html> with data-df-site-theme.
+   The builder's own surfaces follow them, so a themed site doesn't turn
+   back to the default navy inside the builder. Its violet accent stays:
+   it's how the builder tells its buttons and steps apart. */
+:root[data-df-site-theme] {
+  --dfb-bg: var(--df-bg);
+  --dfb-bg-2: var(--df-surface);
+  --dfb-panel: color-mix(in srgb, var(--df-surface) 78%, transparent);
+  --dfb-card: var(--df-surface);
+  --dfb-card-2: var(--df-surface-2);
+  --dfb-card-3: var(--df-surface-3);
+}
+
+:root[data-df-site-theme] .dfb-app {
+  background: var(--df-page-bg, var(--df-bg)) fixed;
+}
+
+:root[data-df-site-theme] .dfb-topbar {
+  background: color-mix(in srgb, var(--df-bg) 88%, transparent);
+}

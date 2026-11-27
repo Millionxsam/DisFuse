@@ -93,16 +93,9 @@
 }
 
 /* ---------------------------------------------------------------------
-   New website page — reuses .newProject-page-container form styling
+   New website page — the project form cards (new-project.css), plus
+   its bot and template pickers
    --------------------------------------------------------------------- */
-
-.df-new-website .body {
-  padding: 0 min(3vw, 2.5rem) 4rem min(3vw, 2.5rem);
-}
-
-.df-new-website .projectInfo h2 {
-  font-size: 18px;
-}
 
 .df-new-website .df-bot-picker,
 .df-new-website .df-template-picker {
@@ -127,8 +120,8 @@
   text-align: left;
   justify-content: flex-start;
   white-space: normal;
-  background: var(--df-surface);
-  border: 1px solid var(--df-border);
+  background: var(--df-bg);
+  border: 1px solid var(--df-border-strong);
   border-radius: var(--df-r-md);
   padding: 1rem;
   font-size: 15px;
@@ -200,10 +193,6 @@
   color: var(--df-amber);
 }
 
-/* Extra class needed to out-specify
-   `.newProject-page-container .projectInfo > div p`, which italicises
-   help text on the shared New Project form. */
-
 .df-new-website .df-template-picker .df-template-option p {
   font-size: 13px;
   color: var(--df-text-dim);
@@ -221,11 +210,6 @@
   border-radius: 999px;
   background: var(--df-surface-2);
   color: #9cc9ef;
-}
-
-.df-new-website .projectInfo > button {
-  width: fit-content;
-  font-size: 16px;
 }
 
 /* ---------------------------------------------------------------------

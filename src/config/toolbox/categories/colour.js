@@ -3,7 +3,7 @@ import { block, shadow } from "../helpers.js";
 /** Colour pickers and conversions, for embeds and roles. */
 export default {
   kind: "category",
-  name: "Colour",
+  name: "Color",
   colour: "#ad794c",
   contents: [
     block("colour_picker"),

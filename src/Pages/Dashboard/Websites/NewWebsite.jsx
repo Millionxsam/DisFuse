@@ -19,6 +19,7 @@ import { userCache } from "../../../cache.ts";
 
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
+import { Card, SubmitButton } from "../Projects/projectForm.jsx";
 
 /**
  * Creating a website starts from one of the user's existing DisFuse
@@ -162,7 +163,7 @@ export default function NewWebsite() {
   }
 
   return (
-    <div className="newProject-page-container df-new-website">
+    <div className="df-page np-page df-new-website">
       <Helmet>
         <title>New Website | DisFuse</title>
       </Helmet>
@@ -177,52 +178,47 @@ export default function NewWebsite() {
         </div>
       </div>
 
-      <div className="body">
-        {loading || limits.loading ? (
-          <LoadingAnim />
-        ) : !hasRoom(limits.data, "websites") ? (
-          /* No room for another website: say so before anything is
+      {loading || limits.loading ? (
+        <LoadingAnim />
+      ) : !hasRoom(limits.data, "websites") ? (
+        /* No room for another website: say so before anything is
              filled in. The API refuses it either way. */
-          <PlanLimitReached resource="websites" data={limits.data} />
-        ) : !projects.length ? (
-          <div className="df-empty">
-            <i className="fa-solid fa-robot"></i>
-            <h3>No bots to build for</h3>
-            <p>
-              A website belongs to a bot you own. Projects you've only been
-              invited to collaborate on don't count. Create your own project
-              with a bot token first, then come back here.
-            </p>
-            <Link to="/projects/new">
-              <button className="df-primary-btn">
-                <i className="fa-solid fa-plus"></i> New Project
-              </button>
-            </Link>
-          </div>
-        ) : !available.length ? (
-          <div className="df-empty">
-            <i className="fa-solid fa-globe"></i>
-            <h3>Every bot already has a website</h3>
-            <p>
-              A bot can only have one website. Open the one you already built,
-              or start a new project to build a website for another bot.
-            </p>
-            <Link to="/websites">
-              <button className="df-primary-btn">
-                <i className="fa-solid fa-globe"></i> My Websites
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <div className="projectInfo">
-            <div style={{ gap: "2px" }}>
-              <h2>Bot</h2>
-              <p style={{ opacity: ".5" }}>
-                The website is published at a URL based on this bot, and
-                dashboard controls (if you add any) configure this bot.
-              </p>
-            </div>
-
+        <PlanLimitReached resource="websites" data={limits.data} />
+      ) : !projects.length ? (
+        <div className="df-empty">
+          <i className="fa-solid fa-robot"></i>
+          <h3>No bots to build for</h3>
+          <p>
+            A website belongs to a bot you own. Projects you've only been
+            invited to collaborate on don't count. Create your own project with
+            a bot token first, then come back here.
+          </p>
+          <Link to="/projects/new">
+            <button className="df-primary-btn">
+              <i className="fa-solid fa-plus"></i> New Project
+            </button>
+          </Link>
+        </div>
+      ) : !available.length ? (
+        <div className="df-empty">
+          <i className="fa-solid fa-globe"></i>
+          <h3>Every bot already has a website</h3>
+          <p>
+            A bot can only have one website. Open the one you already built, or
+            start a new project to build a website for another bot.
+          </p>
+          <Link to="/websites">
+            <button className="df-primary-btn">
+              <i className="fa-solid fa-globe"></i> My Websites
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <div className="np-form np-form--single">
+          <Card
+            title="Bot"
+            description="The website is published at a URL based on this bot, and dashboard controls (if you add any) configure this bot."
+          >
             <div className="df-bot-picker">
               {picker.map((project) => {
                 /* One website per bot, so a bot that already has one can't
@@ -272,35 +268,36 @@ export default function NewWebsite() {
                 );
               })}
             </div>
+          </Card>
 
-            <h2>Website name</h2>
+          <Card title="Website name">
             <input
+              className="np-input"
               type="text"
               placeholder="My bot's website"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+          </Card>
 
-            <div style={{ gap: "2px" }}>
-              <h2>Description</h2>
-              <i style={{ opacity: ".5" }}>
-                Optional. Used for search engine previews
-              </i>
-            </div>
+          <Card
+            title="Description"
+            optional
+            description="Used for search engine previews."
+          >
             <textarea
+              className="np-input"
+              rows={3}
               placeholder="What is this website about?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </Card>
 
-            <div style={{ gap: "2px" }}>
-              <h2>Starting point</h2>
-              <p style={{ opacity: ".5" }}>
-                Just a starting layout. You can add, remove and rearrange
-                anything afterwards, including dashboard controls.
-              </p>
-            </div>
-
+          <Card
+            title="Starting point"
+            description="Just a starting layout. You can add, remove and rearrange anything afterwards, including dashboard controls."
+          >
             <div className="df-template-picker">
               {websiteTemplates.map((template) => (
                 <button
@@ -323,21 +320,19 @@ export default function NewWebsite() {
                 </button>
               ))}
             </div>
+          </Card>
 
-            {creating ? (
-              <LoadingAnim onlySpinner />
-            ) : (
-              <button
-                className="df-primary-btn"
-                onClick={create}
-                disabled={!selected || !name.trim()}
-              >
-                <i className="fa-solid fa-plus"></i> Create Website
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+          <SubmitButton
+            busy={creating}
+            busyLabel="Creating"
+            icon="fa-solid fa-plus"
+            onClick={create}
+            disabled={creating || !selected || !name.trim()}
+          >
+            Create Website
+          </SubmitButton>
+        </div>
+      )}
     </div>
   );
 }

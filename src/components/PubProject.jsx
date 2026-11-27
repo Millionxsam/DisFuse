@@ -27,6 +27,12 @@ export default function PubProject({ project }) {
 
   return (
     <div className="df-project-card">
+      {project.type === "builder" && (
+        <div className="builder-ribbon" title="Built with DisFuse Builder">
+          <i className="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+      )}
+
       <div className="card-top">
         {project?.bot?.id ? (
           <img
@@ -47,13 +53,13 @@ export default function PubProject({ project }) {
         )}
 
         <div className="title-block">
-          <h3>{project.name}</h3>
-          <div className="badges">
+          <h3>
             {project.private && project.botPrivate && (
-              <span className="badge private">
-                <i className="fa-solid fa-lock"></i> Private
-              </span>
+              <i className="fa-solid fa-lock title-lock" title="Private"></i>
             )}
+            {project.name}
+          </h3>
+          <div className="badges">
             {hiddenFromViewer && (
               <span className="badge">Only visible to staff</span>
             )}

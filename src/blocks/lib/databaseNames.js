@@ -97,6 +97,15 @@ export class FieldDatabaseDropdown extends Blockly.FieldDropdown {
     return names.map((name) => [name, name]);
   }
 
+  static fromJson() {
+    return new FieldDatabaseDropdown();
+  }
+
+  /** Whether the picked database is made by a "create database" block. */
+  databaseExists() {
+    return getDatabaseNames(this.getSourceBlock()?.workspace).includes(this.getValue());
+  }
+
   doClassValidation_(newValue) {
     if (typeof newValue !== "string" || !newValue) return null;
 
@@ -109,3 +118,9 @@ export class FieldDatabaseDropdown extends Blockly.FieldDropdown {
     return newValue;
   }
 }
+
+/* Registered so element blocks (src/elements) can make one without
+   importing this module: `Blockly.fieldRegistry.fromJson({ type })`. */
+export const DATABASE_FIELD = "field_database_dropdown";
+if (!Blockly.registry.hasItem(Blockly.registry.Type.FIELD, DATABASE_FIELD))
+  Blockly.fieldRegistry.register(DATABASE_FIELD, FieldDatabaseDropdown);

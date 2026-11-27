@@ -5,6 +5,8 @@ import * as Blockly from "blockly";
 import "../../blocks/index.js";
 
 import registerCustomBlocks from "../../blocks/lib/registerCustomBlocks";
+import { packType } from "../../builder/model/packs.js";
+import { registerBlockPacks } from "../../Pages/Workspace/editor/customBlocks.js";
 import api, { data as body } from "../../api/client.js";
 import { userCache } from "../../cache.ts";
 import { resolveTheme } from "../../Pages/Workspace/editor/theme.js";
@@ -66,6 +68,11 @@ function frame(workspace) {
 /** Defines the blocks of these packs that aren't defined here yet. */
 function defineMissingPackBlocks(packs) {
   for (const pack of packs) {
+    /* A pack made with DisFuse Builder is turned into blocks first. */
+    if (packType(pack) === "builder") {
+      registerBlockPacks([pack]);
+      continue;
+    }
     const latest = pack.versions?.[pack.versions.length - 1];
     const blocks = (latest?.blocks ?? []).filter(
       (block) => block?.name && !Blockly.Blocks[block.name],

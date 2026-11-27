@@ -153,7 +153,7 @@ export default function WorkshopWorkspace() {
                     if (!localStorage.getItem("workshopOnboardingCompleted")) {
                       Swal.fire({
                         icon: "info",
-                        title: "Welcome to Block Workshop!",
+                        title: "Welcome to the Workshop!",
                         text: "Start creating blocks by using the blocks in the toolbox. When you want to release your pack, click the Publish button in the top right corner. Your changes save automatically even if you do not publish, so you can continue working on it later.",
                         confirmButtonText: "Start",
                         ...modalColors,
@@ -403,7 +403,7 @@ export default function WorkshopWorkspace() {
     const modalColors = modalThemeColor(user, false);
 
     Swal.fire({
-      title: "Configure Block Pack",
+      title: "Configure Pack",
       html: renderToStaticMarkup(
         <div className="configurePackModal">
           <div className="name">
@@ -544,7 +544,7 @@ export default function WorkshopWorkspace() {
 
     Swal.fire({
       ...modalColors,
-      title: "Publish Block Pack",
+      title: "Publish Pack",
       html: '<div class="publishPackModal swal-no-scroll"></div>',
       didOpen: () => {
         const container =

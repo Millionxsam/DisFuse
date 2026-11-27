@@ -54,6 +54,7 @@ export default {
         }),
         label("Actions ↓"),
         block("cv2_replyMsg"),
+        block("cv2_replyToMsg"),
         block("misc_messageSent"),
         block("msg_deleteOther", {
           inputs: {

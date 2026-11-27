@@ -76,7 +76,7 @@ export const premiumFeatures = [
   {
     icon: "fa-solid fa-headset",
     title: "Priority support",
-    body: "Questions from Premium members go to the front of the queue.",
+    body: "Questions from Premium members go to the front of the line.",
   },
   {
     icon: "fa-solid fa-crown",

@@ -195,7 +195,7 @@ function EmbedComposer({ channel, guild, initial, onClose, onAttach }) {
           </label>
 
           <label>
-            Colour
+            Color
             <div className="dc-colour-row">
               {PRESET_COLOURS.map((preset) => (
                 <button

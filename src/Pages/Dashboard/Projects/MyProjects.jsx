@@ -8,7 +8,7 @@ import modalThemeColor from "../../../functions/modalThemeColor";
 import usePlanLimits from "../../../functions/usePlanLimits";
 import { userCache } from "../../../cache.ts";
 import { Link } from "react-router-dom";
-import showFreeFeaturesTour from "./freeFeaturesTour.js";
+import BuilderIntroModal, { builderIntroSeen } from "../../../components/BuilderIntroModal.jsx";
 
 import { discordUrl, apiUrl } from "../../../config/config.js";
 import { Helmet } from "react-helmet-async";
@@ -25,9 +25,11 @@ export default function MyProjects() {
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(true);
   const limits = usePlanLimits();
+  const [builderIntro, setBuilderIntro] = useState(false);
 
+  /* The DisFuse Builder intro, until it has been read to the end. */
   useEffect(() => {
-    showFreeFeaturesTour(modalColors);
+    if (!builderIntroSeen()) setBuilderIntro(true);
   }, []);
 
   const fetchProjects = useCallback((userData) => {
@@ -242,8 +244,8 @@ export default function MyProjects() {
             <i className="fa-solid fa-cubes"></i>
             <h3>No projects yet</h3>
             <p>
-              Create your first project and start snapping blocks together to
-              build a Discord bot.
+              Create your first project and build a Discord bot, with
+              DisFuse Builder or the block editor.
             </p>
             <Link to="/projects/new">
               <button className="df-primary-btn">
@@ -253,6 +255,7 @@ export default function MyProjects() {
           </div>
         )}
       </div>
+      <BuilderIntroModal open={builderIntro} onClose={() => setBuilderIntro(false)} />
     </>
   );
 }

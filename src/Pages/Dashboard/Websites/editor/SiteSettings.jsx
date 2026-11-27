@@ -251,9 +251,15 @@ export function LinkedProject({ editor }) {
           <Link to={base}>
             <i className="fa-solid fa-cubes"></i> {project.name}
           </Link>
-          <Link to={`${base}/workspace`} title="Open the block editor">
-            <i className="fa-solid fa-puzzle-piece"></i> Blocks
-          </Link>
+          {project.type === "builder" ? (
+            <Link to={`${base}/workspace`} title="Open DisFuse Builder">
+              <i className="fa-solid fa-wand-magic-sparkles"></i> Builder
+            </Link>
+          ) : (
+            <Link to={`${base}/workspace`} title="Open the block editor">
+              <i className="fa-solid fa-puzzle-piece"></i> Blocks
+            </Link>
+          )}
         </div>
       </Field>
 
@@ -381,7 +387,7 @@ export function DiscordEmbed({ editor }) {
                 onChange={(e) =>
                   set({ accentColor: e.target.value }, "discord:accent")
                 }
-                aria-label="Pick an accent colour"
+                aria-label="Pick an accent color"
               />
               <input
                 type="text"

@@ -51,32 +51,9 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
     pings = false,
   } = config;
 
-  /* The pings row goes just above "then", or last if there is none. */
-  const mutatorFields = [...baseMutatorFields];
-  if (pings) {
-    const thenIndex = mutatorFields.findIndex(f => f.name === "then");
-    mutatorFields.splice(
-      thenIndex === -1 ? mutatorFields.length : thenIndex,
-      0,
-      PINGS_MUTATOR_FIELD as MutatorFieldConfig,
-    );
-  }
+  const mutatorFields = withPingsField(baseMutatorFields, pings);
 
-  Blockly.Blocks[optionsBlockId] = {
-    init() {
-      this.setColour(colour);
-      this.setInputsInline(false);
-      this.contextMenu = false;
-      mutatorFields.forEach(f => {
-        this.appendDummyInput()
-          .appendField(f.label)
-          .appendField(
-            new Blockly.FieldCheckbox((f.default ?? false) ? "TRUE" : "FALSE"),
-            f.name,
-          );
-      });
-    },
-  };
+  mutatorOptionsBlock({ options: optionsBlockId, fields: mutatorFields }, colour);
 
   Blockly.Blocks[id] = {
     init() {
@@ -103,6 +80,60 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
         if (field) inp.appendField(field);
       }
 
+      this.initMutator_();
+    },
+    ...mutatorMixin({ options: optionsBlockId, fields: mutatorFields }),
+  };
+}
+
+/**
+ * The mutator's fields with the "allowed pings" option added when
+ * `pings` is set: just above "then", or last if there is none.
+ */
+export function withPingsField(fields: MutatorFieldConfig[], pings = false) {
+  const mutatorFields = [...fields];
+  if (pings && !mutatorFields.some(f => f.inputType === "pings")) {
+    const thenIndex = mutatorFields.findIndex(f => f.name === "then");
+    mutatorFields.splice(
+      thenIndex === -1 ? mutatorFields.length : thenIndex,
+      0,
+      PINGS_MUTATOR_FIELD as MutatorFieldConfig,
+    );
+  }
+  return mutatorFields;
+}
+
+interface MutatorConfig {
+  options: string;
+  fields: MutatorFieldConfig[];
+}
+
+/** The block inside a mutator's bubble: one checkbox per optional input. */
+export function mutatorOptionsBlock(config: MutatorConfig, colour: string) {
+  const mutatorFields = config.fields;
+  Blockly.Blocks[config.options] = {
+    init() {
+      this.setColour(colour);
+      this.setInputsInline(false);
+      this.contextMenu = false;
+      mutatorFields.forEach(f => {
+        this.appendDummyInput()
+          .appendField(f.label)
+          .appendField(
+            new Blockly.FieldCheckbox((f.default ?? false) ? "TRUE" : "FALSE"),
+            f.name,
+          );
+      });
+    },
+  };
+}
+
+/** The methods a block with optional inputs needs; its init calls `this.initMutator_()` last. */
+export function mutatorMixin(config: MutatorConfig) {
+  const optionsBlockId = config.options;
+  const mutatorFields = config.fields;
+  return {
+    initMutator_(this: any) {
       this.settings_ = mutatorFields.reduce(
         (acc, f) => {
           acc[f.name] = !!f.default;
@@ -115,7 +146,6 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
       this.setMutator(new Blockly.icons.MutatorIcon([], this));
       this.update_();
     },
-
     mutationToDom() {
       const m = document.createElement("mutation");
       mutatorFields.forEach(f => {
@@ -229,7 +259,7 @@ export function createMutatorBlock(config: MutatorBlockConfig) {
   };
 }
 
-function setShadow(input: Blockly.Input, check?: string | string[] | null) {
+export function setShadow(input: Blockly.Input, check?: string | string[] | null) {
   const connection = input.connection;
   if (!connection) return;
 

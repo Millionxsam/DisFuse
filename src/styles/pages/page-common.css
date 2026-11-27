@@ -22,8 +22,7 @@
 .inbox-container,
 .adminDashboard-container,
 .workshop-container,
-.library-container,
-.newProject-page-container {
+.library-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -73,6 +72,10 @@
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+  /* Never wider than the page: a row that can't shrink (like the
+     Workshop's filter) scrolls inside it instead. */
+  max-width: 100%;
+  min-width: 0;
 }
 
 .df-toolbar input.search {
@@ -160,15 +163,14 @@
 
 
 /* These two came out of what used to be the Staff Panel's stretch of
-   index.css. They are shared by seven page containers, so they belong
+   index.css. They are shared by six page containers, so they belong
    with the rest of the page shell. */
 .explore-container .head,
 .fav-container .head,
 .inbox-container .head,
 .adminDashboard-container .head,
 .workshop-container .head,
-.library-container .head,
-.newProject-page-container .head {
+.library-container .head {
   font-size: 50px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;

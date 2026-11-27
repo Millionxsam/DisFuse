@@ -43,11 +43,54 @@ export function OfficialBadge({ compact = false }) {
   );
 }
 
+/** The icon a template is shown with: blocks, or DisFuse Builder's wand. */
+export function templateIcon(template) {
+  return template?.type === "builder"
+    ? "fa-solid fa-wand-magic-sparkles"
+    : "fa-solid fa-shapes";
+}
+
+/** Counts for a stat row: blocks, or commands and events. */
+export function templateStats(template) {
+  if (template?.type === "builder")
+    return [
+      {
+        icon: "fa-solid fa-terminal",
+        value: template.commandCount ?? 0,
+        title: "Commands",
+        unit: ["Command", "Commands"],
+      },
+      {
+        icon: "fa-solid fa-bolt",
+        value: template.eventCount ?? 0,
+        title: "Events",
+        unit: ["Event", "Events"],
+      },
+    ];
+  return [
+    {
+      icon: "fa-solid fa-cube",
+      value: template?.blockCount ?? 0,
+      title: "Number of blocks",
+      unit: ["Block", "Blocks"],
+    },
+  ];
+}
+
 /** The badges a template can carry, in the order they matter. */
 export function TemplateBadges({ template, showOwnerState = false }) {
   return (
     <>
       {template.official && <OfficialBadge />}
+      {template.type === "builder" && (
+        <span
+          className="df-template-badge builder"
+          title="Made with DisFuse Builder. Works in every project."
+        >
+          <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />{" "}
+          DisFuse Builder
+        </span>
+      )}
       {template.private && (
         <span
           className="df-template-badge private"
@@ -129,11 +172,13 @@ export default function TemplateCard({
     <div
       className={`df-project-card df-template-card${
         template.official ? " official" : ""
-      }${!template.published ? " draft" : ""}`}
+      }${!template.published ? " draft" : ""}${
+        template.type === "builder" ? " builder" : ""
+      }`}
     >
       <div className="card-top">
         <div className="df-template-icon" aria-hidden="true">
-          <i className="fa-solid fa-shapes" />
+          <i className={templateIcon(template)} />
         </div>
 
         <div className="title-block">
@@ -182,11 +227,12 @@ export default function TemplateCard({
         <span className="stat-chip" title="Times added to a project">
           <i className="fa-solid fa-file-import" /> {template.imports}
         </span>
-        {template.published && (
-          <span className="stat-chip" title="Number of blocks">
-            <i className="fa-solid fa-cube" /> {template.blockCount}
-          </span>
-        )}
+        {template.published &&
+          templateStats(template).map((stat) => (
+            <span className="stat-chip" title={stat.title} key={stat.title}>
+              <i className={stat.icon} /> {stat.value}
+            </span>
+          ))}
       </div>
 
       <div className="card-buttons">

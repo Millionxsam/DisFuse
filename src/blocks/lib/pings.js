@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import { ALLOWED_MENTIONS, NO_MENTIONS } from "./generatorUtils";
+import { ALLOWED_MENTIONS, NO_MENTIONS } from "./generatorUtils.js";
 
 /* =====================================================================
    Allowed pings
@@ -213,6 +213,15 @@ export function addPingsMutator(types) {
    Blocks dragged out of the toolbox don't go through it, so they start
    with pings off.
    --------------------------------------------------------------------- */
+
+/**
+ * Block types whose pings-only mutator is new, so a saved block of one
+ * of them with no mutation at all predates the option (blocks made from
+ * elements with `pings: true` and no mutator of their own).
+ */
+export function markPingsLegacyTypes(types) {
+  types.forEach(type => WRAPPED_TYPE_NAMES.add(type));
+}
 
 function markLegacyBlocks(state) {
   if (!state || typeof state !== "object") return;

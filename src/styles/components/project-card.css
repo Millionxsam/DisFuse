@@ -107,8 +107,65 @@
   color: var(--df-text-dim);
 }
 
+/* Cards with nothing to badge would otherwise keep the row's margin. */
+.df-project-card .badges:empty {
+  display: none;
+}
+
+/* A private project's lock, to the left of its name. Stays amber when the
+   title turns blue on hover. */
+.df-project-card .title-lock {
+  flex-shrink: 0;
+  font-size: 0.8em;
+  color: var(--df-amber);
+}
+
+/* Projects built with DisFuse Builder: a folded corner in the card's top
+   right, cut on the diagonal so it clears the edit button. */
+.df-project-card .builder-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-top-right-radius: calc(var(--df-r-lg) - 1px);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  background: linear-gradient(225deg, #8b6cff, #c74fd6);
+  color: white;
+  font-size: 14px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+/* Centred on the triangle's centroid, two thirds across and one third
+   down, which is where the eye reads its middle. */
+.df-project-card .builder-ribbon i {
+  position: absolute;
+  left: 66.7%;
+  top: 33.3%;
+  transform: translate(-50%, -50%);
+}
+
+.df-project-card:hover .builder-ribbon {
+  opacity: 1;
+}
+
 .df-project-card .badge.private {
   color: var(--df-amber);
+}
+
+/* Projects built with DisFuse Builder rather than the block editor. */
+.df-project-card .badge.builder,
+.df-editor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(139, 108, 255, 0.25), rgba(226, 63, 226, 0.22));
+  color: #d7caff;
+  font-size: 11.5px;
+  font-weight: 600;
 }
 
 .df-project-card .badge.suspended {
@@ -128,6 +185,13 @@
   color: white;
 }
 
+/* The owner's edit button, at the end of the "Edited … ago" line. */
+.df-project-card .meta:has(.card-edit) {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .df-project-card .card-edit {
   margin-left: auto;
   color: var(--df-text-faint);
@@ -135,6 +199,12 @@
   font-size: 15px;
   padding: 0.4rem;
   transition: all 0.2s ease;
+}
+
+.df-project-card .meta .card-edit {
+  margin-left: 0;
+  font-size: 13px;
+  padding: 0;
 }
 
 .df-project-card .card-edit:hover {

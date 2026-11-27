@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import javascript from "blockly/javascript";
+import javascript, { javascriptGenerator, Order } from "blockly/javascript";
 
 import api, { data } from "../../../api/client.js";
 import registerCustomBlocks from "../../../blocks/lib/registerCustomBlocks";
@@ -7,6 +7,10 @@ import {
   markBlockBuddyBlocks,
   markPackBlocks,
 } from "../../../functions/templateBlocks.js";
+import { packType } from "../../../builder/model/packs.js";
+import { createBuilderPackBlocks } from "./builderPackBlocks.js";
+
+const builderPacks = createBuilderPackBlocks({ Blockly, javascriptGenerator, Order });
 
 /* =====================================================================
    Blocks that aren't ours
@@ -25,7 +29,7 @@ import {
    collaborators waited on six round trips before Blockly was injected.
    ===================================================================== */
 
-/** The Workshop packs a user has installed. */
+/** The Workshop packs a user has installed, of either kind. */
 export async function loadBlockPacks(user, { signal } = {}) {
   const ids = user?.installedBlockPacks ?? [];
   if (!ids.length) return [];
@@ -35,25 +39,39 @@ export async function loadBlockPacks(user, { signal } = {}) {
   );
 
   /* A pack that has been deleted, or made private since it was
-     installed, must not stop the project opening. */
+     installed, must not stop the project opening. Packs made for DisFuse
+     Builder work here too: registerBlockPacks turns them into blocks. */
   return results
     .filter((result) => result.status === "fulfilled")
     .map((result) => result.value);
 }
 
 /**
- * Registers the blocks inside each installed pack.
+ * Registers the blocks inside each installed pack. A block pack's blocks
+ * are registered as they are; a builder pack's events, steps and values
+ * become blocks first (./builderPackBlocks.js).
  *
  * Each definition is marked with the pack it came from, which is how a
  * template knows which packs it needs (see functions/templateBlocks.js).
  */
 export function registerBlockPacks(packs = []) {
   for (const pack of packs) {
+    if (packType(pack) === "builder") {
+      try {
+        const types = builderPacks.register(pack);
+        markPackBlocks(pack._id, types.map((name) => ({ name })));
+      } catch (error) {
+        console.error(`Could not load the "${pack.name}" pack:`, error);
+      }
+      continue;
+    }
     const latest = pack.versions?.[pack.versions.length - 1];
     registerCustomBlocks(latest?.blocks || []);
     markPackBlocks(pack._id, latest?.blocks || []);
   }
 }
+
+
 
 /**
  * Every BlockBuddy block this project might contain: the owner's, plus

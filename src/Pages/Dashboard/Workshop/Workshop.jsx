@@ -14,6 +14,15 @@ import { apiUrl } from "../../../config/config.js";
 
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
+import { PACK_TYPES, packType } from "../../../builder/model/packs.js";
+
+/* Which packs the page shows, by how they were made. Every pack works in
+   every project, so this is only a filter. */
+const FILTERS = [
+  { value: "all", label: "All" },
+  { value: "blocks", label: "Made with blocks", icon: PACK_TYPES.blocks.icon },
+  { value: "builder", label: "Made with DisFuse Builder", icon: PACK_TYPES.builder.icon },
+];
 
 export default function Workshop() {
   const [packs, setPacks] = useState([]);
@@ -21,6 +30,10 @@ export default function Workshop() {
   const [shownUserPacks, setShownUserPacks] = useState([]);
   const [shown, setShown] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("all");
+
+  const ofFilter = (list) =>
+    filter === "all" ? list : list.filter((pack) => packType(pack) === filter);
 
   const navigate = useNavigate();
 
@@ -94,6 +107,21 @@ export default function Workshop() {
               );
             }}
           />
+          <div className="df-pack-filter" role="radiogroup" aria-label="Show packs for">
+            {FILTERS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                role="radio"
+                aria-checked={filter === option.value}
+                className={filter === option.value ? "active" : ""}
+                onClick={() => setFilter(option.value)}
+              >
+                {option.icon && <i className={option.icon}></i>}
+                {option.label}
+              </button>
+            ))}
+          </div>
           <div className="df-btn-group">
             <button className="df-primary-btn" onClick={createPack}>
               <i className="fa-solid fa-plus"></i> Create
@@ -115,28 +143,39 @@ export default function Workshop() {
 
           <div className="df-workshop-section">
             <h2>Your Packs</h2>
-            {shownUserPacks.length ? (
+            {ofFilter(shownUserPacks).length ? (
               <div className="df-grid">
-                {shownUserPacks.map((pack, index) => (
-                  <WorkshopItem pack={pack} editable={true} key={index} />
+                {ofFilter(shownUserPacks).map((pack) => (
+                  <WorkshopItem pack={pack} editable={true} key={pack._id} />
                 ))}
               </div>
             ) : (
               <div className="df-empty">
                 <i className="fa-solid fa-cubes-stacked"></i>
                 <h3>No packs yet</h3>
-                <p>Create a block pack to share your own blocks with the community.</p>
+                <p>
+                  Create a pack to share your own blocks, or your own events,
+                  steps and values for DisFuse Builder, with the community.
+                </p>
               </div>
             )}
           </div>
 
           <div className="df-workshop-section">
             <h2>Featured</h2>
-            <div className="df-grid">
-              {shown.map((pack, index) => (
-                <WorkshopItem pack={pack} key={index} />
-              ))}
-            </div>
+            {ofFilter(shown).length ? (
+              <div className="df-grid">
+                {ofFilter(shown).map((pack) => (
+                  <WorkshopItem pack={pack} key={pack._id} />
+                ))}
+              </div>
+            ) : (
+              <div className="df-empty">
+                <i className="fa-solid fa-cubes-stacked"></i>
+                <h3>No packs here yet</h3>
+                <p>Nobody has published a pack like this yet. Yours could be the first.</p>
+              </div>
+            )}
           </div>
         </>
       )}
@@ -144,21 +183,55 @@ export default function Workshop() {
   );
 
   async function createPack() {
-    const blockPackCreation = Swal.mixin({
-      title: "Create Block Pack",
-      footer: `By creating a block pack, you agree to our <a target="_blank" rel="noopener" href="/tos">TOS</a>`,
-      progressSteps: ["1", "2", "3"],
+    const packCreation = Swal.mixin({
+      title: "Create Pack",
+      footer: `By creating a pack, you agree to our <a target="_blank" rel="noopener" href="/tos">TOS</a>`,
+      progressSteps: ["1", "2", "3", "4"],
       animation: false,
       ...modalColors,
     });
 
-    const { value: name } = await blockPackCreation.fire({
+    /* Nothing is picked for the user: it can't be changed afterwards. */
+    const { value: type } = await packCreation.fire({
       currentProgressStep: 0,
+      animation: true,
+      html: `
+        <fieldset class="df-template-types df-pack-types">
+          <legend>How do you want to build it?</legend>
+          ${Object.entries(PACK_TYPES)
+            .map(
+              ([value, kind]) => `
+          <label class="df-template-type df-template-type-${value}">
+            <input type="radio" name="df-pack-type" value="${value}" />
+            <span class="df-template-type-icon"><i class="${kind.icon}"></i></span>
+            <span><strong>${kind.label}</strong>${kind.description}</span>
+          </label>`,
+            )
+            .join("")}
+          <p class="df-template-types-note"><i class="fa-solid fa-circle-info"></i> This only changes how you build it. Once it's installed, it works in every project, whether it uses the Block Editor or DisFuse Builder. You can't change this later.</p>
+        </fieldset>`,
+      confirmButtonText: "Next",
+      showCancelButton: true,
+      preConfirm: () => {
+        const picked = document.querySelector(
+          'input[name="df-pack-type"]:checked',
+        )?.value;
+        if (!picked) {
+          Swal.showValidationMessage("Pick how you want to build it");
+          return false;
+        }
+        return picked;
+      },
+    });
+
+    if (!type) return;
+
+    const { value: name } = await packCreation.fire({
+      currentProgressStep: 1,
       text: "Enter a name for your pack",
       input: "text",
       inputPlaceholder: "My pack",
       confirmButtonText: "Next",
-      animation: true,
       showCancelButton: true,
       inputValidator: (i) => {
         if (i.length >= 3) return false;
@@ -169,11 +242,14 @@ export default function Workshop() {
     if (!name) return;
 
     const { value: description, isConfirmed: descriptionPassed } =
-      await blockPackCreation.fire({
-        currentProgressStep: 0,
+      await packCreation.fire({
+        currentProgressStep: 2,
         text: "Enter a description for your pack",
         input: "textarea",
-        inputPlaceholder: "Describe the blocks in your pack...",
+        inputPlaceholder:
+          type === "builder"
+            ? "Describe the events, steps and values in your pack..."
+            : "Describe the blocks in your pack...",
         confirmButtonText: "Next",
         showCancelButton: true,
         inputValidator: (i) => {
@@ -185,8 +261,8 @@ export default function Workshop() {
     if (!descriptionPassed) return;
 
     const { value: visibility, isConfirmed: visibilityPassed } =
-      await blockPackCreation.fire({
-        currentProgressStep: 0,
+      await packCreation.fire({
+        currentProgressStep: 3,
         text: "Set the visibility of your pack. Private packs are only viewable and usable by you.",
         input: "select",
         confirmButtonText: "Create",
@@ -203,6 +279,7 @@ export default function Workshop() {
       .post(
         apiUrl + "/workshop",
         {
+          type,
           name,
           private: visibility === "private",
           description,

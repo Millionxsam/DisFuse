@@ -24,6 +24,13 @@ import { apiUrl, discordUrl } from "../../../config/config.js";
 
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
+import {
+  PACK_TYPES,
+  countOfferedPackItems,
+  countPackItems,
+  packType,
+} from "../../../builder/model/packs.js";
+import BuilderPackContents from "./BuilderPackContents.jsx";
 
 export default function BlockPackPage() {
   const [pack, setPack] = useState({});
@@ -74,6 +81,9 @@ export default function BlockPackPage() {
           })
           .then(({ data: owner }) => {
             setOwner(owner);
+
+            /* A builder pack has no blocks to preview. */
+            if (packType(pack) === "builder") return;
 
             const previewWs = Blockly.inject(
               document.getElementById("blockPackPreviewWorkspace"),
@@ -126,18 +136,24 @@ export default function BlockPackPage() {
       });
   }, [packId]);
 
+  const type = packType(pack);
+  const latest = pack.versions?.[pack.versions.length - 1];
   /* Archived blocks are still published so projects using them work,
      but the pack no longer offers them. */
-  const visibleBlocks = (
-    pack.versions?.[pack.versions.length - 1]?.blocks || []
-  ).filter((block) => !block.archived);
+  const visibleBlocks = (latest?.blocks || []).filter(
+    (block) => !block.archived,
+  );
+  const itemCount =
+    type === "builder" ? countOfferedPackItems(latest?.items) : visibleBlocks.length;
+  const itemWord = (n) =>
+    type === "builder" ? (n === 1 ? "item" : "items") : n === 1 ? "block" : "blocks";
 
   return loading ? (
     <LoadingAnim />
   ) : (
     <div className="df-pack-page">
       <Helmet>
-        <title>{`${pack.name || "Block Pack"} | DisFuse`}</title>
+        <title>{`${pack.name || "Pack"} | DisFuse`}</title>
       </Helmet>
       <div className="df-pack-page-head">
         <div className="title-row">
@@ -148,10 +164,16 @@ export default function BlockPackPage() {
         <UserTag user={owner} />
 
         <div className="stat-row">
+          <span
+            className={`df-pack-type df-pack-type-${type}`}
+            title="Once installed, it works in Block Editor and DisFuse Builder projects."
+          >
+            <i className={PACK_TYPES[type].icon}></i> Made with{" "}
+            {PACK_TYPES[type].editor} · works in every project
+          </span>
           <span className="stat-chip">
-            <i className="fa-solid fa-cubes"></i>{" "}
-            {visibleBlocks.length} Block
-            {visibleBlocks.length === 1 ? "" : "s"}
+            <i className="fa-solid fa-cubes"></i> {itemCount}{" "}
+            {itemWord(itemCount).replace(/^./, (c) => c.toUpperCase())}
           </span>
           <span className="stat-chip">
             <i className="fa-solid fa-users"></i> {pack.users?.length || 0}{" "}
@@ -163,7 +185,7 @@ export default function BlockPackPage() {
         <div className="df-detail-actions">
           <DocsLink
             page={`${DOCS.workshop}#installing`}
-            label="About block packs"
+            label="About packs"
           />
           <div
             onClick={installPack}
@@ -225,6 +247,36 @@ export default function BlockPackPage() {
         })}
       </p>
 
+      {type === "builder" ? (
+        <div className="body">
+          <BuilderPackContents items={latest?.items} color={pack.color} />
+
+          <h1>Versions</h1>
+          <div className="versionList">
+            {pack.versions?.length ? (
+              [...pack.versions].reverse().map((version, index) => {
+                const count = countPackItems(version.items);
+                return (
+                  <div key={index} className="versionItem">
+                    <div>
+                      <h2>v{version.version}</h2>-
+                      <p>
+                        {new Date(version.releaseDate).toLocaleString([], {
+                          dateStyle: "long",
+                        })}
+                      </p>
+                      - <p>{count} {itemWord(count)}</p>
+                    </div>
+                    <div>{version.changelog}</div>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No versions</p>
+            )}
+          </div>
+        </div>
+      ) : (
       <div className="body">
         <h1>Blocks</h1>
         <div className="blocksList">
@@ -277,6 +329,7 @@ export default function BlockPackPage() {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 

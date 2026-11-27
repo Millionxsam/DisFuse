@@ -15,6 +15,7 @@ export default {
     block("logic_null"),
     block("logic_ternary"),
     block("logic_nullishOperator"),
+    block("flow_stop"),
     label("--------------------------------"),
     block("logic_switch"),
     block("logic_case"),

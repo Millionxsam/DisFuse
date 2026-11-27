@@ -94,7 +94,7 @@ export default function Library() {
         <div className="df-empty">
           <i className="fa-solid fa-cubes-stacked"></i>
           <h3>No packs installed</h3>
-          <p>Install block packs from the Workshop to see them here.</p>
+          <p>Install packs from the Workshop to see them here.</p>
         </div>
       )}
     </div>

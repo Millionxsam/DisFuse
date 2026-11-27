@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Workspace from "./Pages/Workspace";
+import WorkspaceGate from "./Pages/Workspace/WorkspaceGate.jsx";
 import Home from "./Pages/Home";
 import Navbar from "./components/Navbar";
 import Auth from "./Auth";
@@ -13,7 +13,7 @@ import Settings from "./Pages/Dashboard/Settings/Settings";
 import MyProjects from "./Pages/Dashboard/Projects/MyProjects";
 import UserPage from "./Pages/Dashboard/UserPage";
 import ProjectPage from "./Pages/Dashboard/Projects/ProjectPage";
-import ViewProject from "./Pages/Dashboard/Projects/ViewProject";
+import ViewGate from "./Pages/Workspace/ViewGate.jsx";
 import Inbox from "./Pages/Dashboard/Inbox";
 import WorkspaceSettings from "./Pages/Dashboard/Settings/WorkspaceSettings";
 import NotificationSettings from "./Pages/Dashboard/Settings/NotificationSettings";
@@ -23,12 +23,12 @@ import AppearanceSettings from "./Pages/Dashboard/Settings/AppearanceSettings";
 import StaffPanel from "./Pages/Dashboard/StaffPanel";
 import Workshop from "./Pages/Dashboard/Workshop/Workshop";
 import BlockPackPage from "./Pages/Dashboard/Workshop/BlockPackPage";
-import WorkshopWorkspace from "./Pages/Dashboard/Workshop/WorkshopWorkspace";
+import PackWorkspaceGate from "./Pages/Dashboard/Workshop/PackWorkspaceGate.jsx";
 import "./styles/index.css";
 import Library from "./Pages/Dashboard/Workshop/Library";
 import Templates from "./Pages/Dashboard/Templates/Templates";
 import TemplatePage from "./Pages/Dashboard/Templates/TemplatePage";
-import TemplateBuilder from "./Pages/Templates/TemplateBuilder";
+import TemplateBuilderGate from "./Pages/Templates/TemplateBuilderGate.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Footer from "./components/Footer";
 import useRevealOnScroll from "./functions/useRevealOnScroll";
@@ -197,18 +197,20 @@ export default function App() {
 
         <Route
           path="/:username/:projectId/view"
-          element={<ViewProject key={0} />}
+          element={<ViewGate key={0} />}
         />
 
         {/* Auth WRAPS these, like every other protected route. Rendered
             as siblings — which is what an array does — Auth received no
             children, so the editor mounted and began loading a project
             before anyone had checked whether the user was signed in. */}
+        {/* The same address opens either editor: the block editor, or
+            DisFuse Builder with its own pages under /workspace/... */}
         <Route
-          path="/:username/:projectId/workspace"
+          path="/:username/:projectId/workspace/*"
           element={
             <Auth>
-              <Workspace />
+              <WorkspaceGate />
             </Auth>
           }
         />
@@ -217,18 +219,19 @@ export default function App() {
           path="/workshop/:packId/workspace"
           element={
             <Auth>
-              <WorkshopWorkspace />
+              <PackWorkspaceGate />
             </Auth>
           }
         />
 
         {/* The template builder is a workspace of its own, belonging to
-            no project — full screen like the editor it mirrors. */}
+            no project — full screen like the editor it mirrors. DisFuse
+            Builder templates have their own pages under /builder/... */}
         <Route
-          path="/templates/:templateId/builder"
+          path="/templates/:templateId/builder/*"
           element={
             <Auth>
-              <TemplateBuilder />
+              <TemplateBuilderGate />
             </Auth>
           }
         />

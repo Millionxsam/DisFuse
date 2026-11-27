@@ -3192,6 +3192,12 @@ a.dc-component-button i {
   cursor: not-allowed;
 }
 
+/* Greyed out by the bot itself, as Discord draws it. */
+.dc-component-button.is-disabled,
+.dc-component-select.is-disabled {
+  opacity: 0.45;
+}
+
 .dc-component-unknown {
   display: inline-flex;
   align-items: center;

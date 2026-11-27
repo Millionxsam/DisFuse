@@ -45,6 +45,12 @@
   box-shadow: inset 0 0 0 1px rgba(255, 182, 72, 0.3);
 }
 
+.df-template-badge.builder {
+  background: rgba(139, 108, 255, 0.14);
+  color: #b9a6ff;
+  box-shadow: inset 0 0 0 1px rgba(139, 108, 255, 0.35);
+}
+
 .df-template-muted {
   color: var(--df-text-faint);
   font-style: italic;
@@ -79,6 +85,12 @@
 .df-template-card.official .df-template-icon {
   background: rgba(53, 208, 160, 0.16);
   color: var(--df-mint);
+}
+
+.df-template-card.builder .df-template-icon,
+.df-template-detail-head .title-row .df-template-icon:has(.fa-wand-magic-sparkles) {
+  background: rgba(139, 108, 255, 0.2);
+  color: #b9a6ff;
 }
 
 .df-template-card.draft {
@@ -741,6 +753,93 @@ button.df-template-builder-name:hover i {
 
 .df-template-visibility strong {
   display: block;
+}
+
+/* Which kind of template (creating one only). */
+.df-template-types {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 0.6rem;
+  border: none;
+  padding: 0;
+}
+
+.df-template-types legend {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.df-template-type {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.df-template-type input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.df-template-type strong {
+  display: block;
+}
+
+.df-template-type-icon {
+  width: 2.3rem;
+  height: 2.3rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  color: #fff;
+  background: linear-gradient(135deg, #ffb648, #ff7a45);
+}
+
+.df-template-type-builder .df-template-type-icon {
+  background: linear-gradient(135deg, #8b6cff, #e23fe2);
+}
+
+.df-template-type:has(input:checked) {
+  border-color: #3d8bd9;
+  background: rgba(61, 139, 217, 0.12);
+}
+
+.df-template-type-builder:has(input:checked) {
+  border-color: #8b6cff;
+  background: rgba(139, 108, 255, 0.12);
+}
+
+.df-template-type:has(input:focus-visible) {
+  outline: 2px solid #3d8bd9;
+  outline-offset: 2px;
+}
+
+.df-template-types-note {
+  margin: 0.1rem 0 0;
+  font-size: 12.5px;
+  opacity: 0.7;
+}
+
+.df-template-picker-note {
+  margin: 0.8rem 0 0;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+/* A DisFuse Builder template's commands and events, on its page. */
+.df-template-for {
+  margin: 0 0 0.8rem;
+  color: var(--df-text-dim);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .df-template-import-note {

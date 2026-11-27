@@ -74,7 +74,7 @@ export class FieldColourHsvSliders extends FieldColour {
   protected override showEditor_(): void {
     this.createDropdown();
     if (!this.dropdownContainer) {
-      throw new Error("Failed to initialize the colour editor.");
+      throw new Error("Failed to initialize the color editor.");
     }
 
     Blockly.DropDownDiv.getContentDiv().appendChild(this.dropdownContainer);
@@ -148,7 +148,7 @@ export class FieldColourHsvSliders extends FieldColour {
     Blockly.utils.aria.setState(
       this.hexInput,
       Blockly.utils.aria.State.LABEL,
-      "Hex colour",
+      "Hex color",
     );
     previewRow.appendChild(this.previewSwatch);
     previewRow.appendChild(this.hexInput);

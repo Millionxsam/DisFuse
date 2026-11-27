@@ -185,6 +185,16 @@ export default {
         }),
         block("cv2_editReplyInteraction"),
         block("cv2_updateInteraction"),
+        block("misc_int_deferUpdate"),
+        block("cv2_followUpInteraction", {
+          inputs: {
+            ephemeral: {
+              shadow: shadow("logic_boolean", {
+                fields: { BOOL: "FALSE" }
+              })
+            }
+          }
+        }),
         block("buttons_del")
       ]
     },
@@ -425,6 +435,16 @@ export default {
         block("cv2_replyInteraction"),
         block("cv2_editReplyInteraction"),
         block("cv2_updateInteraction"),
+        block("misc_int_deferUpdate"),
+        block("cv2_followUpInteraction", {
+          inputs: {
+            ephemeral: {
+              shadow: shadow("logic_boolean", {
+                fields: { BOOL: "FALSE" }
+              })
+            }
+          }
+        }),
         block("menus_del")
       ]
     }

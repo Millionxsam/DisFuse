@@ -16,3 +16,5 @@ yarn-error.log*
 .vercel
 .webpack-cache
 .claude
+trajector-doctor-*.tar.gz
+trajector-doctor-*/

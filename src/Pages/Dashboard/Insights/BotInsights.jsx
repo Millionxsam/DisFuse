@@ -123,7 +123,15 @@ export default function BotInsights() {
 
   const maxRetentionDays = project?.maxRetentionDays ?? 90;
   const premiumRetentionDays = project?.premiumRetentionDays ?? 90;
-  const canUpgradeHistory = project && !project.premium;
+  /* What this person may do here. The owner can do everything; a
+     DisFuse Builder collaborator what the owner allowed. */
+  const access = project?.access ?? {
+    isOwner: true,
+    logs: true,
+    settings: true,
+    clear: true,
+  };
+  const canUpgradeHistory = project && !project.premium && access.isOwner;
 
   const timeline = useMemo(
     () =>
@@ -257,11 +265,13 @@ export default function BotInsights() {
                 <i className="fa-solid fa-arrow-left"></i> All bots
               </button>
             </Link>
-            <Link to={`/insights/${projectId}/logs`}>
-              <button>
-                <i className="fa-solid fa-list-ul"></i> Live logs
-              </button>
-            </Link>
+            {access.logs && (
+              <Link to={`/insights/${projectId}/logs`}>
+                <button>
+                  <i className="fa-solid fa-list-ul"></i> Live logs
+                </button>
+              </Link>
+            )}
             <button
               className="df-primary-btn"
               onClick={() => load({ quiet: true })}
@@ -854,11 +864,13 @@ export default function BotInsights() {
                 <h2>
                   <i className="fa-solid fa-wifi"></i> Recent activity
                 </h2>
-                <Link to={`/insights/${projectId}/logs`}>
-                  <button>
-                    <i className="fa-solid fa-list-ul"></i> All logs
-                  </button>
-                </Link>
+                {access.logs && (
+                  <Link to={`/insights/${projectId}/logs`}>
+                    <button>
+                      <i className="fa-solid fa-list-ul"></i> All logs
+                    </button>
+                  </Link>
+                )}
               </div>
 
               {data.recent?.length ? (
@@ -971,71 +983,75 @@ export default function BotInsights() {
 
       {/* ---- Data settings ---------------------------------------- */}
 
-      <section className="df-card df-insights-settings">
-        <div className="df-card-head">
-          <h2>
-            <i className="fa-solid fa-database"></i> Data &amp; retention
-          </h2>
-        </div>
-
-        <div className="df-settings-row">
-          <div>
-            <h3>Keep Insight logs for</h3>
-            <p>
-              Events older than this are deleted from DisFuse permanently.{" "}
-              {canUpgradeHistory
-                ? `Free accounts keep up to ${maxRetentionDays} days of history, and Premium keeps up to ${premiumRetentionDays}.`
-                : `The longest we keep raw logs is ${maxRetentionDays} days.`}
-            </p>
-            {canUpgradeHistory && (
-              <span className="df-plan-hint">
-                Want a longer history?
-                <Link to="/settings/premium">
-                  <i className="fa-solid fa-crown"></i> Upgrade to Premium
-                </Link>
-              </span>
-            )}
+      {(access.settings || access.clear) && (
+        <section className="df-card df-insights-settings">
+          <div className="df-card-head">
+            <h2>
+              <i className="fa-solid fa-database"></i> Data &amp; retention
+            </h2>
           </div>
 
-          <select
-            value={project?.retentionDays || maxRetentionDays}
-            disabled={savingRetention}
-            onChange={(event) => saveRetention(event.target.value)}
-          >
-            {(project?.retentionOptions || [7, 14, 30, 60, 90]).map((days) => (
-              <option
-                value={days}
-                key={days}
-                disabled={days > maxRetentionDays}
-              >
-                {days} days{days > maxRetentionDays ? " (Premium)" : ""}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="df-settings-row">
+            <div>
+              <h3>Keep Insight logs for</h3>
+              <p>
+                Events older than this are deleted from DisFuse permanently.{" "}
+                {canUpgradeHistory
+                  ? `Free accounts keep up to ${maxRetentionDays} days of history, and Premium keeps up to ${premiumRetentionDays}.`
+                  : `The longest we keep raw logs is ${maxRetentionDays} days.`}
+              </p>
+              {canUpgradeHistory && (
+                <span className="df-plan-hint">
+                  Want a longer history?
+                  <Link to="/settings/premium">
+                    <i className="fa-solid fa-crown"></i> Upgrade to Premium
+                  </Link>
+                </span>
+              )}
+            </div>
 
-        <div className="df-settings-row">
-          <div>
-            <h3>Delete everything</h3>
-            <p>
-              Erase every recorded event for this bot. Collection continues
-              afterwards, so this only clears the history.
-            </p>
+            <select
+              value={project?.retentionDays || maxRetentionDays}
+              disabled={savingRetention || !access.settings}
+              onChange={(event) => saveRetention(event.target.value)}
+            >
+              {(project?.retentionOptions || [7, 14, 30, 60, 90]).map((days) => (
+                <option
+                  value={days}
+                  key={days}
+                  disabled={days > maxRetentionDays}
+                >
+                  {days} days{days > maxRetentionDays ? " (Premium)" : ""}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <button className="red" onClick={confirmClear}>
-            <i className="fa-solid fa-trash"></i> Clear Insight data
-          </button>
-        </div>
+          {access.clear && (
+            <div className="df-settings-row">
+              <div>
+                <h3>Delete everything</h3>
+                <p>
+                  Erase every recorded event for this bot. Collection continues
+                  afterwards, so this only clears the history.
+                </p>
+              </div>
 
-        <p className="df-card-foot">
-          {project?.firstEventAt
-            ? `Collecting since ${formatMoment(project.firstEventAt)}.`
-            : "Nothing collected yet."}{" "}
-          Your bot posts its events to DisFuse in batches, authenticated with
-          its own Discord bot token.
-        </p>
-      </section>
+              <button className="red" onClick={confirmClear}>
+                <i className="fa-solid fa-trash"></i> Clear Insight data
+              </button>
+            </div>
+          )}
+
+          <p className="df-card-foot">
+            {project?.firstEventAt
+              ? `Collecting since ${formatMoment(project.firstEventAt)}.`
+              : "Nothing collected yet."}{" "}
+            Your bot posts its events to DisFuse in batches, authenticated with
+            its own Discord bot token.
+          </p>
+        </section>
+      )}
 
       {focus && (
         <FocusPanel

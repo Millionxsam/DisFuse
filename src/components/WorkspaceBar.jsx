@@ -133,6 +133,7 @@ export default function WorkspaceBar({
   onShowCode,
   onExport,
   onOpenTemplates,
+  onCopyToBuilder,
 }) {
   const navigate = useNavigate();
 
@@ -332,6 +333,22 @@ export default function WorkspaceBar({
                 <button id="toggleToolbox" onClick={run(onToggleToolbox)}>
                   <i className="fa-solid fa-screwdriver-wrench" />
                   <div>Toggle Toolbox</div>
+                </button>
+                {/* A new DisFuse Builder project made from this one. It
+                    uses this project's bot, so it's the owner's to make. */}
+                <button
+                  id="copyToBuilder"
+                  className={canManage ? "" : "disabled"}
+                  onClick={run(canManage ? onCopyToBuilder : undefined)}
+                  disabled={!canManage}
+                  title={
+                    canManage
+                      ? "Make a DisFuse Builder project from this one"
+                      : "Only the owner can copy this project to DisFuse Builder"
+                  }
+                >
+                  <i className="fa-solid fa-wand-magic-sparkles" />
+                  <div>Copy to DisFuse Builder</div>
                 </button>
               </div>
             </div>

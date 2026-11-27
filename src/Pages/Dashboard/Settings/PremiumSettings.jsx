@@ -60,7 +60,7 @@ const STATUS_LABELS = {
     tone: "danger",
     icon: "fa-circle-xmark",
   },
-  canceled: { label: "Cancelled", tone: "danger", icon: "fa-circle-xmark" },
+  canceled: { label: "Canceled", tone: "danger", icon: "fa-circle-xmark" },
   paused: { label: "Paused", tone: "warning", icon: "fa-circle-pause" },
 };
 
@@ -289,7 +289,7 @@ export default function PremiumSettings() {
                 disabled={busy === "cancel"}
               >
                 <i className="fa-solid fa-ban"></i>
-                {busy === "cancel" ? "Cancelling…" : "Cancel subscription"}
+                {busy === "cancel" ? "Canceling…" : "Cancel subscription"}
               </button>
             )}
 

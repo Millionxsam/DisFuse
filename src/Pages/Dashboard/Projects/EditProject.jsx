@@ -11,6 +11,16 @@ import { Helmet } from "react-helmet-async";
 import DocsLink from "../../../components/DocsLink.jsx";
 import { DOCS } from "../../../config/docs.js";
 import {
+  BotCard,
+  Card,
+  DescriptionCard,
+  PermissionsCard,
+  SubmitButton,
+  TokenHelp,
+  TokenInput,
+  VisibilityCard,
+} from "./projectForm.jsx";
+import {
   PACKAGE_MANAGERS,
   RUNTIMES,
   userExportSettings,
@@ -19,6 +29,7 @@ import {
 export default function EditProject() {
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [token, setToken] = useState("");
   const [description, setDescription] = useState("");
@@ -33,9 +44,19 @@ export default function EditProject() {
 
   const { projectId } = useParams();
 
+  /* A DisFuse Builder collaborator can open this page too, and change
+     just the settings the owner gave them permission for. The API
+     checks each field again. */
+  const me = userCache.user?.id;
+  const isOwner = !project.owner || project.owner.id === me;
+  const granted = project.collaboratorPermissions?.[me] ?? [];
+  const may = (permission) => isOwner || granted.includes(permission);
+  /* What a collaborator who may not see the token gets instead of it. */
+  const tokenHidden = project.botToken === "[HIDDEN]";
+
   useEffect(() => {
     setDescription(project.description);
-    setToken(project.botToken);
+    setToken(project.botToken === "[HIDDEN]" ? "" : project.botToken);
     setProjectVisibility(project.private ? "private" : "public");
     setBotVisibility(project.botPrivate ? "private" : "public");
     setPermissions(project.permissions || 0);
@@ -52,6 +73,12 @@ export default function EditProject() {
       })
       .then(async ({ data: project }) => {
         setProject(project);
+
+        /* Nothing to check from here; the API keeps the real one. */
+        if (project.botToken === "[HIDDEN]") {
+          setBotFailed(false);
+          return setLoading(false);
+        }
 
         if (!project.botToken?.length) {
           setBotFailed(true);
@@ -77,13 +104,13 @@ export default function EditProject() {
   }, [projectId]);
 
   return (
-    <div className="newProject-page-container">
+    <div className="df-page np-page">
       <Helmet>
         <title>Edit Project | DisFuse</title>
       </Helmet>
       <div className="df-page-head">
         <h1>
-          <i class="fa-solid fa-pen-to-square"></i> Edit Project
+          <i className="fa-solid fa-pen-to-square"></i> Edit Project
         </h1>
         <div className="df-toolbar">
           <div className="df-btn-group">
@@ -91,277 +118,267 @@ export default function EditProject() {
           </div>
         </div>
       </div>
-      <div className="body">
-        {loading ? (
-          <LoadingAnim />
-        ) : botFailed ? (
-          <div className="invalidTokenWarning">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <div>
-              <h2>
-                {project.botToken?.length
-                  ? "Invalid Bot Token"
-                  : "Project Setup Incomplete"}
-              </h2>
-              <p>
-                {project.botToken?.length
-                  ? "Your bot token may have been reset. Update your bot token below for your bot to run properly."
-                  : "In order to use your project, you must enter your bot token below."}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="botInfo">
-              <img
-                src={
-                  "https://cdn.discordapp.com/avatars/" +
-                  project.bot?.id +
-                  "/" +
-                  project.bot?.avatar +
-                  ".png"
-                }
-                alt={project.bot?.displayName}
-              />
-              <div>
-                <h1>{project.bot?.username}</h1>
-                <p style={{ width: "fit-content" }}>ID: {project.bot?.id}</p>
+
+      {!project?._id ? (
+        <LoadingAnim />
+      ) : (
+        <div className="np-setup">
+          {loading ? (
+            <aside className="np-bot np-bot--loading">
+              <LoadingAnim onlySpinner />
+            </aside>
+          ) : botFailed ? (
+            <aside className="np-bot np-bot--warn" role="alert">
+              <span className="np-bot__warn-icon">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+              </span>
+              <div className="np-bot__name">
+                <b>
+                  {project.botToken?.length
+                    ? "Invalid bot token"
+                    : "Project setup incomplete"}
+                </b>
+                <span>
+                  {project.botToken?.length
+                    ? "Your bot token may have been reset. Paste a new one under Bot token for your bot to run properly."
+                    : "To use your project, add your bot token under Bot token."}
+                </span>
               </div>
+            </aside>
+          ) : (
+            <BotCard bot={project.bot || {}}>
+              <p className="np-bot__hint">Changed your bot's name or avatar?</p>
+              <button
+                type="button"
+                className="np-btn np-btn--ghost"
+                onClick={saveProject}
+              >
+                <i className="fa-solid fa-rotate noRotate"></i>
+                Sync with Discord
+              </button>
+            </BotCard>
+          )}
+
+          <div className="np-form">
+            {!isOwner && (
+              <div className="df-editor-note">
+                <i className="fa-solid fa-user-group"></i>
+                <div>
+                  <strong>You're a collaborator on this project.</strong> You
+                  can only change the settings its owner gave you permission
+                  for. The rest are grayed out.
+                </div>
+              </div>
+            )}
+
+            <div className="df-editor-note">
+              <i
+                className={`fa-solid ${
+                  project.type === "builder"
+                    ? "fa-wand-magic-sparkles"
+                    : "fa-puzzle-piece"
+                }`}
+              ></i>
+              <div>
+                <strong>
+                  This project uses{" "}
+                  {project.type === "builder"
+                    ? "DisFuse Builder"
+                    : "the Block Editor"}
+                  .
+                </strong>{" "}
+                A project's editor can't be changed. To try the other one, make
+                a new project for the same bot.
+              </div>
+              {project.type === "builder" && (
+                <Link
+                  className="df-editor-note-link"
+                  to={`/@${project.owner?.username}/${project._id}/workspace`}
+                >
+                  <i className="fa-solid fa-arrow-left"></i> Back to the
+                  dashboard
+                </Link>
+              )}
             </div>
 
-            <p className="updateBot" style={{ opacity: ".5" }}>
-              Changed your bot's name or avatar?{" "}
-              <i onClick={saveProject}>Click here</i> to sync your project
-              information with your bot.
-            </p>
-          </>
-        )}
-
-        <div className="projectInfo">
-          <div style={{ gap: "2px" }}>
-            <h2>Description</h2>
-            <i style={{ opacity: ".5" }}>Optional</i>
-          </div>
-          <textarea
-            placeholder="What does your bot do?"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <h2>
-            Bot Token{" "}
-            <DocsLink
-              page={`${DOCS.projectSettings}#bot-token`}
-              variant="icon"
-              label="Where to find your bot token"
+            <DescriptionCard
+              value={description}
+              onChange={setDescription}
+              disabled={!may("settings.description")}
             />
-          </h2>
-          <input
-            type="password"
-            placeholder="Bot Token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-          />
-          <div style={{ gap: "2px" }}>
-            <h2>
-              Project Visibility{" "}
-              <DocsLink
-                page={`${DOCS.projectSettings}#project-visibility`}
-                variant="icon"
-                label="About project visibility"
+
+            <Card
+              title="Bot token"
+              docs={{
+                page: `${DOCS.projectSettings}#bot-token`,
+                label: "Where to find your bot token",
+              }}
+              description="The token DisFuse runs your bot with. Paste a new one here if you reset it in Discord."
+            >
+              <TokenInput
+                value={token || ""}
+                onChange={setToken}
+                disabled={!may("token.change")}
+                placeholder={
+                  tokenHidden
+                    ? may("token.change")
+                      ? "Hidden. Paste a new token to replace it"
+                      : "Hidden"
+                    : "Paste your bot token"
+                }
               />
-            </h2>
-            <p style={{ opacity: ".5" }}>
-              Public projects will show up in the explore page and anyone can
-              view their blocks; private projects are only visible to you and
-              the people you invite.
-            </p>
-          </div>
-          <select
-            value={projectVisibility}
-            onChange={(e) => setProjectVisibility(e.target.value)}
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
+              <TokenHelp />
+            </Card>
 
-          <div style={{ gap: "2px" }}>
-            <h2>Bot Visibility</h2>
-            <p style={{ opacity: ".5" }}>
-              Public bots will show up in the explore page and anyone can add
-              them to their servers
-            </p>
-          </div>
-          <select
-            value={botVisibility}
-            onChange={(e) => setBotVisibility(e.target.value)}
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
+            <VisibilityCard
+              editor={project.type}
+              project={projectVisibility}
+              setProject={setProjectVisibility}
+              bot={botVisibility}
+              setBot={setBotVisibility}
+              projectDisabled={!may("settings.visibility")}
+              botDisabled={!may("settings.botVisibility")}
+            />
 
-          <p id="visibilityInfo" onClick={showVisibilityInfo}>
-            <i className="fa-solid fa-circle-question"></i> Learn more about
-            project and bot visibility
-          </p>
+            <PermissionsCard
+              value={permissions}
+              onChange={setPermissions}
+              disabled={!may("settings.invitePermissions")}
+            />
 
-          <div style={{ gap: "2px" }}>
-            <h2>
-              Permissions{" "}
-              <DocsLink
-                page={`${DOCS.projectSettings}#permissions`}
-                variant="icon"
-                label="About bot permissions"
-              />
-            </h2>
-            <p style={{ opacity: ".5" }}>
-              Go to{" "}
-              <Link
-                rel="noopener"
-                target="_blank"
-                to={"https://discordapi.com/permissions.html"}
+            {/* Only the owner picks what the bot is exported to run with. */}
+            {isOwner && (
+              <Card
+                title="Export"
+                docs={{
+                  page: `${DOCS.projectSettings}#export`,
+                  label: "About export settings",
+                }}
+                description={
+                  <>
+                    What this bot is set up to run with when you export it. By
+                    default it uses your choice in{" "}
+                    <Link to="/settings/export">Settings → Export</Link>.
+                  </>
+                }
               >
-                this website
-              </Link>
-              , select required permissions for your bot, and paste the
-              resulting number here (shown at the top of the website). This will
-              be used for users to add your bot.
-            </p>
-          </div>
-          <input
-            type="number"
-            min={0}
-            value={permissions}
-            onChange={(e) => setPermissions(parseInt(e.target.value))}
-          />
+                <div className="np-fields">
+                  <label className="np-field">
+                    <span>Runtime</span>
+                    <select
+                      className="np-input"
+                      value={runtime}
+                      onChange={(e) => setRuntime(e.target.value)}
+                    >
+                      <option value="">
+                        My default (
+                        {
+                          RUNTIMES[userExportSettings(userCache.user).runtime]
+                            .label
+                        }
+                        )
+                      </option>
+                      {Object.entries(RUNTIMES).map(([value, { label }]) => (
+                        <option value={value} key={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="np-field">
+                    <span>Package manager</span>
+                    <select
+                      className="np-input"
+                      value={packageManager}
+                      onChange={(e) => setPackageManager(e.target.value)}
+                    >
+                      <option value="">
+                        My default (
+                        {
+                          PACKAGE_MANAGERS[
+                            userExportSettings(userCache.user).packageManager
+                          ].label
+                        }
+                        )
+                      </option>
+                      {Object.entries(PACKAGE_MANAGERS).map(
+                        ([value, { label }]) => (
+                          <option value={value} key={value}>
+                            {label}
+                          </option>
+                        ),
+                      )}
+                    </select>
+                  </label>
+                </div>
+              </Card>
+            )}
 
-          <div style={{ gap: "2px" }}>
-            <h2>
-              Export{" "}
-              <DocsLink
-                page={`${DOCS.projectSettings}#export`}
-                variant="icon"
-                label="About export settings"
-              />
-            </h2>
-            <p style={{ opacity: ".5" }}>
-              What this bot is set up to run with when you export it. By
-              default it uses your choice in{" "}
-              <Link to="/settings/export">Settings → Export</Link>.
-            </p>
+            <SubmitButton
+              busy={saving}
+              busyLabel="Saving"
+              icon="fa-solid fa-floppy-disk"
+              onClick={saveProject}
+            >
+              Save Changes
+            </SubmitButton>
           </div>
-          <select value={runtime} onChange={(e) => setRuntime(e.target.value)}>
-            <option value="">
-              Runtime: my default (
-              {RUNTIMES[userExportSettings(userCache.user).runtime].label})
-            </option>
-            {Object.entries(RUNTIMES).map(([value, { label }]) => (
-              <option value={value} key={value}>
-                Runtime: {label}
-              </option>
-            ))}
-          </select>
-          <select
-            value={packageManager}
-            onChange={(e) => setPackageManager(e.target.value)}
-          >
-            <option value="">
-              Package manager: my default (
-              {
-                PACKAGE_MANAGERS[
-                  userExportSettings(userCache.user).packageManager
-                ].label
-              }
-              )
-            </option>
-            {Object.entries(PACKAGE_MANAGERS).map(([value, { label }]) => (
-              <option value={value} key={value}>
-                Package manager: {label}
-              </option>
-            ))}
-          </select>
-
-          <button onClick={saveProject}>Save Project</button>
         </div>
-      </div>
+      )}
     </div>
   );
 
-  function showVisibilityInfo() {
-    const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3", "4"],
-      animation: false,
-      showCancelButton: true,
-      cancelButtonText: "Close",
-      confirmButtonText: "Next >",
-
-      ...modalThemeColor(userCache.user),
-    });
-
-    Queue.fire({
-      animation: true,
-      title: "Situation 1",
-      html: `<strong>Project visibility is public, bot visibility is private</strong> <br /> <br /> This means your project will show up on the explore page. Anyone can search for and view your project, including the blocks. However, no one will be able to view your bot information or add your bot to servers.`,
-      currentProgressStep: 0,
-    }).then((r) => {
-      if (!r.isConfirmed) return;
-
-      Queue.fire({
-        title: "Situation 2",
-        html: `<strong>Project visibility is private, bot visibility is public</strong> <br /> <br /> Your project will not show up on the explore page, and only people you invite can view your project and its blocks. However, anyone can search for and view your bot's information (username, server count, etc.) and add your bot to their servers.`,
-        currentProgressStep: 1,
-      }).then((r) => {
-        if (!r.isConfirmed) return;
-
-        Queue.fire({
-          title: "Situation 3",
-          html: `<strong>Both project and bot visibility are public</strong> <br /> <br /> Your project and bot information will both show up together on the explore page, and anyone can search for and view your project and its blocks. Additionally, anyone can add your bot to their servers and view its information.`,
-          currentProgressStep: 2,
-        }).then((r) => {
-          if (!r.isConfirmed) return;
-
-          Queue.fire({
-            title: "Situation 4",
-            html: `<strong>Both project and bot visibility are private</strong> <br /> <br /> No one except you and the people you invite can view your project, its blocks, or your bot's information. Your project will not show up on the explore page, and only invited users can view your project and its blocks.`,
-            currentProgressStep: 3,
-            showConfirmButton: false,
-          });
-        });
-      });
-    });
-  }
-
   function saveProject() {
     setLoading(true);
+    setSaving(true);
 
-    axios
-      .get(discordUrl + "/users/@me", {
-        headers: { Authorization: "Bot " + token },
-      })
+    /* A collaborator sends only what they may change, so a field they
+       can't touch is never sent back as a "change". */
+    const changes = isOwner
+      ? {
+          description,
+          private: projectVisibility === "private",
+          botPrivate: botVisibility === "private",
+          botToken: token,
+          permissions,
+          exportSettings: {
+            runtime: runtime || null,
+            packageManager: packageManager || null,
+          },
+        }
+      : {
+          ...(may("settings.description") ? { description } : {}),
+          ...(may("settings.visibility")
+            ? { private: projectVisibility === "private" }
+            : {}),
+          ...(may("settings.botVisibility")
+            ? { botPrivate: botVisibility === "private" }
+            : {}),
+          ...(may("settings.invitePermissions") ? { permissions } : {}),
+          ...(may("token.change") && token ? { botToken: token } : {}),
+        };
+
+    /* Nothing to check in the browser when the token stays hidden. */
+    const checkToken =
+      tokenHidden && !token
+        ? Promise.resolve()
+        : axios.get(discordUrl + "/users/@me", {
+            headers: { Authorization: "Bot " + token },
+          });
+
+    checkToken
       .then(() => {
         setLoading(false);
 
         axios
-          .patch(
-            apiUrl + `/projects/${projectId}`,
-            {
-              description,
-              private: projectVisibility === "private",
-              botPrivate: botVisibility === "private",
-              botToken: token,
-              permissions,
-              exportSettings: {
-                runtime: runtime || null,
-                packageManager: packageManager || null,
-              },
+          .patch(apiUrl + `/projects/${projectId}`, changes, {
+            headers: {
+              Authorization: localStorage.getItem("disfuse-token"),
             },
-            {
-              headers: {
-                Authorization: localStorage.getItem("disfuse-token"),
-              },
-            },
-          )
+          })
           .then(({ data }) => {
             setProject(data);
+            setSaving(false);
 
             Swal.fire({
               toast: true,
@@ -372,6 +389,11 @@ export default function EditProject() {
               timer: 3000,
               ...modalThemeColor(userCache.user),
             });
+
+            if (data.botToken === "[HIDDEN]") {
+              setBotFailed(false);
+              return setLoading(false);
+            }
 
             if (!data.botToken?.length) {
               setBotFailed(true);
@@ -393,6 +415,7 @@ export default function EditProject() {
           })
           .catch((err) => {
             console.error(err);
+            setSaving(false);
             Swal.fire({
               icon: "error",
               title: "Error Editing Project",
@@ -411,6 +434,7 @@ export default function EditProject() {
           ...modalThemeColor(userCache.user),
         });
         setLoading(false);
+        setSaving(false);
       });
   }
 }

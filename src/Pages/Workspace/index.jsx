@@ -20,6 +20,7 @@ import { closeMessagePreview } from "../../components/workspace/messagePreviewSt
 import ModalPreview from "../../components/workspace/ModalPreview.jsx";
 import { closeModalPreview } from "../../components/workspace/modalPreviewStore.js";
 import TemplatesModal from "../../components/workspace/TemplatesModal.jsx";
+import BuilderCopyModal from "../../components/workspace/BuilderCopyModal.jsx";
 import { createTemplateFlow } from "../../components/templates/templateDialogs.js";
 import VersionControl from "../../components/VersionControl.jsx";
 
@@ -136,6 +137,7 @@ export default function Workspace() {
   const [secretsOpen, setSecretsOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [builderCopyOpen, setBuilderCopyOpen] = useState(false);
   /* What the toolbar shows. These used to be written into the DOM with
      `innerHTML` from two other files. */
   const [blockCount, setBlockCount] = useState(0);
@@ -771,6 +773,29 @@ export default function Workspace() {
     if (view) view.style.display = "flex";
   }, [editor, session.project]);
 
+  /* ---- Copy to DisFuse Builder ----------------------------------------- */
+
+  /** What the copy is made from: every workspace, with the open one as it is on screen. */
+  const builderCopySource = useCallback(
+    () => ({
+      project: session.project,
+      activeVersion: activeVersion.current,
+      workspace: editor.workspaceRef.current,
+      currentWorkspaceId: currentWorkspace.current?._id,
+      /* So blocks from Workshop packs become the packs' own steps. */
+      packs: blockPacksRef.current,
+    }),
+    [editor, session.project],
+  );
+
+  const openBuilderCopy = useCallback(
+    async (copy) => {
+      await autosave.flush();
+      window.location.href = `/@${user.username}/${copy._id}/workspace`;
+    },
+    [autosave, user],
+  );
+
   /* ---- Templates ------------------------------------------------------ */
 
   /**
@@ -839,6 +864,7 @@ export default function Workspace() {
         templateId,
         getWorkspace: () => editor.workspaceRef.current,
         project: session.project,
+        currentWorkspaceId: currentWorkspace.current?._id,
         user,
         canCreateWorkspaces: isOwner,
         loadedPacks: blockPacksRef.current,
@@ -949,6 +975,7 @@ export default function Workspace() {
         onShowCode={handleShowCode}
         onExport={handleExport}
         onOpenTemplates={() => setTemplatesOpen(true)}
+        onCopyToBuilder={() => setBuilderCopyOpen(true)}
       />
 
       <CodeView />
@@ -1001,6 +1028,15 @@ export default function Workspace() {
           setTemplatesOpen(false);
           createTemplateFlow({ openIn: "new-tab", modalColors });
         }}
+      />
+
+      <BuilderCopyModal
+        open={builderCopyOpen}
+        project={project ?? {}}
+        isOwner={isOwner}
+        getSource={builderCopySource}
+        onOpenCopy={openBuilderCopy}
+        onClose={() => setBuilderCopyOpen(false)}
       />
 
       <VersionControl

@@ -380,8 +380,7 @@ select option {
   .project-page-container,
   .inbox-container,
   .blockPackPage,
-  .library-container .head,
-  .newProject-page-container .head {
+  .library-container .head {
     margin-top: 2rem;
   }
 
@@ -462,8 +461,7 @@ select option {
   .workshop-container .head,
   .settings-container .head,
   .inbox-container .head,
-  .library-container .head,
-  .newProject-page-container .head {
+  .library-container .head {
     font-size: 40px;
   }
 
@@ -492,8 +490,7 @@ select option {
   .workshop-container .head,
   .settings-container .head,
   .inbox-container .head,
-  .library-container .head,
-  .newProject-page-container .head {
+  .library-container .head {
     font-size: 30px;
   }
 

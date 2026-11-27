@@ -33,7 +33,9 @@ export default function NotificationSettings() {
   }, [token]);
 
   function updateSetting(setting, value) {
-    user.settings.notifications[setting] = value;
+    /* The API only accepts numbers here; a select's value is a string,
+       which it would quietly ignore. */
+    user.settings.notifications[setting] = Number(value);
 
     axios.put(apiUrl + `/users/${user.id}/settings`, user.settings, {
       headers: { Authorization: token },
@@ -103,6 +105,23 @@ export default function NotificationSettings() {
             updateSetting("likesOnProjects", e.currentTarget.value)
           }
           id="likesOnProjects"
+        >
+          <option value="0">Off</option>
+          <option value="1">Inbox only</option>
+          <option value="2">Inbox & Discord DM</option>
+        </select>
+      </div>
+      <div className="option">
+        <label htmlFor="projectInvites">
+          Someone adds you to their project:
+        </label>
+
+        <select
+          defaultValue={user.settings.notifications.projectInvites ?? "2"}
+          onChange={(e) =>
+            updateSetting("projectInvites", e.currentTarget.value)
+          }
+          id="projectInvites"
         >
           <option value="0">Off</option>
           <option value="1">Inbox only</option>

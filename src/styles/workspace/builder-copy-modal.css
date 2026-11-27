@@ -1,0 +1,280 @@
+@import "./modals.css";
+
+/* =====================================================================
+   Copy to DisFuse Builder dialog
+   ---------------------------------------------------------------------
+   The summary of what the copy will hold, the bot it uses, and a list
+   of anything that can't come along. Uses DisFuse Builder's purple (the
+   same as its card on the New Project page) where the dialog is about
+   the new project, so it reads as a step towards it.
+   ===================================================================== */
+
+.df-builder-copy {
+  --df-builder-copy-tint: #8b6cff;
+  --df-builder-copy-art: linear-gradient(135deg, #8b6cff, #e23fe2);
+}
+
+.df-builder-copy .df-modal-heading > i {
+  background: var(--df-builder-copy-art);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.df-modal.df-builder-copy .df-primary-btn.df-builder-copy-go {
+  /* The global .df-primary-btn sets its color with !important. */
+  background: var(--df-builder-copy-art) !important;
+}
+
+.df-builder-copy-intro {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-intro strong {
+  color: var(--df-text);
+}
+
+/* ---- Counts ---------------------------------------------------------- */
+
+.df-builder-copy-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.df-builder-copy-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.8rem 0.4rem;
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-md);
+  background: var(--df-surface-2);
+  text-align: center;
+}
+
+.df-builder-copy-stat > i {
+  font-size: 0.85rem;
+  color: var(--df-builder-copy-tint);
+}
+
+.df-builder-copy-stat strong {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--df-text);
+}
+
+.df-builder-copy-stat span {
+  font-size: 0.75rem;
+  color: var(--df-text-faint);
+}
+
+/* ---- The bot --------------------------------------------------------- */
+
+.df-builder-copy-bot {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-sm);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-bot img {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.df-builder-copy-bot > i {
+  flex-shrink: 0;
+  color: var(--df-builder-copy-tint);
+}
+
+.df-builder-copy-bot strong {
+  color: var(--df-text);
+}
+
+.df-builder-copy-token {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-token input {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  border: 1px solid var(--df-border-strong);
+  border-radius: var(--df-r-sm);
+  background: var(--df-bg);
+  color: var(--df-text);
+}
+
+.df-builder-copy-token input:focus {
+  outline: none;
+  border-color: var(--df-builder-copy-tint);
+}
+
+/* ---- What's left out ------------------------------------------------- */
+
+.df-builder-copy-all {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-all > i {
+  color: var(--df-mint);
+}
+
+.df-builder-copy-leftout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.df-builder-copy-leftout h3 {
+  margin: 0 0 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--df-text-faint);
+}
+
+.df-builder-copy-group {
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-r-sm);
+  background: var(--df-surface-2);
+  overflow: hidden;
+}
+
+.df-builder-copy-group summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--df-text);
+  cursor: pointer;
+  list-style: none;
+}
+
+.df-builder-copy-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.df-builder-copy-group summary > i:first-child {
+  width: 1rem;
+  flex-shrink: 0;
+  text-align: center;
+  color: var(--df-amber);
+}
+
+.df-builder-copy-group summary > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.df-builder-copy-chevron {
+  font-size: 0.7rem;
+  color: var(--df-text-faint);
+  transition: transform 0.15s var(--df-ease);
+}
+
+.df-builder-copy-group[open] .df-builder-copy-chevron {
+  transform: rotate(180deg);
+}
+
+.df-builder-copy-group p,
+.df-builder-copy-group ul {
+  margin: 0;
+  padding: 0 0.8rem 0.7rem 2.4rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.df-builder-copy-group p + ul {
+  margin-top: -0.25rem;
+}
+
+.df-builder-copy-count {
+  margin-left: 0.4rem;
+  color: var(--df-text-faint);
+}
+
+/* ---- Owner only, limit reached, done ---------------------------------- */
+
+.df-builder-copy-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 2rem 1rem;
+  text-align: center;
+  border: 1px dashed var(--df-border);
+  border-radius: var(--df-r-md);
+  color: var(--df-text-dim);
+}
+
+.df-builder-copy-notice > i {
+  font-size: 1.65rem;
+  color: var(--df-text-faint);
+}
+
+.df-builder-copy-notice.success > i {
+  color: var(--df-mint);
+}
+
+.df-builder-copy-notice h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--df-text);
+}
+
+.df-builder-copy-notice p {
+  margin: 0;
+  max-width: 26rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.df-builder-copy-notice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.df-builder-copy-notice-actions a {
+  text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .df-builder-copy-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

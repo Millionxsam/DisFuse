@@ -114,7 +114,7 @@ function hero() {
         },
       ),
       el("text", {
-        text: "Moderation, levelling, welcome messages and more, set up in minutes with no coding required.",
+        text: "Moderation, leveling, welcome messages and more, set up in minutes with no coding required.",
       }),
       el("container", {}, { gap: "12px", flexWrap: "wrap", width: "auto" }, [
         el("button", {
@@ -152,13 +152,13 @@ function features() {
         ),
         featureCard(
           "fa-solid fa-chart-line",
-          "Levelling",
+          "Leveling",
           "Reward active members with XP, roles and a server leaderboard.",
         ),
         featureCard(
           "fa-solid fa-hand-sparkles",
           "Welcome messages",
-          "Greet every new member with a customisable embed.",
+          "Greet every new member with a customizable embed.",
         ),
       ],
     ),

@@ -1,0 +1,171 @@
+/* =====================================================================
+   DisFuse Builder: templates
+   ---------------------------------------------------------------------
+   The template builder's top bar and home page, the template details
+   form, adding a template to a project, and the read-only preview a
+   template's page shows.
+   ===================================================================== */
+
+@import "./tokens.css";
+
+/* ---- The top bar's template buttons ----------------------------------- */
+
+.dfb-root .dfb-tpl-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  .dfb-root .dfb-tpl-bar .dfb-badge {
+    display: none;
+  }
+}
+
+/* ---- The template's home ---------------------------------------------- */
+
+.dfb-root .dfb-tpl-hero .dfb-hero__body {
+  padding-bottom: 6px;
+}
+
+.dfb-root .dfb-tpl-hero__icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: var(--dfb-grad);
+  color: #fff;
+  font-size: 30px;
+  box-shadow: 0 10px 30px rgba(var(--dfb-violet-rgb), 0.35);
+}
+
+.dfb-root .dfb-tpl-hero .dfb-hero__about {
+  margin-bottom: 22px;
+}
+
+.dfb-root .dfb-tpl-hero__about > :first-child {
+  margin-top: 0;
+}
+
+.dfb-root .dfb-tpl-hero__about > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Details: who can see it ------------------------------------------ */
+
+.dfb-tpl-visibility {
+  display: grid;
+  gap: 8px;
+}
+
+.dfb-tpl-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--dfb-line-strong);
+  border-radius: var(--dfb-r-sm, 10px);
+  background: transparent;
+  color: var(--dfb-dim);
+  font: inherit;
+  text-align: left;
+  line-height: 1.45;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.dfb-tpl-choice > i {
+  margin-top: 3px;
+  color: var(--dfb-faint);
+}
+
+.dfb-tpl-choice b {
+  display: block;
+  color: var(--dfb-text);
+}
+
+.dfb-tpl-choice:hover {
+  border-color: rgba(var(--dfb-violet-rgb), 0.5);
+}
+
+.dfb-tpl-choice--on {
+  border-color: var(--dfb-violet);
+  background: rgba(var(--dfb-violet-rgb), 0.12);
+}
+
+.dfb-tpl-choice--on > i {
+  color: var(--dfb-violet);
+}
+
+/* ---- Adding a template to a project ------------------------------------ */
+
+.dfb-tpl-import {
+  display: grid;
+  gap: 14px;
+}
+
+.dfb-tpl-import .dfb-modal__message {
+  margin: 0;
+}
+
+.dfb-tpl-import__group h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  color: var(--dfb-faint);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dfb-tpl-import__group ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dfb-tpl-import__group ul.dfb-tpl-import__chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dfb-tpl-import__group li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dfb-tpl-import__renamed {
+  margin: 0;
+  color: var(--dfb-amber);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+/* ---- A template's page: what's in it ----------------------------------- */
+
+.dfb-root.dfb-tpl-preview {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+  border: 1px solid var(--dfb-line);
+  border-radius: 16px;
+  background: var(--dfb-bg-2);
+  color: var(--dfb-text);
+}
+
+.dfb-root.dfb-tpl-preview .dfb-note {
+  margin-bottom: 10px;
+}

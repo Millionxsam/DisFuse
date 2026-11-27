@@ -275,10 +275,14 @@ function Component({ component, message, guild, channels, onOpenUser, depth = 0 
       // Button
       const style = component.style || 1;
 
+      /* Disabled by the bot (greyed out in Discord), not just "can't be
+         clicked here". */
+      const off = component.disabled ? " is-disabled" : "";
+
       if (style === 5 && component.url)
         return (
           <a
-            className="dc-component-button style-5"
+            className={`dc-component-button style-5${off}`}
             href={component.url}
             target="_blank"
             rel="noreferrer noopener"
@@ -291,7 +295,7 @@ function Component({ component, message, guild, channels, onOpenUser, depth = 0 
 
       return (
         <button
-          className={`dc-component-button style-${style}`}
+          className={`dc-component-button style-${style}${off}`}
           disabled
           title={NOT_INTERACTIVE}
         >
@@ -307,7 +311,10 @@ function Component({ component, message, guild, channels, onOpenUser, depth = 0 
     case 7: // Mentionable select
     case 8: // Channel select
       return (
-        <div className="dc-component-select" title={NOT_INTERACTIVE}>
+        <div
+          className={`dc-component-select${component.disabled ? " is-disabled" : ""}`}
+          title={NOT_INTERACTIVE}
+        >
           <span>
             {component.placeholder || selectPlaceholder(component.type)}
           </span>

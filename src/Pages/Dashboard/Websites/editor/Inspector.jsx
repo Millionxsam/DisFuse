@@ -341,8 +341,8 @@ function SiteInspector({ editor, website }) {
           <>
             <p className="df-ws-note">
               Visitors log in with Discord on these pages. Read and write these
-              keys from your bot using the <strong>Dashboard</strong> blocks in
-              your project's workspace.
+              keys from your bot with the <strong>Dashboard</strong> blocks
+              (or the Dashboard steps in DisFuse Builder).
             </p>
 
             {usesServerSettings && <DashboardAccess editor={editor} />}

@@ -5,21 +5,51 @@ import { apiUrl, discordUrl } from "../../../config/config";
 import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import Lottie from "lottie-react";
-import projectCreationLottie from "/public/media/lotties/projectCreationGraphic.json";
 import joinServer from "../../../functions/joinServer.js";
 import showLimitReached from "../../../functions/limitReached.js";
 import usePlanLimits, { hasRoom } from "../../../functions/usePlanLimits.js";
 import { PlanLimitReached } from "../../../components/premium/PlanUsage.jsx";
 
 import DocsLink from "../../../components/DocsLink.jsx";
-import { DOCS, docsUrl } from "../../../config/docs.js";
+import { DOCS } from "../../../config/docs.js";
+import {
+  BotCard,
+  Card,
+  ConnectBot,
+  DescriptionCard,
+  PermissionsCard,
+  Steps,
+  SubmitButton,
+  VisibilityCard,
+} from "./projectForm.jsx";
+
+/* The two editors a project can be built with. The block editor is the
+   original; DisFuse Builder builds bots from menus and forms instead. */
+const EDITORS = [
+  {
+    value: "blocks",
+    label: "Block Editor",
+    icon: "fa-solid fa-puzzle-piece",
+    tint: "#ffb648",
+    description:
+      "Build your bot by snapping blocks together, like a puzzle. Great if you like to see exactly how everything fits.",
+  },
+  {
+    value: "builder",
+    label: "DisFuse Builder",
+    icon: "fa-solid fa-wand-magic-sparkles",
+    tint: "#8b6cff",
+    isNew: true,
+    description:
+      "Set up commands and events with simple menus and forms. No blocks and no code, just pick what your bot should do.",
+  },
+];
 
 export default function NewProject() {
   const [loading, setLoading] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [token, setToken] = useState("");
   const [bot, setBot] = useState(null);
 
@@ -27,23 +57,36 @@ export default function NewProject() {
   const [projectVisibility, setProjectVisibility] = useState("public");
   const [botVisibility, setBotVisibility] = useState("public");
   const [permissions, setPermissions] = useState(0);
+  /* Which editor the project is built with. Nothing is picked for the
+     user: it can't be changed once the project exists. */
+  const [editor, setEditor] = useState(null);
+  const [editorMissing, setEditorMissing] = useState(false);
 
   const limits = usePlanLimits();
+
+  const pageHead = (
+    <div className="df-page-head">
+      <h1>
+        <i className="fa-solid fa-circle-plus"></i>
+        New Project
+      </h1>
+      <div className="df-toolbar">
+        <div className="df-btn-group">
+          <DocsLink page={DOCS.creatingAProject} label="How this works" />
+        </div>
+      </div>
+    </div>
+  );
 
   /* No room for another project: say so before a bot token is asked for.
      The API refuses it either way. */
   if (limits.loading || !hasRoom(limits.data, "projects"))
     return (
-      <div className="newProject-page-container">
+      <div className="df-page np-page">
         <Helmet>
           <title>New Project | DisFuse</title>
         </Helmet>
-        <div className="df-page-head">
-          <h1>
-            <i className="fa-solid fa-circle-plus"></i>
-            New Project
-          </h1>
-        </div>
+        {pageHead}
         {limits.loading ? (
           <LoadingAnim />
         ) : (
@@ -53,214 +96,139 @@ export default function NewProject() {
     );
 
   return (
-    <div className="newProject-page-container">
+    <div className="df-page np-page">
       <Helmet>
         <title>New Project | DisFuse</title>
       </Helmet>
-      <div className="df-page-head">
-        <h1>
-          <i class="fa-solid fa-circle-plus"></i>
-          New Project
-        </h1>
-        <div className="df-toolbar">
-          <div className="df-btn-group">
-            <DocsLink page={DOCS.creatingAProject} label="How this works" />
+      {pageHead}
+
+      <Steps
+        labels={["Connect your bot", "Set up the project"]}
+        current={bot ? 1 : 0}
+      />
+
+      {!bot ? (
+        <ConnectBot
+          token={token}
+          setToken={setToken}
+          loading={loading}
+          onSubmit={findBot}
+        />
+      ) : (
+        <div className="np-setup">
+          <BotCard bot={bot}>
+            <button
+              type="button"
+              className="np-btn np-btn--ghost"
+              onClick={() => {
+                setBot(null);
+                setToken("");
+              }}
+            >
+              <i className="fa-solid fa-arrow-left noRotate"></i>
+              Use a different bot
+            </button>
+          </BotCard>
+
+          <div className="np-form">
+            <Card
+              title="Editor"
+              description="How do you want to build your bot?"
+              className="np-editors"
+              id="np-editors"
+            >
+              <div
+                className="np-editors__grid"
+                role="radiogroup"
+                aria-label="Editor"
+              >
+                {EDITORS.map((option) => (
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={editor === option.value}
+                    key={option.value}
+                    className={`np-editor ${editor === option.value ? "np-editor--active" : ""}`}
+                    style={{ "--np-tint": option.tint }}
+                    onClick={() => {
+                      setEditor(option.value);
+                      setEditorMissing(false);
+                    }}
+                  >
+                    <span className="np-editor__top">
+                      <span className="np-editor__art">
+                        <i
+                          className={`${option.icon} noRotate`}
+                          aria-hidden
+                        ></i>
+                      </span>
+                      {option.isNew && (
+                        <span className="np-editor__new">New</span>
+                      )}
+                      <span className="np-editor__check" aria-hidden>
+                        <i className="fa-solid fa-check noRotate"></i>
+                      </span>
+                    </span>
+                    <b>{option.label}</b>
+                    <span className="np-editor__text">
+                      {option.description}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {editorMissing && (
+                <p className="np-editors__error" role="alert">
+                  <i className="fa-solid fa-triangle-exclamation"></i>
+                  Pick an editor to create your project.
+                </p>
+              )}
+              <p className="np-note">
+                <i className="fa-solid fa-circle-info"></i>
+                You can't switch editors after the project is made. You can
+                still make a second project for the same bot with the other
+                editor.
+              </p>
+            </Card>
+
+            <DescriptionCard value={description} onChange={setDescription} />
+            <VisibilityCard
+              editor={editor}
+              project={projectVisibility}
+              setProject={setProjectVisibility}
+              bot={botVisibility}
+              setBot={setBotVisibility}
+            />
+            <PermissionsCard value={permissions} onChange={setPermissions} />
+
+            <SubmitButton
+              busy={creating}
+              busyLabel="Creating"
+              icon="fa-solid fa-plus"
+              onClick={createProject}
+            >
+              Create Project
+            </SubmitButton>
           </div>
         </div>
-      </div>
-      <div className="body">
-        {!bot ? (
-          <>
-            <Lottie
-              animationData={projectCreationLottie}
-              id="projectCreationGraphic"
-              style={{ width: "20rem", height: "20rem" }}
-            />
-            <div className="textAnim">
-              <h2>Enter your bot token</h2>
-              <input
-                type="password"
-                autoComplete="off"
-                placeholder="Your bot token"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-              />
-              <i>
-                Not sure what this is? Visit{" "}
-                <a
-                  href={docsUrl(DOCS.creatingABot)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  our docs page
-                </a>
-              </i>
-
-              {loading ? (
-                <LoadingAnim onlySpinner />
-              ) : (
-                <button onClick={findBot}>Continue</button>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="botInfo">
-              <img
-                src={
-                  "https://cdn.discordapp.com/avatars/" +
-                  bot.id +
-                  "/" +
-                  bot.avatar +
-                  ".png"
-                }
-                alt={bot.displayName}
-              />
-              <div>
-                <h1>{bot.username}</h1>
-                <p style={{ width: "fit-content" }}>ID: {bot.id}</p>
-              </div>
-            </div>
-            <div className="projectInfo">
-              <div style={{ gap: "2px" }}>
-                <h2>Description</h2>
-                <i style={{ opacity: ".5" }}>Optional</i>
-              </div>
-              <textarea
-                placeholder="What does your bot do?"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <div style={{ gap: "2px" }}>
-                <h2>
-                  Project Visibility{" "}
-                  <DocsLink
-                    page={`${DOCS.projectSettings}#project-visibility`}
-                    variant="icon"
-                    label="About project visibility"
-                  />
-                </h2>
-                <p style={{ opacity: ".5" }}>
-                  Public projects will show up in the explore page and anyone
-                  can view their blocks; private projects are only visible to
-                  you and the people you invite.
-                </p>
-              </div>
-              <select
-                value={projectVisibility}
-                onChange={(e) => setProjectVisibility(e.target.value)}
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-
-              <div style={{ gap: "2px" }}>
-                <h2>Bot Visibility</h2>
-                <p style={{ opacity: ".5" }}>
-                  Public bots will show up in the explore page and anyone can
-                  add them to their servers
-                </p>
-              </div>
-              <select
-                value={botVisibility}
-                onChange={(e) => setBotVisibility(e.target.value)}
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-
-              <p id="visibilityInfo" onClick={showVisibilityInfo}>
-                <i className="fa-solid fa-circle-question"></i> Learn more about
-                project and bot visibility
-              </p>
-
-              <div style={{ gap: "2px" }}>
-                <h2>
-                  Permissions{" "}
-                  <DocsLink
-                    page={`${DOCS.projectSettings}#permissions`}
-                    variant="icon"
-                    label="About bot permissions"
-                  />
-                </h2>
-                <p style={{ opacity: ".5" }}>
-                  Go to{" "}
-                  <Link
-                    rel="noopener"
-                    target="_blank"
-                    to={"https://discordapi.com/permissions.html"}
-                  >
-                    this website
-                  </Link>
-                  , select required permissions for your bot, and paste the
-                  resulting number here (shown at the top of the website). This
-                  will be used for users to add your bot.
-                </p>
-              </div>
-              <input
-                type="number"
-                min={0}
-                value={permissions}
-                onChange={(e) => setPermissions(parseInt(e.target.value))}
-              />
-
-              <button onClick={createProject}>Create Project</button>
-            </div>
-          </>
-        )}
-      </div>
+      )}
     </div>
   );
 
-  function showVisibilityInfo() {
-    const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3", "4"],
-      animation: false,
-      showCancelButton: true,
-      cancelButtonText: "Close",
-      confirmButtonText: "Next >",
-
-      ...modalThemeColor(userCache.user),
-    });
-
-    Queue.fire({
-      animation: true,
-      title: "Situation 1",
-      html: `<strong>Project visibility is public, bot visibility is private</strong> <br /> <br /> This means your project will show up on the explore page. Anyone can search for and view your project, including the blocks. However, no one will be able to view your bot information or add your bot to servers.`,
-      currentProgressStep: 0,
-    }).then((r) => {
-      if (!r.isConfirmed) return;
-
-      Queue.fire({
-        title: "Situation 2",
-        html: `<strong>Project visibility is private, bot visibility is public</strong> <br /> <br /> Your project will not show up on the explore page, and only people you invite can view your project and its blocks. However, anyone can search for and view your bot's information (username, server count, etc.) and add your bot to their servers.`,
-        currentProgressStep: 1,
-      }).then((r) => {
-        if (!r.isConfirmed) return;
-
-        Queue.fire({
-          title: "Situation 3",
-          html: `<strong>Both project and bot visibility are public</strong> <br /> <br /> Your project and bot information will both show up together on the explore page, and anyone can search for and view your project and its blocks. Additionally, anyone can add your bot to their servers and view its information.`,
-          currentProgressStep: 2,
-        }).then((r) => {
-          if (!r.isConfirmed) return;
-
-          Queue.fire({
-            title: "Situation 4",
-            html: `<strong>Both project and bot visibility are private</strong> <br /> <br /> No one except you and the people you invite can view your project, its blocks, or your bot's information. Your project will not show up on the explore page, and only invited users can view your project and its blocks.`,
-            currentProgressStep: 3,
-            showConfirmButton: false,
-          });
-        });
-      });
-    });
-  }
-
   function createProject() {
+    if (!editor) {
+      setEditorMissing(true);
+      document
+        .getElementById("np-editors")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    setCreating(true);
     axios
       .post(
         apiUrl + `/projects`,
         {
+          type: editor,
           description,
           private: projectVisibility === "private",
           botPrivate: botVisibility === "private",
@@ -278,6 +246,7 @@ export default function NewProject() {
           (window.location = `/@${userCache.user.username}/${data._id}/workspace`),
       )
       .catch((err) => {
+        setCreating(false);
         if (
           err.response?.data?.error ===
           "You must be in the DisFuse server to create a project"

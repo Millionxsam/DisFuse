@@ -58,6 +58,7 @@ export default {
             name: { shadow: shadow("text") }
           }
         }),
+        block("events_interaction_any"),
         label("Actions ↓"),
         block("cv2_replyInteraction", {
           inputs: {
@@ -82,6 +83,15 @@ export default {
           }
         }),
         block("cv2_editReplyInteraction"),
+        block("cv2_followUpInteraction", {
+          inputs: {
+            ephemeral: {
+              shadow: shadow("logic_boolean", {
+                fields: { BOOL: "FALSE" }
+              })
+            }
+          }
+        }),
         label("Information about the command ran ↓"),
         block("slash_getoption"),
         block("slash_name"),
@@ -296,7 +306,16 @@ export default {
             }
           }
         }),
-        block("cv2_editReplyInteraction")
+        block("cv2_editReplyInteraction"),
+        block("cv2_followUpInteraction", {
+          inputs: {
+            ephemeral: {
+              shadow: shadow("logic_boolean", {
+                fields: { BOOL: "FALSE" }
+              })
+            }
+          }
+        })
       ]
     },
     {
@@ -335,6 +354,15 @@ export default {
           }
         }),
         block("cv2_editReplyInteraction"),
+        block("cv2_followUpInteraction", {
+          inputs: {
+            ephemeral: {
+              shadow: shadow("logic_boolean", {
+                fields: { BOOL: "FALSE" }
+              })
+            }
+          }
+        }),
         label("Information about the context menu clicked ↓"),
         block("contextMenu_name"),
         block("contextMenu_userMenu"),
@@ -345,6 +373,7 @@ export default {
         block("misc_int_server"),
         label("Only if the menu is an user menu ↓"),
         block("contextMenu_targetUser"),
+        block("contextMenu_targetMember"),
         label("Only if the menu is a message menu ↓"),
         block("contextMenu_targetMessage")
       ]

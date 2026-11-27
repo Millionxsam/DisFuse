@@ -222,7 +222,7 @@ export default function TemplatePage() {
 
   const ownerActions = [
     {
-      label: "Edit blocks",
+      label: template.type === "builder" ? "Edit template" : "Edit blocks",
       icon: "fa-solid fa-pen-ruler",
       href: `/templates/${template._id}/builder`,
     },

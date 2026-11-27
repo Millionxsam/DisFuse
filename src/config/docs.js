@@ -20,6 +20,21 @@ export const DOCS = {
   componentsV2: "Guide/componentsV2",
   previews: "Guide/previews",
 
+  /* ---- DisFuse Builder --------------------------------------------- */
+  builderIntro: "Builder/introduction",
+  builderCommands: "Builder/commands",
+  builderEvents: "Builder/events",
+  builderSteps: "Builder/steps",
+  builderValues: "Builder/values",
+  builderMessages: "Builder/message-builder",
+  builderForms: "Builder/forms",
+  builderVariables: "Builder/variables",
+  builderCollaborators: "Builder/collaborators",
+  builderVersions: "Builder/versions",
+  builderPacks: "Builder/workshop-packs",
+  builderCopy: "Builder/copy-from-blocks",
+  builderExport: "Builder/exporting",
+
   /* ---- Features ----------------------------------------------------- */
   dashboard: "Features/dashboard",
   explore: "Features/explore",

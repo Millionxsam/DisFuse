@@ -234,6 +234,11 @@ export default function ProjectPage() {
           ) : (
             ""
           )}
+          {project?.type === "builder" && (
+            <span className="df-editor-badge" title="This project is built with DisFuse Builder">
+              <i className="fa-solid fa-wand-magic-sparkles"></i> DisFuse Builder
+            </span>
+          )}
         </h1>
 
         <div className="owner">

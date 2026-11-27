@@ -1,0 +1,139 @@
+/* =====================================================================
+   DisFuse Builder: the Versions page
+   ---------------------------------------------------------------------
+   One row per version: its number, name and counts, and what can be
+   done with it. The version being edited is lit up.
+   ===================================================================== */
+
+.dfb-versions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dfb-version {
+  --tint: var(--dfb-sky);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 18px;
+  border: 1px solid var(--dfb-line);
+  border-radius: var(--dfb-r-lg);
+  background: var(--dfb-panel);
+  animation: dfb-rise var(--dfb-slow) var(--dfb-ease) backwards;
+  transition:
+    border-color var(--dfb-fast),
+    background var(--dfb-fast);
+}
+
+.dfb-version:hover {
+  border-color: var(--dfb-line-strong);
+}
+
+.dfb-version--active {
+  --tint: var(--dfb-violet);
+  border-color: rgba(var(--dfb-violet-rgb), 0.55);
+  background: color-mix(in srgb, var(--dfb-violet) 8%, var(--dfb-panel));
+  box-shadow: 0 10px 30px rgba(var(--dfb-violet-rgb), 0.16);
+}
+
+.dfb-version__number {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-width: 50px;
+  height: 50px;
+  padding: 0 8px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--tint) 22%, transparent);
+  color: color-mix(in srgb, var(--tint) 70%, #fff);
+  font-family: var(--dfb-display);
+  font-size: 1.05rem;
+}
+
+.dfb-version__text {
+  display: grid;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dfb-version__name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--dfb-text);
+  font-size: 1.02rem;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.dfb-version__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  color: var(--dfb-dim);
+  font-size: 0.83rem;
+}
+
+.dfb-version__meta i {
+  margin-right: 4px;
+  color: var(--dfb-faint);
+}
+
+.dfb-version__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+
+.dfb-version__current {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  color: var(--dfb-mint);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.dfb-version-plan {
+  display: block;
+  margin: 14px 2px 0;
+  color: var(--dfb-faint);
+  font-size: 0.85rem;
+}
+
+.dfb-version-upgrade {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dfb-amber);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.dfb-version-upgrade:hover {
+  text-decoration: underline;
+}
+
+.dfb-version-upgrade img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+@media (max-width: 720px) {
+  .dfb-version {
+    flex-wrap: wrap;
+  }
+
+  .dfb-version__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

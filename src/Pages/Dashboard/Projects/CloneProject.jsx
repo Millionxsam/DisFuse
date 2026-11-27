@@ -5,15 +5,27 @@ import { apiUrl, discordUrl } from "../../../config/config";
 import Swal from "sweetalert2";
 import modalThemeColor from "../../../functions/modalThemeColor";
 import { userCache } from "../../../cache.ts";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import showLimitReached from "../../../functions/limitReached.js";
 import usePlanLimits, { hasRoom } from "../../../functions/usePlanLimits.js";
 import { PlanLimitReached } from "../../../components/premium/PlanUsage.jsx";
+import DocsLink from "../../../components/DocsLink.jsx";
+import { DOCS } from "../../../config/docs.js";
+import {
+  BotCard,
+  ConnectBot,
+  DescriptionCard,
+  PermissionsCard,
+  Steps,
+  SubmitButton,
+  VisibilityCard,
+} from "./projectForm.jsx";
 
 export default function CloneProject() {
   const [loading, setLoading] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [token, setToken] = useState("");
   const [bot, setBot] = useState(null);
   const [project, setProject] = useState({});
@@ -47,18 +59,27 @@ export default function CloneProject() {
 
   const limits = usePlanLimits();
 
+  const pageHead = (
+    <div className="df-page-head">
+      <h1>
+        <i className="fa-solid fa-clone"></i> Clone "{project.name}"
+      </h1>
+      <div className="df-toolbar">
+        <div className="df-btn-group">
+          <DocsLink page={DOCS.creatingAProject} label="How this works" />
+        </div>
+      </div>
+    </div>
+  );
+
   /* A clone is a new project of your own, so it needs room like any other. */
   if (limits.loading || !hasRoom(limits.data, "projects"))
     return (
-      <div className="newProject-page-container">
+      <div className="df-page np-page">
         <Helmet>
           <title>Clone Project | DisFuse</title>
         </Helmet>
-        <div className="df-page-head">
-          <h1>
-            <i className="fa-solid fa-clone"></i> Clone "{project.name}"
-          </h1>
-        </div>
+        {pageHead}
         {limits.loading ? (
           <LoadingAnim />
         ) : (
@@ -68,190 +89,67 @@ export default function CloneProject() {
     );
 
   return (
-    <div className="newProject-page-container">
+    <div className="df-page np-page">
       <Helmet>
         <title>Clone Project | DisFuse</title>
       </Helmet>
-      <div className="df-page-head">
-        <h1>
-          <i className="fa-solid fa-clone"></i> Clone "{project.name}"
-        </h1>
-      </div>
-      <div className="body">
-        {!bot ? (
-          <>
-            <img
-              id="projectCreationGraphic"
-              src="/media/projectCreationGraphic.png"
-              alt="Project creation"
+      {pageHead}
+
+      <Steps
+        labels={["Connect your bot", "Set up the copy"]}
+        current={bot ? 1 : 0}
+      />
+
+      {!bot ? (
+        <ConnectBot
+          token={token}
+          setToken={setToken}
+          loading={loading}
+          onSubmit={findBot}
+        />
+      ) : (
+        <div className="np-setup">
+          <BotCard bot={bot}>
+            <button
+              type="button"
+              className="np-btn np-btn--ghost"
+              onClick={() => {
+                setBot(null);
+                setToken("");
+              }}
+            >
+              <i className="fa-solid fa-arrow-left noRotate"></i>
+              Use a different bot
+            </button>
+          </BotCard>
+
+          <div className="np-form">
+            <DescriptionCard value={description} onChange={setDescription} />
+            <VisibilityCard
+              editor={project.type}
+              project={projectVisibility}
+              setProject={setProjectVisibility}
+              bot={botVisibility}
+              setBot={setBotVisibility}
             />
-            <div className="textAnim">
-              <h2>Enter your bot token</h2>
-              <input
-                type="password"
-                autoComplete="off"
-                placeholder="Your bot token"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-              />
-              <i>
-                Not sure what this is? Visit{" "}
-                <a
-                  href="https://docs.disfuse.xyz/docs/Guide/creating-a-bot"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  our docs page
-                </a>
-              </i>
+            <PermissionsCard value={permissions} onChange={setPermissions} />
 
-              {loading ? (
-                <LoadingAnim onlySpinner />
-              ) : (
-                <button onClick={findBot}>Continue</button>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="botInfo">
-              <img
-                src={
-                  "https://cdn.discordapp.com/avatars/" +
-                  bot.id +
-                  "/" +
-                  bot.avatar +
-                  ".png"
-                }
-                alt={bot.displayName}
-              />
-              <div>
-                <h1>{bot.username}</h1>
-                <p style={{ width: "fit-content" }}>ID: {bot.id}</p>
-              </div>
-            </div>
-            <div className="projectInfo">
-              <div style={{ gap: "2px" }}>
-                <h2>Description</h2>
-                <i style={{ opacity: ".5" }}>Optional</i>
-              </div>
-              <textarea
-                placeholder="What does your bot do?"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <div style={{ gap: "2px" }}>
-                <h2>Project Visibility</h2>
-                <p style={{ opacity: ".5" }}>
-                  Public projects will show up in the explore page and anyone
-                  can view their blocks; private projects are only visible to
-                  you and the people you invite.
-                </p>
-              </div>
-              <select
-                value={projectVisibility}
-                onChange={(e) => setProjectVisibility(e.target.value)}
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-
-              <div style={{ gap: "2px" }}>
-                <h2>Bot Visibility</h2>
-                <p style={{ opacity: ".5" }}>
-                  Public bots will show up in the explore page and anyone can
-                  add them to their servers
-                </p>
-              </div>
-              <select
-                value={botVisibility}
-                onChange={(e) => setBotVisibility(e.target.value)}
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-
-              <p id="visibilityInfo" onClick={showVisibilityInfo}>
-                <i className="fa-solid fa-circle-question"></i> Learn more about
-                project and bot visibility
-              </p>
-
-              <div style={{ gap: "2px" }}>
-                <h2>Permissions</h2>
-                <p style={{ opacity: ".5" }}>
-                  Go to{" "}
-                  <Link
-                    rel="noopener"
-                    target="_blank"
-                    to={"https://discordapi.com/permissions.html"}
-                  >
-                    this website
-                  </Link>
-                  , select required permissions for your bot, and paste the
-                  resulting number here (shown at the top of the website). This
-                  will be used for users to add your bot.
-                </p>
-              </div>
-              <input
-                type="number"
-                min={0}
-                value={permissions}
-                onChange={(e) => setPermissions(parseInt(e.target.value))}
-              />
-
-              <button onClick={createProject}>Create Project</button>
-            </div>
-          </>
-        )}
-      </div>
+            <SubmitButton
+              busy={creating}
+              busyLabel="Creating"
+              icon="fa-solid fa-clone"
+              onClick={createProject}
+            >
+              Create Copy
+            </SubmitButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 
-  function showVisibilityInfo() {
-    const Queue = Swal.mixin({
-      progressSteps: ["1", "2", "3", "4"],
-      animation: false,
-      showCancelButton: true,
-      cancelButtonText: "Close",
-      confirmButtonText: "Next >",
-
-      ...modalThemeColor(userCache.user),
-    });
-
-    Queue.fire({
-      animation: true,
-      title: "Situation 1",
-      html: `<strong>Project visibility is public, bot visibility is private</strong> <br /> <br /> This means your project will show up on the explore page. Anyone can search for and view your project, including the blocks. However, no one will be able to view your bot information or add your bot to servers.`,
-      currentProgressStep: 0,
-    }).then((r) => {
-      if (!r.isConfirmed) return;
-
-      Queue.fire({
-        title: "Situation 2",
-        html: `<strong>Project visibility is private, bot visibility is public</strong> <br /> <br /> Your project will not show up on the explore page, and only people you invite can view your project and its blocks. However, anyone can search for and view your bot's information (username, server count, etc.) and add your bot to their servers.`,
-        currentProgressStep: 1,
-      }).then((r) => {
-        if (!r.isConfirmed) return;
-
-        Queue.fire({
-          title: "Situation 3",
-          html: `<strong>Both project and bot visibility are public</strong> <br /> <br /> Your project and bot information will both show up together on the explore page, and anyone can search for and view your project and its blocks. Additionally, anyone can add your bot to their servers and view its information.`,
-          currentProgressStep: 2,
-        }).then((r) => {
-          if (!r.isConfirmed) return;
-
-          Queue.fire({
-            title: "Situation 4",
-            html: `<strong>Both project and bot visibility are private</strong> <br /> <br /> No one except you and the people you invite can view your project, its blocks, or your bot's information. Your project will not show up on the explore page, and only invited users can view your project and its blocks.`,
-            currentProgressStep: 3,
-            showConfirmButton: false,
-          });
-        });
-      });
-    });
-  }
-
   function createProject() {
+    setCreating(true);
     axios
       .post(
         apiUrl + `/projects/${projectId}/clones`,
@@ -273,6 +171,7 @@ export default function CloneProject() {
           (window.location = `/@${userCache.user.username}/${data._id}/workspace`),
       )
       .catch((err) => {
+        setCreating(false);
         if (
           showLimitReached(err, modalThemeColor(userCache.user), {
             title: "Project limit reached",

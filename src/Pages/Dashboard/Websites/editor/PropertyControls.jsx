@@ -31,7 +31,7 @@ export function ColorInput({ value = "", onChange }) {
           type="color"
           value={hex}
           onChange={(e) => onChange(e.target.value)}
-          aria-label="Pick a colour"
+          aria-label="Pick a color"
         />
         <input
           type="text"

@@ -1,0 +1,471 @@
+/* =====================================================================
+   DisFuse Builder: message and form builders
+   ---------------------------------------------------------------------
+   Three panes (pieces, details, preview), the piece tree, and the
+   Discord-looking preview frame around the Control client's renderer.
+   ===================================================================== */
+
+@import "./tokens.css";
+
+.dfb-mb {
+  display: grid;
+  /* Side panes grow with the window, but never before the middle one
+     has room: a percentage cap instead of a fixed one. */
+  grid-template-columns: minmax(240px, 26%) minmax(0, 1fr) minmax(300px, 34%);
+  height: 100%;
+  min-height: 0;
+}
+
+.dfb-mb__tabs {
+  display: none;
+}
+
+.dfb-mb__tree-pane,
+.dfb-mb__editor-pane,
+.dfb-mb__preview-pane {
+  min-height: 0;
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.dfb-mb__tree-pane {
+  border-right: 1px solid var(--dfb-line);
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.dfb-mb__preview-pane {
+  border-left: 1px solid var(--dfb-line);
+  background: #313338;
+}
+
+.dfb-mb__pane-title {
+  margin: 0 0 12px;
+  color: var(--dfb-faint);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.dfb-mb__preview-pane .dfb-mb__pane-title {
+  color: #949ba4;
+}
+
+@media (max-width: 960px) {
+  .dfb-mb {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .dfb-mb__preview-pane {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--dfb-line);
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 760px) {
+  .dfb-mb {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .dfb-mb__tabs {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--dfb-line);
+  }
+
+  .dfb-mb[data-tab="build"] .dfb-mb__preview-pane,
+  .dfb-mb[data-tab="preview"] .dfb-mb__tree-pane,
+  .dfb-mb[data-tab="preview"] .dfb-mb__editor-pane {
+    display: none;
+  }
+
+  .dfb-mb__tree-pane,
+  .dfb-mb__editor-pane,
+  .dfb-mb__preview-pane {
+    overflow: visible;
+    border: 0;
+    max-height: none;
+  }
+}
+
+.dfb-mb__hint {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 200px;
+  color: var(--dfb-faint);
+  text-align: center;
+}
+
+.dfb-mb__hint i {
+  font-size: 1.8rem;
+  color: var(--dfb-violet);
+  animation: dfb-wiggle 2.4s ease-in-out infinite;
+}
+
+.dfb-mb__hint p {
+  max-width: 300px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dfb-mb__piece {
+  animation: dfb-pop-in var(--dfb-mid) var(--dfb-ease);
+}
+
+.dfb-mb__piece-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.dfb-mb__piece-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #26a4af, #4fa8ff);
+  color: #fff;
+}
+
+.dfb-mb__piece-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.dfb-mb__piece-head p {
+  margin: 3px 0 0;
+  color: var(--dfb-dim);
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.dfb-mb__piece-note {
+  color: var(--dfb-faint);
+  font-size: 0.88rem;
+}
+
+.dfb-mb__starters {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  animation: dfb-rise var(--dfb-slow) var(--dfb-ease);
+}
+
+.dfb-mb__starters p {
+  margin: 0;
+  color: var(--dfb-dim);
+  font-size: 0.85rem;
+}
+
+.dfb-mb__starter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--dfb-line-strong);
+  border-radius: var(--dfb-r-md);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dfb-text);
+  font: 650 0.88rem var(--dfb-font);
+  cursor: pointer;
+  transition:
+    transform var(--dfb-fast) var(--dfb-spring),
+    border-color var(--dfb-fast),
+    background var(--dfb-fast);
+}
+
+.dfb-mb__starter i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--dfb-grad-cool);
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.dfb-mb__starter:hover {
+  transform: translateX(3px);
+  border-color: var(--dfb-violet);
+  background: rgba(var(--dfb-violet-rgb), 0.12);
+}
+
+.dfb-mb__files {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dfb-line);
+}
+
+.dfb-mb__files h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.dfb-mb__files p {
+  margin: 0;
+  color: var(--dfb-faint);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.dfb-mb__files .dfb-group__item {
+  grid-template-columns: 1fr;
+}
+
+/* ---- The piece tree ---------------------------------------------------- */
+
+.dfb-tree {
+  display: grid;
+  gap: 8px;
+}
+
+.dfb-tree__list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dfb-tree__node {
+  animation: dfb-pop-in var(--dfb-mid) var(--dfb-ease) backwards;
+}
+
+.dfb-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--dfb-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    border-color var(--dfb-fast),
+    background var(--dfb-fast);
+}
+
+.dfb-tree__row:hover {
+  border-color: var(--dfb-line-strong);
+}
+
+.dfb-tree__row--selected {
+  border-color: var(--dfb-violet);
+  background: rgba(var(--dfb-violet-rgb), 0.16);
+  box-shadow: 0 0 0 3px rgba(var(--dfb-violet-rgb), 0.15);
+}
+
+.dfb-tree__row--error {
+  padding: 6px 8px;
+  border-color: rgba(255, 92, 92, 0.5);
+  color: #ff9b9b;
+}
+
+.dfb-tree__select {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--dfb-text);
+  font-family: var(--dfb-font);
+  text-align: left;
+  cursor: pointer;
+}
+
+.dfb-tree__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: rgba(38, 164, 175, 0.22);
+  color: #7ee0e8;
+  font-size: 0.78rem;
+}
+
+.dfb-tree__text {
+  display: grid;
+  min-width: 0;
+}
+
+.dfb-tree__label {
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.dfb-tree__summary {
+  overflow: hidden;
+  color: var(--dfb-faint);
+  font-size: 0.74rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dfb-tree__tools {
+  display: none;
+  flex: none;
+  padding-right: 4px;
+}
+
+.dfb-tree__row:hover .dfb-tree__tools,
+.dfb-tree__row--selected .dfb-tree__tools,
+.dfb-tree__row:focus-within .dfb-tree__tools {
+  display: flex;
+}
+
+.dfb-tree__children {
+  display: grid;
+  gap: 6px;
+  margin: 6px 0 2px 14px;
+  padding-left: 12px;
+  border-left: 2px solid var(--dfb-line);
+}
+
+.dfb-tree__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  justify-self: start;
+  padding: 7px 11px;
+  border: 1px dashed var(--dfb-line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--dfb-dim);
+  font: 650 0.8rem var(--dfb-font);
+  cursor: pointer;
+  transition:
+    border-color var(--dfb-fast),
+    background var(--dfb-fast),
+    color var(--dfb-fast);
+}
+
+.dfb-tree__add:hover:not(:disabled) {
+  border-color: var(--dfb-violet);
+  background: rgba(var(--dfb-violet-rgb), 0.12);
+  color: var(--dfb-text);
+}
+
+.dfb-tree__add:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- Discord preview frame --------------------------------------------- */
+
+.dfb-discord {
+  border-radius: var(--dfb-r-md);
+  background: #313338;
+  color: #dbdee1;
+  font-family: "gg sans", "Noto Sans", var(--dfb-font);
+}
+
+.dfb-discord .dc-message {
+  padding: 4px 0;
+}
+
+/* Control draws buttons disabled, and the site dims anything disabled.
+   In a preview they should look like the real thing. */
+.dfb-discord .dc-component-button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+/* ...except the ones set to "Greyed out", which Discord draws faded. */
+.dfb-discord .dc-component-button.is-disabled,
+.dfb-discord .dc-component-select.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dfb-discord__empty {
+  padding: 10px 0;
+  color: #949ba4;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.dfb-discord__notes {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dfb-discord__notes li {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(240, 178, 50, 0.12);
+  color: #f0c674;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.dfb-discord--compact {
+  pointer-events: none;
+}
+
+.dfb-special__mini {
+  position: relative;
+  max-height: 180px;
+  overflow: hidden;
+  border-radius: var(--dfb-r-md);
+  padding: 8px 12px;
+  background: #313338;
+}
+
+/* Only a message too tall for the preview fades out at the bottom. */
+.dfb-special__mini--cut {
+  -webkit-mask-image: linear-gradient(#000 70%, transparent);
+  mask-image: linear-gradient(#000 70%, transparent);
+}
+
+.dfb-special__mini .dfb-discord {
+  transform-origin: top left;
+}
+
+.dfb-mb__preview-pane .df-modal-preview .dc-modal {
+  margin: 0 auto;
+}
+
+/* Narrow tree pane: rows shrink, long labels trim, tools stay compact. */
+.dfb-mb__tree-pane {
+  overflow-x: hidden;
+}
+
+.dfb-tree__row {
+  min-width: 0;
+}
+
+.dfb-tree__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dfb-tree__tools .dfb-icon-btn {
+  width: 26px;
+  height: 26px;
+  font-size: 0.8rem;
+}

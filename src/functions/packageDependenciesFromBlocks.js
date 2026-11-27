@@ -2,7 +2,7 @@ import {
   sioClientRuntime,
   sioServerRuntime,
   wsRuntime,
-} from "../blocks/apps/websockets/runtime.js";
+} from "../blocks/lib/websocketRuntime.js";
 
 const blockImports = {
   fs_: ["fs", "path"],
