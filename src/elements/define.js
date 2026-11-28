@@ -561,6 +561,20 @@ function blockList(block) {
 }
 
 /**
+ * The statement input that holds a component's children, when its block
+ * doesn't name it with `children`: its one statement part. Without it,
+ * `ctx.children()` reads no input and the component is built empty
+ * (a container with no components, which Discord rejects).
+ */
+function childrenInput(raw, owner, role) {
+  if (!owner?.children || (role !== "main" && role !== "variant")) return undefined;
+  const statements = Object.entries(raw.parts ?? {}).filter(([, p]) => p.part === "statement");
+  if (statements.length !== 1)
+    fail(owner, `block ${raw.type}: name the input that holds the children with \`children\``);
+  return statements[0][0];
+}
+
+/**
  * A block description, with what it belongs to filled in.
  * `role` is "main" (made from the element), "variant" (another block
  * that becomes the same element), "value" (reads a provided value) or
@@ -574,6 +588,7 @@ function blockSpec(raw, owner, role, defaults, extra = {}) {
   return {
     colour: defaults.colour,
     ...raw,
+    children: raw.children ?? childrenInput(raw, owner, role),
     parts: raw.parts ?? {},
     text: raw.text === undefined ? [] : Array.isArray(raw.text) ? raw.text : [raw.text],
     role,

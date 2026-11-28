@@ -899,7 +899,7 @@ const components = [
       ],
     },
     placement: ["root"],
-    children: { accepts: "container", label: "Inside the container" },
+    children: { accepts: "container", label: "Inside the container", min: 1 },
     fields: [
       input.boolean("useColor", "Colored stripe", { default: false, allowValues: false }),
       input.colour("color", "Stripe color", { default: "#5865F2", showIf: { useColor: true } }),

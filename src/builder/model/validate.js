@@ -107,6 +107,19 @@ function checkComponents(components, env, issues) {
     for (const field of def.fields)
       if (inputVisible(field, (key) => literalOf(def.fields.find((f) => f.key === key), component.inputs?.[key])))
         checkInput(field, component.inputs?.[field.key], { ...env, ownerId: def.id }, issues, []);
+    if (def.children) {
+      /* Discord rejects the whole message ("Invalid Form Body") when a
+         container, row, gallery or menu has too few or too many pieces. */
+      const count = (component.children ?? []).length;
+      const { min, max } = def.children;
+      if (min && count < min)
+        issues.push({
+          level: "warning",
+          message: `"${def.label}" needs at least ${min} ${min === 1 ? "piece" : "pieces"} inside it.`,
+        });
+      if (max && count > max)
+        issues.push({ level: "warning", message: `"${def.label}" can hold up to ${max} pieces.` });
+    }
     checkComponents(component.children, env, issues);
   }
 }

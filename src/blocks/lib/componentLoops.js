@@ -1,5 +1,5 @@
 import * as Blockly from "blockly";
-import { Order, javascriptGenerator } from "blockly/javascript";
+import { javascriptGenerator } from "blockly/javascript";
 import {
   COMPONENT_CHECKS,
   COMPONENT_ITEM_TYPES,
@@ -97,41 +97,6 @@ function wrapItemGenerator(type) {
   };
 }
 
-/**
- * Two loops run their blocks from a callback nobody waits for, which
- * would push components after the message was already sent. Inside a
- * component list they're generated so they're awaited; anywhere else
- * they stay exactly as they were.
- */
-const AWAITED_IN_COMPONENTS = {
-  invite_channel_foreach: (block, generator, original) =>
-    `await ${original.call(block, block, generator)}`,
-
-  fs_readdir: (block, generator) => {
-    const dir = generator.valueToCode(block, "path", Order.ATOMIC);
-    const doo = generator.statementToCode(block, "doo");
-
-    return `{
-  const files = await fs.promises.readdir(${dir});
-
-  for (const file of files) {
-    const filePath = path.join(${dir}, file);
-
-    ${doo}}
-}\n`;
-  },
-};
-
-function wrapLoopGenerator(type, replacement) {
-  const original = javascriptGenerator.forBlock[type];
-  if (!original) return;
-
-  javascriptGenerator.forBlock[type] = function (block, generator) {
-    if (!findComponentOwner(block)) return original.call(this, block, generator);
-    return replacement(block, generator, original);
-  };
-}
-
 /** Adds the component checks to a connection that takes "default". */
 function widenCheck(connection) {
   const check = connection?.getCheck();
@@ -173,8 +138,5 @@ export function enableComponentLoops() {
   enabled = true;
 
   COMPONENT_ITEM_TYPES.forEach(wrapItemGenerator);
-  Object.entries(AWAITED_IN_COMPONENTS).forEach(([type, replacement]) =>
-    wrapLoopGenerator(type, replacement),
-  );
   Object.keys(COMPONENT_LOOP_INPUTS).forEach(widenLoopBlock);
 }
